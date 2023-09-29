@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
+import Welcome from "./pages/Welcome";
 
 // Auth Pages
 import Courses from "./pages/Courses";
@@ -21,7 +22,7 @@ function App() {
   const router = createBrowserRouter([
     { // Homepage is left unused
       path: "/",
-      element: <Navigate to={"/courses"} />,
+      element: <Navigate to={"/welcome"} />,
       errorElement: <NotFound />
     },
     {
@@ -66,6 +67,10 @@ function App() {
     {
       path: "/educado_admin/applications/:id",
       element: <SingleApplicantView />,
+    },
+    {
+      path: "/welcome",
+      element: <Welcome />,
     }
   ])
 

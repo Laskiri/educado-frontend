@@ -4,20 +4,24 @@ import axios from "axios";
 import { CCApp } from "../interfaces/CCApp";
 
 export interface ContentCreatorApplication {
-  firstName: String;
-  lastName: String;
+  name: String;
   email: String;
-  motivation: String;
+  password: String;
 }
 
 // Authenticate with JWT login
 const postUserLogin = async (credentials: any) => {
-  return await axios.post("http://127.0.0.1:8888/auth/jwt", credentials);
+  return await axios.post("http://127.0.0.1:8888/api/credentials/login", credentials);
 };
 
-const postUserApplication = async (formData: ContentCreatorApplication) => {
+
+const postUserSignup = async(formData: ContentCreatorApplication) => {
+  return await axios.post("http://127.0.0.1:8888/api/credentials/signup", formData)
+}
+
+/*  const postUserApplication = async (formData: ContentCreatorApplication) => {
   return await axios.post("http://127.0.0.1:8888/api/applications", formData);
-};
+}; */
 
 const GetCCApplications = async (): Promise<CCApp.RootObject> => {
   return await axios.get(
@@ -46,7 +50,8 @@ const PostAcceptContentCreator = async (id: string): Promise<unknown> => {
 
 const AuthServices = Object.freeze({
   postUserLogin,
-  postUserApplication,
+  postUserSignup,
+  //postUserApplication,
   GetCCApplications,
   GetSingleUserApplication,
   PostDelcineContentCreator,
