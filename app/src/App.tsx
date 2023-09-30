@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
 
+
 // Non-auth pages
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -17,7 +18,6 @@ import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 
 function App() {
-
   // router
   const router = createBrowserRouter([
     { // Homepage is left unused
@@ -27,12 +27,12 @@ function App() {
     },
     {
       path: "/courses",
-      element: <Courses />,
+      element:<Courses />,
       errorElement: <NotFound />,
     },
     {
       path: "/courses/edit/:id",
-      element: <CourseEdit />
+      element: <CourseEdit />,
     },
     {
       path: "/courses/edit/:cid/sections/:sid",
@@ -44,7 +44,8 @@ function App() {
     },
     {
       path: "/profile",
-      element: <Profile />
+      element: <Profile/>
+      
     },
     {
       path: "/login",

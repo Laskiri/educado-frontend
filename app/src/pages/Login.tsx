@@ -16,7 +16,10 @@ type Inputs = {
     password: String,
 };
 
+
+
 const Login = () => {
+    
     // Location
     const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
     
@@ -28,16 +31,18 @@ const Login = () => {
     // use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
+    
     // success on submit handler
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         AuthServices.postUserLogin({
             email: data.email,
             password: data.password,})
             .then((res) => {
-                if(res.status == 200 || !res.status){
+                if(res.status == 200){
+                    localStorage.setItem("token", res.data.token);
                     navigate("/profile");
-                    setToken(res.data.data.accessToken);
-                    setRefresh(res.data.data.refreshToken);
+                    
+                    //setRefresh(res.data.data.refreshToken);
                 }
                 
             })

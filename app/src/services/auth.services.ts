@@ -2,12 +2,14 @@ import axios from "axios";
 
 // Interfaces
 import { CCApp } from "../interfaces/CCApp";
+import { boolean } from "yup";
 
 export interface ContentCreatorApplication {
   name: String;
   email: String;
   password: String;
 }
+
 
 // Authenticate with JWT login
 const postUserLogin = async (credentials: any) => {
