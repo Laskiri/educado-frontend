@@ -40,6 +40,7 @@ const Login = () => {
             .then((res) => {
                 if(res.status == 200){
                     localStorage.setItem("token", res.data.token);
+                    setToken(res.data.token);
                     navigate("/profile");
                     
                     //setRefresh(res.data.data.refreshToken);

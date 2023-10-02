@@ -11,8 +11,15 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const Navbar = () => {
-    const clearToken = useAuthStore(state => state.clearToken);
+    //const clearToken = useAuthStore(state => state.clearToken);
     const navigate = useNavigate();
+
+    //logout handler
+    const clearToken = useAuthStore(state => state.clearToken);
+    const logout = () => {
+        clearToken();
+        localStorage.removeItem('token');
+    }
 
     // List to generete dropdown li's 
     const links = [
@@ -77,7 +84,9 @@ export const Navbar = () => {
                         </label>
                         <ul tabIndex={0} className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
                             {links.map((route, key) => <li key={key}><Link to={route.path}>{route.desc}</Link></li>)}
-                            <li><a onClick={() => { clearToken; navigate("/login") }} className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white">Sign out</a></li>
+                            <li>
+                                <Link to={"/login"} onClick={logout} className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white">Sign out</Link>
+                            </li>
                         </ul>
                     </div>
                 </button>
