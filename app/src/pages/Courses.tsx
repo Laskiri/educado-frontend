@@ -18,7 +18,7 @@ import { CubeTransparentIcon } from '@heroicons/react/24/outline';
 const Courses = () => {
   // States and Hooks
   const navigate = useNavigate();
-  const token = useToken();
+  const token = localStorage.getItem("token")
 
   // Fetch all courses
   const { data, error } = useSWR(
