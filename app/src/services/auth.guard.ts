@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-// checking token from local storage
+
 
 export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();
@@ -17,6 +17,19 @@ export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   }, []);
 }
 };
+
+export function NonProtectedRoute ({ children }: { children: JSX.Element }) {
+  const navigate = useNavigate();
+  if (!localStorage.getItem("token")) { 
+    return children;
+
+  } else {
+  React.useEffect(() => {
+    navigate("/profile")
+  }, []);
+}
+
+}
 
 
 export default ProtectedRoute;

@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate, createRoutesFromElements, Route, Routes } from "react-router-dom"
 import ProtectedRoute from "./services/auth.guard";
+import { NonProtectedRoute } from "./services/auth.guard";
 
 // Non-auth pages
 import Login from "./pages/Login";
@@ -16,6 +17,7 @@ import Profile from "./pages/Profile";
 // Educado Admin
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
+import Carousel from "./pages/Carousel";
 
 function App() {
   // router
@@ -49,12 +51,12 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <NonProtectedRoute><Login /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
       path: "/signup",
-      element: <Signup />,
+      element: <NonProtectedRoute><Signup /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
