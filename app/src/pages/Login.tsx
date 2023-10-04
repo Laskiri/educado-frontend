@@ -8,7 +8,7 @@ import { LoginReponseError } from "../interfaces/LoginReponseError"
 
 // Services
 import AuthServices from '../services/auth.services';
-import useAuthStore from '../contexts/useAuthStore';
+//import useAuthStore from '../contexts/useAuthStore';
 
 // Interface
 type Inputs = {
@@ -24,8 +24,8 @@ const Login = () => {
     const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
     
     // states
-    const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
-    const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
+    /* const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
+    const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage */
     const navigate = useNavigate(); // hooke for redirect
 
     // use-form setup
@@ -63,19 +63,22 @@ const Login = () => {
                 </div>
              </nav>
             
+        <div className="flex justify-center items-center ">
+                {error && (
+                    <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
+                    <p className="font-bold text-lg">Error:</p>
+                    <p className='text-base'>{error.response.data.msg}</p>
+                    </div>
+                )}
+        </div>
          <h1 className="w-[400px] text-neutral-700 text-[28px] text-center font-bold font-['Lato']">Bem-vindo de volta ao Educado!</h1>
             <div className= "flex-col justify-start items-center gap-10 inline-flex">
                 <div className='flex flex-col divide text-gray-700'>
                     <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
 
-                 {error &&
-                    <div className="bg-red-200 border-red-600 text-red-600 border-t-4 p-4 w-64 mb-4 rounded" role="alert">
-                         <p className="font-bold text-sm">{error.response.statusText}</p>
-                         <p className='text-xs'>{error.response.data.msg}.</p>
-                    </div>
-                }
+                    
 
-                {/* Username field */}
+                {/* Email field */}
                     <label className="font-semibold text-xs mt-3" htmlFor="emailField">
                         Email <span className="ml-1 text-red-500 text-xs font-normal font-montserrat">*</span>
                     </label>
