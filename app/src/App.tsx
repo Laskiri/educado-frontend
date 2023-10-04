@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate, createRoutesFromElements, Route, Routes } from "react-router-dom"
 import ProtectedRoute from "./services/auth.guard";
+import { NonProtectedRoute } from "./services/auth.guard";
 
 // Non-auth pages
 import Login from "./pages/Login";
@@ -49,12 +50,12 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <NonProtectedRoute><Login /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
       path: "/signup",
-      element: <Signup />,
+      element: <NonProtectedRoute><Signup /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
