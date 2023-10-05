@@ -37,12 +37,12 @@ return (
             </div>
          <body>
           
-      <div className="relative">
-          <img className="absolute w-2/5 left-[30%] top-[30%]" src={FrontLogo} alt="Front Logo" />
+      <div className=" w-[full/2] h-screen right-0">
+          <img className="w-[2] h-[2]" src={FrontLogo} alt="Front Logo" />
         <div className="w-[762px] h-[952px] px-20 rounded-sm flex-col justify-center items-center gap-20 inline-flex">
     
           <div className="flex justify-between items-center mb-6 space-x-16"></div>
-          <div className="w-[6"></div> {/* Add a 24px space between the buttons */}
+          <div className="w-[6]"></div> {/* Add a 24px space between the buttons */}
       
     <Link to="/login">
       <button
