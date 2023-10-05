@@ -58,7 +58,7 @@ const Signup = () => {
     navigate('/login')
 
   };
-
+anything
   /*return (
     <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#c8e5ec] to-[white]">
       <nav className="navbar bg-base-100 border-b shadow fixed top-0 z-10">
