@@ -86,7 +86,7 @@ const Login = () => {
           </div>
   
           <div className="self-stretch flex-col py-5 px-0">
-            <div className="self-stretch flex flex-col justify-center flex-1 mt-8 p-6">
+            <div className="self-stretch flex flex-col justify-center flex-1 mt-[4rem]">
               <div className="flex text-center text-base text-gray-500 font-normal font-Montserrat underline m-6">
                 <Link to="/welcome">
                   <Icon path={mdiChevronLeft} size={1} color="gray" />
@@ -106,8 +106,8 @@ const Login = () => {
             )}
         </div>
 
-        <div className="w-120rem self-stretch flex flex-col items-start justify-center flex-1 py-[4rem] px-[5rem]">
-            <h1 className=" text-neutral-700 text-[2rem] font-bold font-['Lato'] leading-normal">
+        <div className="self-stretch flex flex-col items-start justify-center flex-1 py-[4rem] px-[5rem]">
+            <h1 className="text-neutral-700 text-[2rem] font-bold font-['Lato'] leading-normal">
                 Bem-vindo de volta ao Educado
             </h1>
 
@@ -115,7 +115,7 @@ const Login = () => {
 
                 {/* Email field */}
                 
-                <div className=" self-stretch flex flex-col item-end">
+                <div className="self-stretch flex flex-col item-end">
                   <label className="stretch flex flex-start text-neutral-700 text-x font-normal gap-[4] font-['Montserrat'] mt-6" htmlFor="usernameField">
                     Email <span className="text-red-500 text-xs font-normal font-montserrat">*</span>
                   </label>
@@ -139,6 +139,7 @@ const Login = () => {
                       type={passwordVisible ? "text" : "password"}
                       
                     />
+                    {/* Hide and show password button */}
                     <button
                       type="button"
                       className="absolute right-3 bottom-3"
@@ -146,7 +147,7 @@ const Login = () => {
                     >
                       <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={0.9} color="gray" />
                     </button>
-                    {/* Hide and show password button */}
+                    
                     </div>
                     
                     
@@ -159,9 +160,8 @@ const Login = () => {
     <span className="h-5" /> {/* spacing */}    
         <button
          type="submit"
-            className={`px-10 py-4 self-stretch flex rounded-lg justify-center items-start gap-5 mt-8 ${
-              isInputFilled ? 'bg-cyan-300 text-white opacity-100 transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 ' : 'bg-cyan-300 text-white opacity-30 '
-                 }`}
+            className="py-4 rounded-lg bg-cyan-300 text-white opacity-100 transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
+  
             >Entrar
         </button>
         
