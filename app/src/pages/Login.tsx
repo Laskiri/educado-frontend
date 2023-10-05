@@ -7,6 +7,7 @@ import background from "../assets/background.jpg"
 import Icon from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
+import Carousel from '../components/archive/Carousel';
 
 
 // Interfaces
@@ -81,9 +82,12 @@ const Login = () => {
       
       <div className="w-screen h-screen overflow-hidden">
         <div className="grid grid-cols-2 md:grid-cols-2 m-auto h-screen sm:max-w-956">
-          <div className="w-full h-screen overflow-hidden">
-            <img src={background} alt="w-[42.375rem] h-[59.5rem]" className="w-full h-full" />
-          </div>
+            <div className='relative w-full h-screen overflow-hidden'>
+                <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <Carousel/>
+                </div>
+            </div>
   
           <div className="self-stretch flex-col py-5 px-0">
             <div className="self-stretch flex flex-col justify-center flex-1 mt-[4rem]">

@@ -11,6 +11,7 @@ import { mdiCheckBold } from '@mdi/js';
 import educado from "../assets/educado.png"
 import background from "../assets/background.jpg"
 import logo from "../assets/logo.png"
+import Carousel from "../components/archive/Carousel";
 
 
 // services
@@ -74,9 +75,12 @@ return (
     
   <div className='w-screen h-screen '>
       <div className='grid grid-cols-2 md:grid-cols'>
-          <div className='w-full h-screen overflow-hidden'>
-            <img src={background} alt="w-[42.375rem] h-[42.375rem]" className=' w-full h-full' />
-      </div>
+      <div className='relative w-full h-screen overflow-hidden'>
+                <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  <Carousel/>
+                </div>
+            </div>
 
 
  <div className=" flex flex-col items-start py-16 px-0 ">
