@@ -2,11 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom"
 
-import Logo from "../assets/ecs-logo.png"
-import FrontLogo from "../assets/WelEd.png"
-import Pic1 from "../assets/WelPic1.jpg"
-import Pic2 from "../assets/WelPic2.jpg"
-import Pic3 from "../assets/WelPic3.jpg"
+import Logo from "../assets/educado.png"
 
 const Welcome = () => {
 
@@ -16,7 +12,7 @@ const Welcome = () => {
         <header>
             <nav className="navbar top-0 z-10 bg-base-100 border-b fixed shadow">
                 <div className="navbar-start">
-                        <img src={Logo} alt="ecs-logo" className='h-6' /><p className='text-[20px] font-semibold font-sans'>Educado Studio</p>
+                        <img src={Logo} alt="ecs-logo" className='h-6' />
                 </div>
 
                 <div className="navbar-nav ml-auto hidden lg:flex">

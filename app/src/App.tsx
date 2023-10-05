@@ -17,7 +17,6 @@ import Profile from "./pages/Profile";
 // Educado Admin
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
-import Carousel from "./pages/Carousel";
 
 function App() {
   // router

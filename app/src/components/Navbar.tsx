@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
 
 // static
-import Logo from "../assets/ecs-logo.png"
+import Logo from "../assets/educado.png"
 
 // icons
 import {
