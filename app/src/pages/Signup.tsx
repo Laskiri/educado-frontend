@@ -110,7 +110,7 @@ return (
             Crie a sua conta gratuitamente!
           </h1>
 
-      { /*Submit form, i.e. fields to write email and password*/ }
+      { /*Submit form, i.e. fields to write name, email, and password*/ }
       <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col">
 
         { /*Name Field*/ }
