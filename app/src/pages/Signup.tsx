@@ -4,7 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react' ;
 import * as Yup from 'yup';
 import Icon from '@mdi/react';
-import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold } from '@mdi/js';
+import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckboxOutline, mdiCheckboxBlankOutline} from '@mdi/js';
 import educado from "../assets/educado.png"
 import background from "../assets/background.jpg"
 import logo from "../assets/logo.png"
@@ -31,7 +31,8 @@ const SignupSchema = Yup.object().shape({
     .required("Password is not long enough"),
   confirmPassword:  Yup.string().oneOf([Yup.ref('password'), null], "Ss senhas não coincidem"),
   
-  email: Yup.string().email('Invalid email format').required('Required'),
+  email: Yup.string()
+    .email('Invalid email format').required('Required'),
 });
 
 const Signup = () => {
@@ -65,6 +66,10 @@ const Signup = () => {
   const togglePasswordVisibilityRepeat = () => {
     setPasswordVisibleRepeat(!passwordVisibleRepeat)
   }
+  const [passwordCheck1, setPasswordCheck1] = useState(false);
+  const togglepasswordCheck1 = () => {
+    setPasswordCheck1(!passwordCheck1);
+  } 
   
 return (
 <main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#c8e5ec] to-[white] overflow-hidden">
@@ -154,12 +159,14 @@ return (
         <div className="px-3 flex-col gap-0.5 flex">
           <div className=" gap-0.5 inline-flex">
             <div className="text-gray-400 text-xs font-normal font-['Montserrat'] mt-2">
-             &bull; Mínimo 8 caracteres
+            <Icon className="absolute left-20" path={passwordCheck1 ? mdiCheckboxBlankOutline : mdiCheckboxOutline} size={0.55} color="gray" />
+             Mínimo 8 caracteres
             </div>
          </div>
         <div className=" gap-0.5 inline-flex">
             <div className="text-gray-400 text-xs font-normal font-['Montserrat'] ">
-             &bull; Conter pelo menos uma letra
+            <Icon className="absolute left-20" path={1 ? mdiCheckboxBlankOutline : mdiCheckboxOutline} size={0.55} color="gray" />
+              Conter pelo menos uma letra
             </div>
           </div>
         </div>
