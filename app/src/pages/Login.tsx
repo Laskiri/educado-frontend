@@ -136,6 +136,7 @@ return (
             type="email"/>
 
           {/* Password field */}
+          <div className="relative">
           <label className="stretch flex flex-start text-neutral-700 text-x font-normal gap-[4] font-['Montserrat'] mt-6" htmlFor="passwordField">
             Senha <span className="text-red-500 text-xs font-normal font-montserrat">*</span>
           </label>
@@ -149,7 +150,7 @@ return (
           <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility}>
               <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={0.9} color="gray" />
           </button>
-          
+          </div>
           
           { /*Forgot password button*/ }
           <div className="self-stretch flex flex-col items-end text-right gap-3 mt-1">

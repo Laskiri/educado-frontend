@@ -72,7 +72,7 @@ function App() {
     },
     {
       path: "/welcome",
-      element: <Welcome />,
+      element: <NonProtectedRoute><Welcome /></NonProtectedRoute>,
     }
   ]
 )

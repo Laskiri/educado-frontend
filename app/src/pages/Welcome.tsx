@@ -62,7 +62,7 @@ return (
         <Link to="/Signup">
           <button
             type="submit"
-            className="w-208px h-52px px-24 py-3 rounded-lg justify-center items-start gap-2 inline-flex mb-2 bg-cyan-300 text-white  transform translate-x-[140px] translate-y-[-157px] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
+            className="w-[16rem] h-[3rem] px-24 py-3 rounded-lg justify-center items-start gap-2 inline-flex mb-2 bg-cyan-300 text-white  transform translate-x-[140px] translate-y-[-157px] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
           >Cadastrar
           </button>
         </Link>
