@@ -78,16 +78,21 @@ describe('last edited time', () => {
   });
 
   it('shows fromDate if difference is above 1 year', () => {
+    const testDate = new Date('1992-06-26')
+
     // Set lastModified to 365 days ago
     const course = generateTestCourse({
-      modifiedAt: (new Date('1992-06-26'))
+      modifiedAt: testDate
     });
     const component = renderer.create(
       <MemoryRouter>
         <LastEdited course={course} key={1} />
       </MemoryRouter>
     );
-    let tree = component.toJSON();
-    expect(tree).toMatchSnapshot();
+    
+    const pTag = component.root.findByType('p');
+    const dateValue = pTag.children[0];
+    
+    expect(dateValue).toBe(testDate.toLocaleDateString());
   });
 });
