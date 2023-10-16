@@ -72,7 +72,7 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
         onDragEnd={handleDragEnd}
       >
         <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {items.map((item) => <SortableItem key={item.id} item={item} />)}
+          {items.map((item) => <SortableItem key={item._id} item={item} />)}
         </SortableContext>
 
         <DragOverlay>
