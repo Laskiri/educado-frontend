@@ -134,7 +134,7 @@ const Courses = () => {
                 step-by-step instructions to develop your first course. */}
                 <p>Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.</p>
                 {/* Create course button */}
-                <CreateCourseModal className='mt-4' />
+                <CreateCourseModal />
               </div>
             </div>
           }

@@ -19,6 +19,9 @@ import { Navigate, useNavigate } from 'react-router-dom';
 type Inputs = {
     title: string,
     description: string,
+    category: string,
+    level: string,
+    time: number,
 };
 
 export const CreateCourseModal = () => {
@@ -36,6 +39,9 @@ export const CreateCourseModal = () => {
         CourseServices.createCourse({
             title: data.title,
             description: data.description,
+            category: data.category,
+            level: data.level,
+            time: data.time,
         }, token)
             .then(res => console.log(res))
             .catch(err => console.log(err))

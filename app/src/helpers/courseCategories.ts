@@ -7,7 +7,16 @@ import {
     mdiBookshelf,
 } from '@mdi/js';
 
-const categories = {
+interface CategoryInfo {
+	icon: string,
+	br ?: string,
+};
+
+interface CategoryMap {
+	[key: string]: CategoryInfo,
+}
+
+const categories: CategoryMap = {
     'personal finance': {
         'icon': mdiWalletBifoldOutline,
         'br': 'Finanças pessoais',
