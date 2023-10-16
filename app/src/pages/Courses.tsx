@@ -32,13 +32,13 @@ const Courses = () => {
 
   // Fetch all courses
 
-  // TODO: Reimplement backend call, using mock data for now
+  // TODO: Implement proper backend call once backend is ready
 
-  /*const { data, error } = useSWR(
+  const { data, error } = useSWR(
     token ? ["http://127.0.0.1:8888/api/courses/eml/getall", token] : null,
     CourseServices.getAllCourses
-  );*/
-  const data: Course[] = [
+  );
+  /* const data: Course[] = [
     {
       _id: "1",
       title: "Curso de Matemática",
@@ -91,7 +91,7 @@ const Courses = () => {
       __v: 0,
     },
   ];
-  const error = null;
+  const error = null; */
 
   // useSWR built in loaders
   if (error) {
