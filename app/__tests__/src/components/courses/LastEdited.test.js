@@ -1,9 +1,9 @@
 import renderer from 'react-test-renderer';
 import { describe, it, expect } from '@jest/globals'
-import { generateTestCourse } from '../../../../__testUtils__/courses/courseTestUtils';
+import { generateTestCourse } from '../../../../__testUtils__/Courses/courseTestUtils';
 
 // Components
-import { LastEdited } from '../../../../src/components/courses/LastEdited';
+import { LastEdited } from '../../../../src/components/Courses/LastEdited';
 import { MemoryRouter } from "react-router-dom"
 
 describe('last edited time', () => {

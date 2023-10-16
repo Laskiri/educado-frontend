@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
 import { describe, it, expect } from '@jest/globals'
-import { generateTestCourse } from '../../../__testUtils__/courses/courseTestUtils';
+import { generateTestCourse } from '../../../__testUtils__/Courses/courseTestUtils';
 
 // Components
 import Courses from '../../../src/pages/Courses';
