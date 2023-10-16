@@ -251,28 +251,28 @@ exports[`courses page does not show empty state when at least one course is foun
                 Confira seus cursos
               </h1>
               <label
-                className="btn flex space-x-2 bg-primary text-white [&>*]:font-bold undefined"
+                className="btn btn-primary modal-button flex space-x-2"
                 htmlFor="course-create"
               >
                 <svg
+                  aria-hidden="true"
                   className="w-5 h-5"
-                  role="presentation"
-                  style={{}}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
                   viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
                   <path
-                    d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                    style={
-                      {
-                        "fill": "currentColor",
-                      }
-                    }
+                    d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                   />
                 </svg>
                 <p
                   className="font-normal"
                 >
-                  Novo Curso
+                  Create new course
                 </p>
               </label>
               <input
@@ -285,17 +285,17 @@ exports[`courses page does not show empty state when at least one course is foun
                 id="course-create-modal"
               >
                 <div
-                  className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl"
+                  className="modal-box rounded w-11/12 max-w-xl"
                 >
                   <h3
                     className="font-bold text-lg"
                   >
-                    Crie seu novo curso!
+                    Create your brand new course!
                   </h3>
                   <p
                     className="py-4"
                   >
-                    Preencha o formulário e comece seu novo curso!
+                    Fill out the form and get started with your brand new course!
                   </p>
                   <form
                     className="flex h-full flex-col justify-between space-y-4"
@@ -307,11 +307,10 @@ exports[`courses page does not show empty state when at least one course is foun
                       <label
                         htmlFor="title"
                       >
-                        Título
+                        Title
                       </label>
-                       
                       <input
-                        className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                         defaultValue=""
                         name="title"
                         onBlur={[Function]}
@@ -323,149 +322,12 @@ exports[`courses page does not show empty state when at least one course is foun
                       className="flex flex-col space-y-2 text-left"
                     >
                       <label
-                        htmlFor="category"
-                      >
-                        Categoria
-                      </label>
-                      <select
-                        className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        name="category"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                      >
-                        <option>
-                          Finanças pessoais 
-                        </option>
-                         
-                        <option>
-                          Saúde e Segurança no Trabalho 
-                        </option>
-                         
-                        <option>
-                          Costura 
-                        </option>
-                         
-                        <option>
-                          Eletrônica 
-                        </option>
-                         
-                      </select>
-                    </div>
-                    <div
-                      className="flex items-center gap-8 w-full mt-8"
-                    >
-                      <div
-                        className="flex flex-col space-y-2 text-left"
-                      >
-                        <label
-                          htmlFor="cover-image"
-                        >
-                          Imagem de capa
-                        </label>
-                        <div>
-                          <div
-                            className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-600 px-10 pt-5 pb-6"
-                          >
-                            <div
-                              className="space-y-1 text-center"
-                            >
-                              <svg
-                                aria-hidden="true"
-                                className="mx-auto h-6 w-6 text-gray-600"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 48 48"
-                              >
-                                <path
-                                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth={2}
-                                />
-                              </svg>
-                              <div
-                                className="flex text-sm text-gray-600"
-                              >
-                                <label
-                                  className="relative cursor-pointer rounded-md  font-medium text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primaryHover"
-                                  htmlFor="file-upload"
-                                >
-                                  <span>
-                                    Upload a file 
-                                  </span>
-                                  <input
-                                    className="sr-only"
-                                    id="file-upload"
-                                    name="file-upload"
-                                    type="file"
-                                  />
-                                </label>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div
-                        className="flex flex-col space-y-2 text-left"
-                      >
-                        <label
-                          htmlFor="level"
-                        >
-                          Nível
-                        </label>
-                         
-                        <select
-                          className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                          name="level"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                        >
-                          <option>
-                            Iniciante 
-                          </option>
-                           
-                          <option>
-                            Intermediário
-                          </option>
-                           
-                          <option>
-                            Avançado 
-                          </option>
-                           
-                        </select>
-                      </div>
-                      <div
-                        className="flex flex-col space-y-2 text-left"
-                      >
-                        <label
-                          htmlFor="title"
-                        >
-                          Tempo estimado
-                        </label>
-                         
-                        <input
-                          className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                          defaultValue=""
-                          min={0}
-                          name="time"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          step={1}
-                          type="number"
-                        />
-                      </div>
-                    </div>
-                    <div
-                      className="flex flex-col space-y-2 text-left"
-                    >
-                      <label
                         htmlFor="description"
                       >
-                        Descrição
+                        Description
                       </label>
-                       
                       <textarea
-                        className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                        className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                         defaultValue=""
                         name="description"
                         onBlur={[Function]}
@@ -480,21 +342,20 @@ exports[`courses page does not show empty state when at least one course is foun
                         className="flex items-center justify-between gap-4 w-full mt-8"
                       >
                         <label
-                          className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
+                          className="py-2 px-4  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
                           htmlFor="course-create"
                         >
                           <button
-                            className="py-2 px-4 h-full w-full"
                             type="submit"
                           >
-                            Criar
+                            Create
                           </button>
                         </label>
                         <label
-                          className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
+                          className="py-2 px-4 bg-white hover:bg-gray-100 border border-blue-500 focus:ring-blue-500 focus:ring-offset-blue-200 text-blue-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
                           htmlFor="course-create"
                         >
-                          Cancelar
+                          Cancel
                         </label>
                       </div>
                     </div>
@@ -950,28 +811,28 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                   Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.
                 </p>
                 <label
-                  className="btn flex space-x-2 bg-primary text-white [&>*]:font-bold mt-4"
+                  className="btn btn-primary modal-button flex space-x-2"
                   htmlFor="course-create"
                 >
                   <svg
+                    aria-hidden="true"
                     className="w-5 h-5"
-                    role="presentation"
-                    style={{}}
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth={1.5}
                     viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"
-                      style={
-                        {
-                          "fill": "currentColor",
-                        }
-                      }
+                      d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     />
                   </svg>
                   <p
                     className="font-normal"
                   >
-                    Novo Curso
+                    Create new course
                   </p>
                 </label>
                 <input
@@ -984,17 +845,17 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                   id="course-create-modal"
                 >
                   <div
-                    className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl"
+                    className="modal-box rounded w-11/12 max-w-xl"
                   >
                     <h3
                       className="font-bold text-lg"
                     >
-                      Crie seu novo curso!
+                      Create your brand new course!
                     </h3>
                     <p
                       className="py-4"
                     >
-                      Preencha o formulário e comece seu novo curso!
+                      Fill out the form and get started with your brand new course!
                     </p>
                     <form
                       className="flex h-full flex-col justify-between space-y-4"
@@ -1006,11 +867,10 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                         <label
                           htmlFor="title"
                         >
-                          Título
+                          Title
                         </label>
-                         
                         <input
-                          className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                           defaultValue=""
                           name="title"
                           onBlur={[Function]}
@@ -1022,149 +882,12 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                         className="flex flex-col space-y-2 text-left"
                       >
                         <label
-                          htmlFor="category"
-                        >
-                          Categoria
-                        </label>
-                        <select
-                          className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                          name="category"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                        >
-                          <option>
-                            Finanças pessoais 
-                          </option>
-                           
-                          <option>
-                            Saúde e Segurança no Trabalho 
-                          </option>
-                           
-                          <option>
-                            Costura 
-                          </option>
-                           
-                          <option>
-                            Eletrônica 
-                          </option>
-                           
-                        </select>
-                      </div>
-                      <div
-                        className="flex items-center gap-8 w-full mt-8"
-                      >
-                        <div
-                          className="flex flex-col space-y-2 text-left"
-                        >
-                          <label
-                            htmlFor="cover-image"
-                          >
-                            Imagem de capa
-                          </label>
-                          <div>
-                            <div
-                              className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-600 px-10 pt-5 pb-6"
-                            >
-                              <div
-                                className="space-y-1 text-center"
-                              >
-                                <svg
-                                  aria-hidden="true"
-                                  className="mx-auto h-6 w-6 text-gray-600"
-                                  fill="none"
-                                  stroke="currentColor"
-                                  viewBox="0 0 48 48"
-                                >
-                                  <path
-                                    d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                  />
-                                </svg>
-                                <div
-                                  className="flex text-sm text-gray-600"
-                                >
-                                  <label
-                                    className="relative cursor-pointer rounded-md  font-medium text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primaryHover"
-                                    htmlFor="file-upload"
-                                  >
-                                    <span>
-                                      Upload a file 
-                                    </span>
-                                    <input
-                                      className="sr-only"
-                                      id="file-upload"
-                                      name="file-upload"
-                                      type="file"
-                                    />
-                                  </label>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                        <div
-                          className="flex flex-col space-y-2 text-left"
-                        >
-                          <label
-                            htmlFor="level"
-                          >
-                            Nível
-                          </label>
-                           
-                          <select
-                            className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            name="level"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                          >
-                            <option>
-                              Iniciante 
-                            </option>
-                             
-                            <option>
-                              Intermediário
-                            </option>
-                             
-                            <option>
-                              Avançado 
-                            </option>
-                             
-                          </select>
-                        </div>
-                        <div
-                          className="flex flex-col space-y-2 text-left"
-                        >
-                          <label
-                            htmlFor="title"
-                          >
-                            Tempo estimado
-                          </label>
-                           
-                          <input
-                            className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            defaultValue=""
-                            min={0}
-                            name="time"
-                            onBlur={[Function]}
-                            onChange={[Function]}
-                            step={1}
-                            type="number"
-                          />
-                        </div>
-                      </div>
-                      <div
-                        className="flex flex-col space-y-2 text-left"
-                      >
-                        <label
                           htmlFor="description"
                         >
-                          Descrição
+                          Description
                         </label>
-                         
                         <textarea
-                          className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                          className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                           defaultValue=""
                           name="description"
                           onBlur={[Function]}
@@ -1179,21 +902,20 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                           className="flex items-center justify-between gap-4 w-full mt-8"
                         >
                           <label
-                            className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
+                            className="py-2 px-4  bg-blue-600 hover:bg-blue-700 focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
                             htmlFor="course-create"
                           >
                             <button
-                              className="py-2 px-4 h-full w-full"
                               type="submit"
                             >
-                              Criar
+                              Create
                             </button>
                           </label>
                           <label
-                            className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
+                            className="py-2 px-4 bg-white hover:bg-gray-100 border border-blue-500 focus:ring-blue-500 focus:ring-offset-blue-200 text-blue-500 w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
                             htmlFor="course-create"
                           >
-                            Cancelar
+                            Cancel
                           </label>
                         </div>
                       </div>
