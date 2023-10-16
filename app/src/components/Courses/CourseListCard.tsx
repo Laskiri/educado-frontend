@@ -10,6 +10,7 @@ import { LastEdited } from "./LastEdited";
 
 // Helpers
 import categories from "../../helpers/courseCategories";
+import statuses from "../../helpers/courseStatuses";
 
 // Images
 import imageNotFoundImage from '../../assets/image-not-found.png'
@@ -81,8 +82,20 @@ export const CourseListCard = ({ course }: { course: Course }) => {
                 <p>{categories[course.category]?.br ?? course.category}</p>
               </div>
 
-              {/* Course last modified */}
-              <LastEdited course={course}/>
+              <div className='flex flex-row justify-between'>
+                {/* Course last modified */}
+                <div>
+                  <LastEdited course={course} />
+                </div>
+
+                {/* Course status */}
+                <div className='flex flex-row'>
+                  <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[course.status].color ?? statuses.default.color)} />
+                  <p className='italic'>
+                    {statuses[course.status].br ?? statuses.default.br}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
