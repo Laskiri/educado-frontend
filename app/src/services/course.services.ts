@@ -31,7 +31,14 @@ const createCourse = async ({ title, category, level, time, description }: Cours
 // Get all courses
 const getAllCourses = (url: string/*, token: string*/) => {
   return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
-    .then(res => res.data);
+    .then(res => {
+      // Convert dates in course data to Date objects
+      res.data.forEach((course: any) => {
+        course.createdAt = new Date(course.createdAt);
+        course.modifiedAt = new Date(course.modifiedAt);
+      });
+      return res.data;
+    });
 };
 
 // Get course detail
