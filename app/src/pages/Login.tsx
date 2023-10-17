@@ -1,14 +1,13 @@
-import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useState } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
-import logo from "../assets/logo.png"
-import educado from "../assets/educado.png"
 import background from "../assets/background.jpg"
 import Icon from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
-
+import logo from '../assets/logo.png'
+import educado from '../assets/educado.png'
 
 // Interfaces
 import { LoginReponseError } from "../interfaces/LoginReponseError"
@@ -61,7 +60,22 @@ const Login = () => {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const togglePasswordVisibility = () => {
       setPasswordVisible(!passwordVisible);
-
+    };
+    
+    
+    function AreFieldsFilled() {
+      const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
+      const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
+      const submitloginButton = document.getElementById('submitloginButton') as HTMLButtonElement;
+      
+      if(inputloginEmail.value.trim() && inputloginPass.value.trim() !== '') {
+        submitloginButton.removeAttribute('disabled');
+        submitloginButton.classList.remove('opacity-20', 'bg-cyan-500');
+      } 
+      else {
+         submitloginButton.setAttribute('disabled', 'true');
+         submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
+      }
     };
 
     // failure on submit handler FIXME: find out what this does (OLD CODE)
@@ -70,115 +84,127 @@ const Login = () => {
 
 
 return (
-<main className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-[#c8e5ec] to-[white]">
+<main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
 
-  { /*Navbar*/ }
-  <nav className="navbar bg-base-100 border-b shadow fixed top-0 z-10">
+{ /*Navbar*/ }
+<nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
+  <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
     <div className="navbar-start">
-      <Link to="/" className="w-[10rem] h-6 justify-start items-center  inline-flex space-x-1 normal-case text-xl">
-        <img src={logo} alt="logo" className="w-[1.5rem] h-6" /> <img src={educado} alt="educado" className="h-6" />
+      <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
+        <img src={logo} alt="logo" className="w-[24.43px] h-6" /> <img src={educado} alt="educado" className="h-6" />
       </Link>
     </div>
-  </nav>
-  
+  </div>
+</nav>
+
   { /*Container for entire page*/ }
-  <body className="w-screen h-screen overflow-hidden">
-    <div className="grid grid-cols-2 md:grid-cols-2 m-auto h-screen sm:max-w-956">
+  <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-full h-screen">
 
-      { /*Container for left half of the page*/ }
-      <div className='relative w-full h-screen overflow-hidden'>
-        <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
-        <div className="absolute inset-0 flex flex-col items-center justify-center">
-          <Carousel/> { /*Carousel integration*/ }
-        </div>
+    { /*Container for left half of the page*/ }
+    <div className='relative w-full h-screen hidden md:block container overflow-hidden'>
+      <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <Carousel/> { /*Carousel integration*/ }
       </div>
+    </div>
 
-      { /*Container for right side of the page*/ }
-      <div className="self-stretch flex-col py-5 px-0">
-        <div className="self-stretch flex flex-col justify-center flex-1 mt-[4rem]">
-          <div className="flex text-center text-base text-gray-500 font-normal font-Montserrat underline m-6">
-            <Link to="/welcome"> { /*Back button*/ }
-              <Icon path={mdiChevronLeft} size={1} color="gray" />
-            </Link>
-            <Link to="/welcome" className="flex flex-col justify-between self-stretch text-base text-gray-500 font-normal font-Montserrat underline">
-              Voltar
-            </Link>
-        </div>
+
+    { /*Container for right side of the page - frame 2332*/ }
+    <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
+
+      { /*Error message for when email or password is incorrect*/ }
+      <div className="fixed right-0 top-[4rem]">
+        {error && (
+            <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
+              <p className="font-bold text-lg">Error:</p>
+              <p className='text-base'>{error.response.data.msg}</p>
+            </div>
+        )}
       </div>
-  
-        { /*Error message for when email or password is incorrect*/ }
-        <div className="fixed right-0 top-[4rem]">
-          {error && (
-              <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
-                <p className="font-bold text-lg">Error:</p>
-                <p className='text-base'>{error.response.data.msg}</p>
-              </div>
-          )}
+            
+      { /*Container for the page's contents, + Back button*/ }
+      <div className='relative py-8 px-10 w-full'>
+        <div className=''>
+          <h1 className="mb-10 flex text-base text-[#383838] font-normal font-['Montserrat'] underline"> 
+            <Link to="/welcome">
+              <Icon path={mdiChevronLeft} size={1} color="#383838" />
+            </Link>
+            <Link to="/welcome" className="text-base text-[#383838] font-normal font-['Montserrat']">
+              Voltar {/*Back*/}
+            </Link>
+          </h1>
         </div>
-          
+
         { /*Title*/ }
-        <div className="self-stretch flex flex-col items-start justify-center flex-1 py-[4rem] px-[5rem]">
-            <h1 className="text-neutral-700 text-[2rem] font-bold font-['Lato'] leading-normal">
-                Bem-vindo de volta ao Educado
-            </h1>
-        
+        <h1 className="text-[#383838] text-3xl font-bold font-['Lato'] leading-normal self-stretch ">
+          Bem-vindo de volta ao Educado! {/*Welcome back to Educado!*/}
+        </h1>
+
         { /*Submit form, i.e. fields to write email and password*/ }
         <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col space-y-2">
 
           {/* Email field */}
-          <label className="stretch flex flex-start text-neutral-700 text-x font-normal gap-[4] font-['Montserrat'] mt-6" htmlFor="usernameField">
-            Email <span className="text-red-500 text-xs font-normal font-montserrat">*</span>
-          </label>
-          <input
-            {...register("email", { required: true })}
-            className="auth-form-field w-[38rem] h-[3rem] rounded border flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent"
-            placeholder="user@email.com"
-            type="email"/>
-
+          <div className="relative">
+            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="usernameField">
+              Email
+              <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+            </label>
+            <input onInput={AreFieldsFilled} id="inputloginEmail"
+              {...register("email", { required: true })}
+              className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="user@email.com"
+              type="email"/>
+          </div>
+          
           {/* Password field */}
           <div className="relative">
-          <label className="stretch flex flex-start text-neutral-700 text-x font-normal gap-[4] font-['Montserrat'] mt-6" htmlFor="passwordField">
-            Senha <span className="text-red-500 text-xs font-normal font-montserrat">*</span>
-          </label>
-          <input
-            {...register("password", { required: true })}
-            className="auth-form-field w-[38rem] h-[3rem] rounded border flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-cyan-300 focus:border-transparent"
-            placeholder="**********"
-            type={passwordVisible ? "text" : "password"}/>
+            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
+              Senha {/*Password*/}
+              <span className= "text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+            </label>
+            <input onInput={AreFieldsFilled} id="inputloginPass"
+              {...register("password", { required: true })}
+              className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="**********"
+              type={passwordVisible ? "text" : "password"}/>
 
-          {/* Hide and show password button */}
-          <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility}>
-              <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={0.9} color="gray" />
-          </button>
+            {/* Hide and show password button */}
+            <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility}>
+                <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+            </button>
           </div>
           
           { /*Forgot password button*/ }
-          <div className="self-stretch flex flex-col items-end text-right gap-3 mt-1">
-            <span className="text-neutral-700 text-base font-normal font-Montserrat"></span>{" "}
-            <Link to="/forgotpassword" className="text-neutral-700 text-base font-normal font-Montserrat underline hover:text-blue-500">Esqueceu sua senha?</Link>
+          <div className=" flex flex-col items-end text-right gap-3">
+            <span className="text-neutral-700 text-base font-normal font-['Montserrat']"></span>{" "}
+            <Link to="/forgotpassword" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
           </div>
-          <span className="h-5" /> {/* spacing */}  
+          
+          <span className="h-12" /> {/* spacing */}  
           
           { /*Enter button*/ }
-          <button type="submit" className="py-4 rounded-lg bg-cyan-300 text-white opacity-100 transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
-            >Entrar
+          <button type="submit" id="submitloginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"disabled>
+            Entrar {/*Enter*/}
           </button>
-        
-          <span className="h-5" /> {/* spacing */}
-        
 
-        { /*Link to Signup page*/ }
-        <div className="flex justify-center self-stretch mt-[1rem]"> 
-          <span className= "text-gray-400 text-base font-normal font-Montserrat">Ainda não tem conta? </span> 
-          <Link to="/signup" className="text-neutral-700 text-base font-normal font-Montserrat underline hover:text-blue-500 gap-6">Cadastre-se agora</Link> 
-        </div>
-      </form>
+          <span className="h-4" /> {/* spacing */}
+
+          { /*Link to Signup page*/ }
+          <div className="flex justify-center"> 
+            <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
+            <Link to="/signup" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
-
-</body>
 </main>
 )};
+
+const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
+const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
+
+
+
 
 export default Login
