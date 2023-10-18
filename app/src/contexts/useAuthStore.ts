@@ -2,7 +2,7 @@ import create from 'zustand'
 import axios from 'axios'
 import jwtHelpers from '../helpers/jwt.helpers';
 
-const REFRESH_TOKEN_URL = import.meta.env.VITE_BACKEND_URL + "/auth/refresh/jwt";
+import { REFRESH_TOKEN_URL } from '../helpers/environment';
 
 interface AuthState {
     token: string | null | undefined,

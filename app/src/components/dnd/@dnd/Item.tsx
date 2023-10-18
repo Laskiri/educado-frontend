@@ -3,7 +3,7 @@ import { forwardRef } from 'react';
 // icons
 import { ChevronUpDownIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 
-export const Item = forwardRef(({ id, ...props }: { id: any }, ref) => {
+export const Item = forwardRef(({ id, ...props }: { id: any }, ref:React.ForwardedRef<null>) => {
   return (
     <div {...props} ref={ref} className="bg-white w-full flex justify-between items-center border rounded p-2">
       <div className='flex space-x-2'>

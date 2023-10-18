@@ -2,7 +2,8 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
 
 // static
-import Logo from "../assets/ecs-logo.png"
+import LogoBlack from "../assets/educado-logo-black.svg"
+import LogoWhite from "../assets/educado-logo-white.svg"
 
 // icons
 import {
@@ -20,7 +21,7 @@ export const Navbar = () => {
     ]
 
     return (
-        <div className="navbar bg-base-100 border-b">
+        <div className="navbar bg-base-100 border-b dark:text-white">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -41,7 +42,8 @@ export const Navbar = () => {
                 </div>
 
                 <Link to="/" className="flex flex-shrink-0 items-center space-x-3 normal-case text-xl" >
-                    <img src={Logo} alt="ecs-logo" className='h-6' /><p className='font-semibold font-sans'>Educado Studio</p>
+                    <img src={LogoBlack} alt="ecs-logo" className='h-6 dark:hidden'/>
+                    <img src={LogoWhite} alt="ecs-logo" className='h-6 light:hidden'/>
                 </Link>
             </div>
 

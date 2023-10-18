@@ -81,9 +81,8 @@ const CourseEdit = () => {
             }
         }
 
-        console.log(changes);
-
-        CourseServices.updateCourseDetail(changes, id, token)
+				// TODO: Reinstate token
+        CourseServices.updateCourseDetail(changes, id/*, token*/)
             .then(res => toast.success('Updated course'))
             .catch(err => toast.error(err));
     }

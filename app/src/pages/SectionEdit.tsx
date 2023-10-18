@@ -40,8 +40,8 @@ const SectionEdit = () => {
     );
 
     // Create Form Hooks
-    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm();
-    const { register: registerExercise, handleSubmit: handleExerciseAdd, formState: { errors: exerciseErrors } } = useForm();
+    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
+    const { register: registerExercise, handleSubmit: handleExerciseAdd, formState: { errors: exerciseErrors } } = useForm<Exercise>();
 
     // Submit Handlers for function
     const onExerciseAdd: SubmitHandler<Exercise> = data => addExercise(data);
@@ -58,7 +58,8 @@ const SectionEdit = () => {
     // SubmitHandler: Save section update
     const saveSection = async (data: Section) => {
         const toSave = { ...sectionData, ...data };
-        const response = await SectionServices.saveSection(toSave, sid, token);
+        // TODO: Reinstate token
+        const response = await SectionServices.saveSection(toSave, sid/*, token*/);
         const status = response.status
 
         if (status >= 200 && status <= 299) {
