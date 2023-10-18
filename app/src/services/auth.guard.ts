@@ -17,6 +17,7 @@ export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   React.useEffect(() => {
     navigate("/")
   }, []);
+  return null;
 }
 };
 
@@ -31,6 +32,7 @@ export function NonProtectedRoute ({ children }: { children: JSX.Element }) {
   React.useEffect(() => {
     navigate("/profile")
   }, []);
+  return null;
 }
 
 }
