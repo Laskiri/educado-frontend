@@ -7,7 +7,6 @@ import { boolean } from "yup";
 export interface ContentCreatorApplication {
   name: String;
   email: String;
-  password: String;
 }
 
 
