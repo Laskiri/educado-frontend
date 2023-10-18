@@ -112,7 +112,7 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
                     <h1 className='text-md font-medium'>Content video not uploaded</h1>
                 }
 
-                <DropZoneComponent update={setMainContentFile} storageKey={`${exercise.id}/mainContent`} />
+                <DropZoneComponent updateFile={setMainContentFile} storageKey={`${exercise.id}/mainContent`} />
             </div>
 
             {/* divider */}
@@ -129,7 +129,7 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
                     </div> :
                     <h1 className='text-md font-medium'>Feedback video (on wrong answer) not uploaded</h1>
                 }
-                <DropZoneComponent update={setonWrongFeedbackFile} storageKey={`${exercise.id}/feedbackContent`} />
+                <DropZoneComponent updateFile={setonWrongFeedbackFile} storageKey={`${exercise.id}/feedbackContent`} />
             </div>
 
             {/* Answers. Answers sometimes doesn't get loaded hence the conditional rendering ... */}
