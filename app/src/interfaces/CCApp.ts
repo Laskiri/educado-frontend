@@ -3,7 +3,8 @@ export declare module CCApp {
   export interface Datum {
     approved: boolean;
     id: string;
-    name: string;
+    firstName: string;
+    lastName: string;
     email: string;
     password: string;
     createdAt: Date;
