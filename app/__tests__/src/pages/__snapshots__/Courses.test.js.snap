@@ -99,16 +99,11 @@ exports[`courses page does not show empty state when at least one course is foun
             href="/"
             onClick={[Function]}
           >
-            <img
-              alt="ecs-logo"
-              className="h-6 dark:hidden"
-              src=""
-            />
-            <img
-              alt="ecs-logo"
-              className="h-6 light:hidden"
-              src=""
-            />
+            <p
+              className="font-semibold font-sans"
+            >
+              Educado Studio
+            </p>
           </a>
         </div>
         <div
@@ -223,6 +218,7 @@ exports[`courses page does not show empty state when at least one course is foun
                 <li>
                   <a
                     className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white"
+                    href="/login"
                     onClick={[Function]}
                   >
                     Sign out
@@ -649,16 +645,11 @@ exports[`courses page shows empty state when no courses are found 1`] = `
             href="/"
             onClick={[Function]}
           >
-            <img
-              alt="ecs-logo"
-              className="h-6 dark:hidden"
-              src=""
-            />
-            <img
-              alt="ecs-logo"
-              className="h-6 light:hidden"
-              src=""
-            />
+            <p
+              className="font-semibold font-sans"
+            >
+              Educado Studio
+            </p>
           </a>
         </div>
         <div
@@ -773,6 +764,7 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                 <li>
                   <a
                     className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white"
+                    href="/login"
                     onClick={[Function]}
                   >
                     Sign out

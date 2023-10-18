@@ -28,7 +28,7 @@ import noCoursesImage from '../assets/no-courses.png';
 const Courses = () => {
   // States and Hooks
   const navigate = useNavigate();
-  const token = localStorage.getItem("token")
+  const token = useToken();
 
   // Fetch all courses
 
