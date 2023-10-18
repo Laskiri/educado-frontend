@@ -9,8 +9,8 @@ module.exports = {
 
       animation: {
         'bounce-short': 'bounce 1s ease-in-out 1.5',
-      }
-    },
+      },
+    
 
       colors: {
         primary: '#5ECCE9',
@@ -40,6 +40,7 @@ module.exports = {
         slidePopIn: 'slidePopIn 350ms cubic-bezier(0.57, 0.22, 0.24, 1.18) forwards'
       }
     },
+  },
   plugins: [
     require('@tailwindcss/forms'),
     require("daisyui")
