@@ -8,8 +8,8 @@ export interface CourseInterface {
   title: string;
   category: string;
   level: string;
-  time: number;
   description: string;
+  estimatedHours: number;
 }
 
 /**
@@ -17,16 +17,33 @@ export interface CourseInterface {
  */
 
 // Create a new course
-const createCourse = async ({ title, category, level, time, description }: CourseInterface, token: string) => {
+const createCourse = async ({ title, category, level, estimatedHours, description }: CourseInterface, token: string) => {
+  console.log("Creating course with title: " + title);
   return await axios.post(
     `${BACKEND_URL}/api/courses`,
     {
       title: title,
       description: description,
-    }/*,
-    { headers: { Authorization: `Bearer ${token}` } }*/
+      category: category,
+      level: level,
+      estimatedHours: estimatedHours,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 };
+
+// Create a new section for a course FIXME: should this be in section.services ??
+const updateCoverImage = async ( id: any, token: string) => {
+ 
+  return await axios.post(
+    `${BACKEND_URL}/api/course/update/coverImage/${id}`,
+      
+    { 
+      headers: { Authorization: `Bearer ${token}` }
+      
+    }
+  ).then(res => res.data);
+}
 
 // Get all courses
 const getAllCourses = (url: string/*, token: string*/) => {
@@ -72,13 +89,25 @@ const createSection = async (data: any, id: any, token: string) => {
   );
 }
 
+
+const deleteCourse = async (id: any, token: string) => {
+  console.log("Deleted course with id: " + id)
+  return await axios.delete(
+      `${BACKEND_URL}/api/courses/delete/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+  );
+  
+}
+
 const CourseServices = Object.freeze({
   createCourse,
   getAllCourses,
   getCourseDetail,
   getCourseCategories,
   updateCourseDetail,
-  createSection
+  createSection,
+  updateCoverImage,
+  deleteCourse
 });
 
 export default CourseServices;

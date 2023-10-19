@@ -10,6 +10,8 @@ import useToken from '../hooks/useToken';
 // Services
 import SectionServices from '../services/section.services';
 import ExerciseServices from '../services/exercise.services';
+import { CreateLecture } from '../components/CreateLecturePopUp';
+import { CreateExercise } from '../components/Exercise/CreateExercisePopUp';
 
 // Components
 import Loading from './Loading';
@@ -23,10 +25,27 @@ import { Exercise } from '../interfaces/Exercise'
 // Icons
 import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL + "api";
 
+// Backend URL from .env file (automatically injected) 
+import { BACKEND_URL } from "../helpers/environment";
+
+type Inputs = {
+    title: string,
+    description: string,
+};
+
+type SectionPartial = {
+    title: string;
+    description: string;
+};
+  
+/**
+ * SectionEdit component
+ *
+ * @returns JSX.Element
+ */
 const SectionEdit = () => {
-    const { cid, sid } = useParams();
+    const { sid } = useParams();
     const token = useToken();
 
     // Component state
@@ -35,52 +54,69 @@ const SectionEdit = () => {
 
     // Fetch section details
     const { data: sectionData, error: sectionError } = useSWR(
-        token ? [`${BACKEND_URL}/sections/${sid}`, token] : null,
+        token ? [`${BACKEND_URL}/api/sections/${sid}`, token] : null,
         SectionServices.getSectionDetail
     );
 
+
+    // Fetch the exercises data from the server.
+    /*
+    const { data: exerciseData, error: exerciseError } = useSWR(
+        token ? [`${BACKEND_URL}/exercises/getall/${sid}`, token] : null,
+        ExerciseServices.getExerciseDetail
+    );*/
+
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
-    const { register: registerExercise, handleSubmit: handleExerciseAdd, formState: { errors: exerciseErrors } } = useForm<Exercise>();
-
-    // Submit Handlers for function
-    const onExerciseAdd: SubmitHandler<Exercise> = data => addExercise(data);
-    const onSectionSave: SubmitHandler<Section> = data => saveSection(data);
-
-    // SubmitHandler: Add new exercise to section
-    const addExercise = async (data: Exercise) => {
-        const response = await ExerciseServices.addExercise(data, token, sid)
-        const addedExercise = response.data
-        sectionData.exercises.push(addedExercise)
-        setExercises(sectionData.exercises)
+  
+    
+    /**
+     * SubmitHandler: update section
+     * 
+     * @param data  The data to be updated
+    */
+   const onSubmit: SubmitHandler<Inputs> = (data) => {
+       const changes: SectionPartial = {
+           title: data.title,
+           description: data.description
+        }
+        
+        SectionServices.saveSection(changes, sid/*, token*/)
+        .then(res => toast.success('Updated section'))
+        .catch(err => toast.error(err));
     }
-
-    // SubmitHandler: Save section update
-    const saveSection = async (data: Section) => {
-        const toSave = { ...sectionData, ...data };
-        // TODO: Reinstate token
-        const response = await SectionServices.saveSection(toSave, sid/*, token*/);
+    
+    /**
+     * Delete section and redirect to course edit page
+     * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
+     * 
+     * @param sid The section id
+     * @param token The user token
+     *//*
+    const deleteSection = async () => {
+        const response = await SectionServices.deleteSection(sid, token);
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            toast.success("Section saved")
-            setSection(response.data);
+            window.location.href = `/courses/edit/${cid}`;
+            toast.success("Section deleted")
         } else if (status >= 400 && status <= 599) {
-            toast.error(`(${status}, ${response.statusText}) while attempting to save section`)
+            toast.error(`(${status}, ${response.statusText}) while attempting to delete section`)
         }
-    }
-
+    }*/
+    
     // Render onError and onLoading
     if (sectionError) return <p>"An error has occurred."</p>;
-    if (!sectionData) return <Loading/>;
+    if (!sectionData /*|| !exerciseData*/) return <Loading/>;
 
+    const cid =  sectionData.parentCourse;
     return (
         <Layout meta='Section edit page'>
             <div className="w-full">
                 {/** Course navigation */}
                 <div className="navbar bg-base-100">
                     <div className='flex-1'>
-                        <Link to={`/courses/edit/${cid}`} className="btn btn-square btn-ghost normal-case text-xl"><ArrowLeftIcon width={24} /></Link>
+                        {<Link to={`/courses/edit/${cid}`} className="btn btn-square btn-ghost normal-case text-xl"><ArrowLeftIcon width={24} /></Link>}
                         <a className="normal-case text-xl ml-4">{section?.parentCourse || "back to course edit"}</a>
                     </div>
                 </div>
@@ -89,76 +125,67 @@ const SectionEdit = () => {
                 <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6'>
                     {/** Section update area */}
                     <form
-                        onSubmit={handleSectionUpdate(onSectionSave)}
+                        onSubmit={handleSectionUpdate(onSubmit)}
                         className="flex flex-col space-y-6 divide"
                     >
                         {/** Section Title Field */}
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor='title'>Title</label>
+                            <label htmlFor='title'>Título</label>{/**Title */}
                             <input type="text" defaultValue={section?.title || sectionData?.title} placeholder={sectionData?.title}
                                 className="form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("title", { required: true })}
                             />
-                            {sectionErrors.title && <span>This field is required</span>}
+                            {sectionErrors.title && <span>Este campo é obrigatório!</span>}{/** This field is required */}
                         </div>
-
+ 
                         {/** Section Description Field */}
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor='description'>Description</label>
+                            <label htmlFor='description'>Descrição</label>{/** Description */}
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("description", { required: true })}
                             />
-                            {sectionErrors.description && <span>This field is required</span>}
+                            {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
                         </div>
-
-                        <button type="submit" className='std-button ml-auto'>Update Section</button>
+                        <div className="flex items-left w-full mt-8">
+                            {/** Section save and delete button */}
+                            {/*<button type="button" onClick={deleteSection} className='left-0 std-button bg-red-700 hover:bg-red-800' >Excluir</button> {/** Delete*/}
+                            <button type="submit" className='std-button ml-auto'>Atualizar</button> {/** Save*/}
+                        </div>
                     </form>
 
                     <div className="divider"></div>
 
-                    {/** Exercise area */}
+                    {/** New lecture area */}
+                    <div className="navbar bg-none p-6">
+                        <div className="flex-1">   
+                            {/** Create new lecture */}
+                            <CreateLecture />
+                        </div>
+                    </div>
+
+                    <div className="divider"></div>
+
+                    {/** Exercise list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
-                        <h1 className='text-xl font-medium'>Exercises</h1>
+                        <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : sectionData.exercises} />
                     </div>
 
                     {/** New exercise area */}
                     <div className="flex flex-col w-full mb-4">
-                        <span className="text-xl font-medium">Add new exercise</span>
+                        <span className="text-xl font-medium">Adicionar novo exercício.</span> {/** Add new exercise*/}
+                    </div>
+          
+                    <div className="divider"></div>
+          
+                    <div className="navbar bg-none p-6">
+                        <div className="flex-1">
+                            {/** Create new Exercise */}
+                            {<CreateExercise sid={sid} cid={cid}/>}
+                        </div>
                     </div>
 
-                    <form
-                        onSubmit={handleExerciseAdd(onExerciseAdd)}
-                        className="flex flex-col justify-content align-items space-evenly w-full space-y-2"
-                    >
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text">Title</span>
-                            </label>
-                            <input
-                                type="text"
-                                placeholder="Some awesome title"
-                                className="input input-bordered w-full"
-                                {...registerExercise("title", { required: true })}
-                            />
-                            {exerciseErrors.title && <span>This field is required</span>}
-                        </div>
-
-                        <div className="form-control w-full">
-                            <label className="label">
-                                <span className="label-text">Description</span>
-                            </label>
-                            <textarea
-                                className="textarea textarea-bordered h-24"
-                                placeholder="Add a description to your exercise"
-                                {...registerExercise("description", { required: true })}
-                            />
-                        </div>
-
-                        <button type='submit' className="std-button ml-auto">Add Exercise</button>
-
-                    </form>
                 </div>
             </div>
         </Layout>

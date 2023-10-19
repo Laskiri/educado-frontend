@@ -6,6 +6,8 @@ import { CSS } from '@dnd-kit/utilities';
 // icons
 import { ChevronUpDownIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
 
+import { BACKEND_URL } from "../../../helpers/environment";
+
 export function SortableItem(props: any) {
   const location = useLocation();
 
@@ -32,9 +34,9 @@ export function SortableItem(props: any) {
 
       <div className='flex justify-between items-center w-full space-x-2'>
         <p className='font-semibold'>{props.item.title}</p>
-        <Link to={`${location.pathname}/sections/${props.item.id}`} className='btn btn-ghost'>
+        <a href={`/sections/${props.item._id}`} className='btn btn-ghost'>
           <PencilSquareIcon width={20} className="text-blue-500 hover:text-blue-700" />
-          </Link>
+          </a>
       </div>
     </div>
   );

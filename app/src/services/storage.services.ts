@@ -1,35 +1,35 @@
-import AWS from "aws-sdk";
-
-// AWS configuration update
-AWS.config.update({
-    accessKeyId: import.meta.env.VITE_S3_ACCESS,
-    secretAccessKey: import.meta.env.VITE_S3_SECRET
-});
+import axios from "axios";
+const backend_route = import.meta.env.VITE_BACKEND_URL;
 
 
-const myBucket = new AWS.S3({
-    params: { Bucket: import.meta.env.VITE_S3_BUCKET },
-    region: import.meta.env.VITE_S3_REGION
-});
+//import { Storage } from '@google-cloud/storage';
 
-// Props interface
-type FileUploadProps = {
-    file: any,
-    key: string // The key should be a the content plus the exercise id
+
+export interface StorageInterface {
+    uploadFile: (bucketName: string, filePath: any, id: string) => void;
+    downloadFile: (bucketName: string, id: string, filePath: any) => void; 
 }
 
-// Upload image file to storage bucket
-const uploadFile = async ({ file, key }: FileUploadProps) => {
-    await myBucket.putObject({
-        Body: file,
-        Bucket: import.meta.env.VITE_S3_BUCKET,
-        Key: key, 
-        ContentType: file.type
-    }).send();
+// Props interface for uploadFile function
+type FileProps = {
+    filePath: any,
+    id: string,
+}
+/**n
+ * Uploads a file to a bucket
+ * @param {string} filePath - The local path to the file to upload 
+ * @param {string} id - The id the file will be saved as in the bucket. Format: courseId/sectionsId/componentId/index or courseId/index
+ * @returns {void}	
+ */
+async function uploadFile({filePath, id}: FileProps) {
+    axios.postForm(`${backend_route}/upload`, {
+        fileName: id,
+        file: filePath
+    })
+}
 
-    return key;
-};
+const StorageServices = Object.freeze({
+    uploadFile
+});
 
-const StorageService = Object.freeze({ uploadFile });
-
-export default StorageService;
+export default StorageServices;

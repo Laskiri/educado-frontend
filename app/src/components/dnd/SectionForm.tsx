@@ -10,8 +10,7 @@ import CourseServices from '../../services/course.services';
 import { PlusIcon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
 
-// Interfaces
-type Inputs = {
+ type Inputs = {
     title: string
 }
 
@@ -39,8 +38,8 @@ export const SectionForm = () => {
                 </div>
 
                 <div className='flex justify-between w-full space-x-2 ml-2'>
-                    <label htmlFor='title' className='hidden'>Add New</label>
-                    <input type="text" placeholder='Add new'
+                    <label htmlFor='title' className='hidden'>Adicionar novo</label> {/* Add new */}
+                    <input type="text" placeholder='Adicionar novo'
                         className="form-field focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent border-0 w-full shadow-none"
                         {...register("title", { required: true })}
                     />

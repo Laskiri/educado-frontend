@@ -94,12 +94,12 @@ const Courses = () => {
   const error = null; */
 
   // useSWR built in loaders
-  if (error) {
+  /*if (error) {
     navigate("/login");
     return null
-  }
+  }*/
   if (!data) return <Loading />;
-
+  console.log(data);
   return (
     <Layout meta="Course overview" >
       <div className='grid lg:grid-cols-[3fr_1fr] h-full'>
