@@ -7,6 +7,7 @@ import { useForm, type SubmitHandler } from 'react-hook-form'
 
 // Icons
 import { PlusIcon } from "@heroicons/react/24/outline";
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
 // Components
 import { AnswerField } from "../../components/Exercise/AnswerField";
@@ -109,9 +110,9 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
 return (
     <div>
             {/** The button to open create exercise modal */}
-            <label htmlFor="exercise-create" className="btn flex modal-button space-x-2 bg-primary border-primary">
-                    
-                <p className='font-normal' >Criar um novo exercício</p>  {/** Create new Exercise */}
+            <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
+                <PencilSquareIcon className='w-5 h-5' />
+                <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
                 
             </label>
 
@@ -155,7 +156,7 @@ return (
                     <div className="flex justify-between items-center border rounded p-1">
                     <div>
                         <button
-                        className="btn" type="button"
+                        className=" std-button" type="button"
                         onClick={() => {
                             if (answerFieldIndex < 4) {
                             addAnswerField();

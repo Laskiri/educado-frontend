@@ -12,7 +12,7 @@ export const client = axios.create({
 
 
 // Send the info to lecture service
-const addLecture = async ({title, description, content}: Lecture, token: string, sid: string) => {
+const addLecture = async ({title, description}: Lecture, token: string, sid: string) => {
   //console.log(client.post(`/api/lectures/create/${sid}`))
   console.log(import.meta.env.VITE_BACKEND_URL + `/api/lectures/create/${sid}`)
   return await axios.post(
@@ -20,7 +20,7 @@ const addLecture = async ({title, description, content}: Lecture, token: string,
     {
       title: title,
       description: description,
-      content: content
+      
     }/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
   )

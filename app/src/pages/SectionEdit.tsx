@@ -69,6 +69,25 @@ const SectionEdit = () => {
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
   
+ /**
+     * Delete section and redirect to course edit page
+     * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
+     * 
+     * @param sid The section id
+     * @param token The user token
+     */
+ const deleteSection = async () => {
+    const response = await SectionServices.deleteSection(sid, token);
+    const status = response.status
+
+    if (status >= 200 && status <= 299) {
+        window.location.href = `/courses/edit/${cid}`;
+        toast.success("Section deleted")
+    } else if (status >= 400 && status <= 599) {
+        toast.error(`(${status}, ${response.statusText}) while attempting to delete section`)
+    }
+}
+
     
     /**
      * SubmitHandler: update section
@@ -82,7 +101,7 @@ const SectionEdit = () => {
         }
         
         SectionServices.saveSection(changes, sid/*, token*/)
-        .then(res => toast.success('Updated section'))
+        .then(res => toast.success('Seção atualizada'))
         .catch(err => toast.error(err));
     }
     
@@ -117,7 +136,7 @@ const SectionEdit = () => {
                 <div className="navbar bg-base-100">
                     <div className='flex-1'>
                         {<Link to={`/courses/edit/${cid}`} className="btn btn-square btn-ghost normal-case text-xl"><ArrowLeftIcon width={24} /></Link>}
-                        <a className="normal-case text-xl ml-4">{section?.parentCourse || "back to course edit"}</a>
+                        <a className="normal-case text-xl ml-4">{section?.parentCourse || "Voltar à edição do curso"}</a>
                     </div>
                 </div>
 
@@ -149,19 +168,23 @@ const SectionEdit = () => {
                         </div>
                         <div className="flex items-left w-full mt-8">
                             {/** Section save and delete button */}
-                            {/*<button type="button" onClick={deleteSection} className='left-0 std-button bg-red-700 hover:bg-red-800' >Excluir</button> {/** Delete*/}
-                            <button type="submit" className='std-button ml-auto'>Atualizar</button> {/** Save*/}
+                            <button type="button" onClick={deleteSection} className='left-0 std-button bg-warning hover:bg-red-800' >Excluir</button> {/** Delete*/}
+                            <button type="submit" className='std-button  ml-auto'>Atualizar</button> {/** Save*/}
                         </div>
                     </form>
 
                     <div className="divider"></div>
 
+                     {/** Exercise list area */}
+                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
+                        <h1 className='text-xl font-medium'>Palestras</h1> {/** Exercises*/}
+                    </div>
+
+
                     {/** New lecture area */}
                     <div className="navbar bg-none p-6">
-                        <div className="flex-1">   
-                            {/** Create new lecture */}
-                            <CreateLecture />
-                        </div>
+                         <CreateLecture />
+                        
                     </div>
 
                     <div className="divider"></div>
@@ -172,12 +195,6 @@ const SectionEdit = () => {
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : sectionData.exercises} />
                     </div>
 
-                    {/** New exercise area */}
-                    <div className="flex flex-col w-full mb-4">
-                        <span className="text-xl font-medium">Adicionar novo exercício.</span> {/** Add new exercise*/}
-                    </div>
-          
-                    <div className="divider"></div>
           
                     <div className="navbar bg-none p-6">
                         <div className="flex-1">

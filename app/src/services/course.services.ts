@@ -46,8 +46,8 @@ const updateCoverImage = async ( id: any, token: string) => {
 }
 
 // Get all courses
-const getAllCourses = (url: string/*, token: string*/) => {
-  return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getAllCourses = async (url: string/*, token: string*/) => {
+  return await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
@@ -59,8 +59,8 @@ const getAllCourses = (url: string/*, token: string*/) => {
 };
 
 // Get course detail
-const getCourseDetail = (url: string/*, token: string*/) => {
-  return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseDetail = async (url: string/*, token: string*/) => {
+  return await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
     .then((res) => res.data);
 };
 
@@ -71,9 +71,9 @@ const getCourseCategories = (url: string/*, token: string*/) => {
 }
 
 // Updating a specific course
-const updateCourseDetail = (data: any, id: any/*, token: string*/) => {
+const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
   console.log(`${BACKEND_URL}api/courses/update/${id}`)
-  return axios.post(
+  return await axios.post(
     `${BACKEND_URL}/api/courses/update/${id}`, // TODO: change backend url to not include final /
     data/*,
     { headers: { Authorization: `Bearer ${token}` } }*/

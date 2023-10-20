@@ -29,8 +29,7 @@ import LectureService from '../services/lecture.services';
 type Inputs = {
     title: string,
     description: string,
-    file: any
-};
+}
 
 
 /**
@@ -41,13 +40,14 @@ type Inputs = {
  */
 export const CreateLecture = () => {
     const [isLoading, setIsLoading] = useState(false);
+    const [lectureContent, setLectureContent] = useState();
     const token = "dummyToken";
     //const token = useToken();
     const navigate = useNavigate();
     const { mutate } = useSWRConfig();
-    const cid = window.location.pathname.split("/")[3];
-    const sid = window.location.pathname.split("/")[5];
-
+    
+    const sid = window.location.pathname.split("/")[2];
+   
     // use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
@@ -62,31 +62,27 @@ export const CreateLecture = () => {
         LectureService.addLecture({
             title: data.title,
             description: data.description,
-            content: data.file
         }, token, sid)
-            .then(res =>{ console.log(res); navigate(`/courses/edit/${cid}/sections/edit/${sid}/lectures/edit/${res.data._id}`)}) 
+            .then(res =>{ console.log(res); navigate(`/sections/${sid}`)}) 
             .catch(err => console.log(err))
             .finally(() => { /*mutate(``); //Don't currently do anything*/  });
     };
     return (
         <>
             {/* The button to open create lecture modal */}
-            <label htmlFor="lecture-create" className="btn flex modal-button space-x-2 bg-primary border-primary">
+            <label htmlFor="lecture-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
                 <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >create new lecture</p>
+                <p className='font-normal' >Criar nova palestra</p>
             </label>
             
-            {/* Put this part before </body> tag */} 
-            {/**THIS IS COMMENTED OUT FOR NOW, WILL BE FIXED NEXT SPRINT
-             * <input type="checkbox" id="lecture-create" className="modal-toggle" />
-            {
-                onclick = function () {StorageServices.uploadFile({bucketName: "educado-bucket", id: "testFoto", filePath: "c:/Users/perni/Downloads/settings_icon.png"});}
-            }
+            {/* Put this part before </body> tag */}
+            <input type="checkbox" id="lecture-create" className="modal-toggle" />
+           
             {/*Text shown in the top of create lecture*/}
             <div className="modal" id="lecture-create-modal">
                 <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
-                    <h3 className="font-bold text-lg">Create your new lecture</h3>
-                    <p className="py-4">Fill out the form and start your new lecture!</p>
+                    <h3 className="font-bold text-lg">Crie sua nova palestra</h3> {/*Create your new lecture!*/}
+                    <p className="py-4">Preencha o formulário e inicie sua nova palestra!</p> {/*Fill out the form and start your new lecture!*/}
                    
                     {/*Field to input the title of the new lecture*/}
                     <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -115,8 +111,8 @@ export const CreateLecture = () => {
 
                         {/*One day this will be file*/}
                         <div className="flex flex-col space-y-2 text-left">    
-                            <label htmlFor='cover-image'>Input file: video or image</label>
-                                    <Dropzone></Dropzone>
+                            <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
+                                    <Dropzone callBack={setLectureContent}></Dropzone>
                                {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
                             </div>
 

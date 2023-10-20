@@ -79,9 +79,9 @@ export const CreateCourseModal = () => {
 
         <>
             {/* The button to open modal */}
-            <label htmlFor="course-create" className="btn flex modal-button  space-x-2">
+            <label htmlFor="course-create" className="std-button flex modal-button  space-x-2">
                 <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal'>Criar novo curso</p> {/** Create new course */}
+                <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
             </label>
             
             {/* Put this part before </body> tag */}

@@ -69,7 +69,7 @@ const CourseEdit = () => {
 
   // Fetch Course Details
   const { data, error } = useSWR(
-    token ? [`${BACKEND_URL}/api/courses/${id}/sections`, token] : null,
+    token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
     CourseServices.getCourseDetail
   )
 
@@ -173,9 +173,9 @@ const CourseEdit = () => {
                         <a className="normal-case text-xl ml-4">{data.title}</a>
                     </div>                    
                     <div className="flex-none space-x-2">
-                    <button type="button" onClick={deleteCourse} className='left-0 std-button bg-red-700 hover:bg-red-800 ml-4' >Excluir</button> {/*Delete button*/}
+                    <button type="button" onClick={deleteCourse} className='left-0 std-button bg-warning hover:bg-red-800 ml-4' >Excluir</button> {/*Delete button*/}
                         {/* <button onClick={() => toast.success("Course published")} className='btn btn-sm bg-blue-500 text-white border-0'>Unpublish</button> */}
-                        <button type="submit" className='std-button bg-blue-700 hover:bg-blue-800 text-white border-0'>Atualizar</button>
+                        <button type="submit" className='std-button  text-white border-0'>Atualizar</button>
                        
                     </div>
                     
@@ -258,7 +258,7 @@ const CourseEdit = () => {
                                         <div className='p-0 rounded-b-none rounded-t border-gray-300 border-x border-t h-[240px] overflow-hidden'>
                                             {data.coverImg ?
                                                 <img src={data.coverImg} alt={data.title} className="w-full h-max rounded object-cover" /> :
-                                                <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>No Cover Image</div>
+                                                <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>Sem imagem de capa</div>
                                             }
 
                                         </div>
@@ -310,7 +310,7 @@ const CourseEdit = () => {
                     <div className='flex flex-col space-y-2 divide'>
                         <h1 className='text-xl font-medium mb-4'>Seções do curso</h1>
                         <SectionForm />
-                        <SectionList sections={data} />
+                        <SectionList sections={data.sections} />
                     </div>
                 </div>
             </div>
