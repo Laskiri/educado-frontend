@@ -45,8 +45,8 @@ export const CreateCourseModal = () => {
     useEffect(() => {
         // get categories from db
         let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
-        setCategoriesOptions(inputArray.map((category: string, index: number) => (
-            <option value={category} >{categories[inputArray[index]]?.br}</option>
+        setCategoriesOptions(inputArray.map((category: string, key: number) => (
+            <option value={category} >{categories[inputArray[key]]?.br}</option>
         )));
     }, []);
 
