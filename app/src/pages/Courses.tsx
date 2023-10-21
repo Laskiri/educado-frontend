@@ -38,62 +38,8 @@ const Courses = () => {
     token ? ["http://127.0.0.1:8888/api/courses/eml/getall", token] : null,
     CourseServices.getAllCourses
   );
-  /* const data: Course[] = [
-    {
-      _id: "1",
-      title: "Curso de Matemática",
-      description: "Aprenda matemática de forma fácil e divertida",
-      createdAt: new Date("2023-10-10T00:00:00.000Z"),
-      modifiedAt: new Date("2023-10-13T13:01:00.000Z"),
-      coverImg: "",
-      category: "health and workplace safety",
-      sections: [],
-      creators: [1],
-      difficulty: 2,
-      status: 'draft',
-      estimatedHours: 8.5,
-      rating: 4.5,
-      numOfSubscriptions: 157,
-      __v: 0,
-    },
-    {
-      _id: "2",
-      title: "Curso de Finanças",
-      description: "Aprenda finanças de forma fácil e divertida",
-      createdAt: new Date("2023-10-10T00:00:00.000Z"),
-      modifiedAt: new Date("2023-10-11T00:00:00.000Z"),
-      coverImg: "",
-      category: "sewing",
-      sections: [],
-      creators: [1],
-      difficulty: 2,
-      status: 'draft',
-      estimatedHours: 8.5,
-      rating: 2.2,
-      numOfSubscriptions: 157,
-      __v: 0,
-    },
-    {
-      _id: '3',
-      title: "Curso de Matemática you know?",
-      description: "Aprenda matemática de forma fácil e divertida",
-      createdAt: new Date("2023-10-10T00:00:00.000Z"),
-      modifiedAt: new Date("2021-05-15T00:00:00.000Z"),
-      coverImg: "",
-      category: "undefined category",
-      sections: [],
-      creators: [1],
-      difficulty: 2,
-      status: 'published',
-      estimatedHours: 8.5,
-      rating: 3.75,
-      numOfSubscriptions: 157,
-      __v: 0,
-    },
-  ];
-  const error = null; */
-
-  // useSWR built in loaders
+ 
+  // TODO reimplement this once it have been fixed
   /*if (error) {
     navigate("/login");
     return null
