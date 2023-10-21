@@ -59,7 +59,7 @@ return (
             
             { /*Button for routing to the Signup page*/ }
             <Link className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#5ECCE9] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
-              to="/Signup">
+              to="/signup">
               <button
                 type="submit"
                 >Cadastrar

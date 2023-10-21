@@ -14,7 +14,7 @@ import { LoginReponseError } from "../interfaces/LoginReponseError"
 
 // Services
 import AuthServices from '../services/auth.services';
-import useAuthStore from '../contexts/useAuthStore';
+//import useAuthStore from '../contexts/useAuthStore';
 
 // Interface
 type Inputs = {
@@ -27,8 +27,8 @@ const Login = () => {
     const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
     
     // states  (OLD CODE, MIGHT USE LATER)
-    const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
-    const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
+    //const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
+    //const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
 
     // Navigation hook
     const navigate = useNavigate(); 
@@ -200,9 +200,9 @@ return (
   </div>
 </main>
 )};
-
-const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
-const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
+//What are these?
+//const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
+//const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
 
 
 
