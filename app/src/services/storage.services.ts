@@ -1,5 +1,7 @@
 import axios from "axios";
-const backend_route = import.meta.env.VITE_BACKEND_URL;
+
+// Backend URL from .env file (automatically injected) 
+import { BACKEND_URL } from "../helpers/environment";
 
 
 //import { Storage } from '@google-cloud/storage';
@@ -22,7 +24,7 @@ type FileProps = {
  * @returns {void}	
  */
 async function uploadFile({filePath, id}: FileProps) {
-    axios.postForm(`${backend_route}/upload`, {
+    axios.postForm(`${BACKEND_URL}/upload`, {
         fileName: id,
         file: filePath
     })
