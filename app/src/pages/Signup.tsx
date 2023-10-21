@@ -63,6 +63,8 @@ const Signup = () => {
 
   };
 
+  const name = "";
+
   const [isFormValid, setIsFormValid] = useState(false);
   
   // Variables determining whether or not the password is visible
@@ -89,8 +91,8 @@ const Signup = () => {
     setPasswordCheck2(isCheck2Fulfilled);
   };
 
-  // Funktion for validating that all fields are filled in
-  function AreFieldsFilled() {
+  // Function for validating that all fields are filled in
+  function areFieldsFilled() {
     const inputSignupUser = document.getElementById('usernameField') as HTMLInputElement;
     const inputSignupEmail = document.getElementById('emailField') as HTMLInputElement;
     const inputSignupPass = document.getElementById('passwordField') as HTMLInputElement;
@@ -173,12 +175,12 @@ return (
           Nome {/*Name*/}
           <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
       </label>
-      <input onInput={AreFieldsFilled}
+      <input onInput={areFieldsFilled}
         type="text" id="usernameField"
         className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="Nome Sobrenome"
         {...register("name", { required: "digite seu nome completo." })}/>
-        </div>
+      </div>
 
       { /*Email Field*/ }
       <div className="relative">
@@ -186,7 +188,7 @@ return (
         Email 
         <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
       </label>
-      <input onInput={AreFieldsFilled}
+      <input onInput={areFieldsFilled}
         type="email" id="emailField"
         className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="user@email.com"
@@ -199,12 +201,12 @@ return (
         Senha {/*Password*/}
         <span className=" text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
       </label>
-      <input onInput={AreFieldsFilled}
+      <input onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"} id="passwordField"
           className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
           {...register("password", { required: "insira a senha." })} onChange={handlePasswordChange}/>
-      <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility}>
+      <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
         <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
       </button>
       </div>
@@ -234,7 +236,7 @@ return (
         Confirmar Senha {/*Confirm Password*/}
         <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
       </label>
-      <input onInput={AreFieldsFilled}
+      <input onInput={areFieldsFilled}
         type={passwordVisibleRepeat ? "text" : "password"} id="passwordFieldRepeat"
         placeholder="********** "
         className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"

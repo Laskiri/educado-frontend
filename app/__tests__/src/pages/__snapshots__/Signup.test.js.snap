@@ -287,6 +287,7 @@ exports[`Signup Component can render signup page without errors 1`] = `
             />
             <button
               className="absolute right-3 bottom-3"
+              id="hidePasswordIcon"
               onClick={[Function]}
               type="button"
             >

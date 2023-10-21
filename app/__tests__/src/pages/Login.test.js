@@ -60,4 +60,35 @@ it("can navigate to the welcome page and the signup pages", async () => {
 
     expect(mockAxios.history.post.length).toBe(1); 
   });
+  it("can disable the submit button of the form is invalid", async () => {
+    let component;
+    await renderer.act(async () => {
+        component = renderer.create(
+        <MemoryRouter>
+            <Login />
+        </MemoryRouter>
+    )});
+
+    const submitButton = component.root.findByProps({id: "submitLoginButton"})
+    expect(submitButton.props.disabled).toBe(true);
+  });
+
+  it("can hide or show password", async () => {
+    let component;
+    await renderer.act(async () => {
+        component = renderer.create(
+        <MemoryRouter>
+            <Login />
+        </MemoryRouter>
+    )});
+    const passwordField = component.root.findByProps({id: "passwordField"});
+    expect(passwordField.props.type).toBe("password");
+
+    const hidePasswordButton = component.root.findByProps({id: "hidePasswordIcon"});
+    await renderer.act(async () => {
+        hidePasswordButton.props.onClick();
+    })
+    expect(passwordField.props.type).toBe("text");
+    
+  });
 });

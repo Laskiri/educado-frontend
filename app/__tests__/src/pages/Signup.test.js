@@ -1,7 +1,7 @@
 import React from "react";
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from "react-router-dom"; 
-import { describe, it, expect } from '@jest/globals';
+import { describe, it, expect, fireEvent } from '@jest/globals';
 import Signup from '../../../src/pages/Signup';
 import axios from 'axios';
 import MockAdapter from'axios-mock-adapter';
@@ -60,5 +60,37 @@ it("can navigate to the welcome page and the login pages", async () => {
     AuthServices.postUserSignup({ formData });
 
     expect(mockAxios.history.post.length).toBe(1); 
+  });
+
+  it("can disable the submit button of the form is invalid", async () => {
+    let component;
+    await renderer.act(async () => {
+        component = renderer.create(
+        <MemoryRouter>
+            <Signup />
+        </MemoryRouter>
+    )});
+
+    const submitButton = component.root.findByProps({id: "submitSignupButton"})
+    expect(submitButton.props.disabled).toBe(true);
+  });
+
+  it("can hide or show password", async () => {
+    let component;
+    await renderer.act(async () => {
+        component = renderer.create(
+        <MemoryRouter>
+            <Signup />
+        </MemoryRouter>
+    )});
+    const passwordField = component.root.findByProps({id: "passwordField"});
+    expect(passwordField.props.type).toBe("password");
+
+    const hidePasswordButton = component.root.findByProps({id: "hidePasswordIcon"});
+    await renderer.act(async () => {
+        hidePasswordButton.props.onClick();
+    })
+    expect(passwordField.props.type).toBe("text");
+    
   });
 });
