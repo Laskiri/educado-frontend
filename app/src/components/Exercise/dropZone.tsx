@@ -28,7 +28,7 @@ interface Props {
     storageKey: string;
 }
 
-function DropZoneComponent({ updateFile, storageKey }: Props) {
+/*function DropZoneComponent({ updateFile, storageKey }: Props) {
     const [file, setFile] = useState<BucketFile | null>(null);
 
     const onDrop = useCallback((acceptedFiles: any) => {
@@ -107,9 +107,9 @@ function DropZoneComponent({ updateFile, storageKey }: Props) {
             </div>
         </div>
         //     {/* <button onClick={() => handleFileUpload(File)}> Upload</button>
-        //  */}
+        //  *//*}
 
     );
 };
 
-export default DropZoneComponent;
+export default DropZoneComponent;*/
