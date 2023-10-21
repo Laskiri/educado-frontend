@@ -47,8 +47,8 @@ function AnswerCards({ update: updateAnswers, initialAnswers }: { update: any, i
     const handleAnswerCardChange = (e: any, index: number) => {
         const { value } = e.target;
 
-        const list = [...answers];
-        list[index].text = value;
+        const list = answers;
+        list[index].text = value; 
 
         setAnswers(list);
 
@@ -72,13 +72,15 @@ function AnswerCards({ update: updateAnswers, initialAnswers }: { update: any, i
                                 </div>
 
                                 <textarea className="textarea textarea-success disabled:bg-white disabled:border-white h-full resize-none"
-                                    placeholder="Texto de resposta" {/* Answer text*/ }
+                                    placeholder="Texto de resposta" 
                                     required={true}
                                     name="answer"
                                     id="answer"
                                     defaultValue={answer.text || ""}
                                     onChange={(e) => handleAnswerCardChange(e, index)}
+                                    
                                 >
+                                    {/*place holder = Answer text*/ }
                                 </textarea>
 
                                 <div className="grid justify-items-center">
