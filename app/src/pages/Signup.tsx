@@ -63,8 +63,6 @@ const Signup = () => {
 
   };
 
-  const name = "";
-
   const [isFormValid, setIsFormValid] = useState(false);
   
   // Variables determining whether or not the password is visible
@@ -98,7 +96,7 @@ const Signup = () => {
     const inputSignupPass = document.getElementById('passwordField') as HTMLInputElement;
     const inputSignupRedoPass = document.getElementById('passwordFieldRepeat') as HTMLInputElement;
     const submitSignupButton = document.getElementById('submitSignupButton') as HTMLButtonElement;
-    
+   
     if(inputSignupUser.value.trim() && inputSignupEmail.value.trim() && inputSignupPass.value.trim() && inputSignupRedoPass.value.trim() !== '') {
       submitSignupButton.removeAttribute('disabled');
       submitSignupButton.classList.remove('opacity-20', 'bg-cyan-500');
@@ -250,7 +248,8 @@ return (
       <span className="h-10" /> {/* spacing */}  
       
         { /*Enter button*/ }
-        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#5ECCE9] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"disabled>
+        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#5ECCE9] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+        disabled>
             Cadastrar {/*Register*/} 
         </button>
 

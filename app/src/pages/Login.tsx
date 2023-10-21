@@ -45,7 +45,7 @@ const Login = () => {
           password: data.password,})
           // Handling of the response from the backend
           .then((res) => {
-              if(res.status == 200){
+              if(res.status == 202){
                   localStorage.setItem("token", res.data.token);
                   navigate("/profile");
                   
@@ -63,18 +63,19 @@ const Login = () => {
     };
     
     
-    function AreFieldsFilled() {
-      const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
-      const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
-      const submitloginButton = document.getElementById('submitloginButton') as HTMLButtonElement;
+    function areFieldsFilled() {
+      const inputloginEmail = document.getElementById('emailField') as HTMLInputElement;
+      const inputloginPass = document.getElementById('passwordField') as HTMLInputElement;
       
+      const submitloginButton = document.getElementById('submitLoginButton') as HTMLButtonElement;
+     
       if(inputloginEmail.value.trim() && inputloginPass.value.trim() !== '') {
         submitloginButton.removeAttribute('disabled');
         submitloginButton.classList.remove('opacity-20', 'bg-cyan-500');
       } 
       else {
-         submitloginButton.setAttribute('disabled', 'true');
-         submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
+        submitloginButton.setAttribute('disabled', 'true');
+        submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
       }
     };
 
@@ -149,11 +150,11 @@ return (
               Email
               <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
             </label>
-            <input onInput={AreFieldsFilled} id="emailField"
-              {...register("email", { required: true })}
+            <input onInput={areFieldsFilled} 
+              type="email" id="emailField"
               className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="user@email.com"
-              type="email"/>
+              {...register("email", { required: true })}/>
           </div>
           
           {/* Password field */}
@@ -162,12 +163,11 @@ return (
               Senha {/*Password*/}
               <span className= "text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
             </label>
-            <input onInput={AreFieldsFilled} id="passwordField"
-              {...register("password", { required: true })}
+            <input onInput={areFieldsFilled} 
+              type={passwordVisible ? "text" : "password"} id="passwordField"
               className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="**********"
-              type={passwordVisible ? "text" : "password"}/>
-
+              {...register("password", { required: true })}/>
             {/* Hide and show password button */}
             <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
                 <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
@@ -183,7 +183,8 @@ return (
           <span className="h-12" /> {/* spacing */}  
           
           { /*Enter button*/ }
-          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"disabled>
+          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+          disabled>
             Entrar {/*Enter*/}
           </button>
 
@@ -200,11 +201,5 @@ return (
   </div>
 </main>
 )};
-//What are these?
-//const inputloginEmail = document.getElementById('inputloginEmail') as HTMLInputElement;
-//const inputloginPass = document.getElementById('inputloginPass') as HTMLInputElement;
-
-
-
 
 export default Login
