@@ -131,10 +131,11 @@ return (
                     </label>
                     <input
                         type="text"
-                        placeholder="Some awesome title"
+                        placeholder="Título"
                         className="input input-bordered w-full"
                         {...registerExercise("title", { required: true })}
                     />
+                    {/**title */}
                     {exerciseErrors.title && <span>Este campo é obrigatório.</span>} {/** This field is required*/}
                     </div>
                     

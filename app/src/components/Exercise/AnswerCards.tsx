@@ -72,7 +72,7 @@ function AnswerCards({ update: updateAnswers, initialAnswers }: { update: any, i
                                 </div>
 
                                 <textarea className="textarea textarea-success disabled:bg-white disabled:border-white h-full resize-none"
-                                    placeholder="Some answer text"
+                                    placeholder="Texto de resposta" {/* Answer text*/ }
                                     required={true}
                                     name="answer"
                                     id="answer"
