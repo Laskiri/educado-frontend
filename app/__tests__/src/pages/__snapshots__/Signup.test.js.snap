@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Signup Component can render without errors 1`] = `
+exports[`Signup Component can render signup page without errors 1`] = `
 <main
   className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%"
 >

@@ -181,7 +181,7 @@ exports[`Welcome Component renders without errors 1`] = `
           </a>
           <a
             className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#5ECCE9] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
-            href="/Signup"
+            href="/signup"
             onClick={[Function]}
           >
             <button
