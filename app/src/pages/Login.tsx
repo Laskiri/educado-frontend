@@ -46,6 +46,7 @@ const Login = () => {
           // Handling of the response from the backend
           .then((res) => {
               if(res.status == 202){
+                console.log(res.data.accessToken)
                   localStorage.setItem("token", res.data.token);
                   navigate("/profile");
                   
