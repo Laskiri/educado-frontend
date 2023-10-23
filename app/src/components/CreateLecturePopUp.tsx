@@ -41,6 +41,7 @@ type Inputs = {
 export const CreateLecture = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [lectureContent, setLectureContent] = useState();
+    //TODO: When tokens are done, Remove dummy token and uncomment useToken
     const token = "dummyToken";
     //const token = useToken();
     const navigate = useNavigate();
