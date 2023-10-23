@@ -13,6 +13,7 @@ export interface Course {
   category:          string;
   coverImg?:         string;
   description:       string;
+  level:             string;
   creators:          number[];
   difficulty:        number;
   status:            string;

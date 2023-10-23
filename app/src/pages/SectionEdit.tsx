@@ -58,7 +58,7 @@ const SectionEdit = () => {
         SectionServices.getSectionDetail
     );
 
-
+    // TODO: Re-add after fixing backend route
     // Fetch the exercises data from the server.
     /*
     const { data: exerciseData, error: exerciseError } = useSWR(
@@ -105,6 +105,7 @@ const SectionEdit = () => {
         .catch(err => toast.error(err));
     }
     
+    // TODO: Re-add after fixing backend delete route
     /**
      * Delete section and redirect to course edit page
      * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page

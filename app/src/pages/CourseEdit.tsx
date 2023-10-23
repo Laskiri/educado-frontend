@@ -39,14 +39,6 @@ interface Inputs {
   published: boolean
 }
 
-/*interface CoursePartial {
-  coverImg?: StorageFile | {}
-  title: string
-  description: string
-  category: string
-  time: number
-}*/
-
 // Hardcoded based on database id
 const OTHER_CATEGORY_ID = '639208a0f467689fde25b5fa';
 
@@ -97,6 +89,7 @@ const CourseEdit = () => {
         estimatedHours: data.estimatedHours
     }
 
+    /** TODO: Reimplement when buckets have been implemented */
     /* if (coverImg) {
             changes.coverImg = {
                 path: `${id}/coverImg`,
@@ -132,7 +125,7 @@ const CourseEdit = () => {
     }
 
     
-  // update cover image function
+  // TODO: update cover image function
   /**
    * Sets the cover image preview and the cover image file
    * Though bucket is not implemented yet, so most of this is commented out
@@ -266,33 +259,6 @@ const CourseEdit = () => {
                                         </input>
                                     </div>
                                 </div>
-
-                                {/** Category Pills */}
-                                {/* <div className="flex flex-col space-y-2">
-                                    <label htmlFor='categories'>Categories</label>
-                                    <div className='flex flex-row space-x-2'> */}
-                                        {/** TODO: Register to Form */}{/*
-                                        <select
-                                            defaultValue={data.category.id}
-                                            className="select select-bordered rounded focus:outline-none w-full"
-                                            {...register("category", { required: true })}
-                                        >
-                                            <option disabled>Pick a category for the course</option>
-                                            {data.category
-                                                .filter((category: any) => category.name !== 'Other')
-                                                .map((category: any, key: number) =>
-                                                <option
-                                                    selected={data.category.id === category.id}
-                                                    value={category.id}
-                                                    key={key}
-                                                >
-                                                    {category.name}
-                                                </option>)
-                                            }
-                                            <option value={OTHER_CATEGORY_ID} key={"other_category"}>Other</option>
-                                        </select>
-                                    </div>
-                                </div> */}
                             </div>
                         </div>
                     </div>

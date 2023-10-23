@@ -18,7 +18,6 @@ export interface CourseInterface {
 
 // Create a new course
 const createCourse = async ({ title, category, level, estimatedHours, description }: CourseInterface, token: string) => {
-  console.log("Creating course with title: " + title);
   return await axios.post(
     `${BACKEND_URL}/api/courses`,
     {
@@ -74,7 +73,7 @@ const getCourseCategories = (url: string/*, token: string*/) => {
 const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
   console.log(`${BACKEND_URL}api/courses/update/${id}`)
   return await axios.post(
-    `${BACKEND_URL}/api/courses/update/${id}`, // TODO: change backend url to not include final /
+    `${BACKEND_URL}/api/courses/update/${id}`,
     data/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
   ).then(res => res.data);
@@ -91,7 +90,6 @@ const createSection = async (data: any, id: any, token: string) => {
 
 
 const deleteCourse = async (id: any, token: string) => {
-  console.log("Deleted course with id: " + id)
   return await axios.delete(
       `${BACKEND_URL}/api/courses/delete/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
