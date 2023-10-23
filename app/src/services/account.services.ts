@@ -2,6 +2,19 @@ import axios from "axios";
 
 import { BACKEND_URL } from "../helpers/environment";
 
+export async function deleteAccount() {
+    const creatorId = localStorage.getItem("id");
+
+    return await axios.delete(
+        `${BACKEND_URL}/profile/delete/${creatorId}`
+    ).then(response => {
+        console.log("Creator deleted successfully: " + response.data)
+    })
+        .catch(error => {
+            console.log("Error deleting cretor: " + error.message)
+        })
+}
+
 const getPublicProfileInfo = (profileId: string, token: string | null | undefined) => {
     return axios.get(
         `${BACKEND_URL}/api/public/profiles/${profileId}`,
