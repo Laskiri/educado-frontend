@@ -72,9 +72,7 @@ const CourseEdit = () => {
     token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
     CourseServices.getCourseDetail
   )
-
-  console.log(data);
-
+  
   // Fetch Categories
   const { data: categories, error: categoriesError } = useSWR(
     token ? [`${BACKEND_URL}/api/categories`, token] : null,

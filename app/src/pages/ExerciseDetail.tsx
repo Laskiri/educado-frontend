@@ -62,7 +62,6 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
         if (mainContentFile) exerciseToSave.content = mainContentFile;
         if (onWrongFeedbackFile) exerciseToSave.onWrongFeedback = onWrongFeedbackFile;
 
-        console.log(exerciseToSave);
 /*
         ExerciseServices.addExercise(exerciseToSave, token)
             .then(() => toast.success(`Successfully saved exercise`))
