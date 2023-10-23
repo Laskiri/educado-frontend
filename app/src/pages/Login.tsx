@@ -6,8 +6,7 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
-import logo from '../assets/logo.png'
-import educado from '../assets/educado.png'
+
 
 // Interfaces
 import { LoginReponseError } from "../interfaces/LoginReponseError"
@@ -92,7 +91,7 @@ return (
   <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
     <div className="navbar-start">
       <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-        <img src={logo} alt="logo" className="w-[24.43px] h-6" /> <img src={educado} alt="educado" className="h-6" />
+        <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src='/educado.svg' alt="educado" className="h-6" />
       </Link>
     </div>
   </div>
