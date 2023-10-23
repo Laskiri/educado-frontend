@@ -27,13 +27,13 @@ exports[`Welcome Component renders without errors 1`] = `
           <img
             alt="logo"
             className="w-[24.43px] h-6"
-            src=""
+            src="/logo.svg"
           />
            
           <img
             alt="educado"
             className="h-6"
-            src=""
+            src="/educado.svg"
           />
         </a>
       </div>
