@@ -72,15 +72,12 @@ const CourseEdit = () => {
     token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
     CourseServices.getCourseDetail
   )
-  
+
   // Fetch Categories
   const { data: categories, error: categoriesError } = useSWR(
     token ? [`${BACKEND_URL}/api/categories`, token] : null,
     CourseServices.getCourseCategories
   )
-
-  console.dir(data);
-  console.log("the data is" + data);
 
   // React useForm setup
   const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
