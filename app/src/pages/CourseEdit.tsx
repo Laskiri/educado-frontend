@@ -53,7 +53,7 @@ const CourseEdit = () => {
   const token = 'dummyToken'
   // const token = useToken();
   const { id } = useParams() // Get path params
-  const { mutate } = useSWRConfig();
+  //const { mutate } = useSWRConfig();
 
   /**
      * FIX LATER: removed cover image since it has not been implemented to work yet
@@ -101,6 +101,7 @@ const CourseEdit = () => {
             }
         } */
 
+    // Update course details
     CourseServices.updateCourseDetail(changes, id/*, token */)
       .then(res => toast.success('Updated course'))
       .catch(err => toast.error(err))
@@ -118,7 +119,7 @@ const CourseEdit = () => {
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            mutate(`courses`)
+            //mutate(`courses`)
             toast.success("Course deleted")
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
