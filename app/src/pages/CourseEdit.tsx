@@ -171,7 +171,7 @@ const CourseEdit = () => {
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="navbar bg-base-100 ">
                     <div className='flex-1'>
-                        <Link to="/courses" className="btn btn-square btn-ghost normal-case text-xl"><ArrowLeftIcon width={24} /></Link>
+                        <Link to="/courses" className="btn btn-square btn-ghost normal-case text-xl" reloadDocument><ArrowLeftIcon width={24} /></Link>
                         <a className="normal-case text-xl ml-4">{data.title}</a>
                     </div>                    
                     <div className="flex-none space-x-2">
