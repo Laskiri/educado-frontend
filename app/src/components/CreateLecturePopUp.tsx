@@ -66,7 +66,6 @@ export const CreateLecture = () => {
         }, token, sid)
             .then(res =>{ console.log(res); navigate(`/sections/${sid}`)}) 
             .catch(err => console.log(err))
-            .finally(() => { /*mutate(``); //Don't currently do anything*/  });
     };
     return (
         <>
@@ -95,9 +94,6 @@ export const CreateLecture = () => {
                             />
                             {errors.title && <span className='text-warning'>Este campo é obrigatório</span>}
                         </div>
-            
-            
-                        {/*<div className="flex items-center gap-8 w-full mt-8">*/}
                          
 
                         {/*Field to input the description of the lecture*/}
