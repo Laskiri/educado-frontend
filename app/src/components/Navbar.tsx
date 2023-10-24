@@ -31,7 +31,7 @@ export const Navbar = () => {
     ]
 
     return (
-        <div className="navbar bg-base-100 border-b dark:text-white">
+        <div className="navbar bg-base-100 border-b">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -52,9 +52,7 @@ export const Navbar = () => {
                 </div>
 
                 <Link to="/" className="flex flex-shrink-0 items-center space-x-3 normal-case text-xl" >
-
-                    <p className='font-semibold font-sans'>Educado Studio</p>
-
+                    <img src={LogoBlack} alt="ecs-logo" className='h-6'/>
                 </Link>
             </div>
 

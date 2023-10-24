@@ -9,7 +9,7 @@ exports[`courses page does not show empty state when at least one course is foun
       className="flex flex-col flex-grow"
     >
       <div
-        className="navbar bg-base-100 border-b dark:text-white"
+        className="navbar bg-base-100 border-b"
       >
         <div
           className="navbar-start"
@@ -99,11 +99,11 @@ exports[`courses page does not show empty state when at least one course is foun
             href="/"
             onClick={[Function]}
           >
-            <p
-              className="font-semibold font-sans"
-            >
-              Educado Studio
-            </p>
+            <img
+              alt="ecs-logo"
+              className="h-6"
+              src=""
+            />
           </a>
         </div>
         <div
@@ -555,7 +555,7 @@ exports[`courses page shows empty state when no courses are found 1`] = `
       className="flex flex-col flex-grow"
     >
       <div
-        className="navbar bg-base-100 border-b dark:text-white"
+        className="navbar bg-base-100 border-b"
       >
         <div
           className="navbar-start"
@@ -645,11 +645,11 @@ exports[`courses page shows empty state when no courses are found 1`] = `
             href="/"
             onClick={[Function]}
           >
-            <p
-              className="font-semibold font-sans"
-            >
-              Educado Studio
-            </p>
+            <img
+              alt="ecs-logo"
+              className="h-6"
+              src=""
+            />
           </a>
         </div>
         <div

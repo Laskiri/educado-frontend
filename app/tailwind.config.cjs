@@ -45,7 +45,8 @@ module.exports = {
     require('@tailwindcss/forms'),
     require("daisyui")
   ],
+  // TODO: Add educado theme for daisyui?
   daisyui: {
-    themes: true,
-  }
+    themes: ["light"],
+  },
 }
