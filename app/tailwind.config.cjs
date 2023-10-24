@@ -6,12 +6,6 @@ module.exports = {
   ],
   theme: {
     extend: {
-
-      animation: {
-        'bounce-short': 'bounce 1s ease-in-out 1.5',
-      },
-    
-
       colors: {
         primary: '#5ECCE9',
         secondary: '#F1F9FB',
@@ -37,8 +31,9 @@ module.exports = {
         }
       },
       animation: {
-        slidePopIn: 'slidePopIn 350ms cubic-bezier(0.57, 0.22, 0.24, 1.18) forwards'
-      }
+        slidePopIn: 'slidePopIn 350ms cubic-bezier(0.57, 0.22, 0.24, 1.18) forwards',
+        'bounce-short': 'bounce 1s ease-in-out 1.5',
+      },
     },
   },
   plugins: [
