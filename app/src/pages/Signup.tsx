@@ -85,7 +85,7 @@ const Signup = () => {
     const isCheck1Fulfilled = password.length >= 8;
     setPasswordCheck1(isCheck1Fulfilled);
   
-    const isCheck2Fulfilled = /[a-aZ-z]/.test(password);
+    const isCheck2Fulfilled = /.*\p{L}.*$/u.test(password);
     setPasswordCheck2(isCheck2Fulfilled);
   };
 
