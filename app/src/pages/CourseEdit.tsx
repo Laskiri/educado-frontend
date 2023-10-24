@@ -129,7 +129,7 @@ const CourseEdit = () => {
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            toast.success("Course deleted");
+            toast.success("Curso excluído"); {/* Course deleted */}
             window.location.href = "/courses";
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
