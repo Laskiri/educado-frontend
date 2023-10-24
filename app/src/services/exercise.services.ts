@@ -8,7 +8,10 @@ import { BACKEND_URL } from '../helpers/environment';
 /* Bearer is not implemnted in backend, due to content creators not existing yet */
 
 // Send the info to exercise service 
-const addExercise = async (props: any, token: string, sid: any) => {
+const addExercise = async (props: any, token: string, sid: string | undefined) => {
+  if (sid == undefined){
+    throw("Error: addExercise input id is undefined")
+  }
   return await axios.put(
     `${BACKEND_URL}/api/exercises/${sid}`,
     props,
@@ -17,7 +20,10 @@ const addExercise = async (props: any, token: string, sid: any) => {
 }
 
 // Send the info to exercise service
-const updateExercise = async (props: any, token: string, eid: any) => {
+const updateExercise = async (props: any, token: string, eid: string | undefined) => {
+  if (eid == undefined){
+    throw("Error: updateExercise input id is undefined")
+  }
   const response = await axios.patch(
     `${BACKEND_URL}/api/exercises/${eid}`,
     props,

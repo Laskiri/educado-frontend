@@ -25,7 +25,6 @@ import { Exercise } from '../interfaces/Exercise'
 // Icons
 import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
-
 // Backend URL from .env file (automatically injected) 
 import { BACKEND_URL } from "../helpers/environment";
 
@@ -137,7 +136,7 @@ const deleteSection = async () => {
                 {/** Course navigation */}
                 <div className="navbar bg-base-100">
                     <div className='flex-1'>
-                        {<Link to={`/courses/edit/${cid}`} className="btn btn-square btn-ghost normal-case text-xl"><ArrowLeftIcon width={24} /></Link>}
+                        {<Link to={`/courses/edit/${cid}`} className="btn btn-square btn-ghost normal-case text-xl" reloadDocument><ArrowLeftIcon width={24} /></Link>}
                         <a className="normal-case text-xl ml-4">{section?.parentCourse || "Voltar à edição do curso"}</a>
                     </div>
                 </div>
@@ -164,7 +163,7 @@ const deleteSection = async () => {
                             <label htmlFor='description'>Descrição</label>{/** Description */}
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                                {...registerSection("description", { required: true })}
+                                {...registerSection("description", { required: false })}
                             />
                             {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
                         </div>

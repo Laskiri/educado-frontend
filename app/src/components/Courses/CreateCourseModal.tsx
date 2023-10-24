@@ -46,7 +46,7 @@ export const CreateCourseModal = () => {
         // get categories from db
         let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
         setCategoriesOptions(inputArray.map((category: string, key: number) => (
-            <option value={category} >{categories[inputArray[key]]?.br}</option>
+            <option value={category} key={key} >{categories[inputArray[key]]?.br}</option>
         )));
     }, []);
 

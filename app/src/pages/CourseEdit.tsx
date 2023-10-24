@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useParams, useNavigate } from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
+import { useSWRConfig } from 'swr';
 
 
 // Hooks
@@ -30,6 +31,10 @@ import { boolean } from 'yup';
 
 import { BACKEND_URL } from "../helpers/environment";
 
+// Helpers
+import categories from "../helpers/courseCategories";
+
+
 interface Inputs {
   coverImg?: FileList
   title: string
@@ -37,12 +42,7 @@ interface Inputs {
   category: string
   level: string
   estimatedHours: number
-  published: boolean
 }
-
-// Hardcoded based on database id
-const OTHER_CATEGORY_ID = '639208a0f467689fde25b5fa';
-
 
 /**
  * This page is responsible for showing and editing courses to the creator.
@@ -50,17 +50,29 @@ const OTHER_CATEGORY_ID = '639208a0f467689fde25b5fa';
  * @returns HTML Element
  */
 const CourseEdit = () => {
+  
+
   const token = 'dummyToken'
   // const token = useToken();
   const { id } = useParams() // Get path params
-  //const { mutate } = useSWRConfig();
+  const { mutate } = useSWRConfig();
 
   /**
      * FIX LATER: removed cover image since it has not been implemented to work yet
      */
   const [coverImg, setCoverImg] = useState<File | null>()
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
+  const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
 
+  useEffect(() => {
+    // get categories from db
+    let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
+    setCategoriesOptions(inputArray.map((categoryENG: string, key: number) => (
+        <option value={categoryENG} key={key} >{categories[inputArray[key]]?.br}</option>
+    )));
+    
+    }, []);
+ 
   // Fetch Course Details
   const { data, error } = useSWR(
     token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
@@ -68,7 +80,7 @@ const CourseEdit = () => {
   )
 
   // Fetch Categories
-  const { data: categories, error: categoriesError } = useSWR(
+  const { data: categoriesData, error: categoriesError } = useSWR(
     token ? [`${BACKEND_URL}/api/categories`, token] : null,
     CourseServices.getCourseCategories
   )
@@ -87,10 +99,10 @@ const CourseEdit = () => {
         description: data.description,
         category: data.category,
         level: data.level,
-        published: data.published,
         estimatedHours: data.estimatedHours
     }
 
+   
     /** TODO: Reimplement when buckets have been implemented */
     /* if (coverImg) {
             changes.coverImg = {
@@ -119,7 +131,7 @@ const CourseEdit = () => {
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            //mutate(`courses`)
+            mutate(`/courses`)
             toast.success("Course deleted")
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
@@ -200,7 +212,7 @@ const CourseEdit = () => {
                                     {errors.description && <span>Este campo é obrigatório!</span>}
                                 </div>
 
-                                    {/* Field to choose a category from a list of options */}
+                                {/* Field to choose a category from a list of options */}
                                 <div className="flex flex-col space-y-2 text-left">
                                     <label htmlFor='category'>Categoria</label>
                                     <select defaultValue={data.category}
@@ -208,12 +220,9 @@ const CourseEdit = () => {
                                         {...register('category', { required: true })}
                                     >
                                         {/* Hard coded options by PO, should be changed to get from db */}
-                                        <option>Finanças pessoais </option> {/* Personal Finance */}
-                                        <option>Saúde e Segurança no Trabalho </option> {/* Health and Workplace Safety */}
-                                        <option>Costura </option> {/* Sewing */}
-                                        <option>Eletrônica </option> {/* Electronics */}
+                                        {categoriesOptions}
                                     </select>
-                                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}
+                                    {errors.category && <span className='text-warning'>Este campo é obrigatório</span>}
                                 </div>
 
                                 {/* Field to select a level from a list of options */}
@@ -229,7 +238,7 @@ const CourseEdit = () => {
                                         <option>Avançado </option> {/* Advanced */}
 
                                     </select>
-                                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}
+                                    {errors.level && <span className='text-warning'>Este campo é obrigatório</span>}
                                 </div>
 
                                 {/* Field to input the estimated estimatedHours */}
@@ -272,7 +281,7 @@ const CourseEdit = () => {
                     {/** Course Sections area  */}
                     <div className='flex flex-col space-y-2 divide'>
                         <h1 className='text-xl font-medium mb-4'>Seções do curso</h1>
-                        <SectionForm />
+                        <SectionForm/>
                         <SectionList sections={data.sections} />
                     </div>
                 </div>

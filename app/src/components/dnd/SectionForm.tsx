@@ -1,5 +1,7 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { useSWRConfig } from 'swr';
+
 // Hooks 
 import useToken from '../../hooks/useToken';
 
@@ -8,7 +10,7 @@ import SectionServices from '../../services/section.services'
 
 // Icons
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
  type Inputs = {
     title: string
@@ -19,13 +21,18 @@ export const SectionForm = () => {
     const token = "test";
     //const token = useToken();
     const { id } = useParams();
-   // const token = useAuthStore(state => state.token);
+    const navigate = useNavigate();
+    
+
+    //const token = useAuthStore(state => state.token);
 
     // React useForm setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         SectionServices.createSection(data, id, token)
-            .then(res => console.log(res))
+            .then(res => {
+               navigate(`/sections/${res.data._id}`, { replace: true })
+            })
             .catch(err => console.log(err));
     }
 

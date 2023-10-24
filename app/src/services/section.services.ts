@@ -21,7 +21,10 @@ export const getSectionDetail = (sid: string, token: string) => {
 /**
  * Update a section with new data
  */
-export const saveSection = async (data: any, id: any, token: string) => {
+export const saveSection = async (data: any, id: string | undefined, token: string) => {
+    if (id == undefined){
+        throw("Error: saveSection input id is undefined")
+    }
     // Send the info to caller
     return axios.patch(
         `${BACKEND_URL}/api/sections/${id}`,
@@ -39,7 +42,10 @@ export const saveSection = async (data: any, id: any, token: string) => {
  * @param token token of the user, currently ignored
  * @returns respons from the backend post request
  */
-const createSection = async (data: any, id: any, token: string) => {
+const createSection = async (data: any, id: string | undefined, token: string) => {
+    if (id == undefined){
+        throw("Error: createSection input id is undefined")
+    }
     return await axios.put(
         `${BACKEND_URL}/api/sections/${id}`,
         data,
@@ -55,7 +61,10 @@ const createSection = async (data: any, id: any, token: string) => {
  * @param token 
  * @returns 
  */
-const deleteSection = async (id: any, token: string) => {
+const deleteSection = async (id: string | undefined, token: string) => {
+    if (id == undefined){
+        throw("Error: deleteSection input id is undefined")
+    }
     return await axios.delete(
         `${BACKEND_URL}/api/sections/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
