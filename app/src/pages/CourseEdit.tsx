@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react'
-import { Link, useParams, useNavigate } from 'react-router-dom'
+import { Link, useParams} from 'react-router-dom'
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
-import { useSWRConfig } from 'swr';
 
 
 // Hooks
@@ -55,7 +54,6 @@ const CourseEdit = () => {
   const token = 'dummyToken'
   // const token = useToken();
   const { id } = useParams() // Get path params
-  const { mutate } = useSWRConfig();
 
   /**
      * FIX LATER: removed cover image since it has not been implemented to work yet
@@ -131,8 +129,8 @@ const CourseEdit = () => {
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            mutate(`/courses`)
-            toast.success("Course deleted")
+            toast.success("Course deleted");
+            window.location.href = "/courses";
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
         }

@@ -40,7 +40,6 @@ export const CreateCourseModal = () => {
 
     const token = useToken();
     const navigate = useNavigate();
-    const { mutate } = useSWRConfig();
     
     useEffect(() => {
         // get categories from db
