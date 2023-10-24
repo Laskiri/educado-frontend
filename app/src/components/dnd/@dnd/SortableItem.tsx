@@ -18,7 +18,7 @@ export function SortableItem(props: any) {
   
   // Fetch the section data from the server.
   const { data, error } = useSWR(
-    token ? [`http://127.0.0.1:8888/api/sections/${props.item}`, token] : null,
+    token ? [props.item, token] : null,
     SectionServices.getSectionDetail
   );
 

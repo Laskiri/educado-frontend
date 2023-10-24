@@ -18,7 +18,7 @@ export interface CourseInterface {
 
 // Create a new course
 const createCourse = async ({ title, category, level, estimatedHours, description }: CourseInterface, token: string) => {
-  return await axios.post(
+  return await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
       title: title,
@@ -34,8 +34,8 @@ const createCourse = async ({ title, category, level, estimatedHours, descriptio
 // Create a new section for a course FIXME: should this be in section.services ??
 const updateCoverImage = async ( id: any, token: string) => {
  
-  return await axios.post(
-    `${BACKEND_URL}/api/course/update/coverImage/${id}`,
+  return await axios.patch(
+    `${BACKEND_URL}/api/course/coverImage/${id}`,
       
     { 
       headers: { Authorization: `Bearer ${token}` }
@@ -71,32 +71,39 @@ const getCourseCategories = (url: string/*, token: string*/) => {
 
 // Updating a specific course
 const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
-  console.log(`${BACKEND_URL}api/courses/update/${id}`)
-  return await axios.post(
-    `${BACKEND_URL}/api/courses/update/${id}`,
+  return await axios.patch(
+    `${BACKEND_URL}/api/courses/${id}`,
     data/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
   ).then(res => res.data);
 }
 
-// Create a new section for a course FIXME: should this be in section.services ??
+/**  
+ * Create a new section for a course FIXME: should this be in section.services ??
+*/
 const createSection = async (data: any, id: any, token: string) => {
-  return await axios.post(
-    `${BACKEND_URL}/api/sections/create/${id}`,
-    data/*,
-    { headers: { Authorization: `Bearer ${token}` }}*/
+  return await axios.put(
+    `${BACKEND_URL}/api/sections/${id}`,
+    data,
+    { headers: { Authorization: `Bearer ${token}` }}
   );
 }
 
-
+/**
+ * Delete a specific course 
+ * @param id the id of the course that will be deleted
+ * @param token token of the user 
+ * @param returns delete data
+ */
 const deleteCourse = async (id: any, token: string) => {
   return await axios.delete(
-      `${BACKEND_URL}/api/courses/delete/${id}`,
+      `${BACKEND_URL}/api/courses/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
   );
   
 }
 
+// Export all methods
 const CourseServices = Object.freeze({
   createCourse,
   getAllCourses,

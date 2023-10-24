@@ -54,7 +54,7 @@ const SectionEdit = () => {
 
     // Fetch section details
     const { data: sectionData, error: sectionError } = useSWR(
-        token ? [`${BACKEND_URL}/api/sections/${sid}`, token] : null,
+        token ? [sid, token] : null,
         SectionServices.getSectionDetail
     );
 
@@ -69,14 +69,15 @@ const SectionEdit = () => {
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
   
+
  /**
-     * Delete section and redirect to course edit page
-     * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
-     * 
-     * @param sid The section id
-     * @param token The user token
-     */
- const deleteSection = async () => {
+ * Delete section and redirect to course edit page
+ * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
+ * 
+ * @param sid The section id
+ * @param token The user token
+ */
+const deleteSection = async () => {
     const response = await SectionServices.deleteSection(sid, token);
     const status = response.status
 
@@ -100,7 +101,7 @@ const SectionEdit = () => {
            description: data.description
         }
         
-        SectionServices.saveSection(changes, sid/*, token*/)
+        SectionServices.saveSection(changes, sid, token)
         .then(res => toast.success('Seção atualizada'))
         .catch(err => toast.error(err));
     }

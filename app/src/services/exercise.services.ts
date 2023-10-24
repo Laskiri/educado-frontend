@@ -2,14 +2,15 @@ import axios from "axios";
 
 // Interfaces
 import { Exercise } from "../interfaces/Exercise";
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
+import { BACKEND_URL } from '../helpers/environment';
 
 /* Bearer is not implemnted in backend, due to content creators not existing yet */
 
 // Send the info to exercise service 
 const addExercise = async (props: any, token: string, sid: any) => {
-  return await axios.post(
-    `${BACKEND_URL}/api/exercises/create/${sid}`,
+  return await axios.put(
+    `${BACKEND_URL}/api/exercises/${sid}`,
     props,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -17,8 +18,8 @@ const addExercise = async (props: any, token: string, sid: any) => {
 
 // Send the info to exercise service
 const updateExercise = async (props: any, token: string, eid: any) => {
-  const response = await axios.post(
-    `${BACKEND_URL}/api/exercises/update/${eid}`,
+  const response = await axios.patch(
+    `${BACKEND_URL}/api/exercises/${eid}`,
     props,
     { headers: { Authorization: `Bearer ${token}` } }
   );
@@ -33,7 +34,11 @@ const getExerciseDetail = (url: string, token: string) => {
 
 
 
-const ExerciseServices = Object.freeze({ getExerciseDetail, addExercise, updateExercise });
+const ExerciseServices = Object.freeze({
+  getExerciseDetail,
+  addExercise,
+  updateExercise
+});
 
 
 export default ExerciseServices;

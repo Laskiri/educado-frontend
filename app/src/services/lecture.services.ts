@@ -13,8 +13,8 @@ export const client = axios.create({
 
 // Send the info to lecture service
 const addLecture = async ({title, description}: Lecture, token: string, sid: string) => {
-  return await axios.post(
-    `${import.meta.env.VITE_BACKEND_URL}/api/lectures/create/${sid}`,
+  return await axios.put(
+    `${import.meta.env.VITE_BACKEND_URL}/api/lectures/${sid}`,
     {
       title: title,
       description: description,
@@ -22,8 +22,8 @@ const addLecture = async ({title, description}: Lecture, token: string, sid: str
     }/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
   )
-
 };
+
 
 // Send the info to lecture service
 const saveLecture = async (props: any, token: string) => {

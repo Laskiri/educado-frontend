@@ -5,24 +5,28 @@ import { Section } from "../interfaces/CourseDetail";
 
 import { BACKEND_URL } from '../helpers/environment';
 
-export const getSectionDetail = (url: string, token: string) => {
-    return axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+/**
+ * Get section information 
+ * @param sid section id of the section you want details about
+ * @param token token of the user
+ * @returns response data from the backend get request
+ */
+
+export const getSectionDetail = (sid: string, token: string) => {
+    return axios.get(`${BACKEND_URL}/api/sections/${sid}`, { headers: { Authorization: `Bearer ${token}` } })
         .then(res => res.data)
 }
 
-// boilerplate FIXME: should this be en Exercise.services ??
-export const getExerciseDetail = (url: string, token: string) => {
-    return axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-        .then(res => res.data)
-}
 
-export const saveSection = async (data: any, id: any/*, token: string*/) => {
+/**
+ * Update a section with new data
+ */
+export const saveSection = async (data: any, id: any, token: string) => {
     // Send the info to caller
-    console.log(`${BACKEND_URL}/api/sections/update/${id}`);
-    return axios.post(
-        `${BACKEND_URL}/api/sections/update/${id}`,
-        data/*,
-    { headers: { Authorization: `Bearer ${token}` } }*/
+    return axios.patch(
+        `${BACKEND_URL}/api/sections/${id}`,
+        data,
+    { headers: { Authorization: `Bearer ${token}` } }
     );
 };
 
@@ -36,17 +40,25 @@ export const saveSection = async (data: any, id: any/*, token: string*/) => {
  * @returns respons from the backend post request
  */
 const createSection = async (data: any, id: any, token: string) => {
-    return await axios.post(
-      `${BACKEND_URL}/api/sections/create/${id}`,
+    return await axios.put(
+      `${BACKEND_URL}/api/sections/${id}`,
       data,
       { headers: { Authorization: `Bearer ${token}` } }
     );
 }
 
+
+/**
+ * Delete a section
+ * 
+ * @param id Section ID
+ * @param token 
+ * @returns 
+ */
 const deleteSection = async (id: any, token: string) => {
     console.log("Deleted section with id: " + id)
     return await axios.delete(
-        `${BACKEND_URL}/api/sections/delete/${id}`,
+        `${BACKEND_URL}/api/sections/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
 }
@@ -55,7 +67,6 @@ const deleteSection = async (id: any, token: string) => {
 
 const SectionServices = Object.freeze({
     getSectionDetail,
-    getExerciseDetail,
     saveSection,
     createSection,
     deleteSection

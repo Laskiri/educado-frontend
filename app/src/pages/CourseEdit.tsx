@@ -4,6 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 
+
 // Hooks
 import useToken from '../hooks/useToken'
 
@@ -52,6 +53,7 @@ const CourseEdit = () => {
   const token = 'dummyToken'
   // const token = useToken();
   const { id } = useParams() // Get path params
+  const { mutate } = useSWRConfig();
 
   /**
      * FIX LATER: removed cover image since it has not been implemented to work yet
@@ -111,13 +113,12 @@ const CourseEdit = () => {
      * @param id The course id
      * @param token The user token
      */
-    
      const deleteCourse = async () => {
         const response = await CourseServices.deleteCourse(id, token);
         const status = response.status
 
         if (status >= 200 && status <= 299) {
-            window.location.href = `/courses`;
+            mutate(`courses`)
             toast.success("Course deleted")
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)

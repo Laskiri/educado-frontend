@@ -66,10 +66,10 @@ export const CreateCourseModal = () => {
             .then(res =>{ console.log(res); 
                 StorageServices.uploadFile({id: res.data._id+"/0", filePath: coverImage});
                 CourseServices.updateCoverImage(res.data._id, token); // pass the required arguments
-                navigate(`/Courses/edit/${res.data._id}`)
+                navigate(`/courses/edit/${res.data._id}`);
             }) 
             .catch(err => console.log(err))
-            .finally(() => { mutate("http://127.0.0.1:8888/api/courses"); navigate("/courses") });
+            .finally();
     };
     function returnFunction(coverImage: any){
         setCoverImage(coverImage);
