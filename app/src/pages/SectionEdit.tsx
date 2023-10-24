@@ -57,7 +57,7 @@ const SectionEdit = () => {
         SectionServices.getSectionDetail
     );
 
-    // TODO: Re-add after fixing backend route
+    // TODO: This code is a foundation for fetching exercises, will be implemented next PR.
     // Fetch the exercises data from the server.
     /*
     const { data: exerciseData, error: exerciseError } = useSWR(

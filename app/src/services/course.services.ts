@@ -31,7 +31,9 @@ const createCourse = async ({ title, category, level, estimatedHours, descriptio
   );
 };
 
-// Create a new section for a course FIXME: should this be in section.services ??
+// TODO: Foundation for updating coverimage. Implement next PR. Possibly merge with updateCourseDetail
+// Create a new section for a course
+/* 
 const updateCoverImage = async ( id: any, token: string) => {
  
   return await axios.patch(
@@ -42,7 +44,7 @@ const updateCoverImage = async ( id: any, token: string) => {
       
     }
   ).then(res => res.data);
-}
+}*/
 
 // Get all courses
 const getAllCourses = async ( token: string) => {
@@ -100,7 +102,7 @@ const CourseServices = Object.freeze({
   getCourseDetail,
   getCourseCategories,
   updateCourseDetail,
-  updateCoverImage,
+  /*updateCoverImage,*/
   deleteCourse
 });
 

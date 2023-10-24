@@ -39,7 +39,7 @@ const Courses = () => {
     CourseServices.getAllCourses
   );
  
-  // TODO reimplement this once it have been fixed
+  // TODO reimplement this once login (content creators) have been fixed/implemeted
   /*if (error) {
     navigate("/login");
     return null
