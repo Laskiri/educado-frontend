@@ -41,9 +41,9 @@ export const saveSection = async (data: any, id: any, token: string) => {
  */
 const createSection = async (data: any, id: any, token: string) => {
     return await axios.put(
-      `${BACKEND_URL}/api/sections/${id}`,
-      data,
-      { headers: { Authorization: `Bearer ${token}` } }
+        `${BACKEND_URL}/api/sections/${id}`,
+        data,
+        { headers: { Authorization: `Bearer ${token}` } }
     );
 }
 
@@ -56,14 +56,11 @@ const createSection = async (data: any, id: any, token: string) => {
  * @returns 
  */
 const deleteSection = async (id: any, token: string) => {
-    console.log("Deleted section with id: " + id)
     return await axios.delete(
         `${BACKEND_URL}/api/sections/${id}`,
         { headers: { Authorization: `Bearer ${token}` } }
     );
 }
-
-
 
 const SectionServices = Object.freeze({
     getSectionDetail,

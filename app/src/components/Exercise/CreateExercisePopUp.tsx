@@ -46,7 +46,7 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
     /**
      * Add new answer 
      * @param index index of the answer to be added
-     * @returns 
+     * @returns a specific answer
      */
     function addOrGetAnswer(index: number) {
         if (tempAnswers[index] == undefined) {
@@ -56,6 +56,10 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
     }
     /** 
      * Update answer to match inputted data
+     * @param answerFieldIndex the index which the answer has
+     * @param answer the answer that is updated
+     * @returns void
+
      */ 
     function updateAnswer(answerFieldIndex: number, answer: Answer) {
         tempAnswers[answerFieldIndex] = answer;
@@ -64,7 +68,7 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
 
     /**
      * Add new answer field
-     * 
+     * @returns void
      */
     function addAnswerField() {
         setAnswerFieldIndex(answerFieldIndex + 1);
@@ -77,8 +81,9 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
         />])
     }
 
-
-    // Create Form Hook
+    /**
+     * Create Form Hook
+    */
     const {
         register: registerExercise,
         handleSubmit: handleExerciseAdd,
@@ -90,7 +95,7 @@ export const CreateExercise = ({sid, cid}:Inputs) => {
     /**
      * SubmitHandler: add exercise
      * @param exerciseData  The exercise data to be added
-     * @returns     void
+     * @returns void
      */
     const onExerciseAdd: SubmitHandler<ExercisePartial> = (exerciseData) => {
         const exerciseToAdd: ExercisePartial = {
@@ -116,7 +121,6 @@ return (
                 
             </label>
 
-            {/* Put this part before </body> tag */}
             <input type="checkbox" id="exercise-create" className="modal-toggle" />
             <div className="modal" id="exercise-create-modal">
                 <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">

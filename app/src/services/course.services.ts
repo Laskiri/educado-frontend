@@ -45,8 +45,8 @@ const updateCoverImage = async ( id: any, token: string) => {
 }
 
 // Get all courses
-const getAllCourses = async (url: string/*, token: string*/) => {
-  return await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getAllCourses = async ( token: string) => {
+  return await axios.get('http://127.0.0.1:8888/api/courses/eml/getall', { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
@@ -78,16 +78,6 @@ const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
   ).then(res => res.data);
 }
 
-/**  
- * Create a new section for a course FIXME: should this be in section.services ??
-*/
-const createSection = async (data: any, id: any, token: string) => {
-  return await axios.put(
-    `${BACKEND_URL}/api/sections/${id}`,
-    data,
-    { headers: { Authorization: `Bearer ${token}` }}
-  );
-}
 
 /**
  * Delete a specific course 
@@ -110,7 +100,6 @@ const CourseServices = Object.freeze({
   getCourseDetail,
   getCourseCategories,
   updateCourseDetail,
-  createSection,
   updateCoverImage,
   deleteCourse
 });

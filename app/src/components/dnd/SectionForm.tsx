@@ -4,7 +4,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import useToken from '../../hooks/useToken';
 
 // Services
-import CourseServices from '../../services/course.services';
+import SectionServices from '../../services/section.services'
 
 // Icons
 import { PlusIcon } from '@heroicons/react/24/outline';
@@ -16,14 +16,15 @@ import { useParams } from 'react-router-dom';
 
 export const SectionForm = () => {
     // Query Params
-    const token = useToken();
+    const token = "test";
+    //const token = useToken();
     const { id } = useParams();
    // const token = useAuthStore(state => state.token);
 
     // React useForm setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        CourseServices.createSection(data, id, token)
+        SectionServices.createSection(data, id, token)
             .then(res => console.log(res))
             .catch(err => console.log(err));
     }

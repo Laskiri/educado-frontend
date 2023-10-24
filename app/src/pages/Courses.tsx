@@ -35,7 +35,7 @@ const Courses = () => {
   // TODO: Implement proper backend call once backend is ready
 
   const { data, error } = useSWR(
-    token ? ["http://127.0.0.1:8888/api/courses/eml/getall", token] : null,
+    token ? [token] : null,
     CourseServices.getAllCourses
   );
  

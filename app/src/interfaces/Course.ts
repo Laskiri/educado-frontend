@@ -14,16 +14,26 @@ export interface Course {
   coverImg?:         string;
   description:       string;
   level:             string;
-  creators:          number[];
-  difficulty:        number;
+  creators:          contentCreator[];
   status:            string;
   estimatedHours:    number;
   rating:            number;
-  numOfSubscriptions: number;
+  numOfSubscriptions:   number;
   modifiedAt:        Date;
   createdAt:         Date;
   sections:          Section[];
   __v:               number;
+}
+
+export interface contentCreator {
+  firsteName: string,
+  lastName: string,
+  email: string,
+  motivation: string,
+  approved: boolean,
+  rejectionReason: string,
+  createdAt: Date,
+  modifiedAt: Date,
 }
 
 export interface Section {
