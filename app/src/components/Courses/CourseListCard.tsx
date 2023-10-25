@@ -23,7 +23,6 @@ import imageNotFoundImage from '../../assets/image-not-found.png'
  */
 export const CourseListCard = ({ course }: { course: Course }) => {
   const maxTitleLength = 20;
-
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
       <Link
