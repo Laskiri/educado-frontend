@@ -2,7 +2,6 @@ import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 // Components
-import DropZoneComponent from "../components/Exercise/dropZone";
 import AnswerCards from "../components/Exercise/AnswerCards";
 
 // Interfaces
@@ -63,11 +62,11 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
         if (mainContentFile) exerciseToSave.content = mainContentFile;
         if (onWrongFeedbackFile) exerciseToSave.onWrongFeedback = onWrongFeedbackFile;
 
-        console.log(exerciseToSave);
-
-        ExerciseServices.saveExercise(exerciseToSave, token)
+/*
+        ExerciseServices.addExercise(exerciseToSave, token)
             .then(() => toast.success(`Successfully saved exercise`))
-            .catch((e) => toast.error("Failed to save exercise due to error: " + e));
+            .catch((e:any) => toast.error("Failed to save exercise due to error: " + e));
+            */
 
     }
 
@@ -111,8 +110,6 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
                     </div> :
                     <h1 className='text-md font-medium'>Content video not uploaded</h1>
                 }
-
-                <DropZoneComponent updateFile={setMainContentFile} storageKey={`${exercise.id}/mainContent`} />
             </div>
 
             {/* divider */}
@@ -129,7 +126,7 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
                     </div> :
                     <h1 className='text-md font-medium'>Feedback video (on wrong answer) not uploaded</h1>
                 }
-                <DropZoneComponent updateFile={setonWrongFeedbackFile} storageKey={`${exercise.id}/feedbackContent`} />
+               
             </div>
 
             {/* Answers. Answers sometimes doesn't get loaded hence the conditional rendering ... */}

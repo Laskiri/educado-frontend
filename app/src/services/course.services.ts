@@ -8,8 +8,8 @@ export interface CourseInterface {
   title: string;
   category: string;
   level: string;
-  time: number;
   description: string;
+  estimatedHours: number;
 }
 
 /**
@@ -17,20 +17,38 @@ export interface CourseInterface {
  */
 
 // Create a new course
-const createCourse = async ({ title, category, level, time, description }: CourseInterface, token: string) => {
-  return await axios.post(
+const createCourse = async ({ title, category, level, estimatedHours, description }: CourseInterface, token: string) => {
+  return await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
       title: title,
       description: description,
-    }/*,
-    { headers: { Authorization: `Bearer ${token}` } }*/
+      category: category,
+      level: level,
+      estimatedHours: estimatedHours,
+    },
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 };
 
+// TODO: Foundation for updating coverimage. Implement next PR. Possibly merge with updateCourseDetail
+// Create a new section for a course
+/* 
+const updateCoverImage = async ( id: any, token: string) => {
+ 
+  return await axios.patch(
+    `${BACKEND_URL}/api/course/coverImage/${id}`,
+      
+    { 
+      headers: { Authorization: `Bearer ${token}` }
+      
+    }
+  ).then(res => res.data);
+}*/
+
 // Get all courses
-const getAllCourses = (url: string/*, token: string*/) => {
-  return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getAllCourses = async ( token: string) => {
+  return await axios.get('http://127.0.0.1:8888/api/courses/eml/getall', { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
@@ -42,8 +60,8 @@ const getAllCourses = (url: string/*, token: string*/) => {
 };
 
 // Get course detail
-const getCourseDetail = (url: string/*, token: string*/) => {
-  return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseDetail = async (url: string/*, token: string*/) => {
+  return await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
     .then((res) => res.data);
 };
 
@@ -54,31 +72,38 @@ const getCourseCategories = (url: string/*, token: string*/) => {
 }
 
 // Updating a specific course
-const updateCourseDetail = (data: any, id: any/*, token: string*/) => {
-  console.log(`${BACKEND_URL}api/courses/update/${id}`)
-  return axios.post(
-    `${BACKEND_URL}/api/courses/update/${id}`, // TODO: change backend url to not include final /
+const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
+  return await axios.patch(
+    `${BACKEND_URL}/api/courses/${id}`,
     data/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
   ).then(res => res.data);
 }
 
-// Create a new section for a course FIXME: should this be in section.services ??
-const createSection = async (data: any, id: any, token: string) => {
-  return await axios.post(
-    `${BACKEND_URL}/api/sections/create/${id}`,
-    data/*,
-    { headers: { Authorization: `Bearer ${token}` }}*/
+
+/**
+ * Delete a specific course 
+ * @param id the id of the course that will be deleted
+ * @param token token of the user 
+ * @param returns delete data
+ */
+const deleteCourse = async (id: any, token: string) => {
+  return await axios.delete(
+      `${BACKEND_URL}/api/courses/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
   );
+  
 }
 
+// Export all methods
 const CourseServices = Object.freeze({
   createCourse,
   getAllCourses,
   getCourseDetail,
   getCourseCategories,
   updateCourseDetail,
-  createSection
+  /*updateCoverImage,*/
+  deleteCourse
 });
 
 export default CourseServices;

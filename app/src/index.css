@@ -8,7 +8,7 @@
     }
 
     .std-button {
-        @apply flex space-x-2 flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-blue-500 rounded shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-blue-200
+        @apply flex space-x-2 flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-primary rounded shadow-md hover:bg-primaryHover focus:outline-none focus:ring-2 focus:ring-primaryHover focus:ring-offset-2 focus:ring-offset-primaryHover
     }
 
     .auth-form-field {
