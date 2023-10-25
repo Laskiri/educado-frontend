@@ -29,7 +29,7 @@ type Inputs = {
     title: string,
     description: string,
     category: string,
-    level: string,
+    difficulty: number,
     estimatedHours: number,
 };
 
@@ -59,7 +59,7 @@ export const CreateCourseModal = () => {
             title: data.title,
             description: data.description,
             category: data.category,
-            level: data.level,
+            difficulty: data.difficulty,
             estimatedHours: data.estimatedHours,
         }, token)
             .then(res =>{ console.log(res); 
@@ -133,15 +133,15 @@ export const CreateCourseModal = () => {
                                 <label htmlFor='level'>Nível</label> {/** Level */}
                                 <select
                                     className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                    {...register("level", { required: true })}
+                                    {...register("difficulty", { required: true })}
                                 >
                                     {/*Hard coded options by PO, should be changed to get from db*/}
-                                    <option>Iniciante </option> {/** Beginner */}
-                                    <option>Intermediário</option> {/** Intermediate */}
-                                    <option>Avançado </option> {/** Advanced */}
+                                    <option value={1}>Iniciante </option> {/** Beginner */}
+                                    <option value={2}>Intermediário</option> {/** Intermediate */}
+                                    <option value={3}>Avançado </option> {/** Advanced */}
                                 
                                 </select>
-                                {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                                {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
                             </div>
 
                             {/*Field to input the estimated time*/}
