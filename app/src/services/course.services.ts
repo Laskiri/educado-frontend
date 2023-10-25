@@ -48,7 +48,7 @@ const updateCoverImage = async ( id: any, token: string) => {
 
 // Get all courses
 const getAllCourses = async ( token: string) => {
-  return await axios.get('http://127.0.0.1:8888/api/courses/eml/getall', { headers: { Authorization: `Bearer ${token}` } })
+  return await axios.get(`${BACKEND_URL}/api/courses/`, { headers: { Authorization: `Bearer ${token}` } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
