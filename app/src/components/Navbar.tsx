@@ -15,7 +15,6 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const Navbar = () => {
-    //const clearToken = useAuthStore(state => state.clearToken);
     const navigate = useNavigate();
 
     //logout handler

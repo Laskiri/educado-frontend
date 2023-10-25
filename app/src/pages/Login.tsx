@@ -36,13 +36,19 @@ const Login = () => {
     // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    // Function for success on form-submit, i.e. the function to be executed upon recieving login-credentials, correct or otherwise
+    /**
+    * OnSubmit function for Login.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    * Upon receiving a success response, the token recieved from the backend will be set in the local storage.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      // Send data body to function postUserLogin in app/src/services/auth.services.ts
       AuthServices.postUserLogin({
           email: data.email,
           password: data.password,})
-          // Handling of the response from the backend
           .then((res) => {
               if(res.status == 202){
                   localStorage.setItem("token", res.data.accessToken);

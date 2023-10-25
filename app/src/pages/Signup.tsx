@@ -51,7 +51,15 @@ const Signup = () => {
   });
 
   
-  // Function for success on form-submit, i.e. the function to be executed upon recieving new credentials
+  /**
+    * OnSubmit function for Signup.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.name Name of the Content Creator
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
   const onSubmit = async (data: any) => {
     setIsFormValid(Object.keys(errors).length === 0);
     await AuthServices.postUserSignup({
