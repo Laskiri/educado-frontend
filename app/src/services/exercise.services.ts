@@ -20,7 +20,7 @@ const addExercise = async (props: any, token: string, sid: string | undefined) =
 }
 
 // Send the info to exercise service
-const updateExercise = async (props: any, token: string, eid: string | undefined) => {
+const updateExercise = async (props: any, token: string, eid: string ) => {
   if (eid == undefined){
     throw("Error: updateExercise input id is undefined")
   }
@@ -32,18 +32,36 @@ const updateExercise = async (props: any, token: string, eid: string | undefined
   return response.data
 };
 
+
 // Get exercise detail
 const getExerciseDetail = (url: string, token: string) => {
   return axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.data)
 }
 
+/**
+ * Delete a exercise
+ * 
+ * @param id Exercise ID
+ * @param token 
+ * @returns 
+ */
+const deleteExercise = async (id: string | undefined, token: string) => {
+  if (id == undefined){
+      throw("Error: deleteExercise input id is undefined")
+  }
+  return await axios.delete(
+      `${BACKEND_URL}/api/exercises/${id}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+  );
+}
 
 
 const ExerciseServices = Object.freeze({
   getExerciseDetail,
   addExercise,
-  updateExercise
+  updateExercise,
+  deleteExercise
 });
 
 

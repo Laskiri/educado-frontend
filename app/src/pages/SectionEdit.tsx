@@ -45,7 +45,8 @@ type SectionPartial = {
  */
 const SectionEdit = () => {
     const { sid } = useParams();
-    const token = useToken();
+    //const token = useToken();
+    const token = "bruh";
 
     // Component state
     const [section, setSection] = useState<Section>();
@@ -57,13 +58,13 @@ const SectionEdit = () => {
         SectionServices.getSectionDetail
     );
 
-    // TODO: This code is a foundation for fetching exercises, will be implemented next PR.
-    // Fetch the exercises data from the server.
-    /*
+    // Fetch the exercises data from the server.    
     const { data: exerciseData, error: exerciseError } = useSWR(
-        token ? [`${BACKEND_URL}/exercises/getall/${sid}`, token] : null,
+        token ? [`${BACKEND_URL}/api/exercises/getall/${sid}`, token] : null,
         ExerciseServices.getExerciseDetail
-    );*/
+    );
+
+    console.log("exercise data is: ", exerciseError);
 
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
@@ -105,29 +106,9 @@ const deleteSection = async () => {
         .catch(err => toast.error(err));
     }
     
-    // TODO: Re-add after fixing backend delete route
-    /**
-     * Delete section and redirect to course edit page
-     * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
-     * 
-     * @param sid The section id
-     * @param token The user token
-     *//*
-    const deleteSection = async () => {
-        const response = await SectionServices.deleteSection(sid, token);
-        const status = response.status
-
-        if (status >= 200 && status <= 299) {
-            window.location.href = `/courses/edit/${cid}`;
-            toast.success("Section deleted")
-        } else if (status >= 400 && status <= 599) {
-            toast.error(`(${status}, ${response.statusText}) while attempting to delete section`)
-        }
-    }*/
-    
     // Render onError and onLoading
     if (sectionError) return <p>"An error has occurred."</p>;
-    if (!sectionData /*|| !exerciseData*/) return <Loading/>;
+    if (!sectionData || !exerciseData) return <Loading/>;
 
     const cid =  sectionData.parentCourse;
     return (
@@ -193,7 +174,7 @@ const deleteSection = async () => {
                     {/** Exercise list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
                         <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
-                        <ExerciseArea exercises={exercises.length > 0 ? exercises : sectionData.exercises} />
+                        <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
 
           

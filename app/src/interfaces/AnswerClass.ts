@@ -5,7 +5,7 @@ export class Answer {
     
     constructor(){};
 
-   
+
     /**
      * 
      * @param text - The text to set the answer to
@@ -30,6 +30,11 @@ export class Answer {
         this.isCorrect = isCorrect;
     }
 
+    public setAll(text: string, feedback: string, isCorrect: boolean) {
+        this.text = text;
+        this.feedback = feedback;
+        this.isCorrect = isCorrect;
+    }
+    
 
 }
-
