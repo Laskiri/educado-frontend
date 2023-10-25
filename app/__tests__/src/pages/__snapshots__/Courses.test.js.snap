@@ -218,6 +218,7 @@ exports[`courses page does not show empty state when at least one course is foun
                 <li>
                   <a
                     className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white"
+                    href="/login"
                     onClick={[Function]}
                   >
                     Sign out
@@ -920,6 +921,7 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                 <li>
                   <a
                     className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white"
+                    href="/login"
                     onClick={[Function]}
                   >
                     Sign out
