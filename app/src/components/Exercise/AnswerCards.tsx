@@ -94,7 +94,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         <div className='flex flex-col space-y-2 text-left' >
                             <p>Responder</p> {/** Answer */}
                             <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-8 resize-none"
-                                placeholder="Some answer text"
+                                placeholder="Algum texto de resposta"
                                 required={true}
                                 name="answer"
                                 defaultValue={answer.text || ""}
@@ -106,7 +106,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         <div className='flex flex-col space-y-2 text-left'>
                             <p>Opinião</p> {/** Feedback */}
                             <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-8 resize-none"
-                                placeholder="Some answer text"
+                                placeholder="Algum texto de feedback"
                                 required={true}
                                 name="feedback"
                                 defaultValue={answer.feedback || ""}
