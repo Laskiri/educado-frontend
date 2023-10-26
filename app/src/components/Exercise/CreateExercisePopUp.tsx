@@ -1,197 +1,133 @@
-// Pop-up messages
-import react from 'react';
-import { toast } from 'react-toastify';
-import { useState } from 'react'
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useForm, type SubmitHandler } from 'react-hook-form'
-
-// Icons
-import { PlusIcon } from "@heroicons/react/24/outline";
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import { useState, } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 
 // Components
-import { AnswerField } from "../../components/Exercise/AnswerField";
-import { Answer } from "../../interfaces/AnswerClass";
-import { Exercise } from "../../interfaces/Exercise";
+import AnswerCards from "../../components/Exercise/AnswerCards";
 
-// Services
-import ExerciseServices from '../../services/exercise.services';
+// Interfaces
+import { Answer } from "../../interfaces/Answer";
+import { Exercise } from "../../interfaces/Exercise"
 
+// Helpers
+import ExerciseServices from "../../services/exercise.services";
 
+// Pop-up messages
+import { toast } from "react-toastify";
 
-type ExercisePartial = {
-    title: string;
-    question: string;
-    answers: Answer[];
-};
+// Hooks
+import useToken from "../../hooks/useToken";
 
-type Inputs = {
-    sid: string|undefined;
-    cid: string|undefined;
-  
-};
-
-
-
-export const CreateExercise = ({sid, cid}:Inputs) => {
-    const [isLoading, setIsLoading] = useState(false);
-    const [tempAnswers, setTempAnswer] = useState<Answer[]>([new Answer(), new Answer()]);
+export interface ExercisePartial {
+    sid: string,
+    title: string,
+    question: string,
+    answers: Answer[]
+}
 
 
-    const [answerFieldIndex, setAnswerFieldIndex] = useState(tempAnswers.length);
-    const [answerField, setAnswerField] = useState<JSX.Element[]>([<AnswerField index={0} answerObject={tempAnswers[0]}  callback={updateAnswer}/>, <AnswerField index={1} answerObject={tempAnswers[1]}  callback={updateAnswer}/>]);
-    const navigate = useNavigate();
+export const CreateExercise = ({ sid } : ExercisePartial) => {
+
+    const [answers, setAnswers] = useState<Answer[]>(exercise.answers);
+
+    const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
+    const onExerciseSave: SubmitHandler<any> = data => updateExercise(data);
+
+    /** Token doesnt work, reimplement when it token is implemented */
+    //const token = useAuthStore(state => state.token);
+    //const token = useToken();
     const token = "dummyToken";
 
-    /**
-     * Add new answer 
-     * @param index index of the answer to be added
-     * @returns a specific answer
-     */
-    function addOrGetAnswer(index: number) {
-        if (tempAnswers[index] == undefined) {
-        tempAnswers[index] = new Answer();
+    const updateExercise = (data: any) => {
+
+        const exerciseToSave: ExercisePartial = {
+            title: data.title,
+            question: data.question,
+            answers: answers
         }
-        return tempAnswers[index];
-    }
-    /** 
-     * Update answer to match inputted data
-     * @param answerFieldIndex the index which the answer has
-     * @param answer the answer that is updated
-     * @returns void
 
-     */ 
-    function updateAnswer(answerFieldIndex: number, answer: Answer) {
-        tempAnswers[answerFieldIndex] = answer;
-        setTempAnswer(tempAnswers);
+        console.log(exerciseToSave);
+
+        ExerciseServices.updateExercise(exerciseToSave, token, eid)
+            .then(() => toast.success(`Successfully saved exercise`))
+            .catch((e) => toast.error("Failed to save exercise due to error: " + e));
+
     }
 
-    /**
-     * Add new answer field
-     * @params %
-     * @returns void
-     */
-    function addAnswerField() {
-        setAnswerFieldIndex(answerFieldIndex + 1);
-        setAnswerField([
-            ...answerField,
-            <AnswerField
-                index={answerFieldIndex}
-                answerObject={addOrGetAnswer(answerFieldIndex)}
-                callback={updateAnswer}
-        />])
-    }
+/**
+ * Delete exercise and reload page
+ * Uses window.location.reload to refresh
+ * 
+ * @param eid The exercise id
+ * @param token The user token
+ */
+const deleteExercise = async () => {
+    if (confirm("Você tem certeza?") == true) {
+        const response = await ExerciseServices.deleteExercise(eid, token);
+        const status = response.status
 
-    /**
-     * Create Form Hook
-    */
-    const {
-        register: registerExercise,
-        handleSubmit: handleExerciseAdd,
-        formState: { errors: exerciseErrors },
-    } = useForm<ExercisePartial>();
-
-    
-
-    /**
-     * SubmitHandler: add exercise
-     * @param exerciseData  The exercise data to be added
-     * @returns void
-     */
-    const onExerciseAdd: SubmitHandler<ExercisePartial> = (exerciseData) => {
-        const exerciseToAdd: ExercisePartial = {
-        title: exerciseData.title,
-        question: exerciseData.question,
-        answers: exerciseData.answers,
-        };
-
-    ExerciseServices.addExercise(exerciseToAdd, token, sid)
-        .then((res) => {
-            toast.success("Added exercise");
+        if (status >= 200 && status <= 299) {
             window.location.reload();
-        })
-        .catch((err) => toast.error(err));
-    };
-    
-return (
-    <div>
-            {/** The button to open create exercise modal */}
-            <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
-                
-            </label>
+            toast.success("Exercise deleted")
+        } else if (status >= 400 && status <= 599) {
+            toast.error(`(${status}, ${response.statusText}) while attempting to delete exercise`)
+        }
+    }
+}
 
-            <input type="checkbox" id="exercise-create" className="modal-toggle" />
-            <div className="modal" id="exercise-create-modal">
-                <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
-                    <form
-                    onSubmit={handleExerciseAdd(onExerciseAdd)}
-                    className="flex flex-col justify-content align-items space-evenly w-full space-y-2"
-                    >
-                    {/** Exercise Title Field */}
-                    <div className="form-control w-full" >
+    return (
+
+        <form onSubmit={handleExerciseSave(onExerciseSave)}
+            className="flex flex-col space-y-6 divide py-2"
+        >
+            <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
+                <div className="flex flex-col form-control align-items justify-content w-full">
                     <label className="label">
-                        <span className="label-text">Título</span> {/** Title */}
+                        <span className="label-text">Exercise title</span>
                     </label>
                     <input
                         type="text"
-                        placeholder="Título"
-                        className="input input-bordered w-full"
-                        {...registerExercise("title", { required: true })}
+                        defaultValue={exercise.title}
+                        onClick={()=>console.log("answers",answers)}
+                        placeholder="Exercise title goes here"
+                        className="input input-bordered w-full max-w-xs"
+                        {...register("title", { required: true })}
                     />
-                    {/**title */}
-                    {exerciseErrors.title && <span>Este campo é obrigatório.</span>} {/** This field is required*/}
-                    </div>
-                    
-                    {/** Exercise Question Field */}
-                    <div className="form-control w-full">
+
                     <label className="label">
-                        <span className="label-text">Pergunta</span> {/** Question */}
+                        <span className="label-text">Exercise question</span>
                     </label>
-                    <textarea 
+                    <textarea
                         className="textarea textarea-bordered h-24"
-                        placeholder="Adicione uma pergunta ao seu exercício"
-                        {...registerExercise("question", { required: true })}
-                    />  {/** Add a question to your exercise */}
-                    </div>
+                        defaultValue={exercise.question}
+                        placeholder="Write the question for the exercise here"
+                        {...register("question", { required: true })}
+                    ></textarea>
 
-                    {/** Exercise Answers Field */}
-                    {answerField}
-
-                    <div className="flex justify-between items-center border rounded p-1">
-                        <button
-                        className=" std-button" type="button"
-                        onClick={() => {
-                            if (answerFieldIndex < 4) {
-                            addAnswerField();
-                            } else {
-                            toast.error("Número máximo de respostas atingido!"); {/** Maximum number of answers reached. */}
-                            }
-                        }}
-                        >
-                        <PlusIcon width={24} />
-                        </button>
-                    </div>
-
-                    {/*Create and cancel buttons*/}
-                    <div className='modal-action'>
-                            <div className="flex items-center justify-between gap-4 w-full mt-8">
-                                <label htmlFor='exercise-create' className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                                    <button type="submit" className='py-2 px-4 h-full w-full' {...registerExercise('answers', {value: tempAnswers})} onClick={()=>{/*window.location.reload();*/}}>
-                                        Criar
-                                    </button>                                                                                                       
-                                </label>
-                                <label htmlFor='exercise-create' className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                                    Cancelar
-                                </label>
-                            </div>
-                    </div>
-
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-    )
 
-}
+            {/* divider */}
+            <div className="flex flex-col w-full">
+                <div className="divider"></div>
+            </div>
+
+            {/* Answers. Answers sometimes doesn't get loaded hence the conditional rendering ... */}
+            {exercise.answers ?
+                <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
+                    <h1 className='text-md font-medium'>Answers</h1>
+                {   <AnswerCards update={setAnswers} initialAnswers={exercise.answers} />}
+                </div>
+                :
+                <p>Loading ...</p>
+            }
+            <div className="flex items-left w-full mt-8">
+                {/** Exercise save and delete button */}
+                <button type="button" onClick={deleteExercise} className='left-0 std-button bg-warning hover:bg-red-800' >Excluir exercício</button> {/** Delete exercise*/}
+                <button type='submit' className="std-button ml-auto py-2 px-4">Salvar exercícios</button> {/** Save exercise */}
+            </div>
+        </form>
+
+    );
+};
+
+export default ExerciseDetail;

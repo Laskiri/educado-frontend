@@ -8,9 +8,9 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
     const toggler = (index: number) => {
         const updatedAnswerCards = answers.map((answer, idx) => {
             if (idx === index) {
-            
-                answer.isCorrect = !answer.isCorrect
+                answer.isCorrect = true
             }
+
             if (idx != index && answer.isCorrect) {
                 answer.isCorrect = false
             }
@@ -29,7 +29,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
         updateAnswers(withAddedAnswer);
     }
 
-  const handleAnswerCardDelete = (index: any) => {
+  const handleAnswerCardDelete = (index: number) => {
     try {
       if (index < 2) {
         throw Error('Deletion not allowed. An exercise needs at least 2 answers')
@@ -122,6 +122,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                 </div>
             ))}
 
+            {/*A button to create a new answer. The user is not allowed to create more than 4 answers*/}
             {answers.length < 4 &&
                 <div key={-1} onClick={handleAnswerCardAdd} className="rounded-2xl flex flex-col space-y-2 bg-none border border-dashed border-4 hover:shadow-xl">
                     <div className="card-body">
@@ -130,7 +131,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
-                                Add Answer
+                                Adicionar resposta {/** Add answer */}
                             </div>
                         </div>
                     </div>
