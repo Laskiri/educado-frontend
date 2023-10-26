@@ -197,7 +197,7 @@ const deleteSection = async () => {
                     <div className="navbar bg-none p-6">
                         <div className="flex-1">
                             {/** Create new Exercise */}
-                            {<CreateExercise sid={sid} cid={cid}/>}
+                            {<CreateExercise sid={sid}/>}
                         </div>
                     </div>
 
