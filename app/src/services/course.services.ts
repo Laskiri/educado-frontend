@@ -7,7 +7,7 @@ import { BACKEND_URL } from '../helpers/environment';
 export interface CourseInterface {
   title: string;
   category: string;
-  level: string;
+  difficulty: number;
   description: string;
   estimatedHours: number;
 }
@@ -17,14 +17,14 @@ export interface CourseInterface {
  */
 
 // Create a new course
-const createCourse = async ({ title, category, level, estimatedHours, description }: CourseInterface, token: string) => {
+const createCourse = async ({ title, category, difficulty, estimatedHours, description }: CourseInterface, token: string) => {
   return await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
       title: title,
       description: description,
       category: category,
-      level: level,
+      difficulty: difficulty,
       estimatedHours: estimatedHours,
     },
     { headers: { Authorization: `Bearer ${token}` } }
@@ -53,7 +53,7 @@ const getAllCourses = async ( token: string) => {
   // Decode token to get user id
   const userId = JSON.parse(atob(tokens!.split('.')[1])).id;
   
-  return await axios.get('http://127.0.0.1:8888/api/courses/creator/' + userId, { headers: { Authorization: `Bearer ${token}`, token: tokens } })
+  return await axios.get(`${BACKEND_URL}/api/courses/creator/` + userId, { headers: { Authorization: `Bearer ${token}`, token: tokens } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {

@@ -427,19 +427,25 @@ exports[`courses page does not show empty state when at least one course is foun
                          
                         <select
                           className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                          name="level"
+                          name="difficulty"
                           onBlur={[Function]}
                           onChange={[Function]}
                         >
-                          <option>
+                          <option
+                            value={1}
+                          >
                             Iniciante 
                           </option>
                            
-                          <option>
+                          <option
+                            value={2}
+                          >
                             Intermediário
                           </option>
                            
-                          <option>
+                          <option
+                            value={3}
+                          >
                             Avançado 
                           </option>
                            
@@ -1140,19 +1146,25 @@ exports[`courses page shows empty state when no courses are found 1`] = `
                            
                           <select
                             className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                            name="level"
+                            name="difficulty"
                             onBlur={[Function]}
                             onChange={[Function]}
                           >
-                            <option>
+                            <option
+                              value={1}
+                            >
                               Iniciante 
                             </option>
                              
-                            <option>
+                            <option
+                              value={2}
+                            >
                               Intermediário
                             </option>
                              
-                            <option>
+                            <option
+                              value={3}
+                            >
                               Avançado 
                             </option>
                              

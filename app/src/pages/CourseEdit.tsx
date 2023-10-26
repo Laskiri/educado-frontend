@@ -39,7 +39,7 @@ interface Inputs {
   title: string
   description: string
   category: string
-  level: string
+  difficulty: number
   estimatedHours: number
 }
 
@@ -96,7 +96,7 @@ const CourseEdit = () => {
         title: data.title,
         description: data.description,
         category: data.category,
-        level: data.level,
+        difficulty: data.difficulty,
         estimatedHours: data.estimatedHours
     }
 
@@ -226,17 +226,17 @@ const CourseEdit = () => {
                                 {/* Field to select a level from a list of options */}
                                 <div className="flex flex-col space-y-2 text-left">
                                     <label htmlFor='level'>Nível</label> {/* Level */}
-                                    <select defaultValue={data.level}
+                                    <select defaultValue={data.difficulty}
                                         className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        {...register('level', { required: true })}
+                                        {...register('difficulty', { required: true })}
                                     >
                                         {/* Hard coded options by PO, should be changed to get from db */}
-                                        <option>Iniciante </option> {/* Beginner */}
-                                        <option>Intermediário</option> {/* Intermediate */}
-                                        <option>Avançado </option> {/* Advanced */}
+                                        <option value={1}>Iniciante </option> {/* Beginner */}
+                                        <option value ={2}>Intermediário</option> {/* Intermediate */}
+                                        <option value={3}>Avançado </option> {/* Advanced */}
 
                                     </select>
-                                    {errors.level && <span className='text-warning'>Este campo é obrigatório</span>}
+                                    {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>}
                                 </div>
 
                                 {/* Field to input the estimated estimatedHours */}
