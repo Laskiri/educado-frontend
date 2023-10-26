@@ -10,6 +10,7 @@ import useToken from '../hooks/useToken';
 // Services
 import SectionServices from '../services/section.services';
 import ExerciseServices from '../services/exercise.services';
+import LectureServices from '../services/lecture.services';
 import { CreateLecture } from '../components/CreateLecturePopUp';
 import { CreateExercise } from '../components/Exercise/CreateExercisePopUp';
 
@@ -17,10 +18,13 @@ import { CreateExercise } from '../components/Exercise/CreateExercisePopUp';
 import Loading from './Loading';
 import Layout from '../components/Layout';
 import { ExerciseArea } from '../components/ExerciseArea'
+import { LectureArea } from '../components/LectureArea';
+
 
 // Interface
 import { Section } from '../interfaces/CourseDetail';
 import { Exercise } from '../interfaces/Exercise'
+import { Lecture } from '../interfaces/Lecture'
 
 // Icons
 import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
@@ -51,8 +55,9 @@ const SectionEdit = () => {
     // Component state
     const [section, setSection] = useState<Section>();
     const [exercises, setExercises] = useState<Exercise[]>([]);
+    const [lectures, setLectures] = useState<Lecture[]>([]);
 
-    // Fetch section details
+    //Fetch section details
     const { data: sectionData, error: sectionError } = useSWR(
         token ? [sid, token] : null,
         SectionServices.getSectionDetail
@@ -63,8 +68,14 @@ const SectionEdit = () => {
         token ? [`${BACKEND_URL}/api/exercises/getall/${sid}`, token] : null,
         ExerciseServices.getExerciseDetail
     );
-
-    console.log("exercise data is: ", exerciseError);
+    
+    // Fetch the lecture data from the server.    
+    const { data: lectureData, error: lectureError } = useSWR(
+        token ? [`${BACKEND_URL}/api/lectures/getall/${sid}`, token] : null,
+        LectureServices.getLectureDetail
+    );
+    
+    console.log("lecture data is ", lectureData);
 
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
@@ -78,14 +89,16 @@ const SectionEdit = () => {
  * @param token The user token
  */
 const deleteSection = async () => {
-    const response = await SectionServices.deleteSection(sid, token);
-    const status = response.status
+    if (confirm("Você tem certeza?") == true) {
+        const response = await SectionServices.deleteSection(sid, token);
+        const status = response.status
 
-    if (status >= 200 && status <= 299) {
-        window.location.href = `/courses/edit/${cid}`;
-        toast.success("Section deleted")
-    } else if (status >= 400 && status <= 599) {
-        toast.error(`(${status}, ${response.statusText}) while attempting to delete section`)
+        if (status >= 200 && status <= 299) {
+            window.location.href = `/courses/edit/${cid}`;
+            toast.success("Section deleted")
+        } else if (status >= 400 && status <= 599) {
+            toast.error(`(${status}, ${response.statusText}) while attempting to delete section`)
+        }
     }
 }
 
@@ -108,7 +121,7 @@ const deleteSection = async () => {
     
     // Render onError and onLoading
     if (sectionError) return <p>"An error has occurred."</p>;
-    if (!sectionData || !exerciseData) return <Loading/>;
+    if (!sectionData || !exerciseData || !lectureData) return <Loading/>;
 
     const cid =  sectionData.parentCourse;
     return (
@@ -157,10 +170,13 @@ const deleteSection = async () => {
 
                     <div className="divider"></div>
 
-                     {/** Exercise list area */}
-                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
-                        <h1 className='text-xl font-medium'>Palestras</h1> {/** Exercises*/}
+
+                    {/** Lecture list area */}
+                    <div className='flex flex-col space-y-4 mb-4' id='lectures'>
+                        <h1 className='text-xl font-medium'>Palestras</h1> {/** Lecture*/}
+                    {/*    <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} /> */}
                     </div>
+
 
 
                     {/** New lecture area */}
@@ -170,7 +186,7 @@ const deleteSection = async () => {
                     </div>
 
                     <div className="divider"></div>
-
+ 
                     {/** Exercise list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
                         <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}

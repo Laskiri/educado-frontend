@@ -60,14 +60,16 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
  * @param token The user token
  */
 const deleteExercise = async () => {
-    const response = await ExerciseServices.deleteExercise(eid, token);
-    const status = response.status
+    if (confirm("Você tem certeza?") == true) {
+        const response = await ExerciseServices.deleteExercise(eid, token);
+        const status = response.status
 
-    if (status >= 200 && status <= 299) {
-        window.location.reload();
-        toast.success("Section deleted")
-    } else if (status >= 400 && status <= 599) {
-        toast.error(`(${status}, ${response.statusText}) while attempting to delete exercise`)
+        if (status >= 200 && status <= 299) {
+            window.location.reload();
+            toast.success("Exercise deleted")
+        } else if (status >= 400 && status <= 599) {
+            toast.error(`(${status}, ${response.statusText}) while attempting to delete exercise`)
+        }
     }
 }
 
@@ -118,7 +120,7 @@ const deleteExercise = async () => {
                 <p>Loading ...</p>
             }
             <div className="flex items-left w-full mt-8">
-                {/** Section save and delete button */}
+                {/** Exercise save and delete button */}
                 <button type="button" onClick={deleteExercise} className='left-0 std-button bg-warning hover:bg-red-800' >Excluir exercício</button> {/** Delete exercise*/}
                 <button type='submit' className="std-button ml-auto py-2 px-4">Salvar exercícios</button> {/** Save exercise */}
             </div>

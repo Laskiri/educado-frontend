@@ -22,7 +22,7 @@ export const AnswerField = ({index, answerObject, callback}:Inputs) => {
                 <label className="label">
                     <span className="label-text">Resposta correta</span> {/**Right answer */}
                 </label>    
-                    <input type="checkbox" className="" defaultChecked={answerObject.isCorrect} onChange={()=>{answerObject.setIsCorrect(!answerObject.isCorrect); callback(index, answerObject)}}/> 
+                    <input type="checkbox" className="toggle" defaultChecked={answerObject.isCorrect} onChange={()=>{answerObject.setIsCorrect(!answerObject.isCorrect); callback(index, answerObject)}}/> 
             </div>
 
             {/** Answer text field */}

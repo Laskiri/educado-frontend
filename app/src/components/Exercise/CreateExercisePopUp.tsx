@@ -160,7 +160,6 @@ return (
                     {answerField}
 
                     <div className="flex justify-between items-center border rounded p-1">
-                    <div>
                         <button
                         className=" std-button" type="button"
                         onClick={() => {
@@ -173,7 +172,6 @@ return (
                         >
                         <PlusIcon width={24} />
                         </button>
-                    </div>
                     </div>
 
                     {/*Create and cancel buttons*/}

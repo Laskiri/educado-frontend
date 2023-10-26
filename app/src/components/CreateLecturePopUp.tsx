@@ -60,10 +60,11 @@ export const CreateLecture = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         
         setIsLoading(true);
-        LectureService.addLecture({
-            title: data.title,
-            description: data.description,
-        }, token, sid)
+        LectureService.addLecture(
+            data.title,
+            data.description,
+            token, 
+            sid)
             .then(res =>{ console.log(res); navigate(`/sections/${sid}`)}) 
             .catch(err => console.log(err))
     };

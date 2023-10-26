@@ -3,7 +3,7 @@ import { Answer } from '../../interfaces/Answer'
 
 
 function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, initialAnswers: Answer[] }) {
-  const [answers, setAnswers] = useState(initialAnswers)
+    const [answers, setAnswers] = useState(initialAnswers)
 
     const toggler = (index: number) => {
         const updatedAnswerCards = answers.map((answer, idx) => {
@@ -11,20 +11,23 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
             
                 answer.isCorrect = !answer.isCorrect
             }
+            if (idx != index && answer.isCorrect) {
+                answer.isCorrect = false
+            }
             return answer
         });
 
-    setAnswers(updatedAnswerCards)
-    updateAnswers(updatedAnswerCards)
-    
-  }
-  const handleAnswerCardAdd = () => {
+        setAnswers(updatedAnswerCards)
+        updateAnswers(updatedAnswerCards)
 
-    const withAddedAnswer = answers.concat({text: "", isCorrect: false, feedback: ""});
+    }
+    const handleAnswerCardAdd = () => {
 
-    setAnswers(withAddedAnswer);
-    updateAnswers(withAddedAnswer);
-}
+        const withAddedAnswer = answers.concat({text: "", isCorrect: false, feedback: ""});
+
+        setAnswers(withAddedAnswer);
+        updateAnswers(withAddedAnswer);
+    }
 
   const handleAnswerCardDelete = (index: any) => {
     try {
@@ -68,14 +71,25 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                             </button>
                         </div>
 
-                        <div className='flex flex-col space-y-2 text-left'>
+                        <div 
+                            className='w-1/3 flex flex-col space-y-2 text-left'>
                             <p>A resposta é {answer.isCorrect ? <span> Correta</span> : <span> Incorreta</span>}</p>
                             <div className="form-control w-1/10">
                                 {/*Toggle True or False  */}
                                 <input type="checkbox" className="toggle" checked={answer.isCorrect} onChange={() => toggler(index)} />
-                               
+
                             </div>
                         </div>
+
+                        {/* <div 
+                            className='w-1/3 flex flex-col space-y-2 text-left'>
+                                 <input type="checkbox" value="" className="sr-only peer" checked></input>
+                                <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600">
+                                    
+                                </div>
+                                <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">Checked toggle</span>
+                          </div>
+                        </div> */}
                         
                         <div className='flex flex-col space-y-2 text-left' >
                             <p>Responder</p> {/** Answer */}
@@ -109,7 +123,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
             ))}
 
             {answers.length < 4 &&
-                <div key={-1} onClick={handleAnswerCardAdd} className="card w-64 h-64 bg-none border border-dashed border-4 hover:shadow-xl">
+                <div key={-1} onClick={handleAnswerCardAdd} className="rounded-2xl flex flex-col space-y-2 bg-none border border-dashed border-4 hover:shadow-xl">
                     <div className="card-body">
                         <div className="card-actions flex justify-around items-center h-full">
                             <div className="flex flex-row space-x-4" >

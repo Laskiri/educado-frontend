@@ -125,14 +125,16 @@ const CourseEdit = () => {
      * @param token The user token
      */
      const deleteCourse = async () => {
-        const response = await CourseServices.deleteCourse(id, token);
-        const status = response.status
+        if (confirm("Você tem certeza?") == true) {
+            const response = await CourseServices.deleteCourse(id, token);
+            const status = response.status
 
-        if (status >= 200 && status <= 299) {
-            toast.success("Curso excluído"); {/* Course deleted */}
-            window.location.href = "/courses";
-        } else if (status >= 400 && status <= 599) {
-            toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
+            if (status >= 200 && status <= 299) {
+                toast.success("Curso excluído"); {/* Course deleted */}
+                window.location.href = "/courses";
+            } else if (status >= 400 && status <= 599) {
+                toast.error(`(${status}, ${response.statusText}) while attempting to delete course`)
+            }
         }
     }
 
