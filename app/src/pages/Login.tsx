@@ -1,6 +1,11 @@
-import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { useState } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
+import background from "../assets/background.jpg"
+import Icon from '@mdi/react';
+import { mdiChevronLeft } from '@mdi/js';
+import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
+import Carousel from '../components/archive/Carousel';
 
 
 // Interfaces
@@ -8,7 +13,7 @@ import { LoginReponseError } from "../interfaces/LoginReponseError"
 
 // Services
 import AuthServices from '../services/auth.services';
-import useAuthStore from '../contexts/useAuthStore';
+//import useAuthStore from '../contexts/useAuthStore';
 
 // Interface
 type Inputs = {
@@ -17,77 +22,189 @@ type Inputs = {
 };
 
 const Login = () => {
-    // Location
+    // Location (OLD CODE)
     const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
     
-    // states
-    const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
-    const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
-    const navigate = useNavigate(); // hooke for redirect
+    // states  (OLD CODE, MIGHT USE LATER)
+    //const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
+    //const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
 
-    // use-form setup
+    // Navigation hook
+    const navigate = useNavigate(); 
+
+
+    // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    // success on submit handler
+    /**
+    * OnSubmit function for Login.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    * Upon receiving a success response, the token recieved from the backend will be set in the local storage.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        AuthServices.postUserLogin(data)
-            .then((res) => {
-                setToken(res.data.data.accessToken);
-                setRefresh(res.data.data.refreshToken);
-                navigate("/");
-            })
-            .catch(err => { setError(err); console.log(err) });
+      AuthServices.postUserLogin({
+          email: data.email,
+          password: data.password,})
+          .then((res) => {
+              if(res.status == 202){
+                  localStorage.setItem("token", res.data.accessToken);
+                  navigate("/profile");
+                  
+                  //setRefresh(res.data.data.refreshToken); (OLD CODE, MIGHT USE LATER)
+              }
+              
+          })
+          .catch(err => { setError(err); console.log(err)});
+    };
+    
+    // Variable determining whether or not the password is visible
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const togglePasswordVisibility = () => {
+      setPasswordVisible(!passwordVisible);
+    };
+    
+    
+    function areFieldsFilled() {
+      const inputloginEmail = document.getElementById('emailField') as HTMLInputElement;
+      const inputloginPass = document.getElementById('passwordField') as HTMLInputElement;
+      
+      const submitloginButton = document.getElementById('submitLoginButton') as HTMLButtonElement;
+     
+      if(inputloginEmail.value.trim() && inputloginPass.value.trim() !== '') {
+        submitloginButton.removeAttribute('disabled');
+        submitloginButton.classList.remove('opacity-20', 'bg-cyan-500');
+      } 
+      else {
+        submitloginButton.setAttribute('disabled', 'true');
+        submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
+      }
     };
 
-    // failure on submit handler FIXME: find out what this does
-    const onError: SubmitHandler<Inputs> = error => console.log(error);
-
-    return (
-        <main className="flex flex-col items-center justify-center w-screen h-screen bg-gradient-to-tl from-sky-600 to-blue-600 text-gray-200">
-            <h1 className="font-bold text-3xl">Welcome Back 👋</h1>
-            <div className="bg-white rounded p-12 shadow-lg mt-12">
-                <div className='flex flex-col divide text-gray-700'>
-                    <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
-
-                        {error &&
-                            <div className="bg-red-200 border-red-600 text-red-600 border-t-4 p-4 w-64 mb-4 rounded" role="alert">
-                                <p className="font-bold text-sm">{error.response.statusText}</p>
-                                <p className='text-xs'>{error.response.data.msg}.</p>
-                            </div>
-                        }
-
-                        {/* Username field */}
-                        <label className="font-semibold text-xs" htmlFor="usernameField">Email</label>
-                        <input {...register("email", { required: true })} className="auth-form-field" type="email" />
-
-                        {/* Password field */}
-                        <label className="font-semibold text-xs mt-3" htmlFor="passwordField">Password</label>
-                        <input {...register("password", { required: true })} className="auth-form-field" type="password" />
+    // failure on submit handler FIXME: find out what this does (OLD CODE)
+    //const onError: SubmitHandler<Inputs> = error => console.log(error);
+    
 
 
-                        <button type="submit" className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
-                            Login
-                        </button>
-                    </form>
+return (
+<main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
 
-                    <Link to="/">
-                        <button className="flex items-center justify-center h-12 px-6 w-64 mt-4 rounded font-semibold text-sm bg-white border border-blue-500 shadow-md hover:border-blue-700">
-                            <img alt="google icon" src="https://developers.google.com/identity/sign-in/g-normal.png" className='mr-2 h-8 w-8' />
-                            Sign in with Google
-                        </button>
-                    </Link>
-                </div>
+{ /*Navbar*/ }
+<nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
+  <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
+    <div className="navbar-start">
+      <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
+        <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src='/educado.svg' alt="educado" className="h-6" />
+      </Link>
+    </div>
+  </div>
+</nav>
 
-                <div className="flex mt-6 justify-center text-xs">
-                    <a className="text-blue-400 hover:text-blue-500" href="#">Forgot Password</a>
-                    <span className="mx-2 text-gray-300">/</span>
-                    <Link to="/signup" className="text-blue-400 hover:text-blue-500">Apply for Account</Link>
-                </div>
+  { /*Container for entire page*/ }
+  <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-full h-screen">
+
+    { /*Container for left half of the page*/ }
+    <div className='relative w-full h-screen hidden md:block container overflow-hidden'>
+      <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
+      <div className="absolute inset-0 flex flex-col items-center justify-center">
+        <Carousel/> { /*Carousel integration*/ }
+      </div>
+    </div>
+
+
+    { /*Container for right side of the page - frame 2332*/ }
+    <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
+
+      { /*Error message for when email or password is incorrect*/ }
+      <div className="fixed right-0 top-[4rem]">
+        {error && (
+            <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
+              <p className="font-bold text-lg">Error:</p>
+              <p className='text-base'>{error.response.data.msg}</p>
             </div>
+        )}
+      </div>
+            
+      { /*Container for the page's contents, + Back button*/ }
+      <div className='relative py-8 px-10 w-full'>
+        <div className=''>
+          <h1 className="mb-10 flex text-base text-[#383838] font-normal font-['Montserrat'] underline"> 
+            <Link to="/welcome">
+              <Icon path={mdiChevronLeft} size={1} color="#383838" />
+            </Link>
+            <Link to="/welcome" className="text-base text-[#383838] font-normal font-['Montserrat']">
+              Voltar {/*Back*/}
+            </Link>
+          </h1>
+        </div>
 
-        </main>
-    )
-}
+        { /*Title*/ }
+        <h1 className="text-[#383838] text-3xl font-bold font-['Lato'] leading-normal self-stretch ">
+          Bem-vindo de volta ao Educado! {/*Welcome back to Educado!*/}
+        </h1>
+
+        { /*Submit form, i.e. fields to write email and password*/ }
+        <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col space-y-2">
+
+          {/* Email field */}
+          <div className="relative">
+            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
+              Email
+              <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+            </label>
+            <input onInput={areFieldsFilled} 
+              type="email" id="emailField"
+              className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="user@email.com"
+              {...register("email", { required: true })}/>
+          </div>
+          
+          {/* Password field */}
+          <div className="relative">
+            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
+              Senha {/*Password*/}
+              <span className= "text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+            </label>
+            <input onInput={areFieldsFilled} 
+              type={passwordVisible ? "text" : "password"} id="passwordField"
+              className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="**********"
+              {...register("password", { required: true })}/>
+            {/* Hide and show password button */}
+            <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
+                <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+            </button>
+          </div>
+          
+          { /*Forgot password button*/ }
+          <div className=" flex flex-col items-end text-right gap-3">
+            <span className="text-neutral-700 text-base font-normal font-['Montserrat']"></span>{" "}
+            <Link to="/forgotpassword" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
+          </div>
+          
+          <span className="h-12" /> {/* spacing */}  
+          
+          { /*Enter button*/ }
+          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+          disabled>
+            Entrar {/*Enter*/}
+          </button>
+
+          <span className="h-4" /> {/* spacing */}
+
+          { /*Link to Signup page*/ }
+          <div className="flex justify-center"> 
+            <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
+            <Link to="/signup" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+)};
 
 export default Login
-

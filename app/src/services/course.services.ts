@@ -48,7 +48,12 @@ const updateCoverImage = async ( id: any, token: string) => {
 
 // Get all courses
 const getAllCourses = async ( token: string) => {
-  return await axios.get(`${BACKEND_URL}/api/courses/`, { headers: { Authorization: `Bearer ${token}` } })
+  // Get token from local storage
+  const tokens = (String) (localStorage.getItem('token'));
+  // Decode token to get user id
+  const userId = JSON.parse(atob(tokens!.split('.')[1])).id;
+  
+  return await axios.get(`${BACKEND_URL}/api/courses/creator/` + userId, { headers: { Authorization: `Bearer ${token}`, token: tokens } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
