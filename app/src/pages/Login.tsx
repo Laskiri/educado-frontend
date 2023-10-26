@@ -123,7 +123,7 @@ return (
         {error && (
             <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
               <p className="font-bold text-lg">Error:</p>
-              <p className='text-base'>{error.response.data.msg}</p>
+              <p className='text-base'>{error?.response?.data?.msg}</p>
             </div>
         )}
       </div>

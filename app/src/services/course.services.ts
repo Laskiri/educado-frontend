@@ -12,6 +12,14 @@ export interface CourseInterface {
   estimatedHours: number;
 }
 
+const client = axios.create({
+  baseURL: 'http://localhost:8888/api/courses',
+  headers: {
+    "Content-Type": "application/json",
+    token: localStorage.getItem('token') || '',
+  },
+});
+
 /**
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
  */
@@ -53,7 +61,7 @@ const getAllCourses = async ( token: string) => {
   // Decode token to get user id
   const userId = JSON.parse(atob(tokens!.split('.')[1])).id;
   
-  return await axios.get(`${BACKEND_URL}/api/courses/creator/` + userId, { headers: { Authorization: `Bearer ${token}`, token: tokens } })
+  return await client.get(`/creator/` + userId, { headers: { token: tokens } })
     .then(res => {
       // Convert dates in course data to Date objects
       res.data.forEach((course: any) => {
