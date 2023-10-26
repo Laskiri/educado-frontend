@@ -2,7 +2,6 @@ import { Lecture } from "../interfaces/Lecture";
 import LectureDetail from "../components/LectureDetail";
 
 export const LectureArea = ({ lectures }: { lectures: Array<Lecture> }) => {
-  console.log("lectures are: ", lectures);
   return (
     <div className="flex-start flex-col space-y-4">
       {lectures.map((lecture, key) => {

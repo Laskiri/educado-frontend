@@ -44,8 +44,6 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
             answers: answers
         }
 
-        console.log(exerciseToSave);
-
         ExerciseServices.updateExercise(exerciseToSave, token, eid)
             .then(() => toast.success(`Successfully saved exercise`))
             .catch((e) => toast.error("Failed to save exercise due to error: " + e));

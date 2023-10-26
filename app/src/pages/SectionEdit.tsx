@@ -1,8 +1,9 @@
 import useSWR from 'swr';
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
+
 
 // Contexts
 import useToken from '../hooks/useToken';
@@ -56,12 +57,17 @@ const SectionEdit = () => {
     const [section, setSection] = useState<Section>();
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [lectures, setLectures] = useState<Lecture[]>([]);
+    const [contentCount, setContentCount] = useState(0);
+
+
 
     //Fetch section details
     const { data: sectionData, error: sectionError } = useSWR(
         token ? [sid, token] : null,
         SectionServices.getSectionDetail
     );
+
+   
 
     // Fetch the exercises data from the server.    
     const { data: exerciseData, error: exerciseError } = useSWR(
@@ -74,8 +80,7 @@ const SectionEdit = () => {
         token ? [`${BACKEND_URL}/api/lectures/getall/${sid}`, token] : null,
         LectureServices.getLectureDetail
     );
-    
-    console.log("lecture data is ", lectureData);
+
 
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
@@ -124,9 +129,17 @@ const deleteSection = async () => {
     if (!sectionData || !exerciseData || !lectureData) return <Loading/>;
 
     const cid =  sectionData.parentCourse;
+
+    // Limiter for the number of exercises and lectures to be < 10
+    const limit = sectionData.lectures.length + sectionData.exercises.length;
+    
+    
+
     return (
-        <Layout meta='Section edit page'>
-            <div className="w-full">
+        
+        <Layout meta='Section edit page' >
+            
+            <div className="w-full" >
                 {/** Course navigation */}
                 <div className="navbar bg-base-100">
                     <div className='flex-1'>
@@ -136,7 +149,8 @@ const deleteSection = async () => {
                 </div>
 
                 {/** Section details edit */}
-                <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6'>
+                
+                <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6' >
                     {/** Section update area */}
                     <form
                         onSubmit={handleSectionUpdate(onSubmit)}
@@ -174,32 +188,45 @@ const deleteSection = async () => {
                     {/** Lecture list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='lectures'>
                         <h1 className='text-xl font-medium'>Palestras</h1> {/** Lecture*/}
-                    {/*    <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} /> */}
+                        <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
                     </div>
 
 
 
                     {/** New lecture area */}
-                    <div className="navbar bg-none p-6">
-                         <CreateLecture />
+                    {limit <10 ?
+                    <div className="navbar bg-none p-6" >
                         
+                         <CreateLecture /> 
+                         
                     </div>
+                    :
+                    <div></div>
+                    }
 
                     <div className="divider"></div>
- 
+                    
+   
                     {/** Exercise list area */}
+                   
                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
                         <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
+                    
 
-          
+
+                    {limit  <10 ?
                     <div className="navbar bg-none p-6">
                         <div className="flex-1">
                             {/** Create new Exercise */}
                             {<CreateExercise sid={sid} cid={cid}/>}
                         </div>
                     </div>
+                    :
+                    <div></div>
+                    }
+
 
                 </div>
             </div>

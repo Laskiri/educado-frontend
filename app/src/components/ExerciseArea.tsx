@@ -2,7 +2,6 @@ import { Exercise } from "../interfaces/Exercise";
 import ExerciseDetail from "../pages/ExerciseDetail";
 
 export const ExerciseArea = ({ exercises }: { exercises: Array<Exercise> }) => {
-  console.log("exercises are in exercisearea: ", exercises);
   return (
     <div className="flex-start flex-col space-y-4">
       {exercises.map((exercise, key) => {
