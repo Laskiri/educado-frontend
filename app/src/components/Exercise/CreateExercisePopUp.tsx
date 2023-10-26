@@ -68,7 +68,6 @@ export const CreateExercise = ({sid}:Inputs) => {
             <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
                 <PencilSquareIcon className='w-5 h-5' />
                 <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
-                
             </label>
 
             <input type="checkbox" id="exercise-create" className="modal-toggle" />
@@ -76,7 +75,7 @@ export const CreateExercise = ({sid}:Inputs) => {
                 <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
                     <form onSubmit={handleExerciseSave(onExerciseSave)}
                     className="flex flex-col space-y-6 divide py-2">
-                        <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
+                        <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border">
                             <div className="flex flex-col form-control align-items justify-content w-full">
                                 <label className="label">
                                     <span className="label-text">Exercise title</span>
