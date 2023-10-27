@@ -48,7 +48,7 @@ export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string 
 
     }
     
-    const [charCount, setCharCount] = useState(0);
+    const [charCount, setCharCount] = useState(lecture.description.length);
 
     const onCharCountChange = (e: any) => {
         setCharCount(e.target.value.length);
