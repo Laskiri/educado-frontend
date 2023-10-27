@@ -56,7 +56,7 @@ export const CreateExercise = ({sid}:Inputs) => {
         }
 
         ExerciseServices.addExercise(exerciseToSave, token, sid)
-            .then(() => toast.success(`Successfully created exercise`))
+            .then(() => {toast.success(`Successfully created exercise`); window.location.reload();})
             .catch((e) => toast.error("Failed to create exercise due to error: " + e));
 
     }
