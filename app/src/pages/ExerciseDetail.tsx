@@ -45,8 +45,8 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
         }
 
         ExerciseServices.updateExercise(exerciseToSave, token, eid)
-            .then(() => toast.success(`Successfully saved exercise`))
-            .catch((e) => toast.error("Failed to save exercise due to error: " + e));
+            .then(() => toast.success(`Exercício salvo com sucesso`)) /** Successfully saved exercise */
+            .catch((e) => toast.error("Falha ao salvar o exercício devido a um erro: " + e));  /** Failed to save exercise due to an error: */
 
     }
 
@@ -64,7 +64,7 @@ const deleteExercise = async () => {
 
         if (status >= 200 && status <= 299) {
             window.location.reload();
-            toast.success("Exercise deleted")
+            toast.success("Exercício excluído") /** Exercise deleted */
         } else if (status >= 400 && status <= 599) {
             toast.error(`(${status}, ${response.statusText}) while attempting to delete exercise`)
         }

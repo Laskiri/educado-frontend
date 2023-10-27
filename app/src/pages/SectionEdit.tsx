@@ -158,7 +158,7 @@ const deleteSection = async () => {
                     >
                         {/** Section Title Field */}
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor='title'>Título</label>{/**Title */}
+                            <label htmlFor='title'>Título da seção</label>{/**Title of the section */}
                             <input type="text" defaultValue={section?.title || sectionData?.title} placeholder={sectionData?.title}
                                 className="form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("title", { required: true })}
@@ -168,7 +168,7 @@ const deleteSection = async () => {
  
                         {/** Section Description Field */}
                         <div className="flex flex-col space-y-2">
-                            <label htmlFor='description'>Descrição</label>{/** Description */}
+                            <label htmlFor='description'>Descrição da seção</label>{/** Description of the section */}
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("description", { required: false })}

@@ -43,8 +43,8 @@ export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string 
         
 
      LectureService.updateLecture(lectureToSave, token, lid)
-         .then(() => toast.success(`Successfully saved lecture`))
-         .catch((e) => toast.error("Failed to save exercise due to error: " + e));
+         .then(() => toast.success(`Aula salva com sucesso`)) /**  Successfully saved lecture*/
+         .catch((e) => toast.error("Falha ao salvar o exercício devido a um erro: " + e)); /**Failed to save lecture due to error: */
 
     }
 
