@@ -193,7 +193,7 @@ const deleteSection = async () => {
 
 
 
-                    {/** New lecture area */}
+                    {/**Create new lecture that disappear if there is 10 or more exercise and lectures*/}
                     {limit <10 ?
                     <div className="navbar bg-none p-6" >
                         
@@ -215,7 +215,7 @@ const deleteSection = async () => {
                     </div>
                     
 
-
+                    {/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
                     {limit  <10 ?
                     <div className="navbar bg-none p-6">
                         <div className="flex-1">

@@ -31,7 +31,7 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
     const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
     const onExerciseSave: SubmitHandler<any> = data => updateExercise(data);
 
-    /** Token doesnt work, reimplement when it token is implemented */
+/** Token doesnt work, reimplement when it token is implemented */
     //const token = useAuthStore(state => state.token);
     //const token = useToken();
     const token = "dummyToken";
