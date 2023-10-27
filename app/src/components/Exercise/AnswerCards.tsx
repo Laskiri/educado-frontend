@@ -31,10 +31,6 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
 
   const handleAnswerCardDelete = (index: number) => {
     try {
-      if (index < 2) {
-        throw Error('Deletion not allowed. An exercise needs at least 2 answers')
-      }
-
       const withOneLessAnswer = [...answers]
       withOneLessAnswer.splice(index, 1)
       setAnswers(withOneLessAnswer)
@@ -73,14 +69,18 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
 
                     <div className="flex items-center gap-8 w-full items-baseline">
 
+                        {index > 1 ?
                         <div className="form-control w-1/10 card-actions flex justify-around ">
 
-                            <button onClick={() => { handleAnswerCardDelete(index) }} className="btn btn-square btn-sm absolute top-2 right-2  ">
+                            <label onClick={() => { handleAnswerCardDelete(index) }} className="btn btn-square btn-sm absolute top-2 right-2  ">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 ">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M18 12H6" />
                                 </svg>
-                            </button>
+                            </label>
                         </div>
+                        :
+                        <div></div>
+                        }
 
                         <div 
                             className='w-1/3 flex flex-col space-y-2 text-left'>
