@@ -60,7 +60,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                 <div key={index} className="card w-full bg-base-100 border hover:shadow-xl">
                     <div className="card-body">
 
-                    <div className="flex items-center gap-8 w-full  items-baseline">
+                    <div className="flex items-center gap-8 w-full items-baseline">
 
                         <div className="form-control w-1/10 card-actions flex justify-around ">
 
@@ -93,7 +93,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         
                         <div className='flex flex-col space-y-2 text-left' >
                             <p>Responder</p> {/** Answer */}
-                            <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-8 resize-none"
+                            <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-18"
                                 placeholder="Algum texto de resposta"
                                 required={true}
                                 name="answer"
@@ -105,12 +105,11 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
 
                         <div className='flex flex-col space-y-2 text-left'>
                             <p>Opinião</p> {/** Feedback */}
-                            <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-8 resize-none"
+                            <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-18"
                                 placeholder="Algum texto de feedback"
                                 required={true}
                                 name="feedback"
                                 defaultValue={answer.feedback || ""}
-                                
                             >
                             </textarea>
                         </div>
