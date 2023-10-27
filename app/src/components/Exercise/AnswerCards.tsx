@@ -53,6 +53,17 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
         setAnswers(list);
         updateAnswers(list);
     }
+
+    const handleQuestionCardChange = (e: any, index: number) => {
+        const { value } = e.target;
+    
+        const list = [...answers];
+        list[index].feedback = value;
+    
+        setAnswers(list);
+        updateAnswers(list);
+    }
+
   return (
      
         <div className="">
@@ -110,6 +121,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                                 required={true}
                                 name="feedback"
                                 defaultValue={answer.feedback || ""}
+                                onChange={(e) => handleQuestionCardChange(e, index)}
                             >
                             </textarea>
                         </div>
