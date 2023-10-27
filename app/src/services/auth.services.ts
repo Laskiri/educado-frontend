@@ -2,26 +2,43 @@ import axios from "axios";
 
 // Interfaces
 import { CCApp } from "../interfaces/CCApp";
+
 import {BACKEND_URL} from "../helpers/environment"
 
 
 
 
+import { boolean } from "yup";
+
+
 export interface ContentCreatorApplication {
-  firstName: String;
-  lastName: String;
+  name: String;
   email: String;
-  motivation: String;
+  password: String;
 }
 
-// Authenticate with JWT login
+
 const postUserLogin = async (credentials: any) => {
+
   return await axios.post(`${BACKEND_URL}/auth/jwt`, credentials);
 };
 
 const postUserApplication = async (formData: ContentCreatorApplication) => {
   return await axios.post(`${BACKEND_URL}/api/applications`, formData);
 };
+
+  return await axios.post(`${BACKEND_URL}/api/credentials/login`, credentials);
+};
+
+
+const postUserSignup = async(formData: ContentCreatorApplication) => {
+  return await axios.post(`${BACKEND_URL}/api/credentials/signup`, formData)
+}
+
+/*  const postUserApplication = async (formData: ContentCreatorApplication) => {
+  return await axios.post("http://127.0.0.1:8888/api/applications", formData);
+}; (OLD CODE)*/
+
 
 const GetCCApplications = async (): Promise<CCApp.RootObject> => {
   return await axios.get(
@@ -50,7 +67,8 @@ const PostAcceptContentCreator = async (id: string): Promise<unknown> => {
 
 const AuthServices = Object.freeze({
   postUserLogin,
-  postUserApplication,
+  postUserSignup,
+  //postUserApplication,
   GetCCApplications,
   GetSingleUserApplication,
   PostDelcineContentCreator,
