@@ -72,10 +72,11 @@ export const CreateExercise = ({sid}:Inputs) => {
 
             <input type="checkbox" id="exercise-create" className="modal-toggle" />
             <div className="modal" id="exercise-create-modal">
-                <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
+                <div className="block bg-white bg-gradient-to-b rounded w-3/8">
+                <div className="p-5 bg-gradient-to-b from-primaryLight">
                     <form onSubmit={handleExerciseSave(onExerciseSave)}
                     className="flex flex-col space-y-6 divide py-2">
-                        <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border">
+                        <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border">
                             <div className="flex flex-col form-control align-items justify-content w-full">
                                 <label className="label">
                                     <span className="label-text">Exercise title</span>
@@ -128,6 +129,7 @@ export const CreateExercise = ({sid}:Inputs) => {
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </div>
 
