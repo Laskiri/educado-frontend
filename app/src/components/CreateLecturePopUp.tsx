@@ -105,8 +105,8 @@ export const CreateLecture = () => {
 
                         {/*Field to input the description of the lecture*/}
                         <div className="flex flex-col space-y-2 text-left">
-                            <label htmlFor='description'>Descrição ({charCount}/400)</label> {/*Description*/}
-                            <textarea maxlength="400" rows={4}  placeholder={"Insira uma justificativa para a alternativa estar correta ou errada"} defaultValue={""}
+                            <label htmlFor='description'>Descrição</label> {/*Description*/}{/*({charCount}/400)*/}
+                            <textarea /*maxLength={400}*/ rows={4}  placeholder={"Insira uma justificativa para a alternativa estar correta ou errada"} defaultValue={""}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 {...register("description", { required: true })}
                                 onChange={(e) => onCharCountChange(e)}

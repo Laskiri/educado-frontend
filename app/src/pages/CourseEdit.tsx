@@ -188,7 +188,7 @@ const CourseEdit = () => {
                     <div className='w-full max-w-5xl mx-auto bg-white rounded p-6'>
                         <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
                             <div className='flex flex-col space-y-6 divide'>
-                                <h1 className='text-xl font-medium'>Detalhes do curso</h1> {/* Course details */} 
+                                <h1 className='text-3xl text-center font-medium pb-6'>Curso</h1> {/* Course details */} 
 
                                
 

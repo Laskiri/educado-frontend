@@ -94,14 +94,15 @@ const deleteLecture = async () => {
                         className="input input-bordered w-full max-w-xs"
                         {...register("title", { required: true })}
                     />
-
+ 
                     <label className="label">
-                        <span className="label-text">Pergunta da aula ({charCount}/400)</span>{/*lecture question*/}
+                        <span className="label-text">Conteúdo da aula </span>{/*lecture question*/}{/*({charCount}/400)*/}
                     </label>
                     <textarea
+                        // maxLength={400}
                         className="textarea textarea-bordered h-24"
                         defaultValue={lecture.description}
-                        placeholder="Escreva a descrição da palestra aqui"  /** Write the lecture description here */
+                        placeholder="Adicione o conteúdo escrito dessa aula"  /** Write the lecture description here */
                         {...register("description", { required: true })}
                         onChange={(e) => onCharCountChange(e)}
                     ></textarea>

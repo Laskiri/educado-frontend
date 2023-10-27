@@ -6,7 +6,15 @@ import { BACKEND_URL } from '../helpers/environment';
 
 
 
-// Send the info to lecture service
+/**
+ * Add a new lecture
+ * 
+ * @param title Title of the lecture
+ * @param description Description of the lecture
+ * @param token Token of the user
+ * @param sid section ID
+ * @returns A complition message
+*/
 const addLecture = async (title: string, description: string, token: string, sid: string) => {
   return await axios.put(
     `${BACKEND_URL}/api/lectures/${sid}`,
@@ -20,7 +28,14 @@ const addLecture = async (title: string, description: string, token: string, sid
 };
 
 
-// Send the info to exercise service
+/**
+ * Update a lecture
+ * 
+ * @param props The lecture object
+ * @param token Token of the user
+ * @param lid Lecture ID
+ * @returns A complition message
+ */
 const updateLecture = async (props: any, token: string, lid: string ) => {
   if (lid == undefined){
     throw("Error: updateLecture input id is undefined")
@@ -33,7 +48,13 @@ const updateLecture = async (props: any, token: string, lid: string ) => {
   return response.data
 };
 
-// Get lecture detail
+/**
+ * Get a lecture detail
+ * 
+ * @param url The route to get the lecture details
+ * @param token Token of the user
+ * @returns A list of lectures
+ */
 const getLectureDetail = (url: string, token: string) => {
   return axios.get(url, 
   { headers: { Authorization: `Bearer ${token}` } })
@@ -45,7 +66,7 @@ const getLectureDetail = (url: string, token: string) => {
  * 
  * @param lid Lecture ID
  * @param token 
- * @returns 
+ * @returns A complition message
  */
 const deleteLecture = async (lid: string | undefined, token: string) => {
   if (lid == undefined){

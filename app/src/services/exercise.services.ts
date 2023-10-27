@@ -6,8 +6,14 @@ import { Exercise } from "../interfaces/Exercise";
 import { BACKEND_URL } from '../helpers/environment';
 
 /* Bearer is not implemnted in backend, due to content creators not existing yet */
-
-// Send the info to exercise service 
+ 
+/**
+ * Create a new exercise
+ * @param props The exercise object
+ * @param token The token of the user
+ * @param sid The section ID
+ * @returns A completion message 
+ * */
 const addExercise = async (props: any, token: string, sid: string | undefined) => {
   if (sid == undefined){
     throw("Error: addExercise input id is undefined")
@@ -19,7 +25,14 @@ const addExercise = async (props: any, token: string, sid: string | undefined) =
   );
 }
 
-// Send the info to exercise service
+/**
+ * Update a exercise
+ * 
+ * @param props The exercise object
+ * @param token The token of the user
+ * @param eid The exercise ID
+ * @returns A completion message 
+ */
 const updateExercise = async (props: any, token: string, eid: string ) => {
   if (eid == undefined){
     throw("Error: updateExercise input id is undefined")
@@ -33,7 +46,13 @@ const updateExercise = async (props: any, token: string, eid: string ) => {
 };
 
 
-// Get exercise detail
+/**
+ * Get all exercise details
+ * 
+ * @param url The route to get the exercise details
+ * @param token The token of the user
+ * @returns A list of exercises 
+ */
 const getExerciseDetail = (url: string, token: string) => {
   return axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.data)
@@ -43,8 +62,8 @@ const getExerciseDetail = (url: string, token: string) => {
  * Delete a exercise
  * 
  * @param id Exercise ID
- * @param token 
- * @returns 
+ * @param token The token of the user
+ * @returns A completion message
  */
 const deleteExercise = async (id: string | undefined, token: string) => {
   if (id == undefined){
@@ -56,7 +75,9 @@ const deleteExercise = async (id: string | undefined, token: string) => {
   );
 }
 
-
+/** 
+ * The exercise services
+ */
 const ExerciseServices = Object.freeze({
   getExerciseDetail,
   addExercise,

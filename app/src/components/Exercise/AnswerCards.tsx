@@ -117,7 +117,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         <div className='flex flex-col space-y-2 text-left'>
                             <p>Comentário </p> {/** Feedback */}
                             <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-18"
-                                placeholder="Insira uma justificativa para a alternativa estar correta ou errada"
+                                placeholder="Insira um comentário que justifique a resposta estar correta ou incorreta"
                                 required={true}
                                 name="feedback"
                                 defaultValue={answer.feedback || ""}

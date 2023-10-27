@@ -79,7 +79,7 @@ const deleteExercise = async () => {
             <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
                 <div className="flex flex-col form-control align-items justify-content w-full">
                     <label className="label">
-                        <span className="label-text">Exercise title</span>
+                        <span className="label-text">Título</span>
                     </label>
                     <input
                         type="text"
@@ -91,7 +91,7 @@ const deleteExercise = async () => {
                     />
 
                     <label className="label">
-                        <span className="label-text">Exercise question</span>
+                        <span className="label-text">Pergunta</span>
                     </label>
                     <textarea
                         className="textarea textarea-bordered h-24"
@@ -111,7 +111,7 @@ const deleteExercise = async () => {
             {/* Answers. Answers sometimes doesn't get loaded hence the conditional rendering ... */}
             {exercise.answers ?
                 <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
-                    <h1 className='text-md font-medium'>Answers</h1>
+                    <h1 className='text-md font-medium'>Respostas</h1>
                 {   <AnswerCards update={setAnswers} initialAnswers={exercise.answers} />}
                 </div>
                 :

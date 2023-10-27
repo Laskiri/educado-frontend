@@ -153,6 +153,8 @@ const deleteSection = async () => {
                 {/** Section details edit */}
                 
                 <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6' >
+                    <h1 className='text-3xl text-center font-medium pb-6'>Seção</h1>
+                    
                     {/** Section update area */}
                     <form
                         onSubmit={handleSectionUpdate(onSubmit)}
@@ -189,7 +191,7 @@ const deleteSection = async () => {
 
                     {/** Lecture list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='lectures'>
-                        <h1 className='text-xl font-medium'>Aulas</h1> {/** Lecture*/}
+                        <h1 className='text-xl  font-medium'>Aulas</h1> {/** Lecture*/}
                         <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
                     </div>
 
@@ -210,7 +212,6 @@ const deleteSection = async () => {
                     
    
                     {/** Exercise list area */}
-                   
                     <div className='flex flex-col space-y-4 mb-4' id='exercises'>
                         <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
