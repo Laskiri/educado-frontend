@@ -228,7 +228,7 @@ const CourseEdit = () => {
                                 {/* Field to select a level from a list of options */}
                                 <div className="flex flex-col space-y-2 text-left">
                                     <label htmlFor='level'>Nível</label> {/* Level */}
-                                    <select defaultValue={data.level}
+                                    <select defaultValue={data.difficulty}
                                         className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                         {...register('difficulty', { required: true })}
                                     >
