@@ -132,6 +132,8 @@ const deleteSection = async () => {
 
     // Limiter for the number of exercises and lectures to be < 10
     const limit = sectionData.lectures.length + sectionData.exercises.length;
+    // Limiter for the number of lectures to be < 7
+    const lectureLimit = sectionData.lectures.length;
     
     
 
@@ -187,14 +189,14 @@ const deleteSection = async () => {
 
                     {/** Lecture list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='lectures'>
-                        <h1 className='text-xl font-medium'>Palestras</h1> {/** Lecture*/}
+                        <h1 className='text-xl font-medium'>Aulas</h1> {/** Lecture*/}
                         <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
                     </div>
 
 
 
                     {/**Create new lecture that disappear if there is 10 or more exercise and lectures*/}
-                    {limit <10 ?
+                    {limit < 10 && lectureLimit < 7 ?
                     <div className="navbar bg-none p-6" >
                         
                          <CreateLecture /> 

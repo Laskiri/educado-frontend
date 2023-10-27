@@ -56,7 +56,7 @@ export const CreateExercise = ({sid}:Inputs) => {
         }
 
         ExerciseServices.addExercise(exerciseToSave, token, sid)
-            .then(() => {toast.success(`Successfully created exercise`); window.location.reload();})
+            .then(() => {toast.success(`Exercício criado com sucesso`); window.location.reload();}) /** Successfully created exercise */
             .catch((e) => toast.error("Failed to create exercise due to error: " + e));
 
     }
@@ -108,11 +108,11 @@ export const CreateExercise = ({sid}:Inputs) => {
                             {/* Answers. Answers sometimes doesn't get loaded hence the conditional rendering ... */}
                             {answers ?
                                 <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
-                                    <h1 className='text-md font-medium'>Answers</h1>
+                                    <h1 className='text-md font-medium'>Resposta</h1>  {/** Answer */}
                                 {   <AnswerCards update={setAnswers} initialAnswers={answers} />}
                                 </div>
                                 :
-                                <p>Loading ...</p>
+                                <p>Carregando ...</p>  /** Loading ... */
                             }
                             {/*Create and cancel buttons*/}
                             <div className='modal-action'>

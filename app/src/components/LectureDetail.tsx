@@ -47,6 +47,13 @@ export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string 
          .catch((e) => toast.error("Falha ao salvar o exercício devido a um erro: " + e)); /**Failed to save lecture due to error: */
 
     }
+    
+    const [charCount, setCharCount] = useState(0);
+
+    const onCharCountChange = (e: any) => {
+        setCharCount(e.target.value.length);
+    }
+
 
 /**
  * Delete lecture and reload page
@@ -78,24 +85,25 @@ const deleteLecture = async () => {
             <div className=" rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
                 <div className="flex flex-col form-control align-items justify-content w-full">
                     <label className="label">
-                        <span className="label-text">Título da palestra</span>{/* lecture title*/}
+                        <span className="label-text">Título da aulas</span>{/* lecture title*/}
                     </label>
                     <input
                         type="text"
                         defaultValue={lecture.title}
-                        placeholder="Lecture title goes here"
+                        placeholder="Título da aulas" /* lecture title */
                         className="input input-bordered w-full max-w-xs"
                         {...register("title", { required: true })}
                     />
 
                     <label className="label">
-                        <span className="label-text">Pergunta da aula</span>{/*lecture question*/}
+                        <span className="label-text">Pergunta da aula ({charCount}/400)</span>{/*lecture question*/}
                     </label>
                     <textarea
                         className="textarea textarea-bordered h-24"
                         defaultValue={lecture.description}
-                        placeholder="Write the description for the lecture here"
+                        placeholder="Escreva a descrição da palestra aqui"  /** Write the lecture description here */
                         {...register("description", { required: true })}
+                        onChange={(e) => onCharCountChange(e)}
                     ></textarea>
 
                 </div>
@@ -105,8 +113,8 @@ const deleteLecture = async () => {
 
             <div className="flex items-left w-full mt-8">
                 {/** Lecture save and delete button */}
-                <button type="button" onClick={deleteLecture} className='left-0 std-button bg-warning hover:bg-red-800' >Excluir palestra</button> {/** Delete lecture*/}
-                <button type='submit' className="std-button ml-auto py-2 px-4">Salvar palestra</button> {/** Save lecture */}
+                <button type="button" onClick={deleteLecture} className='left-0 std-button bg-warning hover:bg-red-800' >Excluir aulas</button> {/** Delete lecture*/}
+                <button type='submit' className="std-button ml-auto py-2 px-4">Salvar aulas</button> {/** Save lecture */}
             </div>
         </form>
 

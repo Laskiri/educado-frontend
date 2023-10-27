@@ -84,7 +84,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
 
                         <div 
                             className='w-1/3 flex flex-col space-y-2 text-left'>
-                            <p>A resposta é {answer.isCorrect ? <span> Correta</span> : <span> Incorreta</span>}</p>
+                            <p>A resposta está {answer.isCorrect ? <span> correta</span> : <span> incorreta</span>}</p>
                             <div className="form-control w-1/10">
                                 {/*Toggle True or False  */}
                                 <input type="checkbox" className="toggle" checked={answer.isCorrect} onChange={() => toggler(index)} />
@@ -103,9 +103,9 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         </div> */}
                         
                         <div className='flex flex-col space-y-2 text-left' >
-                            <p>Responder</p> {/** Answer */}
+                            <p>Resposta</p> {/** Answer */}
                             <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-18"
-                                placeholder="Algum texto de resposta"
+                                placeholder="Insira a alternativa"
                                 required={true}
                                 name="answer"
                                 defaultValue={answer.text || ""}
@@ -115,9 +115,9 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
                         </div>
 
                         <div className='flex flex-col space-y-2 text-left'>
-                            <p>Opinião</p> {/** Feedback */}
+                            <p>Comentário </p> {/** Feedback */}
                             <textarea className="form-control w-1/10 textarea textarea-success disabled:bg-white disabled:border-white h-18"
-                                placeholder="Algum texto de feedback"
+                                placeholder="Insira uma justificativa para a alternativa estar correta ou errada"
                                 required={true}
                                 name="feedback"
                                 defaultValue={answer.feedback || ""}
