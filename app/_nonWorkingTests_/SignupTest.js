@@ -2,10 +2,10 @@ import React from "react";
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from "react-router-dom"; 
 import { describe, it, expect, fireEvent } from '@jest/globals';
-import Signup from '../../../src/pages/Signup';
+import Signup from '../src/pages/Signup';
 import axios from 'axios';
 import MockAdapter from'axios-mock-adapter';
-import AuthServices from '../../../src/services/auth.services'
+import AuthServices from '../src/services/auth.services'
 
 jest.useFakeTimers();
 
