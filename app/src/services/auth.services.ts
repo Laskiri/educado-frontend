@@ -27,6 +27,7 @@ const postUserApplication = async (formData: ContentCreatorApplication) => {
   return await axios.post(`${BACKEND_URL}/api/applications`, formData);
 };
 
+const postUserCredentialsLogin = async (credentials: any) => {
   return await axios.post(`${BACKEND_URL}/api/credentials/login`, credentials);
 };
 
