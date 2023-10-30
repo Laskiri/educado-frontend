@@ -35,7 +35,7 @@ type Inputs = {
 
 export const CreateExercise = ({sid}:Inputs) => {
 
-    let TempAnswers = [{text: "", isCorrect: true, feedback: ""}, {text: "", isCorrect: false, feedback: ""}];
+    let TempAnswers = [{text: "", correct: true, feedback: ""}, {text: "", correct: false, feedback: ""}];
 
     const [answers, setAnswers] = useState<Answer[]>(TempAnswers);
 

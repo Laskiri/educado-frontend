@@ -8,11 +8,11 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
     const toggler = (index: number) => {
         const updatedAnswerCards = answers.map((answer, idx) => {
             if (idx === index) {
-                answer.isCorrect = true
+                answer.correct = true
             }
 
-            if (idx != index && answer.isCorrect) {
-                answer.isCorrect = false
+            if (idx != index && answer.correct) {
+                answer.correct = false
             }
             return answer
         });
@@ -23,7 +23,7 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
     }
     const handleAnswerCardAdd = () => {
 
-        const withAddedAnswer = answers.concat({text: "", isCorrect: false, feedback: ""});
+        const withAddedAnswer = answers.concat({text: "", correct: false, feedback: ""});
 
         setAnswers(withAddedAnswer);
         updateAnswers(withAddedAnswer);
@@ -84,10 +84,10 @@ function AnswerCards ({ update: updateAnswers, initialAnswers }: { update: any, 
 
                         <div 
                             className='w-1/3 flex flex-col space-y-2 text-left'>
-                            <p>A resposta está {answer.isCorrect ? <span> correta</span> : <span> incorreta</span>}</p>
+                            <p>A resposta está {answer.correct ? <span> correta</span> : <span> incorreta</span>}</p>
                             <div className="form-control w-1/10">
                                 {/*Toggle True or False  */}
-                                <input type="checkbox" className="toggle" checked={answer.isCorrect} onChange={() => toggler(index)} />
+                                <input type="checkbox" className="toggle" checked={answer.correct} onChange={() => toggler(index)} />
 
                             </div>
                         </div>
