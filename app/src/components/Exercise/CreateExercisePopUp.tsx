@@ -57,7 +57,7 @@ export const CreateExercise = ({sid}:Inputs) => {
 
         ExerciseServices.addExercise(exerciseToSave, token, sid)
             .then(() => {toast.success(`Exercício criado com sucesso`); window.location.reload();}) /** Successfully created exercise */
-            .catch((e) => toast.error("Failed to create exercise due to error: " + e));
+            .catch((e) => toast.error("Fracassado: " + e)); /* Failed */
 
     }
 
@@ -79,21 +79,21 @@ export const CreateExercise = ({sid}:Inputs) => {
                             <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border">
                                 <div className="flex flex-col form-control align-items justify-content w-full">
                                     <label className="label">
-                                        <span className="label-text">Exercise title</span>
+                                        <span className="label-text">Título</span> {/*Title*/}
                                     </label>
                                     <input
                                         type="text"
-                                        placeholder="Exercise title goes here"
+                                        placeholder="Adicione um título a este exercício" /*Add a title to this exercise*/
                                         className="input input-bordered w-full max-w-xs"
                                         {...register("title", { required: true })}
                                     />
 
                                     <label className="label">
-                                        <span className="label-text">Exercise question</span>
+                                        <span className="label-text">Pergunta</span> {/*Question*/}
                                     </label>
                                     <textarea
                                         className="textarea textarea-bordered h-24"
-                                        placeholder="Write the question for the exercise here"
+                                        placeholder="Adicione uma pergunta a este exercício" /*Add a question to this exercise*/
                                         {...register("question", { required: true })}
                                     ></textarea>
 
