@@ -77,7 +77,7 @@ const SectionEdit = () => {
     
     // Fetch the lecture data from the server.    
     const { data: lectureData, error: lectureError } = useSWR(
-        token ? [`${BACKEND_URL}/api/lectures/getall/${sid}`, token] : null,
+        token ? [sid, token] : null,
         LectureServices.getLectureDetail
     );
 
