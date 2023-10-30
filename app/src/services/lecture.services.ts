@@ -55,8 +55,8 @@ const updateLecture = async (props: any, token: string, lid: string ) => {
  * @param token Token of the user
  * @returns A list of lectures
  */
-const getLectureDetail = (sid: string, token: string) => {
-  return axios.get(`${BACKEND_URL}/api/lectures/${sid}`, 
+const getLectureDetail = (url: string, token: string) => {
+  return axios.get(url, 
   { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.data)
 }

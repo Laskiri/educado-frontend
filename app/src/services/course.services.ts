@@ -60,7 +60,7 @@ const updateCoverImage = async ( id: any, token: string) => {
  * @returns A list of all courses
  */
 const getAllCourses = async ( token: string) => {
-  return await axios.get(`${BACKEND_URL}/api/courses/eml/getall`, { headers: { Authorization: `Bearer ${token}` } })
+  return await axios.get(`${BACKEND_URL}/api/courses/`, { headers: { Authorization: `Bearer ${token}` } })
 
     .then(res => {
       // Convert dates in course data to Date objects

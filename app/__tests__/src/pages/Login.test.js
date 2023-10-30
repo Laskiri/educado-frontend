@@ -1,39 +1,50 @@
 import React from "react";
 import renderer from 'react-test-renderer';
 import { MemoryRouter } from "react-router-dom"; 
-import { describe, it, expect, fireEvent } from '@jest/globals';
-import Signup from '../src/pages/Signup';
+import { describe, it, expect } from '@jest/globals';
+import Login from '../../../src/pages/Login';
 import axios from 'axios';
 import MockAdapter from'axios-mock-adapter';
-import AuthServices from '../src/services/auth.services'
+import AuthServices from '../../../src/services/auth.services'
 
 jest.useFakeTimers();
 
-describe("Signup Component", () => {
+jest.mock('../../../src/services/course.services', () => ({
+    getAllCourses: jest.fn(async () => {
+        return mockedCourses;
+    }),
+}));
 
-it("can render signup page without errors", async () => {
+jest.mock('../../../src/helpers/environment', () => ({
+    BACKEND_URL: 'http://localhost:8888',
+    REFRESH_TOKEN_URL: 'http://localhost:8888/auth/refresh/jwt'
+}));
+
+describe("Login Component", () => {
+
+it("can render login page without errors", async () => {
     let component;
     await renderer.act(async () => {
         component = renderer.create(
         <MemoryRouter>
-            <Signup />
+            <Login />
         </MemoryRouter>
     )});
 
     expect(component.toJSON()).toMatchSnapshot();
 });
 
-it("can navigate to the welcome page and the login pages", async () => {
+it("can navigate to the welcome page and the signup pages", async () => {
     let component;
     await renderer.act(async () => {
         component = renderer.create(
         <MemoryRouter>
-            <Signup />
+            <Login />
         </MemoryRouter>
     )});
 
     const entrarButton = component.root.findAllByProps({ to: "/welcome" })[1];
-    const submitButton = component.root.findByProps({ to: "/login" });
+    const submitButton = component.root.findByProps({ to: "/signup" });
 
     expect(entrarButton && submitButton).toBeTruthy();
     });
@@ -43,35 +54,33 @@ it("can navigate to the welcome page and the login pages", async () => {
     await renderer.act(async () => {
         component = renderer.create(
         <MemoryRouter>
-            <Signup />
+            <Login />
         </MemoryRouter>
     )});
 
     const mockAxios = new MockAdapter(axios);
 
-    mockAxios.onPost('http://127.0.0.1:8888/api/credentials/signup').reply(201);
+    mockAxios.onPost('http://127.0.0.1:8888/api/credentials/login').reply(202);
 
     const formData = {
-        name: "Name",
         email: "mail@HotMail.com",
         password: "wordOfPass",
       };
 
-    AuthServices.postUserSignup({ formData });
+    AuthServices.postUserLogin({ formData });
 
     expect(mockAxios.history.post.length).toBe(1); 
   });
-
   it("can disable the submit button of the form is invalid", async () => {
     let component;
     await renderer.act(async () => {
         component = renderer.create(
         <MemoryRouter>
-            <Signup />
+            <Login />
         </MemoryRouter>
     )});
 
-    const submitButton = component.root.findByProps({id: "submitSignupButton"})
+    const submitButton = component.root.findByProps({id: "submitLoginButton"})
     expect(submitButton.props.disabled).toBe(true);
   });
 
@@ -80,7 +89,7 @@ it("can navigate to the welcome page and the login pages", async () => {
     await renderer.act(async () => {
         component = renderer.create(
         <MemoryRouter>
-            <Signup />
+            <Login />
         </MemoryRouter>
     )});
     const passwordField = component.root.findByProps({id: "passwordField"});

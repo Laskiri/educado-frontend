@@ -71,13 +71,13 @@ const SectionEdit = () => {
 
     // Fetch the exercises data from the server.    
     const { data: exerciseData, error: exerciseError } = useSWR(
-        token ? [`${BACKEND_URL}/api/exercises/getall/${sid}`, token] : null,
+        token ? [`${BACKEND_URL}/api/exercises/section/${sid}`, token] : null,
         ExerciseServices.getExerciseDetail
     );
     
     // Fetch the lecture data from the server.    
     const { data: lectureData, error: lectureError } = useSWR(
-        token ? [sid, token] : null,
+        token ? [`${BACKEND_URL}/api/lectures/${sid}`, token] : null,
         LectureServices.getLectureDetail
     );
 
