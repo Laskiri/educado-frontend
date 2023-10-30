@@ -20,7 +20,7 @@ export interface ContentCreatorApplication {
 
 const postUserLogin = async (credentials: any) => {
 
-  return await axios.post(`${BACKEND_URL}/auth/jwt`, credentials);
+  return await axios.post(`${BACKEND_URL}/api/credentials/login`, credentials);
 };
 
 const postUserApplication = async (formData: ContentCreatorApplication) => {
