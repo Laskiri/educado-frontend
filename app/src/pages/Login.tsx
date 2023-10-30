@@ -58,7 +58,7 @@ const Login = () => {
           .then((res) => {
               if(res.status == 202){
                   localStorage.setItem("token", res.data.accessToken);
-                  navigate("/profile");
+                  navigate("/courses");
                   
                   //setRefresh(res.data.data.refreshToken); (OLD CODE, MIGHT USE LATER)
               }
