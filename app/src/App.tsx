@@ -48,7 +48,7 @@ function App() {
     },
     {
       path: "/login",
-      element: <NonProtectedRoute><Login /></NonProtectedRoute>,
+      element: <Login />,
     },
     {
       path: "/signup",
