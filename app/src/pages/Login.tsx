@@ -85,6 +85,7 @@ const Login = () => {
     
     
     function areFieldsFilled() {
+      return;
       const inputloginEmail = document.getElementById('emailField') as HTMLInputElement;
       const inputloginPass = document.getElementById('passwordField') as HTMLInputElement;
       
@@ -204,8 +205,7 @@ return (
           <span className="h-12" /> {/* spacing */}  
           
           { /*Enter button*/ }
-          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
-          disabled>
+          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']">
             Entrar {/*Enter*/}
           </button>
 
