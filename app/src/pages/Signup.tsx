@@ -186,7 +186,102 @@ return (
   </h1>
 
     { /*Submit form, i.e. fields to write name, email, and password*/ }
-    
+    <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col">
+
+      { /*Name Field*/ }
+      <div className="relative">
+      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="usernameField"> 
+          Nome {/*Name*/}
+          <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+      </label>
+      <input onInput={areFieldsFilled}
+        type="text" id="usernameField"
+        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="Nome Sobrenome"
+        {...register("name", { required: "digite seu nome completo." })}/>
+      </div>
+
+      { /*Email Field*/ }
+      <div className="relative">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="usernameField">
+        Email 
+        <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
+      </label>
+      <input onInput={areFieldsFilled}
+        type="email" id="emailField"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="user@email.com"
+        {...register("email", { required: " introduza o seu e-mail." })}/>
+      </div>
+
+      { /*Password Field*/ }
+      <div className="relative">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="passwordField">
+        Senha {/*Password*/}
+        <span className=" text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
+      </label>
+      <input onInput={areFieldsFilled}
+          type={passwordVisible ? "text" : "password"} id="passwordField"
+          className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="**********"
+          {...register("password", { required: "insira a senha." })} onChange={handlePasswordChange}/>
+      <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibility()} id="hidePasswordIcon">
+        <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+      </button>
+      </div>
+
+
+      { /*Password Checks*/ }
+      <div className="px-3">
+        <div className="items-stretch text-[#A1ACB2] text-xs font-normal font-['Montserrat'] mt-2">
+          {passwordCheck1 ? (
+            <Icon className=" left-20 float-left" path={mdiCheckBold} size={0.55} color=" green" />
+          ) : null}
+          &bull; Mínimo 8 caracteres {/*Minimum 8 characters*/}
+        </div >
+
+        <div className="text-[#A1ACB2] text-xs font-normal font-['Montserrat'] items-stretch">
+          {passwordCheck2 ? (
+            <Icon className="left-20 float-left" path={mdiCheckBold} size={0.55} color="green" />
+          ) : null}
+          &bull; Conter pelo menos uma letra {/*Contain at least one letter*/}
+        </div>
+      </div>
+
+
+      { /*Confirm Password Field */ }
+      <div className="relative">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-6" htmlFor="passwordFieldRepeat">
+        Confirmar Senha {/*Confirm Password*/}
+        <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
+      </label>
+      <input onInput={areFieldsFilled}
+        type={passwordVisibleRepeat ? "text" : "password"} id="passwordFieldRepeat"
+        placeholder="********** "
+        className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        {...register("confirmPassword", { required: "insira a senha." })}/>
+      <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibilityRepeat()}>
+        <Icon path={passwordVisibleRepeat ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+      </button>
+      </div>
+
+        
+      <span className="h-10" /> {/* spacing */}  
+      
+        { /*Enter button*/ }
+        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#5ECCE9] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+        disabled>
+            Cadastrar {/*Register*/} 
+        </button>
+
+      <span className="h-2" /> {/* spacing */}  
+      
+        { /*Link to Login page*/ }
+        <div className="flex justify-center"> 
+          <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Já possui conta? {/*Already have an account?*/}  </span> 
+          <Link to="/login" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Entre agora {/*Get in now*/} </Link>
+        </div>
+      </form>
     </div>
   </div>
 </div>
