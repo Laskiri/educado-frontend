@@ -79,7 +79,7 @@ export const CreateLecture = () => {
             {/* The button to open create lecture modal */}
             <label htmlFor="lecture-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
                 <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar nova palestra</p>
+                <p className='font-normal' >Criar nova aula</p>
             </label>
             
             {/* Put this part before </body> tag */}
@@ -88,14 +88,14 @@ export const CreateLecture = () => {
             {/*Text shown in the top of create lecture*/}
             <div className="modal" id="lecture-create-modal">
                 <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
-                    <h3 className="font-bold text-lg">Crie sua nova palestra</h3> {/*Create your new lecture!*/}
-                    <p className="py-4">Preencha o formulário e inicie sua nova palestra!</p> {/*Fill out the form and start your new lecture!*/}
+                    <h3 className="font-bold text-lg">Crie sua nova aula</h3> {/*Create your new lecture!*/}
+                    <p className="py-4">Preencha o formulário e inicie sua nova aula!</p> {/*Fill out the form and start your new lecture!*/}
                    
                     {/*Field to input the title of the new lecture*/}
                     <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
                         <div className="flex flex-col space-y-2 text-left">
                             <label htmlFor='title'>Título</label> {/*Title*/}
-                            <input type="text" placeholder={"Insira a alternativa"} defaultValue={""}
+                            <input type="text" placeholder={"Insira o título da aula"} defaultValue={""}
                                 className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 {...register("title", { required: true })}
                             />
@@ -106,7 +106,7 @@ export const CreateLecture = () => {
                         {/*Field to input the description of the lecture*/}
                         <div className="flex flex-col space-y-2 text-left">
                             <label htmlFor='description'>Descrição</label> {/*Description*/}{/*({charCount}/400)*/}
-                            <textarea /*maxLength={400}*/ rows={4}  placeholder={"Insira uma justificativa para a alternativa estar correta ou errada"} defaultValue={""}
+                            <textarea /*maxLength={400}*/ rows={4}  placeholder={"Insira o conteúdo escrito dessa aula"} defaultValue={""}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 {...register("description", { required: true })}
                                 onChange={(e) => onCharCountChange(e)}

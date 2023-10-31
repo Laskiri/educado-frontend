@@ -113,7 +113,7 @@ const CourseEdit = () => {
 
     // Update course details
     CourseServices.updateCourseDetail(changes, id/*, token */)
-      .then(res => toast.success('Updated course'))
+      .then(res => toast.success('Curso atualizado'))
       .catch(err => toast.error(err))
     }
 
