@@ -2,8 +2,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
 
 // static
+
+import Logo from "../assets/educado.png"
 import LogoBlack from "../assets/educado-logo-black.svg"
 import LogoWhite from "../assets/educado-logo-white.svg"
+
 
 // icons
 import {
@@ -12,8 +15,14 @@ import {
 } from "@heroicons/react/24/outline";
 
 export const Navbar = () => {
-    const clearToken = useAuthStore(state => state.clearToken);
     const navigate = useNavigate();
+
+    //logout handler
+    const clearToken = useAuthStore(state => state.clearToken);
+    const logout = () => {
+        clearToken();
+        localStorage.removeItem('token');
+    }
 
     // List to generete dropdown li's 
     const links = [
@@ -21,7 +30,7 @@ export const Navbar = () => {
     ]
 
     return (
-        <div className="navbar bg-base-100 border-b dark:text-white">
+        <div className="navbar bg-base-100 border-b">
             <div className="navbar-start">
                 <div className="dropdown">
                     <label tabIndex={0} className="btn btn-ghost lg:hidden">
@@ -42,8 +51,7 @@ export const Navbar = () => {
                 </div>
 
                 <Link to="/" className="flex flex-shrink-0 items-center space-x-3 normal-case text-xl" >
-                    <img src={LogoBlack} alt="ecs-logo" className='h-6 dark:hidden'/>
-                    <img src={LogoWhite} alt="ecs-logo" className='h-6 light:hidden'/>
+                    <img src={LogoBlack} alt="ecs-logo" className='h-6'/>
                 </Link>
             </div>
 
@@ -79,7 +87,9 @@ export const Navbar = () => {
                         </label>
                         <ul tabIndex={0} className="menu dropdown-content p-2 shadow bg-base-100 rounded-box w-52 mt-4">
                             {links.map((route, key) => <li key={key}><Link to={route.path}>{route.desc}</Link></li>)}
-                            <li><a onClick={() => { clearToken; navigate("/login") }} className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white">Sign out</a></li>
+                            <li>
+                                <Link to={"/login"} onClick={logout} className="w-full px-4 py-2 text-left hover:bg-blue-500 hover:text-white">Sign out</Link>
+                            </li>
                         </ul>
                     </div>
                 </button>

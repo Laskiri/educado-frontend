@@ -12,7 +12,6 @@ export interface Data {
     coverImg:    string;
     description: string;
     author:      Author;
-    published:   boolean;
     modifiedAt:  Date;
     createdAt:   Date;
     __v:         number;
