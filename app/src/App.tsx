@@ -24,10 +24,12 @@ function App() {
     { // Homepage is left unused
       path: "/",
       element: <Navigate to={"/welcome"} />,
+      errorElement: <NotFound />
     },
     {
       path: "/courses",
       element: <ProtectedRoute><Courses /></ProtectedRoute>,
+      errorElement: <NotFound />,
     },
     {
       path: "/courses/edit/:id",
@@ -49,10 +51,12 @@ function App() {
     {
       path: "/login",
       element: <NonProtectedRoute><Login /></NonProtectedRoute>,
+      errorElement: <NotFound />
     },
     {
       path: "/signup",
       element: <NonProtectedRoute><Signup /></NonProtectedRoute>,
+      errorElement: <NotFound />
     },
     {
       path: "/educado_admin",
