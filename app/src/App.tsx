@@ -24,7 +24,7 @@ function App() {
     { // Homepage is left unused
       path: "/",
       element: <Navigate to={"/welcome"} />,
-      errorElement: <NotFound />
+      // errorElement: <NotFound />
     },
     {
       path: "/courses",
