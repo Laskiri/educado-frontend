@@ -190,7 +190,9 @@ return (
               placeholder="**********"
               {...register("password", { required: true })}/>
             {/* Hide and show password button */}
-            
+            <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibility()} id="hidePasswordIcon">
+                <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+            </button>
           </div>
           
           { /*Forgot password button*/ }
@@ -202,6 +204,10 @@ return (
           <span className="h-12" /> {/* spacing */}  
           
           { /*Enter button*/ }
+          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+          disabled>
+            Entrar {/*Enter*/}
+          </button>
 
           <span className="h-4" /> {/* spacing */}
 
