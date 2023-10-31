@@ -225,7 +225,7 @@ return (
           className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
           {...register("password", { required: "insira a senha." })} onChange={handlePasswordChange}/>
-      <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
+      <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibility()} id="hidePasswordIcon">
         <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
       </button>
       </div>
@@ -260,7 +260,7 @@ return (
         placeholder="********** "
         className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         {...register("confirmPassword", { required: "insira a senha." })}/>
-      <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibilityRepeat}>
+      <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibilityRepeat()}>
         <Icon path={passwordVisibleRepeat ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
       </button>
       </div>
