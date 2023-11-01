@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 import background from "../assets/background.jpg"
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
