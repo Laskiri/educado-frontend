@@ -62,6 +62,7 @@ const Login = () => {
           .then((res) => {
               if(res.status == 202){
                   localStorage.setItem("token", res.data.accessToken);
+                  localStorage.setItem("id", res.data.userInfo.id);
                   setUserInfo(res.data.userInfo);
                   navigate("/courses");
                   
