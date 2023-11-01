@@ -65,6 +65,7 @@ const Login = () => {
               
           })
           .catch(err => { setError(err); console.log(err)
+            if (!err.response.data){setErrorMessage("Database Connection Failed")}
             switch (err.response.data.error.code){
               case "E0101": //Invalid Email 
                   setErrorMessage("O email fornecido não está associado a uma conta") //The provided email is not associated with an account
