@@ -5,14 +5,23 @@ import { BACKEND_URL } from "../helpers/environment";
 export async function deleteAccount() {
     const creatorId = localStorage.getItem("id");
 
-    return await axios.delete(
-        `${BACKEND_URL}/profile/delete/${creatorId}`
-    ).then(response => {
-        console.log("Creator deleted successfully: " + response.data)
-    })
-        .catch(error => {
-            console.log("Error deleting cretor: " + error.message)
-        })
+    if(creatorId == null) {
+        throw new Error("No creatorId found in localStorage");
+    }
+
+    try {
+      const res = await axios.delete(
+        `${BACKEND_URL}/profile/delete/${creatorId}`);
+
+      return res.data;
+
+    } catch (error: any) {
+        if (error.response?.data != null) {
+            throw error.response.data;
+        } else {
+            throw error;
+        }
+    }
 }
 
 const getPublicProfileInfo = (profileId: string, token: string | null | undefined) => {

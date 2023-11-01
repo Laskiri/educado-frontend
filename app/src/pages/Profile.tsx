@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from 'react-toastify';
-import { PopUpDelete } from '../components/profile/PopUpDelete';
+import PopUpDelete from '../components/profile/PopUpDelete';
 
 // Contexts
 import useAuthStore from '../contexts/useAuthStore';
@@ -261,14 +261,15 @@ const Profile = () => {
                                 </div>
                             </form>
                             <div className="inline-flex justify-center md:grid md:grid-cols-3 md:gap-6">
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Delete account?
-
-                                    <button
-                                        className='h-8 px-4 m-2 text-sm bg-red-500 hover:bg-red-500 text-white font-bold py-2 px-4 rounded'
-                                        onClick={openModal}>Delete</button>
-                                    {isModalOpen && <PopUpDelete />}
-                                </label>
+                                <a onClick={openModal} className='font-medium text-red-500 underline hover:text-red-600'
+                                    >
+                                    Deletar conta
+                                    </a>
+                                {isModalOpen && (
+                                <PopUpDelete
+                                    popupOpen={isModalOpen}
+                                    onTogglePopup={() => setIsModalOpen(!isModalOpen)}
+                                />)}
                             </div>
                         </div>
                     </div>
