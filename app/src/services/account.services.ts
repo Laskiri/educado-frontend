@@ -2,7 +2,7 @@ import axios from "axios";
 
 import { BACKEND_URL } from "../helpers/environment";
 
-export async function deleteAccount() {
+const deleteAccount = async () => {
     const creatorId = localStorage.getItem("id");
 
     if(creatorId == null) {
@@ -59,7 +59,8 @@ const AccountServices = {
     getPublicProfileInfo,
     getProfileInfo,
     updateProfileInfo,
-    changePassword
+    changePassword,
+    deleteAccount
 };
 
 

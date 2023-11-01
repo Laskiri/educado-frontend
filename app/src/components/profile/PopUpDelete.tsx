@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import * as api from '../../services/account.services';
 import { useNavigate } from 'react-router-dom';
+import AccountServices from '../../services/account.services';
 
 interface PopUpDeleteProps {
   popupOpen: boolean;
@@ -18,7 +18,7 @@ const PopUpDelete: React.FC<PopUpDeleteProps> = ({ popupOpen, onTogglePopup }) =
 
 
   const handleDelete = () => {
-    api.deleteAccount();
+    AccountServices.deleteAccount();
     navigate('/welcome');
   };
 
