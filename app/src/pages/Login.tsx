@@ -6,14 +6,17 @@ import Icon from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
-import logo from '../assets/logo.png'
-import educado from '../assets/educado.png'
+
 
 // Interfaces
 import { LoginReponseError } from "../interfaces/LoginReponseError"
 
 // Services
 import AuthServices from '../services/auth.services';
+
+// Helper functions
+import { setUserInfo } from '../helpers/userInfo';
+
 //import useAuthStore from '../contexts/useAuthStore';
 
 // Interface
@@ -37,24 +40,46 @@ const Login = () => {
     // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    // Function for success on form-submit, i.e. the function to be executed upon recieving login-credentials, correct or otherwise
+    //Variable determining the error message
+    const [errorMessage, newErrorMessage] = useState('');
+    let setErrorMessage = (errMessage: string) => {
+      newErrorMessage(errMessage);
+    };
+
+    /**
+    * OnSubmit function for Login.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    * Upon receiving a success response, the token recieved from the backend will be set in the local storage.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      // Send data body to function postUserLogin in app/src/services/auth.services.ts
       AuthServices.postUserLogin({
           email: data.email,
           password: data.password,})
-          // Handling of the response from the backend
           .then((res) => {
               if(res.status == 202){
                   localStorage.setItem("token", res.data.accessToken);
-                  localStorage.setItem("id", res.data._id);
-                  navigate("/profile");
+                  setUserInfo(res.data.userInfo);
+                  navigate("/courses");
                   
                   //setRefresh(res.data.data.refreshToken); (OLD CODE, MIGHT USE LATER)
               }
               
           })
-          .catch(err => { setError(err); console.log(err)});
+          .catch(err => { setError(err); console.log(err)
+            switch (err.response.data.error.code){
+              case "E0101": //Invalid Email 
+                  setErrorMessage("O email fornecido não está associado a uma conta") //The provided email is not associated with an account
+                  break;
+  
+              case "E0105": //Invalid Password
+                  setErrorMessage("Senha Incorreta") //Wrong Password
+                  break;
+              default: console.log(error);
+          }});
     };
     
     // Variable determining whether or not the password is visible
@@ -93,7 +118,7 @@ return (
   <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
     <div className="navbar-start">
       <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-        <img src={logo} alt="logo" className="w-[24.43px] h-6" /> <img src={educado} alt="educado" className="h-6" />
+        <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src='/educado.svg' alt="educado" className="h-6" />
       </Link>
     </div>
   </div>
@@ -118,8 +143,8 @@ return (
       <div className="fixed right-0 top-[4rem]">
         {error && (
             <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
-              <p className="font-bold text-lg">Error:</p>
-              <p className='text-base'>{error.response.data.msg}</p>
+              <p className="font-bold text-lg">Error</p>
+              <p className='text-base'>{errorMessage}</p>
             </div>
         )}
       </div>

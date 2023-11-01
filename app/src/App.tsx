@@ -36,7 +36,7 @@ function App() {
       element: <ProtectedRoute><CourseEdit /></ProtectedRoute>
     },
     {
-      path: "/courses/edit/:cid/sections/:sid",
+      path: "/sections/:sid",
       element: <ProtectedRoute><SectionEdit /></ProtectedRoute>
     },
     {

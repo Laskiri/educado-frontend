@@ -1,31 +1,38 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
+import { useSWRConfig } from 'swr';
+
 // Hooks 
 import useToken from '../../hooks/useToken';
 
 // Services
-import CourseServices from '../../services/course.services';
+import SectionServices from '../../services/section.services'
 
 // Icons
 import { PlusIcon } from '@heroicons/react/24/outline';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
-// Interfaces
-type Inputs = {
+ type Inputs = {
     title: string
 }
 
 export const SectionForm = () => {
     // Query Params
-    const token = useToken();
+    const token = "test";
+    //const token = useToken();
     const { id } = useParams();
-   // const token = useAuthStore(state => state.token);
+    const navigate = useNavigate();
+    
+
+    //const token = useAuthStore(state => state.token);
 
     // React useForm setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        CourseServices.createSection(data, id, token)
-            .then(res => console.log(res))
+        SectionServices.createSection(data, id, token)
+            .then(res => {
+               navigate(`/sections/${res.data._id}`, { replace: true })
+            })
             .catch(err => console.log(err));
     }
 
@@ -39,8 +46,8 @@ export const SectionForm = () => {
                 </div>
 
                 <div className='flex justify-between w-full space-x-2 ml-2'>
-                    <label htmlFor='title' className='hidden'>Add New</label>
-                    <input type="text" placeholder='Add new'
+                    <label htmlFor='title' className='hidden'>Adicionar novo</label> {/* Add new */}
+                    <input type="text" placeholder='Adicionar novo'
                         className="form-field focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-transparent border-0 w-full shadow-none"
                         {...register("title", { required: true })}
                     />

@@ -5,11 +5,11 @@ import { useState } from 'react' ;
 import * as Yup from 'yup';
 import Icon from '@mdi/react';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold } from '@mdi/js';
-
-import background from "../assets/background.jpg"
 import Carousel from "../components/archive/Carousel";
-import logo from '../assets/logo.png'
-import educado from '../assets/educado.png'
+
+// Static assets
+import background from "../assets/background.jpg"
+
 
 // interfaces
 import { LoginReponseError } from "../interfaces/LoginReponseError"
@@ -50,16 +50,37 @@ const Signup = () => {
     resolver: yupResolver(SignupSchema)
   });
 
+  //Variable determining the error message
+  const [errorMessage, newErrorMessage] = useState('');
+  let setErrorMessage = (errMessage: string) => {
+    newErrorMessage(errMessage);
+  };
   
-  // Function for success on form-submit, i.e. the function to be executed upon recieving new credentials
+  /**
+    * OnSubmit function for Signup.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.name Name of the Content Creator
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
   const onSubmit = async (data: any) => {
     setIsFormValid(Object.keys(errors).length === 0);
     await AuthServices.postUserSignup({
       name: data.name,
       email: data.email,
       password: data.password,
-    });
-    navigate('/login')
+    }).then(() => {
+      navigate('/login')
+    })
+    .catch(err => { setError(err); console.log(err)
+      switch (err.response.data.error.code){
+        case "E0201": //User with the provided email already exists
+            setErrorMessage("Já existe um usuário com o email fornecido") //User with the provided email already exists
+            break;
+        default: console.log(error);
+    }});
 
   };
 
@@ -85,7 +106,7 @@ const Signup = () => {
     const isCheck1Fulfilled = password.length >= 8;
     setPasswordCheck1(isCheck1Fulfilled);
   
-    const isCheck2Fulfilled = /[a-aZ-z]/.test(password);
+    const isCheck2Fulfilled = /.*\p{L}.*$/u.test(password);
     setPasswordCheck2(isCheck2Fulfilled);
   };
 
@@ -116,7 +137,7 @@ return (
   <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
     <div className="navbar-start">
       <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-        <img src={logo} alt="logo" className="w-[24.43px] h-6" /> <img src={educado} alt="educado" className="h-6" />
+        <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src= '/educado.svg' alt="educado" className="h-6" />
       </Link>
     </div>
   </div>
@@ -137,11 +158,11 @@ return (
   <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
     
   { /*Error message for when email or password is incorrect*/ }
-    <div className=" right-0 top-[4rem]">
+    <div className="fixed right-0 top-[4rem]">
       {error && (
           <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
-            <p className="font-bold text-lg">Error:</p>
-            <p className='text-base'>{error.response.data.msg}</p>
+            <p className="font-bold text-lg">Error</p>
+            <p className='text-base'>{errorMessage}</p>
           </div>
       )}
     </div>
