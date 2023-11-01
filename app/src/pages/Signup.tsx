@@ -3,7 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react' ;
 import * as Yup from 'yup';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold } from '@mdi/js';
 import Carousel from "../components/archive/Carousel";
 
