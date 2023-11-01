@@ -20,7 +20,7 @@ export interface Course {
   rating:            number;
   numOfSubscriptions:   number;
   dateUpdated:       Date;
-  dateCreatde:       Date;
+  dateCreated:       Date;
   sections:          Section[];
   __v:               number;
 }
