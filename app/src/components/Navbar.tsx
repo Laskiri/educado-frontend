@@ -21,7 +21,6 @@ export const Navbar = () => {
     const clearToken = useAuthStore(state => state.clearToken);
     const logout = () => {
         clearToken();
-        localStorage.removeItem('token');
     }
 
     // List to generete dropdown li's 

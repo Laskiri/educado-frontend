@@ -16,8 +16,7 @@ import AuthServices from '../services/auth.services';
 
 // Helper functions
 import { setUserInfo } from '../helpers/userInfo';
-
-//import useAuthStore from '../contexts/useAuthStore';
+import useAuthStore from '../contexts/useAuthStore';
 
 // Interface
 type Inputs = {
@@ -29,13 +28,12 @@ const Login = () => {
     // Location (OLD CODE)
     const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
     
-    // states  (OLD CODE, MIGHT USE LATER)
-    //const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
-    //const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
+    // Token states
+    const setToken = useAuthStore(state => state.setToken); // zustand store for key storage
+    const getToken = useAuthStore(state => state.getToken); // zustand get for key storage
 
     // Navigation hook
     const navigate = useNavigate(); 
-
 
     // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
@@ -61,11 +59,12 @@ const Login = () => {
           password: data.password,})
           .then((res) => {
               if(res.status == 202){
-                  localStorage.setItem("token", res.data.accessToken);
+                  setToken(res.data.accessToken);
+                  getToken().then(value => {console.log(value)})
+
                   setUserInfo(res.data.userInfo);
                   navigate("/courses");
-                  
-                  //setRefresh(res.data.data.refreshToken); (OLD CODE, MIGHT USE LATER)
+                  localStorage.setItem("token", res.data.accessToken);
               }
               
           })

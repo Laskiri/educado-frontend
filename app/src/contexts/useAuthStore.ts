@@ -10,8 +10,10 @@ interface AuthState {
     setToken: (input: string) => void,
     setRefresh: (input: string) => void,
     clearToken: () => void,
-    getToken: () => Promise<string>
+    getToken: () => Promise<string>,
 }
+
+
 
 const useAuthStore = create<AuthState>((set, get) => ({
     token: null,
