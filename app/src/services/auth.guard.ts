@@ -9,7 +9,8 @@ export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();
   const getToken = useAuthStore(state => state.getToken);
 
-  const hasToken = getToken().then(function(result) {return result});
+  let hasToken = getToken().then((result) => {result});
+  
   console.log(hasToken)
   
   //If the user has a token, they can access protected routes, such as /profile, /courses etc.
