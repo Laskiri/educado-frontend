@@ -1,18 +1,17 @@
 import React from "react";
+import { useState } from 'react'
 import { useNavigate } from "react-router-dom";
-
+import jwt from 'jwt-decode';
 import useAuthStore from "../contexts/useAuthStore";
+import { decode } from "jsonwebtoken";
 
 
 //This service decides in what cases a route is accessible to the user
 export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();
-  const getToken = useAuthStore(state => state.getToken);
+  const getToken = useAuthStore(state => state.token);
 
-  let hasToken = getToken().then((result) => {result});
-  
-  console.log(hasToken)
-  
+  console.log(getToken)
   //If the user has a token, they can access protected routes, such as /profile, /courses etc.
   if (0) { 
     console.log("Token found")

@@ -13,8 +13,6 @@ interface AuthState {
     getToken: () => Promise<string>,
 }
 
-
-
 const useAuthStore = create<AuthState>((set, get) => ({
     token: null,
     refresh: null,
