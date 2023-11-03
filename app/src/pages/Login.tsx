@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 import background from "../assets/background.jpg"
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
@@ -71,6 +71,7 @@ const Login = () => {
               
           })
           .catch(err => { setError(err); console.log(err)
+            if (!err.response.data){setErrorMessage("Database Connection Failed")}
             switch (err.response.data.error.code){
               case "E0101": //Invalid Email 
                   setErrorMessage("O email fornecido não está associado a uma conta") //The provided email is not associated with an account
@@ -196,7 +197,7 @@ return (
               placeholder="**********"
               {...register("password", { required: true })}/>
             {/* Hide and show password button */}
-            <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
+            <button type="button" className="absolute right-3 bottom-3" onClick={() => togglePasswordVisibility()} id="hidePasswordIcon">
                 <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
             </button>
           </div>
