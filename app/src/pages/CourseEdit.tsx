@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link, useParams} from 'react-router-dom'
-import { useForm, SubmitHandler } from 'react-hook-form'
+import { useForm, SubmitHandler, set } from 'react-hook-form'
 import { toast } from 'react-toastify'
 import useSWR from 'swr'
 
@@ -65,6 +65,7 @@ const CourseEdit = () => {
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("");
+  const [statusChange, setStatusChange] = useState<boolean>(false);
   
   
   useEffect(() => {
@@ -105,13 +106,23 @@ const CourseEdit = () => {
 // React useForm setup
 const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
 
-
 /**
  * Handles the form submission for updating a course's details.
  * @param {Inputs} data - The form data containing the updated course details.
 */
 const onSubmit: SubmitHandler<Inputs> = (data) => {
     
+    let newStatus = statusSTR;
+
+    if(statusChange){
+        if(statusSTR === "draft"){
+            newStatus = "published";
+        }else{
+            newStatus = "draft";
+        }
+        setStatusChange(false);
+    }
+
     if (confirm("Você tem certeza?") == true) {
         const changes: Inputs = {
             coverImg: data.coverImg,
@@ -119,7 +130,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
             description: data.description,
             category: data.category,
             difficulty: data.difficulty,
-            status: statusSTR === "draft"? "published":"draft",
+            status: newStatus,
             estimatedHours: data.estimatedHours
         }
 
@@ -203,7 +214,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                     <div className="flex-none space-x-2">
                         <button type="button" onClick={deleteCourse} className='left-0 std-button bg-warning hover:bg-red-800 ml-4' >Excluir</button> {/*Delete button*/}
                         <button type="submit" className='std-button text-white border-0'>Atualizar</button> {/* Update button */}
-                        <button type="submit" className='std-button bg-primary text-white border-0'>{statusSTR === "draft"? "Publish":"Set to draft" }</button>
+                        <button type="submit" onClick={() => setStatusChange(true)} className='std-button bg-primary text-white border-0'>{statusSTR === "draft"? "Publish":"Set to draft" }</button>
                     </div>
                 </div>
 
