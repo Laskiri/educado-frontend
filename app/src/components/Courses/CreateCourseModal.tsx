@@ -20,7 +20,7 @@ import StorageServices from '../../services/storage.services';
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Navigate, useNavigate } from 'react-router-dom';
-import Icon from '@mdi/react';
+import {Icon} from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
 
 
