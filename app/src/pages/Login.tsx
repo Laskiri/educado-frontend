@@ -60,11 +60,9 @@ const Login = () => {
           .then((res) => {
               if(res.status == 202){
                   setToken(res.data.accessToken);
-                  getToken().then(value => {console.log(value)})
-
                   setUserInfo(res.data.userInfo);
+                  
                   navigate("/courses");
-                  localStorage.setItem("token", res.data.accessToken);
               }
               
           })
