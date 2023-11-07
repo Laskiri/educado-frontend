@@ -202,7 +202,7 @@ return (
       <input onInput={areFieldsFilled}
         type="text" id="firstNameField"
         className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-        placeholder="Nome Sobrenome"
+        placeholder="Nome"
         {...register("firstName", { required: "digite seu nome completo." })}/>
       </div>
 
