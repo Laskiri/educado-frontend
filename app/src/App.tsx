@@ -50,12 +50,12 @@ function App() {
     },
     {
       path: "/login",
-      element: <Login />,
+      element: <NonProtectedRoute><Login /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
       path: "/signup",
-      element: <Signup />,
+      element: <NonProtectedRoute><Signup /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
@@ -72,7 +72,7 @@ function App() {
     },
     {
       path: "/welcome",
-      element: <Welcome />,
+      element: <NonProtectedRoute><Welcome /></NonProtectedRoute>,
     }
   ]
 )
