@@ -193,30 +193,33 @@ return (
     { /*Submit form, i.e. fields to write name, email, and password*/ }
     <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col">
 
-      { /*Firstname Field*/ }
-      <div className="relative">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="firstNameField"> 
-        Nomes Próprios {/*Name*/}
-          <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
-      </label>
-      <input onInput={areFieldsFilled}
-        type="text" id="firstNameField"
-        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-        placeholder="Nome"
-        {...register("firstName", { required: "digite seu nome completo." })}/>
-      </div>
+      <div className="flex">
+        
+        { /*Firstname Field*/ }
+        <div className="relative flex-1">
+        <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="firstNameField"> 
+          Nomes Próprios {/*Name*/}
+            <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+        </label>
+        <input onInput={areFieldsFilled}
+          type="text" id="firstNameField"
+          className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="Nome"
+          {...register("firstName", { required: "digite seu nome completo." })}/>
+        </div>
 
-      { /*Lastname Field*/ }
-      <div className="relative">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="lastNameField"> 
-        Nomes Apelidos {/*First name*/}
-          <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
-      </label>
-      <input onInput={areFieldsFilled}
-        type="text" id="lastNameField"
-        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-        placeholder="Sobrenome"
-        {...register("lastName", { required: "digite seu nome completo." })}/>
+        { /*Lastname Field*/ }
+        <div className="relative flex-1 ml-2">
+        <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="lastNameField"> 
+          Nomes Apelidos {/*First name*/}
+            <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
+        </label>
+        <input onInput={areFieldsFilled}
+          type="text" id="lastNameField"
+          className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="Sobrenome"
+          {...register("lastName", { required: "digite seu nome completo." })}/>
+        </div>
       </div>
 
       { /*Email Field*/ }
@@ -308,3 +311,4 @@ return (
 )};
 
 export default Signup;
+
