@@ -24,7 +24,7 @@ type FileProps = {
  * @returns {void}	
  */
 async function uploadFile({filePath, id}: FileProps) {
-    axios.postForm(`${BACKEND_URL}/upload`, {
+    axios.postForm(`${BACKEND_URL}/api/bucket/upload`, {
         fileName: id,
         file: filePath
     })

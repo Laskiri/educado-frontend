@@ -43,7 +43,7 @@ export const Dropzone = ({callBack}:DropzoneProps) => {
                         >
                             <span>Upload a file </span>
 
-                            <input id="file-upload" name="file-upload" accept="image/*" type="file" className="sr-only" onChange={(e)=>{console.log("test"); callBack(e.target.value)}}/>
+                            <input id="file-upload" name="file-upload" accept="image/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
                         </label>
                      
                     </div>
