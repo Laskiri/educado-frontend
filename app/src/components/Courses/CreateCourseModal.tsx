@@ -88,9 +88,6 @@ export const CreateCourseModal = () => {
 
       {/* Put this part before </body> tag */}
       <input type="checkbox" id="course-create" className="modal-toggle" />
-      {
-        //onclick = function () {StorageServices.uploadFile({bucketName: "educado-bucket", id: "testFoto", filePath: "c:/Users/perni/Downloads/settings_icon.png"});}
-      }
       {/*Text shown in the top of create course*/}
       <div className="modal" id="course-create-modal">
         <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
