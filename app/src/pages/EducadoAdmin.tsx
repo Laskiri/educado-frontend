@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-
+import {BACKEND_URL} from "../helpers/environment"
 // Services
 import AuthServices from "../services/auth.services";
 
@@ -13,8 +13,6 @@ import Loading from "./Loading";
 import Layout from "../components/Layout";
 import { PageDescriptor } from "../components/PageDescriptor";
 
-import {BACKEND_URL} from "../helpers/environment"
-
 
 
 const EducadoAdmin = () => {
@@ -25,12 +23,12 @@ const EducadoAdmin = () => {
     let location = useLocation();
 
     const { data, error } = useSWR(
-        //`${BACKEND_URL}/api/applications?approved=false`,
+        `${BACKEND_URL}/api/applications?approved=false`,
         AuthServices.GetCCApplications
     );
-
+   
+    if (!data) return <Loading/>
     
-
     return (
         <Layout meta="Educado Admin">
             <PageDescriptor
@@ -81,7 +79,55 @@ const EducadoAdmin = () => {
                             </thead>
 
                             {/** Table Body */}
-                            
+                            <tbody>
+                                {data?.data.data.filter((application) => {
+                                    if (searchTerm == "") {
+                                        return application;
+                                    } else if (
+                                        application.firstName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                        return application;
+                                    }
+                                    else if (
+                                        application.lastName.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                        return application;
+                                    }
+                                    else if (
+                                        application.email.toLowerCase().includes(searchTerm.toLowerCase())) {
+                                        return application;
+                                    }
+                                }).map((application: CCApp.Datum, key: number) => {
+                                    let date = new Date(application.dateCreated); // TODO: Format Time
+                                    // let dateString = new Intl.DateTimeFormat('en-US').format(date);
+                                    return (
+                                        <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                                            <td>
+                                                <div className="flex items-center">
+                                                    <div className="ml-3">
+                                                        <p className="text-gray-900 whitespace-no-wrap">
+                                                            {application.firstName} {application.lastName}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p className="text-gray-900 whitespace-no-wrap">
+                                                    {application.email}
+                                                </p>
+                                            </td>
+                                            <td>
+                                                <p className="text-indigo-600 hover:text-indigo-900">
+                                                    {date.toString()}
+                                                </p>
+                                            </td>
+                                            <td className="flex items-center p-4">
+                                                <Link to={`${location.pathname}/${application._id}`} className="flex items-center justify-center p-2 w-full bg-blue-600 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
+                                                    See Details
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    );
+                                })}
+                            </tbody>
                         </table>
 
                         {/** Navbar */}

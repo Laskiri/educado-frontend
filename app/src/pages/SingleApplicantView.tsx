@@ -17,9 +17,9 @@ function SingleApplicantView() {
     // Fetch Application Details
     const { data, error } = useSWR(
         [`${BACKEND_URL}/api/applications/${id}`],
-        AuthServices.GetSingleUserApplication
+        AuthServices.GetSingleCCApplication
     );
-
+console.log(data)
     // TODO: Not finished
     const handleAccept = () => {
         AuthServices.PostAcceptContentCreator(id!)
@@ -37,8 +37,8 @@ function SingleApplicantView() {
             .catch(_ => toast.error(`Failed to Reject: ${id}`));
     }
 
-    if (error) { <>Error...</>; }
-    if (!data) return <Loading />
+   
+    //if (!data) return <Loading />
 
     return (
         <Layout meta={`Applicant: ${id?.slice(0, 10)}...`}>

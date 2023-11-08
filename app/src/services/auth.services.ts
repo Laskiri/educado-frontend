@@ -44,14 +44,19 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
 
 const GetCCApplications = async (): Promise<CCApp.RootObject> => {
   return await axios.get(
-    `${BACKEND_URL}/api/applications?approved=false&isRejected=false`
+    `${BACKEND_URL}/api/applications/`
   );
 };
 
-const GetSingleUserApplication = async (url: string): Promise<CCApp.Datum> => {
-  const response = await axios.get(url);
+const GetSingleCCApplication = async (url: string): Promise<CCApp.RootObject> => {
+  const response = await axios.get(url)
   return response.data.data;
 };
+
+/*const GetSingleUserApplication = async (url: string): Promise<CCApp.Datum> => {
+  const response = await axios.get(url);
+  return response.data.data;
+};*/
 
 const PostDelcineContentCreator = async (id: string): Promise<unknown> => {
   return await axios.put(
@@ -72,7 +77,7 @@ const AuthServices = Object.freeze({
   postUserSignup,
   //postUserApplication,
   GetCCApplications,
-  GetSingleUserApplication,
+  GetSingleCCApplication,
   PostDelcineContentCreator,
   PostAcceptContentCreator,
 });

@@ -12,7 +12,7 @@ export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   const token = useAuthStore(state => state.token);
 
   //If the user has a token, they can access protected routes, such as /profile, /courses etc.
-  if (1) { 
+  if (token) { 
     return children;
 
   } else {
