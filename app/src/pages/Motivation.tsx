@@ -21,6 +21,9 @@ import { Link } from "react-router-dom"
 
 const Motivation = () => {
   const [toggleMotivation, setToggleMotivation] = useState(true);
+  const [togglePlaceholder1, setTogglePlaceholder1] = useState(false);
+  const [togglePlaceholder2, setTogglePlaceholder2] = useState(false);
+  
   const [motivation, setMotivation] = useState('');
   const maxLength = 800;
 
@@ -81,6 +84,127 @@ return (
           </div>
         </div>
       )}
+    </div>
+
+    {/*Box for placeholder 1*/}
+    <div className="w-[65%] justify-center items-center">
+      <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
+      onClick={() => setTogglePlaceholder1(!togglePlaceholder1)}>
+        <div className="flex items-start">
+          {togglePlaceholder1 ? (
+            <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+          ) : (
+            <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+          )}
+          Experiências acadêmicas
+        </div>
+      </button>
+
+      {togglePlaceholder1 && (
+
+        <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
+        <div className="relative flex">
+        <input
+        type="text" id="placeholderField11"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+
+        <input
+        type="text" id="placeholderField12"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+        </div>
+        <div className="relative flex">
+        <input
+        type="text" id="placeholderField13"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+
+        <input
+        type="text" id="placeholderField14"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+        </div>
+        <div className="relative flex">
+        <input
+        type="text" id="placeholderField15"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+
+        <input
+        type="text" id="placeholderField16"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="placeholderField"
+        />
+        </div>
+      </div>
+      )}
+    </div>
+
+    {/*Box for placeholder 2*/}
+    <div className="w-[65%] justify-center items-center">
+      <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
+      onClick={() => setTogglePlaceholder2(!togglePlaceholder2)}>
+        <div className="flex items-start">
+          {togglePlaceholder2 ? (
+            <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+          ) : (
+            <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+          )}
+          Experiências profissionais
+        </div>
+      </button>
+
+      {togglePlaceholder2 && (
+      
+        <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
+          <div className="relative flex">
+          <input
+          type="text" id="placeholderField21"
+          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="placeholderField"
+          />
+
+          <input
+          type="text" id="placeholderField22"
+          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="placeholderField"
+          />
+          </div>
+          <div className="relative flex">
+          <input
+          type="text" id="placeholderField23"
+          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="placeholderField"
+          />
+
+          <input
+          type="text" id="placeholderField24"
+          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="placeholderField"
+          />
+          </div>
+          <div className="relative flex">
+          <input
+          type="text" id="placeholderField25"
+          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="placeholderField"
+          />
+
+          </div>
+        </div>
+      )}
+    </div>
+
+    <div className="w-[65%] flex justify-end">
+      <button className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
+        Enviar para análise   
+      </button>
     </div>
   </body>
 </main>
