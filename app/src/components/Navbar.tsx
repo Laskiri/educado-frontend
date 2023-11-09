@@ -36,12 +36,12 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
                     <li>
-                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat']" data-tip="Veja seus cursos"> {/* see your courses */}
+                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Veja seus cursos"> {/* see your courses */}
                         <Icon path={mdiNotebookOutline} size={1} color="#A1ACB2" /> <span>Cursos</span> {/*courses*/}
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat']" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Verifique os aplicativos"> {/* Check Applications */}
                         <Icon path={mdiAccount} size={1} color="#A1ACB2" /><span>Admin</span> {/*admin*/}
                         </Link>
                     </li>
