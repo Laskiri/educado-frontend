@@ -22,14 +22,14 @@ function SingleApplicantView() {
 console.log(data)
     // TODO: Not finished
     const handleAccept = () => {
-        AuthServices.PostAcceptContentCreator(id!)
+        AuthServices.AcceptApplication(id!)
             .then(res => { console.log(res) })
             .catch(_ => toast.error(`Failed to Approve: ${id}`));
     }
 
     // TODO: Not finished
     const handleReject = () => {
-        AuthServices.PostDelcineContentCreator(id!)
+        AuthServices.RejectApplication(id!)
             .then(_ => {
                 toast.success(`Rejected: ${id}`);
                 navigate("/educado_admin");
