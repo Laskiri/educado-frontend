@@ -82,7 +82,7 @@ const Navbar = () => {
                                 }}>
 
                                 {/* Edit Profile/settings */}
-                                <li>
+                                <li className="w-full"> {/*class to make the list item fill the width */}
                                     <Link to={"/profile"} className="text-[#383838] text-base font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiAccountCog} size={1} color="#A1ACB2" /></span>
                                         <span>Editar perfil</span>
@@ -91,7 +91,7 @@ const Navbar = () => {
                                 <hr className="relative w-full h-[1px] border-[#E4E4E4] mt-3 mb-3" />
 
                                 {/* My Certificates */}
-                                <li>
+                                <li className="w-full"> {/*class to make the list item fill the width */}
                                     <Link to={"/courses"} className="text-[#383838] text-base font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiCertificate} size={1} color="#A1ACB2" /></span>
                                         <span>Meus certificados</span>
@@ -101,8 +101,8 @@ const Navbar = () => {
                                 <hr className="relative w-full h-[1px] border-[#E4E4E4] mt-3 mb-3" />
 
                                 {/* Logout */}
-                                <li>
-                                    <Link to={"/welcome"} onClick={logout} className="relative w-[100%] text-[#FF4949] text-base font-bold font-['Montserrat'] hover:bg-[#E4E4E4] ">
+                                <li className="w-full"> {/* class to make the list item fill the width */}
+                                    <Link to={"/welcome"} onClick={logout} className=" text-[#FF4949] text-base font-bold font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiLogoutVariant} size={1} color="#FF4949" /></span>
                                         <span>Sair</span>
                                     </Link>
