@@ -1,7 +1,7 @@
 import { useState } from "react";
 import useSWR from "swr";
 import { useNavigate, Link, useLocation } from 'react-router-dom';
-
+import {BACKEND_URL} from "../helpers/environment"
 // Services
 import AuthServices from "../services/auth.services";
 
@@ -12,8 +12,6 @@ import { CCApp } from '../interfaces/CCApp'
 import Loading from "./Loading";
 import Layout from "../components/Layout";
 import { PageDescriptor } from "../components/PageDescriptor";
-
-import {BACKEND_URL} from "../helpers/environment"
 
 
 
@@ -28,10 +26,9 @@ const EducadoAdmin = () => {
         `${BACKEND_URL}/api/applications?approved=false`,
         AuthServices.GetCCApplications
     );
-
-    if (error) { <>Error...</>; }
+   
     if (!data) return <Loading/>
-
+    
     return (
         <Layout meta="Educado Admin">
             <PageDescriptor
@@ -123,7 +120,7 @@ const EducadoAdmin = () => {
                                                 </p>
                                             </td>
                                             <td className="flex items-center p-4">
-                                                <Link to={`${location.pathname}/${application.id}`} className="flex items-center justify-center p-2 w-full bg-blue-600 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
+                                                <Link to={`${location.pathname}/${application._id}`} className="flex items-center justify-center p-2 w-full bg-blue-600 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
                                                     See Details
                                                 </Link>
                                             </td>

@@ -12,7 +12,8 @@ import { boolean } from "yup";
 
 
 export interface ContentCreatorApplication {
-  name: String;
+  firstName: String;
+  lastName: String;
   email: String;
   password: String;
 }
@@ -20,7 +21,7 @@ export interface ContentCreatorApplication {
 
 const postUserLogin = async (credentials: any) => {
 
-  return await axios.post(`${BACKEND_URL}/api/credentials/login`, credentials);
+  return await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
 };
 
 const postUserApplication = async (formData: ContentCreatorApplication) => {
@@ -33,7 +34,7 @@ const postUserCredentialsLogin = async (credentials: any) => {
 
 
 const postUserSignup = async(formData: ContentCreatorApplication) => {
-  return await axios.post(`${BACKEND_URL}/api/credentials/signup`, formData)
+  return await axios.post(`${BACKEND_URL}/api/auth/signup`, formData)
 }
 
 /*  const postUserApplication = async (formData: ContentCreatorApplication) => {
@@ -43,14 +44,19 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
 
 const GetCCApplications = async (): Promise<CCApp.RootObject> => {
   return await axios.get(
-    `${BACKEND_URL}/api/applications?approved=false&isRejected=false`
+    `${BACKEND_URL}/api/applications/`
   );
 };
 
-const GetSingleUserApplication = async (url: string): Promise<CCApp.Datum> => {
-  const response = await axios.get(url);
+const GetSingleCCApplication = async (url: string): Promise<CCApp.RootObject> => {
+  const response = await axios.get(url)
   return response.data.data;
 };
+
+/*const GetSingleUserApplication = async (url: string): Promise<CCApp.Datum> => {
+  const response = await axios.get(url);
+  return response.data.data;
+};*/
 
 const PostDelcineContentCreator = async (id: string): Promise<unknown> => {
   return await axios.put(
@@ -71,7 +77,7 @@ const AuthServices = Object.freeze({
   postUserSignup,
   //postUserApplication,
   GetCCApplications,
-  GetSingleUserApplication,
+  GetSingleCCApplication,
   PostDelcineContentCreator,
   PostAcceptContentCreator,
 });
