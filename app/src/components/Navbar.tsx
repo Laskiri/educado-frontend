@@ -1,8 +1,7 @@
 import {Icon} from '@mdi/react';
-import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate,  } from '@mdi/js';
+import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
 import { Link, useNavigate } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
-import { useState } from 'react' ;
 
 
 // icons
@@ -14,10 +13,6 @@ const Navbar = () => {
         clearToken();
         localStorage.removeItem('token');
     }
-
-    // icons
-
-
     
     //navbar for home, profile 
     return (
@@ -41,13 +36,13 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
                     <li>
-                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom" data-tip="see your courses">
-                            <span>Courses</span>
+                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat']" data-tip="Veja seus cursos"> {/* see your courses */}
+                        <Icon path={mdiNotebookOutline} size={1} color="#A1ACB2" /> <span>Cursos</span> {/*courses*/}
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom" data-tip="Check Applications">
-                            <span>Admin</span>
+                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat']" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                        <Icon path={mdiAccount} size={1} color="#A1ACB2" /><span>Admin</span> {/*admin*/}
                         </Link>
                     </li>
                 </ul>
@@ -65,8 +60,6 @@ const Navbar = () => {
                         <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-bold font-['Montserrat']">User Name</span>
                         <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-xs font-normal font-['Montserrat']">user@gmail.com</span>
                     </div>
-
-
 
                     {/* Dropdown for User Actions */}
                     <button className="relative flex flex-col items-start gap-6">
@@ -91,7 +84,7 @@ const Navbar = () => {
                                 {/* Edit Profile/settings */}
                                 <li>
                                     <Link to={"/profile"} className="text-[#383838] text-base font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
-                                        <span><Icon path={mdiAccount} size={1} color="#A1ACB2" /></span>
+                                        <span><Icon path={mdiAccountCog} size={1} color="#A1ACB2" /></span>
                                         <span>Editar perfil</span>
                                     </Link>
                                 </li>
