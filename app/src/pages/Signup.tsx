@@ -29,9 +29,11 @@ interface ApplicationInputs {
 // Yup schema for fields
 const SignupSchema = Yup.object().shape({
   firstName: Yup.string()
-    .required("Please enter your first name"),
+    .required("Seu primeiro nome é obrigatório!"), /*Your first name is Required*/ 
+
   lastName: Yup.string()
-    .required("Please enter you last name"),
+    .required("Seu sobrenome é obrigatório!"), /*Your last name is Required*/ 
+
   password: Yup.string()
     .min(8, 'Too Short!')
     .required("Password is not long enough"),
@@ -40,6 +42,7 @@ const SignupSchema = Yup.object().shape({
   email: Yup.string()
     .email('Invalid email format').required('Required'),
   });
+
 
 const Signup = () => {
 
@@ -125,11 +128,11 @@ const Signup = () => {
    
     if(inputSignupFirstName.value.trim() && inputSignupLastName.value.trim() && inputSignupEmail.value.trim() && inputSignupPass.value.trim() && inputSignupRedoPass.value.trim() !== '') {
       submitSignupButton.removeAttribute('disabled');
-      submitSignupButton.classList.remove('opacity-20', 'bg-cyan-500');
+      submitSignupButton.classList.remove('opacity-20');
     } 
     else {
       submitSignupButton.setAttribute('disabled', 'true');
-      submitSignupButton.classList.add('opacity-20', 'bg-cyan-500');
+      submitSignupButton.classList.add('opacity-20');
     }
   };
 
@@ -193,40 +196,41 @@ return (
     { /*Submit form, i.e. fields to write name, email, and password*/ }
     <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col">
 
-      <div className="flex">
-        
-        { /*Firstname Field*/ }
-        <div className="relative flex-1">
-        <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="firstNameField"> 
-          Nomes Próprios {/*Name*/}
-            <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
-        </label>
-        <input onInput={areFieldsFilled}
-          type="text" id="firstNameField"
-          className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Nome"
-          {...register("firstName", { required: "digite seu nome completo." })}/>
-        </div>
+    <div className="flex">
 
-        { /*Lastname Field*/ }
-        <div className="relative flex-1 ml-2">
-        <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="lastNameField"> 
-          Nomes Apelidos {/*First name*/}
-            <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
-        </label>
-        <input onInput={areFieldsFilled}
-          type="text" id="lastNameField"
-          className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Sobrenome"
-          {...register("lastName", { required: "digite seu nome completo." })}/>
-        </div>
+      { /*FirstName Field*/ }
+      <div className="relative flex-1">
+      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="firstNameField"> 
+          Nome {/*Name*/}
+          <span className="text-[#FF4949] text-xs font-normal">*</span> 
+      </label>
+      <input onInput={areFieldsFilled}
+        type="text" id="firstNameField"
+        className="w-[95%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base text-[#383838]  focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="Nome"
+        {...register("firstName", { required: "digite seu nome primeiro nome." })}/> { /*enter your first name*/ }
       </div>
+      
+      { /*Last Name Field*/ }
+      <div className="relative flex-1 ml-2">
+      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="lastNameField"> 
+      Sobrenome {/*Last Name*/}
+          <span className="text-[#FF4949] text-xs font-normal">*</span> 
+      </label>
+      <input onInput={areFieldsFilled}
+        type="text" id="lastNameField"
+        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base text-[#383838] focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        placeholder="Sobrenome"
+        {...register("lastName", { required: "digite seu nome, sobrenome." })}/> { /*enter your last name*/ }
+      </div>
+
+    </div>
 
       { /*Email Field*/ }
       <div className="relative">
       <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="usernameField">
         Email 
-        <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
+        <span className="text-[#FF4949] text-xs font-normal">*</span>
       </label>
       <input onInput={areFieldsFilled}
         type="email" id="emailField"
@@ -239,7 +243,7 @@ return (
       <div className="relative">
       <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="passwordField">
         Senha {/*Password*/}
-        <span className=" text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
+        <span className=" text-[#FF4949] text-xs font-normal">*</span>
       </label>
       <input onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"} id="passwordField"
@@ -290,7 +294,7 @@ return (
       <span className="h-10" /> {/* spacing */}  
       
         { /*Enter button*/ }
-        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#5ECCE9] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
         disabled>
             Cadastrar {/*Register*/} 
         </button>
@@ -298,7 +302,7 @@ return (
       <span className="h-2" /> {/* spacing */}  
       
         { /*Link to Login page*/ }
-        <div className="flex justify-center"> 
+        <div className="flex justify-center space-x-1"> 
           <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Já possui conta? {/*Already have an account?*/}  </span> 
           <Link to="/login" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Entre agora {/*Get in now*/} </Link>
         </div>
@@ -311,4 +315,3 @@ return (
 )};
 
 export default Signup;
-
