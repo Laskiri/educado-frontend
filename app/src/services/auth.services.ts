@@ -58,17 +58,17 @@ const GetSingleCCApplication = async (url: string): Promise<CCApp.RootObject> =>
   return response.data.data;
 };*/
 
-const PostDelcineContentCreator = async (id: string): Promise<unknown> => {
-  return await axios.put(
-    `${BACKEND_URL}/api/applications/${id}?action=reject`,
-    { data: { reason: `No` } }
-  );
-};
-
-const PostAcceptContentCreator = async (id: string): Promise<unknown> => {
+const AcceptApplication = async (id: string): Promise<unknown> => {
   return await axios.put(
     `${BACKEND_URL}/api/applications/${id}?action=approve`,
     { data: { reason: `Yes` } }
+  );
+};
+
+const RejectApplication = async (id: string): Promise<unknown> => {
+  return await axios.put(
+    `${BACKEND_URL}/api/applications/${id}?action=reject`,
+    { data: { reason: `No` } }
   );
 };
 
@@ -78,8 +78,8 @@ const AuthServices = Object.freeze({
   //postUserApplication,
   GetCCApplications,
   GetSingleCCApplication,
-  PostDelcineContentCreator,
-  PostAcceptContentCreator,
+  AcceptApplication,
+  RejectApplication,
 });
 
 export default AuthServices;

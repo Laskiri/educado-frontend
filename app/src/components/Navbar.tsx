@@ -3,8 +3,8 @@ import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate,  } from '
 import { Link, useNavigate } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
 import { useState } from 'react' ;
-
-
+import decode from 'jwt-decode';
+import { first } from 'lodash';
 // icons
 const Navbar = () => {
 
@@ -12,11 +12,12 @@ const Navbar = () => {
     const clearToken = useAuthStore(state => state.clearToken);
     const logout = () => {
         clearToken();
-        localStorage.removeItem('token');
     }
+    const token = useAuthStore(state => state.token);
 
-    // icons
-
+    const firstName = decode(token).firstName;
+    const lastName = decode(token).lastName;
+    const email = decode(token).email;
 
     
     //navbar for home, profile 
@@ -62,8 +63,8 @@ const Navbar = () => {
 
 
                     <div className="flex flex-col items-start">
-                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-bold font-['Montserrat']">User Name</span>
-                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-xs font-normal font-['Montserrat']">user@gmail.com</span>
+                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
+                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-xs font-normal font-['Montserrat']">{email}</span>
                     </div>
 
 
@@ -75,7 +76,7 @@ const Navbar = () => {
                                 <div className="avatar placeholder">
                                     <div className="bg-[#166276] text-white rounded-full hover:rounded w-10">
                                         <span className="text-md">
-                                            UN
+                                            {firstName.charAt(0)+lastName.charAt(0)}
                                         </span>
                                     </div>
                                 </div>
