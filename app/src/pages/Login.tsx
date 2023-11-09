@@ -206,7 +206,7 @@ return (
           <span className="h-12" /> {/* spacing */}  
           
           { /*Enter button*/ }
-          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
           disabled>
             Entrar {/*Enter*/}
           </button>
@@ -214,7 +214,7 @@ return (
           <span className="h-4" /> {/* spacing */}
 
           { /*Link to Signup page*/ }
-          <div className="flex justify-center"> 
+          <div className="flex justify-center space-x-1"> 
             <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
             <Link to="/signup" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
           </div>

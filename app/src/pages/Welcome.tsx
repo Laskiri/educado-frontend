@@ -48,7 +48,7 @@ return (
           <div className="relative flex gap-4 px-[5rem] flex-row items-center justify-center w-full h-screen">
             
             { /*Button for routing to the Login page*/ }
-            <Link className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#5ECCE9] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
+            <Link className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#166276] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50"
               to="/login">
               <button
                 type="submit"
@@ -57,7 +57,7 @@ return (
             </Link>
             
             { /*Button for routing to the Signup page*/ }
-            <Link className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#5ECCE9] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50"
+            <Link className="flex-auto w-[18rem] h-[3.3rem] items-center justify-center rounded-lg text-base font-bold font-['Montserrat'] bg-[#166276] inline-flex text-[#FFFFFF] transform transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50"
               to="/signup">
               <button
                 type="submit"
