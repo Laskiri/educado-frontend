@@ -34,6 +34,10 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
+  const CourseCreation = () => {
+    navigate("/courses-creation");
+  }
+
   const { data, error } = useSWR(
     token ? [token] : null,
     CourseServices.getAllCourses
@@ -55,6 +59,7 @@ const Courses = () => {
             {/* Header and create course button */}
             <div className='flex flex-row no-wrap'>
               <h1 className='text-3xl font-bold flex-1'>Confira seus cursos</h1>
+              <label onClick={CourseCreation} className='text-3xl font-bold flex-1'>Cursos</label>
               <CreateCourseModal />
             </div>
             {/* Card/compact view toggle and filters */}

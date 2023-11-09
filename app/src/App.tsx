@@ -10,6 +10,7 @@ import Welcome from "./pages/Welcome";
 
 // Auth Pages
 import Courses from "./pages/Courses";
+import CourseCreation from "./pages/CourseCreation";
 import CourseEdit from "./pages/CourseEdit";
 import SectionEdit from "./pages/SectionEdit";
 import Profile from "./pages/Profile";
@@ -29,6 +30,11 @@ function App() {
     {
       path: "/courses",
       element: <ProtectedRoute><Courses /></ProtectedRoute>,
+      errorElement: <NotFound />,
+    },
+    {
+      path: "/courses-creation",
+      element: <ProtectedRoute><CourseCreation /></ProtectedRoute>,
       errorElement: <NotFound />,
     },
     {
