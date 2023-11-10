@@ -40,7 +40,7 @@ type Inputs = {
  */
 export const CreateLecture = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [lectureContent, setLectureContent] = useState();
+    const [lectureContent, setLectureContent] = useState(null);
     //TODO: When tokens are done, Remove dummy token and uncomment useToken
     const token = "dummyToken";
     //const token = useToken();
@@ -74,6 +74,11 @@ export const CreateLecture = () => {
             .then(res =>{ console.log(res); window.location.reload()}) 
             .catch(err => console.log(err))
     };
+
+    function returnFunction(lectureContent: any) {
+        setLectureContent(lectureContent);
+      }
+
     return (
         <>
             {/* The button to open create lecture modal */}
@@ -118,7 +123,7 @@ export const CreateLecture = () => {
                         {/*One day this will be file*/}
                         <div className="flex flex-col space-y-2 text-left">    
                             <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
-                                    <Dropzone callBack={setLectureContent}></Dropzone>
+                                    <Dropzone callBack={returnFunction}></Dropzone>
                                {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
                             </div>
 

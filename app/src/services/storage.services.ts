@@ -30,8 +30,20 @@ async function uploadFile({filePath, id}: FileProps) {
     })
 }
 
+const getFile = async (url: string, token: string) => {
+    return await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.data);
+  };
+
+const deleteFile = async (id: string, token: string) => {
+return await axios.delete(`${BACKEND_URL}/api/bucket/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    .then((res) => res.data);
+};
+
 const StorageServices = Object.freeze({
-    uploadFile
+    uploadFile,
+    getFile,
+    deleteFile
 });
 
 export default StorageServices;

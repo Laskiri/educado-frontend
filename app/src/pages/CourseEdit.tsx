@@ -97,6 +97,12 @@ const CourseEdit = () => {
         getData
     )
 
+    // Fetch Bucket Details
+    const { data: bucketData, error: bucketError } = useSWR(
+        token ? [`${BACKEND_URL}/api/bucket/${data?.coverImg}`, token] : null,
+        StorageService.getFile
+    )
+
 //  // Fetch Categories
 //   const { data: categoriesData, error: categoriesError } = useSWR(
 //     token ? [`${BACKEND_URL}/api/categories`, token] : null,
@@ -160,14 +166,17 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
      */
     const deleteCourse = async () => {
         if (confirm("Você tem certeza?") == true) {
-            const response = await CourseServices.deleteCourse(id, token);
-            const statusDelete = response.status
+            const responseCourse = await CourseServices.deleteCourse(id, token);
+            const statusDeleteCourse = responseCourse.status
+            console.log("data.coverImg is: ", data.coverImg)
+            const responseFile = await StorageService.deleteFile(data.coverImg, token);
 
-            if (statusDelete >= 200 && statusDelete <= 299) {
+
+            if (statusDeleteCourse >= 200 && statusDeleteCourse <= 299) {
                 toast.success("Curso excluído"); {/* Course deleted */}
                 window.location.href = "/courses";
-            } else if (statusDelete >= 400 && statusDelete <= 599) {
-                toast.error(`(${statusDelete}, ${response.statusText}) while attempting to delete course`)
+            } else if (statusDeleteCourse >= 400 && statusDeleteCourse <= 599) {
+                toast.error(`(${statusDeleteCourse}, ${responseCourse.statusText}) while attempting to delete course`)
             }
         }
     }
@@ -180,28 +189,31 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
    * Though bucket is not implemented yet, so most of this is commented out
    */
   const onCoverImgChange = async (e: any) => {
-    const image = 'https://www.shutterstock.com/image-illustration/red-stamp-on-white-background-260nw-1165179109.jpg'
-    // const image = e.target.files[0];
+    //const image = 'https://www.shutterstock.com/image-illustration/red-stamp-on-white-background-260nw-1165179109.jpg'
+    const image = e.target.files?.item(0)
+    console.log(image);
 
     // Enables us to preview the image file before storing it
     setCoverImgPreview(image)
-    // setCoverImgPreview(URL.createObjectURL(image));
-    /* setCoverImg(image);
+    setCoverImgPreview(URL.createObjectURL(image));
+    setCoverImg(image);
 
+    /*
         try {
             await StorageService.uploadFile({ file: image, key: `${data.id}/coverImg` })
             toast.success('Image uploaded successfully');
         } catch (error) {
             toast.error('Image could not be uploaded, try again.');
-        } */
+        } 
+    */
   }
 
-  if (error /* || categoriesError */) return <NotFound />
-  if (!data /* || !categories || (!data && !categories) */) return <Loading/>
-  
- 
 
-  return (
+    if (!data /* || !categories || (!data && !categories) */) return <Loading/>
+    if (error /* || categoriesError */) return <NotFound />
+    
+    
+    return (
         <Layout meta={`Course: ${id}`}>
 
             {/** Course navigation */}
@@ -299,8 +311,8 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 <div className="flex flex-col">
                                     <div className='relative'>
                                         <div className='p-0 rounded-b-none rounded-t border-gray-300 border-x border-t h-[240px] overflow-hidden'>
-                                            {data.coverImg ?
-                                                <img src={data.coverImg} alt={data.title} className="w-full h-max rounded object-cover" /> :
+                                            {bucketData ?
+                                                <img src={"data:image;base64," + bucketData} /*alt={data.title}*/ className="object-cover w-full h-full rounded" /> :
                                                 <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>Sem imagem de capa</div>
                                             }
 
@@ -308,7 +320,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                         {/* Cover image upload */}
                                         <input type="file" accept='.jpg,.jpeg,.png'
                                             {...register('coverImg')}
-                                            // onChange={onCoverImgChange}
+                                            onChange={onCoverImgChange}
                                             className='file-input w-full input-bordered rounded-b rounded-t-none focus:outline-none'
                                         >
                                         </input>
