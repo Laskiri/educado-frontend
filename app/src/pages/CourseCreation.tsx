@@ -183,95 +183,112 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
   return (
         <Layout meta={`Course: ${id}`}>
+            <div className="m-8"> 
+              <div className="w-2/5 float-left">
+              <img src="pic_trulli.jpg">
+              </div>
 
+
+
+
+          
            {/*Field to input the title of the new course*/}
-          <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor='title'>Título</label> {/*Title*/}
-              <input type="text" defaultValue={""}
-                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...register("title", { required: true })}
-              />
-              {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+            <div className="w-3/5 float-right">
+              <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
+              <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex flex-col space-y-2 text-left">
+                  <label htmlFor='title'>Nome do curso</label> {/*Title*/}
+                  <input type="text" defaultValue={""}
+                    className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    {...register("title", { required: true })}
+                  />
+                  {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                </div>
+
+                
+
+                <div className="flex items-center gap-8 w-full mt-8">
+
+                  {/*Field to select a level from a list of options*/}
+                  <div className="flex flex-col space-y-2 text-left  ">
+                    <label htmlFor='level'>Nível</label> {/** Level */}
+                    <select
+                      className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                      {...register("difficulty", { required: true })}
+                    >
+                      {/*Hard coded options by PO, should be changed to get from db*/}
+                      <option value={1}>Iniciante </option> {/** Beginner */}
+                      <option value={2}>Intermediário</option> {/** Intermediate */}
+                      <option value={3}>Avançado </option> {/** Advanced */}
+
+                    </select>
+                    {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                  </div>
+
+                    {/*Field to choose a category from a list of options*/}
+                    <div className="flex flex-col space-y-2 text-left  ">
+                    <label htmlFor='category'>Categoria</label> {/** Category */}
+                    <select
+                        defaultValue={"personal finance"}
+                        className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        {...register("category", { required: true })}
+                    >
+                        {/*Hard coded options by PO, should be changed to get from db*/}
+                        {categoriesOptions}
+
+                    </select>
+                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                    </div>
+
+                </div>
+
+                {/*Field to input the description of the course*/}
+                <div className="flex flex-col space-y-2 text-left ">
+                  <label htmlFor='description'>Descrição</label> {/** Description */}
+                  <textarea rows={4} defaultValue={""}
+                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
+                    {...register("description", { required: true })}
+                  />
+                  {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                </div> 
+
+                {/**  {/*This should be commented out, but maybe it can be used later when we have to use estimated time*/}
+                  {/**  {/*Field to input the estimated time*/}
+                 
+                  <div className="flex flex-col space-y-2 text-left">
+                    <label htmlFor='title'>Tempo estimado</label> 
+                    <input type="number" defaultValue={""} min={0} step={1}
+                    className="form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
+                    {...register("estimatedHours", { required: true })}
+                    />
+                    {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required*/}
+                </div>
+                
+                <div>
+                  {/*Cover image field is made but does not interact with the db*/}
+                  <div className="flex flex-col space-y-2 text-left">
+                    <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */}
+                    <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                  </div>
+                </div>
+
+                {/*Create and cancel buttons*/}
+                <div className='modal-action'>
+                  <div className="flex items-center justify-between gap-4 w-full mt-8">
+                    <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                      <button type="submit" className='py-2 px-4 h-full w-full'>
+                        Criar {/** Create */}
+                      </button>
+                    </label>
+                    <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-warning-100    text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                      Cancelar e Voltar {/** Cancel */}
+                    </label>
+                  </div>
+                </div>
+              </form>
             </div>
-
-            {/*Field to choose a category from a list of options*/}
-            <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor='category'>Categoria</label> {/** Category */}
-              <select
-                defaultValue={"personal finance"}
-                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...register("category", { required: true })}
-              >
-                {/*Hard coded options by PO, should be changed to get from db*/}
-                {categoriesOptions}
-
-              </select>
-              {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-            </div>
-
-            <div className="flex items-center gap-8 w-full mt-8">
-
-              {/*Cover image field is made but does not interact with the db*/}
-              <div className="flex flex-col space-y-2 text-left">
-                <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */}
-                <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
-                {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-              </div>
-
-              {/*Field to select a level from a list of options*/}
-              <div className="flex flex-col space-y-2 text-left">
-                <label htmlFor='level'>Nível</label> {/** Level */}
-                <select
-                  className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  {...register("difficulty", { required: true })}
-                >
-                  {/*Hard coded options by PO, should be changed to get from db*/}
-                  <option value={1}>Iniciante </option> {/** Beginner */}
-                  <option value={2}>Intermediário</option> {/** Intermediate */}
-                  <option value={3}>Avançado </option> {/** Advanced */}
-
-                </select>
-                {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-              </div>
-
-              {/*Field to input the estimated time*/}
-              <div className="flex flex-col space-y-2 text-left">
-                <label htmlFor='title'>Tempo estimado</label> {/** Estimated time */}
-                <input type="number" defaultValue={""} min={0} step={1}
-                  className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                  {...register("estimatedHours", { required: true })}
-                />
-                {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-              </div>
-
-            </div>
-
-            {/*Field to input the description of the course*/}
-            <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor='description'>Descrição</label> {/** Description */}
-              <textarea rows={4} defaultValue={""}
-                className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...register("description", { required: true })}
-              />
-              {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-            </div>
-
-            {/*Create and cancel buttons*/}
-            <div className='modal-action'>
-              <div className="flex items-center justify-between gap-4 w-full mt-8">
-                <label htmlFor='course-create' className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                  <button type="submit" className='py-2 px-4 h-full w-full'>
-                    Criar {/** Create */}
-                  </button>
-                </label>
-                <label htmlFor='course-create' className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                  Cancelar {/** Cancel */}
-                </label>
-              </div>
-            </div>
-          </form>
-
+          </div> 
         </Layout>
   )
 }

@@ -22,6 +22,11 @@ module.exports = {
         success: "#4AA04A",
         disabled: "#E4F2F5",
         star: "#F1CC4F",
+        primaryDarkBlue: "#166276",
+        warning: '#FF4949',
+
+
+        
       },
       display: ["group-hover"],
       keyframes: {
