@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 import background from "../assets/background.jpg"
-import Icon from '@mdi/react';
+import {Icon} from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
-import { mdiEyeOffOutline, mdiEyeOutline } from '@mdi/js';
+import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
 
 
@@ -43,6 +43,12 @@ const Login = () => {
     let setErrorMessage = (errMessage: string) => {
       newErrorMessage(errMessage);
     };
+  //Variable determining the error message for both fields.
+    const [emailError, setEmailError] = useState(null);
+    const [emailErrorMessage,  setEmailErrorMessage] = useState('');
+  
+    const [passwordError, setPasswordError] = useState(null);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     /**
     * OnSubmit function for Login.
@@ -64,17 +70,26 @@ const Login = () => {
                   
                   navigate("/courses");
               }
-              
+             
+          // error messages for email and password  
           })
           .catch(err => { setError(err); console.log(err)
             switch (err.response.data.error.code){
-              case "E0101": //Invalid Email 
-                  setErrorMessage("O email fornecido não está associado a uma conta") //The provided email is not associated with an account
-                  break;
+              case "E0004": //Invalid Email 
+                setEmailError(err);
+                setEmailErrorMessage("O email fornecido não está associado a uma conta.");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
+              break;
   
               case "E0105": //Invalid Password
-                  setErrorMessage("Senha Incorreta") //Wrong Password
-                  break;
+                setPasswordError(err);
+                setPasswordErrorMessage("Senha Incorreta.");
+                setEmailError(null);
+                setEmailErrorMessage('');
+              
+              break;
+              
               default: console.log(error);
           }});
     };
@@ -100,6 +115,7 @@ const Login = () => {
         submitloginButton.setAttribute('disabled', 'true');
         submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
       }
+
     };
 
     // failure on submit handler FIXME: find out what this does (OLD CODE)
@@ -135,16 +151,6 @@ return (
 
     { /*Container for right side of the page - frame 2332*/ }
     <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
-
-      { /*Error message for when email or password is incorrect*/ }
-      <div className="fixed right-0 top-[4rem]">
-        {error && (
-            <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
-              <p className="font-bold text-lg">Error</p>
-              <p className='text-base'>{errorMessage}</p>
-            </div>
-        )}
-      </div>
             
       { /*Container for the page's contents, + Back button*/ }
       <div className='relative py-8 px-10 w-full'>
@@ -168,45 +174,66 @@ return (
         <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col space-y-2">
 
           {/* Email field */}
-          <div className="relative">
-            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
+          <div>
+            <div className="relative">
+            <label className=" after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
               Email
-              <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
             </label>
             <input onInput={areFieldsFilled} 
               type="email" id="emailField"
               className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="user@email.com"
               {...register("email", { required: true })}/>
+
+            {emailError && (
+            <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+              <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+            <p className='mt-1 ml-1 text-red-500 text-sm'>{emailErrorMessage}</p>
+            </div>
+          )}
           </div>
-          
+        </div>
+
           {/* Password field */}
+        <div>
           <div className="relative">
-            <label className=" text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
               Senha {/*Password*/}
-              <span className= "text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span> 
-            </label>
-            <input onInput={areFieldsFilled} 
-              type={passwordVisible ? "text" : "password"} id="passwordField"
-              className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-              placeholder="**********"
-              {...register("password", { required: true })}/>
-            {/* Hide and show password button */}
-            <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
-                <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
-            </button>
-          </div>
+          </label>
+        <input
+          onInput={areFieldsFilled}
+          type={passwordVisible ? "text" : "password"}
+          id="passwordField"
+          className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="**********"
+        {...register("password", { required: true })}
+        />
+
+      {/* Hide and show password button */}
+        <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
+          <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+       </button>
+      </div>
+
+      {passwordError && (
+        <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+          <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+          <p className='mt-1 ml-1 text-red-500 text-sm'>{passwordErrorMessage}</p>
+        </div>
+       )}
+      </div>
+
+            
+    { /*Forgot password button*/ }
+      <div className=" flex flex-col items-end text-right gap-3">
+       <span className="text-neutral-700 text-base font-normal font-['Montserrat']"></span>{" "}
+          <Link to="/forgotpassword" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
+        </div>
           
-          { /*Forgot password button*/ }
-          <div className=" flex flex-col items-end text-right gap-3">
-            <span className="text-neutral-700 text-base font-normal font-['Montserrat']"></span>{" "}
-            <Link to="/forgotpassword" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
-          </div>
+        <span className="h-12" /> {/* spacing */}  
           
-          <span className="h-12" /> {/* spacing */}  
-          
-          { /*Enter button*/ }
-          <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+      { /*Enter button*/ }
+        <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
           disabled>
             Entrar {/*Enter*/}
           </button>
