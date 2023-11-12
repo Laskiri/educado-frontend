@@ -83,10 +83,22 @@ const Login = () => {
               break;
   
               case "E0105": //Invalid Password
-                setPasswordError(err);
-                setPasswordErrorMessage("Senha Incorreta.");
                 setEmailError(null);
                 setEmailErrorMessage('');
+                setPasswordError(err);
+                setPasswordErrorMessage("Senha Incorreta.");
+
+              case "E1001": //User Not Approved
+                setEmailError(err);
+                setEmailErrorMessage("A conta associada a este e-mail não foi aprovada");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
+
+              case "E1002": //User Rejected
+                setEmailError(err);
+                setEmailErrorMessage("A conta associada a este e-mail foi rejeitada");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
               
               break;
               

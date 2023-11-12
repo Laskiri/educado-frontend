@@ -6,7 +6,7 @@ import {BACKEND_URL} from "../helpers/environment"
 import AuthServices from "../services/auth.services";
 
 // Interfaces
-import { CCApp } from '../interfaces/CCApp'
+
 
 // Components
 import Loading from "./Loading";
@@ -28,7 +28,7 @@ const EducadoAdmin = () => {
     );
    
     if (!data) return <Loading/>
-    
+    console.log(data)
     return (
         <Layout meta="Educado Admin">
             <PageDescriptor
@@ -80,7 +80,7 @@ const EducadoAdmin = () => {
 
                             {/** Table Body */}
                             <tbody>
-                                {data?.data.data.filter((application) => {
+                                {data?.data.data.filter((application: any) => {
                                     if (searchTerm == "") {
                                         return application;
                                     } else if (
@@ -95,8 +95,8 @@ const EducadoAdmin = () => {
                                         application.email.toLowerCase().includes(searchTerm.toLowerCase())) {
                                         return application;
                                     }
-                                }).map((application: CCApp.Datum, key: number) => {
-                                    let date = new Date(application.dateCreated); // TODO: Format Time
+                                }).map((application: any, key: number) => {
+                                    let date = new Date(application.joinedAt); // TODO: Format Time
                                     // let dateString = new Intl.DateTimeFormat('en-US').format(date);
                                     return (
                                         <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-sm">

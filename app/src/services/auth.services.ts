@@ -1,15 +1,5 @@
 import axios from "axios";
-
-// Interfaces
-import { CCApp } from "../interfaces/CCApp";
-
 import {BACKEND_URL} from "../helpers/environment"
-
-
-
-
-import { boolean } from "yup";
-
 
 export interface ContentCreatorApplication {
   firstName: String;
@@ -42,15 +32,13 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
 }; (OLD CODE)*/
 
 
-const GetCCApplications = async (): Promise<CCApp.RootObject> => {
-  return await axios.get(
-    `${BACKEND_URL}/api/applications/`
-  );
+const GetCCApplications = async () => {
+  return await axios.get(`${BACKEND_URL}/api/applications/`);
 };
 
-const GetSingleCCApplication = async (url: string): Promise<CCApp.RootObject> => {
-  const response = await axios.get(url)
-  return response.data.data;
+const GetSingleCCApplication = async (url: string) => {
+  return await axios.get(url)
+  
 };
 
 /*const GetSingleUserApplication = async (url: string): Promise<CCApp.Datum> => {
@@ -59,17 +47,11 @@ const GetSingleCCApplication = async (url: string): Promise<CCApp.RootObject> =>
 };*/
 
 const AcceptApplication = async (id: string): Promise<unknown> => {
-  return await axios.put(
-    `${BACKEND_URL}/api/applications/${id}?action=approve`,
-    { data: { reason: `Yes` } }
-  );
+  return await axios.put(`${BACKEND_URL}/api/applications/${id}approve`);
 };
 
 const RejectApplication = async (id: string): Promise<unknown> => {
-  return await axios.put(
-    `${BACKEND_URL}/api/applications/${id}?action=reject`,
-    { data: { reason: `No` } }
-  );
+  return await axios.put(`${BACKEND_URL}/api/applications/${id}reject`);
 };
 
 const AuthServices = Object.freeze({
