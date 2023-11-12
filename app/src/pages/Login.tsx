@@ -38,11 +38,7 @@ const Login = () => {
     // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    //Variable determining the error message
-    const [errorMessage, newErrorMessage] = useState('');
-    let setErrorMessage = (errMessage: string) => {
-      newErrorMessage(errMessage);
-    };
+  
   //Variable determining the error message for both fields.
     const [emailError, setEmailError] = useState(null);
     const [emailErrorMessage,  setEmailErrorMessage] = useState('');
@@ -80,14 +76,7 @@ const Login = () => {
                 setEmailErrorMessage("O email fornecido não está associado a uma conta.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
-              break;
-  
-              case "E0105": //Invalid Password
-                setEmailError(null);
-                setEmailErrorMessage('');
-                setPasswordError(err);
-                setPasswordErrorMessage("Senha Incorreta.");
-
+        
               case "E1001": //User Not Approved
                 setEmailError(err);
                 setEmailErrorMessage("A conta associada a este e-mail não foi aprovada");
@@ -99,7 +88,13 @@ const Login = () => {
                 setEmailErrorMessage("A conta associada a este e-mail foi rejeitada");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
-              
+              break;
+
+              case "E0105": //Invalid Password
+              setEmailError(null);
+              setEmailErrorMessage('');
+              setPasswordError(err);
+              setPasswordErrorMessage("Senha Incorreta.");
               break;
               
               default: console.log(error);
@@ -128,12 +123,14 @@ const Login = () => {
         submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
       }
 
+       // function to clear error messages once fields are empty 
+      setEmailError(null);
+      setEmailErrorMessage('');
+      setPasswordError(null);
+      setPasswordErrorMessage('');
     };
-
     // failure on submit handler FIXME: find out what this does (OLD CODE)
     //const onError: SubmitHandler<Inputs> = error => console.log(error);
-    
-
 
 return (
 <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
@@ -188,7 +185,7 @@ return (
           {/* Email field */}
           <div>
             <div className="relative">
-            <label className=" after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
               Email
             </label>
             <input onInput={areFieldsFilled} 
