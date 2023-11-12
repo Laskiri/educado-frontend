@@ -3,8 +3,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react' ;
 import * as Yup from 'yup';
-import Icon from '@mdi/react';
-import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold } from '@mdi/js';
+import {Icon} from '@mdi/react';
+import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold, mdiAlertCircleOutline } from '@mdi/js';
 import Carousel from "../components/archive/Carousel";
 
 // Static assets
@@ -61,6 +61,14 @@ const Signup = () => {
   let setErrorMessage = (errMessage: string) => {
     newErrorMessage(errMessage);
   };
+
+  //Variable determining the error message for both fields.
+  const [emailExistsError, setEmailExistError] = useState(null);
+  const [emailExistsErrorMessage,  setErrorExistMessage] = useState('');
+  
+  const [passwordMismatchError, setPasswordMismatchError] = useState(null);
+  const [passwordMismatchErrorMessage, setPasswordMismatchErrorMessage] = useState('');
+
   
   /**
     * OnSubmit function for Signup.
@@ -84,7 +92,17 @@ const Signup = () => {
     .catch(err => { setError(err); console.log(err)
       switch (err.response.data.error.code){
         case "E0201": //User with the provided email already exists
-            setErrorMessage("Já existe um usuário com o email fornecido") //User with the provided email already exists
+            setEmailExistError(err);
+            setErrorExistMessage("Já existe um usuário com o email fornecido") //User with the provided email already exists
+            setPasswordMismatchError(null);
+            setPasswordMismatchErrorMessage('');
+            break;
+
+        case "E0105": // If the passwords do not match, return an error message
+            setPasswordMismatchError(err);
+            setPasswordMismatchErrorMessage("As senhas não combinam") //the passwords do not match
+            setEmailExistError(null);
+            setErrorExistMessage('');
             break;
         default: console.log(error);
     }});
@@ -134,6 +152,11 @@ const Signup = () => {
       submitSignupButton.setAttribute('disabled', 'true');
       submitSignupButton.classList.add('opacity-20');
     }
+    // function to clear error messages once fields are empty 
+    setPasswordMismatchError(null);
+    setPasswordMismatchErrorMessage('');
+    setEmailExistError(null);
+    setErrorExistMessage('');
   };
 
 
@@ -164,16 +187,6 @@ return (
 
   { /*Container for right side of the page - frame 2332*/ }
   <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
-    
-  { /*Error message for when email or password is incorrect*/ }
-    <div className="fixed right-0 top-[4rem]">
-      {error && (
-          <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
-            <p className="font-bold text-lg">Error</p>
-            <p className='text-base'>{errorMessage}</p>
-          </div>
-      )}
-    </div>
 
   { /*Container for the pages contents, + Back button*/ }  
   <div className='relative py-8 px-10 w-full'>
@@ -200,9 +213,8 @@ return (
 
       { /*FirstName Field*/ }
       <div className="relative flex-1">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="firstNameField"> 
+      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="firstNameField"> 
           Nome {/*Name*/}
-          <span className="text-[#FF4949] text-xs font-normal">*</span> 
       </label>
       <input onInput={areFieldsFilled}
         type="text" id="firstNameField"
@@ -213,9 +225,8 @@ return (
       
       { /*Last Name Field*/ }
       <div className="relative flex-1 ml-2">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5"htmlFor="lastNameField"> 
+      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="lastNameField"> 
       Sobrenome {/*Last Name*/}
-          <span className="text-[#FF4949] text-xs font-normal">*</span> 
       </label>
       <input onInput={areFieldsFilled}
         type="text" id="lastNameField"
@@ -228,22 +239,27 @@ return (
 
       { /*Email Field*/ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="usernameField">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="usernameField">
         Email 
-        <span className="text-[#FF4949] text-xs font-normal">*</span>
       </label>
       <input onInput={areFieldsFilled}
         type="email" id="emailField"
         className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="user@email.com"
         {...register("email", { required: " introduza o seu e-mail." })}/>
+
+        {emailExistsError && (
+        <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+          <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+          <p className='mt-1 ml-1 text-red-500 text-sm'>{emailExistsErrorMessage}</p>
+        </div>
+       )}
       </div>
 
       { /*Password Field*/ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5" htmlFor="passwordField">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordField">
         Senha {/*Password*/}
-        <span className=" text-[#FF4949] text-xs font-normal">*</span>
       </label>
       <input onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"} id="passwordField"
@@ -276,9 +292,8 @@ return (
 
       { /*Confirm Password Field */ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-6" htmlFor="passwordFieldRepeat">
+      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-6 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordFieldRepeat">
         Confirmar Senha {/*Confirm Password*/}
-        <span className="text-[#FF4949] text-xs font-normal font-['Montserrat']">*</span>
       </label>
       <input onInput={areFieldsFilled}
         type={passwordVisibleRepeat ? "text" : "password"} id="passwordFieldRepeat"
@@ -289,7 +304,13 @@ return (
         <Icon path={passwordVisibleRepeat ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
       </button>
       </div>
-
+      {passwordMismatchError && (
+        <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+          <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+          <p className='mt-1 ml-1 text-red-500 text-sm'>{passwordMismatchErrorMessage}</p>
+        </div>
+       )}
+      
         
       <span className="h-10" /> {/* spacing */}  
       
