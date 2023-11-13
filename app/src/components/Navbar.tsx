@@ -42,12 +42,12 @@ const Navbar = () => {
                 <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
                     <li>
-                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Veja seus cursos"> {/* see your courses */}
+                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom text-lg font-['Montserrat'] active:bg-[#166276]" data-tip="Veja seus cursos"> {/* see your courses */}
                         <Icon path={mdiNotebookOutline} size={1} color="#A1ACB2" /> <span>Cursos</span> {/*courses*/}
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Verifique os aplicativos"> {/* Check Applications */}
                         <Icon path={mdiAccount} size={1} color="#A1ACB2" /><span>Admin</span> {/*admin*/}
                         </Link>
                     </li>
@@ -81,7 +81,7 @@ const Navbar = () => {
                             </label>
 
                             {/* Dropdown Content */}
-                            <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[225px] mt-2 bg-[#FFFFFF] rounded-lg"
+                            <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[245px] mt-2 bg-[#FFFFFF] rounded-lg"
                                 style={{
                                     background: 'var(--secondary, #FFFFFF)',
                                     boxShadow: '0px 2px 4px 0px #B3B3B3'
@@ -89,7 +89,7 @@ const Navbar = () => {
 
                                 {/* Edit Profile/settings */}
                                 <li className="w-full"> {/*class to make the list item fill the width */}
-                                    <Link to={"/profile"} className="text-[#383838] text-base font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
+                                    <Link to={"/profile"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiAccountCog} size={1} color="#A1ACB2" /></span>
                                         <span>Editar perfil</span>
                                     </Link>
@@ -98,7 +98,7 @@ const Navbar = () => {
 
                                 {/* My Certificates */}
                                 <li className="w-full"> {/*class to make the list item fill the width */}
-                                    <Link to={"/courses"} className="text-[#383838] text-base font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
+                                    <Link to={"/courses"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiCertificate} size={1} color="#A1ACB2" /></span>
                                         <span>Meus certificados</span>
                                     </Link>
@@ -108,7 +108,7 @@ const Navbar = () => {
 
                                 {/* Logout */}
                                 <li className="w-full"> {/* class to make the list item fill the width */}
-                                    <Link to={"/welcome"} onClick={logout} className=" text-[#FF4949] text-base font-bold font-['Montserrat'] hover:bg-[#E4E4E4]">
+                                    <Link to={"/welcome"} onClick={logout} className=" text-[#FF4949] text-lg font-bold font-['Montserrat'] hover:bg-[#E4E4E4]">
                                         <span><Icon path={mdiLogoutVariant} size={1} color="#FF4949" /></span>
                                         <span>Sair</span>
                                     </Link>
