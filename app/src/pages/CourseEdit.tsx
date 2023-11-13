@@ -189,9 +189,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
    * Though bucket is not implemented yet, so most of this is commented out
    */
   const onCoverImgChange = async (e: any) => {
-    //const image = 'https://www.shutterstock.com/image-illustration/red-stamp-on-white-background-260nw-1165179109.jpg'
     const image = e.target.files?.item(0)
-    console.log(image);
 
     // Enables us to preview the image file before storing it
     setCoverImgPreview(image)
@@ -312,7 +310,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                     <div className='relative'>
                                         <div className='p-0 rounded-b-none rounded-t border-gray-300 border-x border-t h-[240px] overflow-hidden'>
                                             {bucketData ?
-                                                <img src={"data:image;base64," + bucketData} /*alt={data.title}*/ className="object-cover w-full h-full rounded" /> :
+                                                <img src={ coverImgPreview? coverImgPreview : "data:image;base64," + bucketData} /*alt={data.title}*/ className="object-cover w-full h-full rounded" /> :
                                                 <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>Sem imagem de capa</div>
                                             }
 
