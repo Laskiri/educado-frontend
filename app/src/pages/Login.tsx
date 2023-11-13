@@ -79,13 +79,13 @@ const Login = () => {
         
               case "E1001": //User Not Approved
                 setEmailError(err);
-                setEmailErrorMessage("A conta associada a este e-mail não foi aprovada");
+                setEmailErrorMessage("A conta associada a este e-mail não foi aprovada.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
 
               case "E1002": //User Rejected
-                setEmailError(err);
-                setEmailErrorMessage("A conta associada a este e-mail foi rejeitada");
+                setEmailError(err); //Invalid email. Please check if you entered the email address correctly
+                setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
               break;
@@ -164,18 +164,18 @@ return (
       { /*Container for the page's contents, + Back button*/ }
       <div className='relative py-8 px-10 w-full'>
         <div className=''>
-          <h1 className="mb-10 flex text-base text-[#383838] font-normal font-['Montserrat'] underline"> 
+          <h1 className="mb-10 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
             <Link to="/welcome">
               <Icon path={mdiChevronLeft} size={1} color="#383838" />
             </Link>
-            <Link to="/welcome" className="text-base text-[#383838] font-normal font-['Montserrat']">
+            <Link to="/welcome" className="text-lg text-[#383838] font-normal font-['Montserrat']">
               Voltar {/*Back*/}
             </Link>
           </h1>
         </div>
 
         { /*Title*/ }
-        <h1 className="text-[#383838] text-3xl font-bold font-['Lato'] leading-normal self-stretch ">
+        <h1 className="text-[#383838] text-3xl font-bold font-['Lato'] leading-normal self-stretch mb-10 ">
           Bem-vindo de volta ao Educado! {/*Welcome back to Educado!*/}
         </h1>
 
@@ -185,12 +185,12 @@ return (
           {/* Email field */}
           <div>
             <div className="relative">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
               Email
             </label>
             <input onInput={areFieldsFilled} 
               type="email" id="emailField"
-              className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="user@email.com"
               {...register("email", { required: true })}/>
 
@@ -206,14 +206,14 @@ return (
           {/* Password field */}
         <div>
           <div className="relative">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-xs font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
               Senha {/*Password*/}
           </label>
         <input
           onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"}
           id="passwordField"
-          className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
         {...register("password", { required: true })}
         />
@@ -235,14 +235,14 @@ return (
             
     { /*Forgot password button*/ }
       <div className=" flex flex-col items-end text-right gap-3">
-       <span className="text-neutral-700 text-base font-normal font-['Montserrat']"></span>{" "}
-          <Link to="/forgotpassword" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
+       <span className="text-neutral-700 text-lg font-normal font-['Montserrat']"></span>{" "}
+          <Link to="/forgotpassword" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
         </div>
           
         <span className="h-12" /> {/* spacing */}  
           
       { /*Enter button*/ }
-        <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+        <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
           disabled>
             Entrar {/*Enter*/}
           </button>
@@ -251,8 +251,8 @@ return (
 
           { /*Link to Signup page*/ }
           <div className="flex justify-center space-x-1"> 
-            <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
-            <Link to="/signup" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
+            <span className= "text-[#A1ACB2] text-lg font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
+            <Link to="/signup" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
           </div>
         </form>
       </div>
