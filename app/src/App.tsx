@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
-import Motivation from "./pages/Motivation";
+import Application from "./pages/Application";
 
 // Auth Pages
 import Courses from "./pages/Courses";
@@ -61,8 +61,8 @@ function App() {
       errorElement: <NotFound />
     },
     {
-      path: "/motivation",
-      element: <NonProtectedRoute><Motivation /></NonProtectedRoute>,
+      path: "/application",
+      element: <NonProtectedRoute><Application /></NonProtectedRoute>,
       errorElement: <NotFound />
     },
     {
