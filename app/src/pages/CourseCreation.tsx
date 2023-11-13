@@ -182,18 +182,24 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
 
   return (
+    
         <Layout meta={`Course: ${id}`}>
+            {/*Everything on the left side of the site*/}
             <div className="m-8"> 
               <div className="w-2/5 float-left">
+                
               </div>
 
+            {/*Everything on the right side of the site*/}
+            <div className="w-3/5 float-right justify-between space-y-4 my-5">
+            <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
+            </div>
 
-
-            {/*Work in progress.....*/}
+            {/*White bagground*/}
+            <div className="w-3/5 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
               <div className="m-10">
-           {/*Field to input the title of the new course*/}
-            <div className="w-3/5 float-right bg-white rounded justify-between space-y-4">
-              <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
+              
+               {/*Field to input the title of the new course*/}
               <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col space-y-2 text-left">
                   <label htmlFor='title'>Nome do curso</label> {/*Title*/}
@@ -212,7 +218,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex flex-col space-y-2 text-left  ">
                     <label htmlFor='level'>Nível</label> {/** Level */}
                     <select
-                      className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                      className="w-1/2 bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                       {...register("difficulty", { required: true })}
                     >
                       {/*Hard coded options by PO, should be changed to get from db*/}
@@ -229,7 +235,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                     <label htmlFor='category'>Categoria</label> {/** Category */}
                     <select
                         defaultValue={"personal finance"}
-                        className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        className="w-1/2 bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                         {...register("category", { required: true })}
                     >
                         {/*Hard coded options by PO, should be changed to get from db*/}
