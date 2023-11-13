@@ -189,10 +189,10 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
 
 
-
-          
+            {/*Work in progress.....*/}
+              <div className="m-10">
            {/*Field to input the title of the new course*/}
-            <div className="w-3/5 float-right">
+            <div className="w-3/5 float-right bg-white rounded justify-between space-y-4">
               <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
               <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col space-y-2 text-left">
@@ -288,6 +288,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
               </form>
             </div>
           </div> 
+          </div>
         </Layout>
   )
 }
