@@ -35,12 +35,12 @@ const SignupSchema = Yup.object().shape({
     .required("Seu sobrenome é obrigatório!"), /*Your last name is Required*/ 
 
   password: Yup.string()
-    .min(8, 'Too Short!')
-    .required("Password is not long enough"),
+    .min(8, 'Muito curto!') /*Too Short!*/ 
+    .required("A senha não é longa o suficiente"), /*Password is not long enough*/ 
   confirmPassword:  Yup.string().oneOf([Yup.ref('password'), null], "Ss senhas não coincidem"),
   
   email: Yup.string()
-    .email('Invalid email format').required('Required'),
+    .email('Formato de email inválido').required('Required'), /*Invalid email format*/ 
   });
 
 
@@ -191,11 +191,11 @@ return (
   { /*Container for the pages contents, + Back button*/ }  
   <div className='relative py-8 px-10 w-full'>
   <div className='self-stretch'>
-    <h1 className="mb-10 flex text-base text-[#383838] font-normal font-['Montserrat'] underline"> 
+    <h1 className="mb-10 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
       <Link to="/welcome">
         <Icon path={mdiChevronLeft} size={1} color="#383838" />
       </Link>
-      <Link to="/welcome" className="text-base text-[#383838] font-normal font-['Montserrat']">
+      <Link to="/welcome" className="text-lg text-[#383838] font-normal font-['Montserrat']">
         Voltar {/*Back*/}
       </Link>
     </h1>
@@ -213,24 +213,24 @@ return (
 
       { /*FirstName Field*/ }
       <div className="relative flex-1">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="firstNameField"> 
+      <label className="flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="firstNameField"> 
           Nome {/*Name*/}
       </label>
       <input onInput={areFieldsFilled}
         type="text" id="firstNameField"
-        className="w-[95%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base text-[#383838]  focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        className="w-[95%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-lg text-[#383838]  focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="Nome"
         {...register("firstName", { required: "digite seu nome primeiro nome." })}/> { /*enter your first name*/ }
       </div>
       
       { /*Last Name Field*/ }
       <div className="relative flex-1 ml-2">
-      <label className="flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="lastNameField"> 
+      <label className="flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "htmlFor="lastNameField"> 
       Sobrenome {/*Last Name*/}
       </label>
       <input onInput={areFieldsFilled}
         type="text" id="lastNameField"
-        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base text-[#383838] focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        className="w-[100%] flex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-lg text-[#383838] focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="Sobrenome"
         {...register("lastName", { required: "digite seu nome, sobrenome." })}/> { /*enter your last name*/ }
       </div>
@@ -239,12 +239,12 @@ return (
 
       { /*Email Field*/ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="usernameField">
+      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="usernameField">
         Email 
       </label>
       <input onInput={areFieldsFilled}
         type="email" id="emailField"
-        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="user@email.com"
         {...register("email", { required: " introduza o seu e-mail." })}/>
 
@@ -258,12 +258,12 @@ return (
 
       { /*Password Field*/ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordField">
+      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordField">
         Senha {/*Password*/}
       </label>
       <input onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"} id="passwordField"
-          className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
           {...register("password", { required: "insira a senha." })} onChange={handlePasswordChange}/>
       <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
@@ -274,14 +274,14 @@ return (
 
       { /*Password Checks*/ }
       <div className="px-3">
-        <div className="items-stretch text-[#A1ACB2] text-xs font-normal font-['Montserrat'] mt-2">
+        <div className="items-stretch text-[#A1ACB2] text-sm font-normal font-['Montserrat'] mt-2">
           {passwordCheck1 ? (
             <Icon className=" left-20 float-left" path={mdiCheckBold} size={0.55} color=" green" />
           ) : null}
           &bull; Mínimo 8 caracteres {/*Minimum 8 characters*/}
         </div >
 
-        <div className="text-[#A1ACB2] text-xs font-normal font-['Montserrat'] items-stretch">
+        <div className="text-[#A1ACB2] text-sm font-normal font-['Montserrat'] items-stretch">
           {passwordCheck2 ? (
             <Icon className="left-20 float-left" path={mdiCheckBold} size={0.55} color="green" />
           ) : null}
@@ -292,13 +292,13 @@ return (
 
       { /*Confirm Password Field */ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-xs font-normal gap-1 font-['Montserrat'] mt-6 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordFieldRepeat">
+      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-6 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordFieldRepeat">
         Confirmar Senha {/*Confirm Password*/}
       </label>
       <input onInput={areFieldsFilled}
         type={passwordVisibleRepeat ? "text" : "password"} id="passwordFieldRepeat"
         placeholder="********** "
-        className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+        className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         {...register("confirmPassword", { required: "insira a senha." })}/>
       <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibilityRepeat}>
         <Icon path={passwordVisibleRepeat ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
@@ -315,7 +315,7 @@ return (
       <span className="h-10" /> {/* spacing */}  
       
         { /*Enter button*/ }
-        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
         disabled>
             Cadastrar {/*Register*/} 
         </button>
@@ -324,8 +324,8 @@ return (
       
         { /*Link to Login page*/ }
         <div className="flex justify-center space-x-1"> 
-          <span className= "text-[#A1ACB2] text-base font-normal font-['Montserrat']">Já possui conta? {/*Already have an account?*/}  </span> 
-          <Link to="/login" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Entre agora {/*Get in now*/} </Link>
+          <span className= "text-[#A1ACB2] text-lg font-normal font-['Montserrat']">Já possui conta? {/*Already have an account?*/}  </span> 
+          <Link to="/login" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Entre agora {/*Get in now*/} </Link>
         </div>
       </form>
     </div>
