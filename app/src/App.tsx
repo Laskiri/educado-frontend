@@ -61,7 +61,7 @@ function App() {
       errorElement: <NotFound />
     },
     {
-      path: "/application",
+      path: "/application/:id",
       element: <NonProtectedRoute><Application /></NonProtectedRoute>,
       errorElement: <NotFound />
     },

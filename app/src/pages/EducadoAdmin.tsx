@@ -23,7 +23,7 @@ const EducadoAdmin = () => {
     let location = useLocation();
 
     const { data, error } = useSWR(
-        `${BACKEND_URL}/api/applications?approved=false`,
+        `${BACKEND_URL}/api/applications`,
         AuthServices.GetCCApplications
     );
    

@@ -86,8 +86,9 @@ const Signup = () => {
       lastName: data.lastName,
       email: data.email,
       password: data.password,
-    }).then(() => {
-      navigate('/login')
+    }).then((res) => {
+      const id =res.data.contentCreatorProfile.baseUser;
+      navigate(`/application/${id}`)
     })
     .catch(err => { setError(err); console.log(err)
       switch (err.response.data.error.code){

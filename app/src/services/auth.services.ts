@@ -33,7 +33,7 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
 
 
 const GetCCApplications = async () => {
-  return await axios.get(`${BACKEND_URL}/api/applications/`);
+  return await axios.get(`${BACKEND_URL}/api/applications`);
 };
 
 const GetSingleCCApplication = async (url: string) => {
