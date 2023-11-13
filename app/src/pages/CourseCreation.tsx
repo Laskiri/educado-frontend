@@ -185,7 +185,6 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
         <Layout meta={`Course: ${id}`}>
             <div className="m-8"> 
               <div className="w-2/5 float-left">
-              <img src="pic_trulli.jpg">
               </div>
 
 
@@ -278,7 +277,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex items-center justify-between gap-4 w-full mt-8">
                     <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                       <button type="submit" className='py-2 px-4 h-full w-full'>
-                        Criar {/** Create */}
+                       Adicionar seções {/** Add sections */}
                       </button>
                     </label>
                     <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-warning-100    text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
