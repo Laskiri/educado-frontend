@@ -63,8 +63,8 @@ const Navbar = () => {
 
 
                     <div className="flex flex-col items-start">
-                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
-                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-xs font-normal font-['Montserrat']">{email}</span>
+                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-base font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
+                        <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-normal font-['Montserrat']">{email}</span>
                     </div>
 
                     {/* Dropdown for User Actions */}
@@ -72,7 +72,7 @@ const Navbar = () => {
                         <div className="dropdown dropdown-end">
                             <label tabIndex={0} className="btn btn-ghost hover:bg-transparent">
                                 <div className="avatar placeholder">
-                                    <div className="bg-[#166276] text-white rounded-full hover:rounded w-10">
+                                    <div className="bg-[#166276] text-white rounded-full hover:rounded w-11">
                                         <span className="text-md">
                                             {firstName.charAt(0)+lastName.charAt(0)}
                                         </span>
