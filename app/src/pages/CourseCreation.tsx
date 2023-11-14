@@ -47,7 +47,6 @@ interface Inputs {
   category: string
   difficulty: number
   status: string
-  estimatedHours: number
 }
 
 /**
@@ -109,7 +108,6 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
       description: data.description,
       category: data.category,
       difficulty: data.difficulty,
-      estimatedHours: data.estimatedHours,
       creator: id,
         }, token)
       .then(res => {
@@ -263,20 +261,6 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                     </div>
                 
                 </div> 
-                  
-                 
-
-                {/**  {/*This should be commented out, but maybe it can be used later when we have to use estimated time*/}
-                  {/**  {/*Field to input the estimated time*/}
-                 
-                  <div className="flex flex-col space-y-2 text-left">
-                    <label htmlFor='title'>Tempo estimado</label> 
-                    <input type="number" defaultValue={""} min={0} step={1}
-                    className="form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
-                    {...register("estimatedHours", { required: true })}
-                    />
-                    {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required*/}
-                </div>
                 
                 <div>
                   {/*Cover image field is made but does not interact with the db*/}
