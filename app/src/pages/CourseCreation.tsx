@@ -249,15 +249,22 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 </div>
 
                 {/*Field to input the description of the course*/}
-                <div className="flex flex-col space-y-2 text-left ">
-                  <label htmlFor='description'>Descrição {charCount}/400</label> {/** Description */}  
-                  <textarea maxLength={400} rows={4} defaultValue={""}
+                <div className="flex flex-col space-y-2 ">
+                    <label className='text-left' htmlFor='description'>Descrição </label> {/** Description */}  
+                    <textarea maxLength={400} rows={4} defaultValue={""}
                     className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
                     {...register("description", { required: true })}
                     onChange={(e) => setCharCount(e.target.value.length)}
-                  />
-                  {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                    />
+                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                
+                    <div className='text-right' >
+                    <label htmlFor="">{charCount}/400</label>
+                    </div>
+                
                 </div> 
+                  
+                 
 
                 {/**  {/*This should be commented out, but maybe it can be used later when we have to use estimated time*/}
                   {/**  {/*Field to input the estimated time*/}
@@ -274,11 +281,14 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 <div>
                   {/*Cover image field is made but does not interact with the db*/}
                   <div className="flex flex-col space-y-2 text-left">
-                    <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */}
-                    <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
-                    {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                    <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */} 
+                      </div>
+                        <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+                        {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+                      </div>
+                      <div className='text-right' >
+                    <label htmlFor="">o arquivo deve conter no máximo 10Mb</label>
                   </div>
-                </div>
 
                 {/*Create and cancel buttons*/}
                 <div className='modal-action'>
