@@ -192,7 +192,7 @@ return (
   { /*Container for the pages contents, + Back button*/ }  
   <div className='relative py-8 px-10 w-full'>
   <div className='self-stretch'>
-    <h1 className="mb-10 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
+    <h1 className="mb-4 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
       <Link to="/welcome">
         <Icon path={mdiChevronLeft} size={1} color="#383838" />
       </Link>
