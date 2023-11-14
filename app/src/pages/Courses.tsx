@@ -45,7 +45,7 @@ const Courses = () => {
     return null
   }*/
   if (!data) return <Loading />;
-  
+
   return (
     <Layout meta="Course overview" >
       <div className='grid lg:grid-cols-[3fr_1fr] h-full'>
