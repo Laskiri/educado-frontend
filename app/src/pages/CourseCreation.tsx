@@ -72,6 +72,7 @@ const CourseCreation = () => {
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("");
   const [statusChange, setStatusChange] = useState<boolean>(false);
+  const [charCount, setCharCount] = useState<number>(0);
   
   
   useEffect(() => {
@@ -249,10 +250,11 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
                 {/*Field to input the description of the course*/}
                 <div className="flex flex-col space-y-2 text-left ">
-                  <label htmlFor='description'>Descrição</label> {/** Description */}
-                  <textarea rows={4} defaultValue={""}
+                  <label htmlFor='description'>Descrição {charCount}/400</label> {/** Description */}  
+                  <textarea maxLength={400} rows={4} defaultValue={""}
                     className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
                     {...register("description", { required: true })}
+                    onChange={(e) => setCharCount(e.target.value.length)}
                   />
                   {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
                 </div> 
