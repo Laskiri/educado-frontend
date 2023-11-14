@@ -37,6 +37,7 @@ import { BACKEND_URL } from "../helpers/environment";
 // Helpers
 import categories from "../helpers/courseCategories";
 import statuses from "../helpers/courseStatuses";
+import { Item } from '../components/dnd/@dnd/Item'
 
 
 
@@ -70,14 +71,14 @@ const CourseCreation = () => {
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("");
-  const [statusChange, setStatusChange] = useState<boolean>(false);
+  const [statusChange, setStatusChange] = useState<string>("");
   const [charCount, setCharCount] = useState<number>(0);
   
   
   useEffect(() => {
       // get categories from db
       let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
-      setCategoriesOptions(inputArray.map((categoryENG: string, key: number) => (
+      setCategoriesOptions( inputArray.map((categoryENG: string, key: number) => (
           <option value={categoryENG} key={key} >{categories[inputArray[key]]?.br}</option>
           )));
     }, []);
@@ -100,7 +101,20 @@ const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
 */
 
 // success on submit handler
-const onSubmit: SubmitHandler<Inputs> = async (data) => {
+const onSubmit: SubmitHandler<Inputs> = async (data, draft) => {
+
+  let newStatus;
+
+  if(statusChange){
+    if(statusChange === "Published"){
+      newStatus = "published";}
+      else{
+        newStatus = "draft";}
+      
+  
+  
+}
+
     const { id } = getUserInfo();
     setIsLoading(true);
     CourseServices.createCourse({
@@ -109,6 +123,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
       category: data.category,
       difficulty: data.difficulty,
       creator: id,
+      status: "newStatus",
         }, token)
       .then(res => {
         console.log(res);
@@ -186,7 +201,6 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
             {/*Everything on the left side of the site*/}
             <div className="m-8"> 
               <div className="w-2/5 float-left">
-                
               </div>
 
             {/*Everything on the right side of the site*/}
@@ -221,6 +235,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                       {...register("difficulty", { required: true })}
                     >
                       {/*Hard coded options by PO, should be changed to get from db*/}
+                      <option disabled selected> Selecione o nível</option>
                       <option value={1}>Iniciante </option> {/** Beginner */}
                       <option value={2}>Intermediário</option> {/** Intermediate */}
                       <option value={3}>Avançado </option> {/** Advanced */}
@@ -233,10 +248,10 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                     <div className="flex flex-col w-1/2 space-y-2 text-left  ">
                     <label htmlFor='category'>Categoria</label> {/** Category */}
                     <select
-                        defaultValue={"personal finance"}
+                        defaultValue={"Selecione a categoria"} 
                         className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                         {...register("category", { required: true })}
-                    >
+                    >   <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
                         {/*Hard coded options by PO, should be changed to get from db*/}
                         {categoriesOptions}
 
@@ -277,14 +292,20 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 {/*Create and cancel buttons*/}
                 <div className='modal-action'>
                   <div className="flex items-center justify-between gap-4 w-full mt-8">
+                  <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                      Cancelar e Voltar {/** Cancel */}
+                    </label>
                     <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                      <button type="submit" className='py-2 px-4 h-full w-full'>
+                      <button type="submit" className='py-2 px-4 h-full w-full' >
                        Adicionar seções {/** Add sections */}
                       </button>
                     </label>
-                    <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-warning-100    text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                      Cancelar e Voltar {/** Cancel */}
+                    <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                      <button type="submit" className='underline' >
+                       Draft {/** Add sections */}
+                      </button>
                     </label>
+                    
                   </div>
                 </div>
               </form>

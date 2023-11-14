@@ -11,6 +11,7 @@ export interface CourseInterface {
   difficulty: number;
   description: string;
   creator: string;
+  status: string;
 }
 
 const client = axios.create({
@@ -26,7 +27,7 @@ const client = axios.create({
  */
 
 // Create a new course
-const createCourse = async ({ title, category, difficulty, description, creator }: CourseInterface, token: string) => {
+const createCourse = async ({ title, category, difficulty, description, creator, status }: CourseInterface, token: string) => {
   return await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
@@ -35,6 +36,7 @@ const createCourse = async ({ title, category, difficulty, description, creator 
       category: category,
       difficulty: difficulty,
       creator: creator,
+      status: status
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );
