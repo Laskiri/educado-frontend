@@ -1,31 +1,28 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  JSXElementConstructor,
-  ReactElement,
-  ReactNode,
-  ReactPortal,
-  Fragment,
-  ChangeEvent,
-} from "react";
+import { useState } from "react";
 import Icon from "@mdi/react";
-import {
-  mdiEyeOffOutline,
-  mdiEyeOutline,
-  mdiCheckBold,
-  mdiChevronDown,
-  mdiChevronUp,
-} from "@mdi/js";
+import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
 import { Link } from "react-router-dom"
 import Motivation from "../components/Motivation";
 import AcademicExperiences from "../components/AcademicExperiences";
 import ProfessionalExperience from "../components/ProfessionalExperience";
 
+import { useForm, SubmitHandler } from "react-hook-form";
+
+export interface NewApplication {
+  motivation: String;
+}
+
 const Application = () => {
+
+  const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
+
   const [toggleMotivation, setToggleMotivation] = useState(true);
   const [toggleAcademicExperiences, setToggleAcademicExperiences] = useState(false);
   const [toggleProfessionalExperience, setToggleProfessionalExperience] = useState(false);
+
+  const onSubmit: SubmitHandler<NewApplication> = async (data) => {
+  console.log(data.motivation)
+};
 
 return (
 <main>
@@ -42,7 +39,7 @@ return (
   
   <body className="relative right-0 h-screen flex flex-col items-center gap-5 z-50">
 
-    {/*Box fot texst*/}
+    {/*Box fot text*/}
     <div className="items-center p-10 pt-20">
       <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
         Que bom que você quer fazer parte do Educado! {/*Vi er glad for, at du vil være en del af Educado!*/}
@@ -53,6 +50,7 @@ return (
       </p>
     </div>
 
+    <form onSubmit={handleSubmit(onSubmit)}>
     {/*Box for the Motivation */}
     <div className="w-[65%] justify-center items-center">
       <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
@@ -111,10 +109,11 @@ return (
     </div>
 
     <div className="w-[65%] flex justify-end">
-      <button className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
+      <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
         Enviar para análise   
       </button>
     </div>
+    </form>
   </body>
 </main>
 )    

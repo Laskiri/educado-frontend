@@ -1,29 +1,12 @@
-import React, {
-    useState,
-    useEffect,
-    useRef,
-    JSXElementConstructor,
-    ReactElement,
-    ReactNode,
-    ReactPortal,
-    Fragment,
-    ChangeEvent,
-  } from "react";
-  import Icon from "@mdi/react";
-  import {
-    mdiEyeOffOutline,
-    mdiEyeOutline,
-    mdiCheckBold,
-    mdiChevronDown,
-    mdiChevronUp,
-  } from "@mdi/js";
-  import { Link } from "react-router-dom"
-
-
+import { useState, ChangeEvent } from "react";
+import { useForm } from "react-hook-form";
+import { NewApplication } from "../pages/Application"
 
 const Motivation = () => {
 
-    const [motivation, setMotivation] = useState('');
+  const { register, formState: { errors } } = useForm<NewApplication>();
+
+  const [motivation, setMotivation] = useState('');
   const maxLength = 800;
 
   // Function to handle changes in the textarea
@@ -44,8 +27,8 @@ const Motivation = () => {
             className="bg-sky-50 rounded-lg border-none"
             placeholder="Escreva aqui porque você quer fazer parte de projeto"
             maxLength={maxLength}
-            name="motivation"
             value={motivation}
+            {...register("motivation", { required: true })}
             onChange={handleMotivationChange}
           />
           <div className="text-right text-gray-500 text-sm font-normal font-['Montserrat']">

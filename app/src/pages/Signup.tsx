@@ -87,7 +87,7 @@ const Signup = () => {
       email: data.email,
       password: data.password,
     }).then((res) => {
-      const id =res.data.contentCreatorProfile.baseUser;
+      const id = res.data.contentCreatorProfile.baseUser;
       navigate(`/application/${id}`)
     })
     .catch(err => { setError(err); console.log(err)
