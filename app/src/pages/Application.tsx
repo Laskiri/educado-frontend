@@ -19,13 +19,13 @@ import {
 } from "@mdi/js";
 import { Link } from "react-router-dom"
 import Motivation from "../components/Motivation";
-import AkademiskeErfaringer from "../components/AkademiskeErfaringer";
-import ProfessionelErfaring from "../components/ProfessionelErfaring";
+import AcademicExperiences from "../components/AcademicExperiences";
+import ProfessionalExperience from "../components/ProfessionalExperience";
 
 const Application = () => {
   const [toggleMotivation, setToggleMotivation] = useState(true);
-  const [toggleAkademiskeErfaringer, setToggleAkademiskeErfaringer] = useState(false);
-  const [toggleProfessionelErfaring, setToggleProfessionelErfaring] = useState(false);
+  const [toggleAcademicExperiences, setToggleAcademicExperiences] = useState(false);
+  const [toggleProfessionalExperience, setToggleProfessionalExperience] = useState(false);
 
 return (
 <main>
@@ -40,7 +40,18 @@ return (
     </div>
   </nav>
   
-  <body className="relative right-0 h-screen flex flex-col justify-center items-center gap-5 z-50">
+  <body className="relative right-0 h-screen flex flex-col items-center gap-5 z-50">
+
+    {/*Box fot texst*/}
+    <div className="items-center p-10 pt-20">
+      <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
+        Que bom que você quer fazer parte do Educado! {/*Vi er glad for, at du vil være en del af Educado!*/}
+      </h1>
+      <p className="text-center text-neutral-700 text-base font-normal font-['Montserrat']">
+        {/*Vi har brug for nogle oplysninger for at godkende din adgang som indholdsskaber. Vi vender tilbage til dig med et svar via e-mail.*/}
+        Precisamos de algumas informações para aprovar seu acesso de criador de conteúdo. Retornaremos com uma resposta via e-mail
+      </p>
+    </div>
 
     {/*Box for the Motivation */}
     <div className="w-[65%] justify-center items-center">
@@ -61,12 +72,12 @@ return (
       )}
     </div>
 
-    {/*Box for Akademiske erfaringer*/}
+    {/*Box for Academic Experiences*/}
     <div className="w-[65%] justify-center items-center">
       <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-      onClick={() => setToggleAkademiskeErfaringer(!toggleAkademiskeErfaringer)}>
+      onClick={() => setToggleAcademicExperiences(!toggleAcademicExperiences)}>
         <div className="flex items-start">
-          {toggleAkademiskeErfaringer ? (
+          {toggleAcademicExperiences ? (
             <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
           ) : (
             <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
@@ -75,17 +86,17 @@ return (
         </div>
       </button>
 
-      {toggleAkademiskeErfaringer && (
-        <AkademiskeErfaringer/>
+      {toggleAcademicExperiences && (
+        <AcademicExperiences/>
       )}
     </div>
 
-    {/*Box for Professionel erfaring*/}
+    {/*Box for Professional Experience*/}
     <div className="w-[65%] justify-center items-center">
       <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-      onClick={() => setToggleProfessionelErfaring(!toggleProfessionelErfaring)}>
+      onClick={() => setToggleProfessionalExperience(!toggleProfessionalExperience)}>
         <div className="flex items-start">
-          {toggleProfessionelErfaring ? (
+          {toggleProfessionalExperience ? (
             <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
           ) : (
             <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
@@ -94,8 +105,8 @@ return (
         </div>
       </button>
 
-    {toggleProfessionelErfaring && (
-      <ProfessionelErfaring/>
+    {toggleProfessionalExperience && (
+      <ProfessionalExperience/>
     )}
     </div>
 

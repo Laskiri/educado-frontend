@@ -1,9 +1,4 @@
-
-
-
-
-
-const ProfessionelErfaring = () => {
+const ProfessionalExperience = () => {
 
     return (
     <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
@@ -13,15 +8,15 @@ const ProfessionelErfaring = () => {
     </div>
     <div className="relative flex gap-10">
       <input
-      type="text" id="placeholderField21"
+      type="text" id="ProfessionalCompany"
       className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-      placeholder="placeholderField"
+      placeholder="Mobile Education"
       />
 
       <input
-      type="text" id="placeholderField22"
+      type="text" id="ProfessionalPosition"
       className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-      placeholder="placeholderField"
+      placeholder="Product Designer"
       />
     </div>
     <div className="grid grid-cols-2 gap-10"> 
@@ -30,15 +25,15 @@ const ProfessionelErfaring = () => {
     </div>
     <div className="relative flex gap-10">
       <input
-      type="text" id="placeholderField23"
+      type="text" id="ProfessionalStart"
       className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-      placeholder="placeholderField"
+      placeholder="Mês / Ano"
       />
 
       <input
-      type="text" id="placeholderField24"
+      type="text" id="ProfessionalEnd"
       className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-      placeholder="placeholderField"
+      placeholder="Mês / Ano"
       />
     </div>
     <div className="grid grid-cols-1"> 
@@ -46,9 +41,9 @@ const ProfessionelErfaring = () => {
     </div>
     <div className="relative flex">
       <input
-      type="text" id="placeholderField25"
+      type="text" id="ProfessionalActivities"
       className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-      placeholder="placeholderField"
+      placeholder="Escreva aqui as suas responsabilidades"
       />
 
     </div>
@@ -56,4 +51,4 @@ const ProfessionelErfaring = () => {
     );
     };
     
-    export default ProfessionelErfaring
+    export default ProfessionalExperience
