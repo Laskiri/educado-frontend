@@ -13,12 +13,12 @@ import { Course } from '../interfaces/Course';
 import Layout from '../components/Layout'
 import Loading from './Loading';
 import { CourseListCard } from '../components/Courses/CourseListCard'
-import { CreateCourseModal } from '../components/Courses/CreateCourseModal';
 import PersonalInsights from '../components/Courses/PersonalInsights';
 
 // Images
 import noCoursesImage from '../assets/no-courses.png';
 import { getUserToken } from '../helpers/userInfo';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 /**
  * @returns HTML Element
@@ -59,8 +59,10 @@ const Courses = () => {
             {/* Header and create course button */}
             <div className='flex flex-row no-wrap'>
               <h1 className='text-3xl font-bold flex-1'>Confira seus cursos</h1>
-              <label onClick={CourseCreation} className='text-3xl font-bold flex-1'>Cursos</label>
-              <CreateCourseModal />
+              <label htmlFor="course-create" onClick={CourseCreation} className="std-button flex modal-button  space-x-2">
+                <PencilSquareIcon className='w-5 h-5' />
+                <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
+              </label>
             </div>
             {/* Card/compact view toggle and filters */}
             <div className='h-10 my-8 bg-grayLight'>
@@ -85,7 +87,10 @@ const Courses = () => {
                 step-by-step instructions to develop your first course. */}
                 <p>Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.</p>
                 {/* Create course button */}
-                <CreateCourseModal />
+                <label htmlFor="course-create" onClick={CourseCreation} className="std-button flex modal-button  space-x-2">
+                <PencilSquareIcon className='w-5 h-5' />
+                <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
+              </label>
               </div>
             </div>
           }

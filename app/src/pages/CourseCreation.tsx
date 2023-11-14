@@ -191,7 +191,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
               </div>
 
             {/*Everything on the right side of the site*/}
-            <div className="w-3/5 float-right justify-between space-y-4 my-5">
+            <div className="w-3/5 float-right justify-between space-y-4 my-4">
             <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
             </div>
 
@@ -215,10 +215,10 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 <div className="flex items-center gap-8 w-full mt-8">
 
                   {/*Field to select a level from a list of options*/}
-                  <div className="flex flex-col space-y-2 text-left  ">
+                  <div className="flex flex-col w-1/2 space-y-2 text-left  ">
                     <label htmlFor='level'>Nível</label> {/** Level */}
                     <select
-                      className="w-1/2 bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                      className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                       {...register("difficulty", { required: true })}
                     >
                       {/*Hard coded options by PO, should be changed to get from db*/}
@@ -231,11 +231,11 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   </div>
 
                     {/*Field to choose a category from a list of options*/}
-                    <div className="flex flex-col space-y-2 text-left  ">
+                    <div className="flex flex-col w-1/2 space-y-2 text-left  ">
                     <label htmlFor='category'>Categoria</label> {/** Category */}
                     <select
                         defaultValue={"personal finance"}
-                        className="w-1/2 bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                         {...register("category", { required: true })}
                     >
                         {/*Hard coded options by PO, should be changed to get from db*/}
