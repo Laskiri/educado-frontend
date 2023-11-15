@@ -1,4 +1,4 @@
-    import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link, useParams} from 'react-router-dom'
 import { useForm, SubmitHandler, set } from 'react-hook-form'
 import { toast } from 'react-toastify'
@@ -84,8 +84,8 @@ function temp() {
   
   const [toolTip, setToolTip] = useState<JSX.Element[]>
   ([
-    <ToolTip callBack={setToolTipIndex} textContent='👩🏻‍🏫 Nossos cursos são separados em seções e você pode adicionar quantas quiser!' myIndex={0} maxIndex={2}></ToolTip>,
-    <ToolTip callBack={setToolTipIndex} textContent='😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!' myIndex={1} maxIndex={2}></ToolTip>,
+    <ToolTip callBack={setToolTipIndex} textContent='🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem! ' myIndex={0} maxIndex={2}></ToolTip>,
+    <ToolTip callBack={setToolTipIndex} textContent='😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos' myIndex={1} maxIndex={2}></ToolTip>,
   ]);
 
  
@@ -250,9 +250,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 {/* Course status */}
                                 <div className='flex items-center justify-center pb-6 '> {/* Updated here */}
                                     <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
-                                    
-
-                                    
                                     <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
                                         <Icon
                                             path={mdiInformationSlabCircleOutline}
@@ -265,7 +262,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                                 :
                                                 <div></div>
                                         }
-                                    </div>
+                                    </div>  
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
                                     <p className='italic'>

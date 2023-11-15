@@ -24,6 +24,9 @@ module.exports = {
         star: "#F1CC4F",
         primaryDarkBlue: "#166276",
         warning: '#FF4949',
+        guideYellow: '#FFF3D6',
+        warningOrange:'#FA9F47',
+
 
 
         
