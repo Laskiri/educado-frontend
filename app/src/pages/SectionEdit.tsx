@@ -18,8 +18,9 @@ import { CreateExercise } from '../components/Exercise/CreateExercisePopUp';
 // Components
 import Loading from './Loading';
 import Layout from '../components/Layout';
-import { ExerciseArea } from '../components/ExerciseArea'
+import { ExerciseArea } from '../components/ExerciseArea';
 import { LectureArea } from '../components/LectureArea';
+import { ToolTip } from '../components/Courses/ToolTip';
 
 
 // Interface
@@ -28,7 +29,12 @@ import { Exercise } from '../interfaces/Exercise'
 import { Lecture } from '../interfaces/Lecture'
 
 // Icons
+import Icon from '@mdi/react';
+import { mdiInformationSlabCircleOutline } from '@mdi/js';
 import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
+import { mdiAlertCircle } from '@mdi/js';
+
+
 
 // Backend URL from .env file (automatically injected) 
 import { BACKEND_URL } from "../helpers/environment";
@@ -43,6 +49,7 @@ type SectionPartial = {
     description: string;
 };
   
+
 /**
  * SectionEdit component
  *
@@ -108,6 +115,21 @@ const deleteSection = async () => {
 }
 
     
+const [toolTipIndex, setToolTipIndex] = useState<number>(4);
+
+function temp() {
+    return toolTipIndex;
+}
+    
+    const [toolTip, setToolTip] = useState<JSX.Element[]>
+    ([
+    <ToolTip callBack={setToolTipIndex} textContent='👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!' myIndex={0} maxIndex={3}></ToolTip>,
+    <ToolTip callBack={setToolTipIndex} textContent='📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios' myIndex={1} maxIndex={3}></ToolTip>,
+    <ToolTip callBack={setToolTipIndex} textContent='😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!' myIndex={2} maxIndex={3}></ToolTip>,
+   
+    ]);
+    
+    
     /**
      * SubmitHandler: update section
      * 
@@ -152,8 +174,26 @@ const deleteSection = async () => {
 
                 {/** Section details edit */}
                 
-                <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6' >
-                    <h1 className='text-3xl text-center font-medium pb-6'>Seção</h1>
+                <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6 ' >
+                    <div className='flex flex-row-2 items-center justify-center pb-6'>
+                        <h1 className='text-3xl text-center font-medium'>Seção</h1>
+                        {/** Tooltip for Section header*/}
+                        <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
+                            <Icon
+                                path={mdiInformationSlabCircleOutline}
+                                size={1}
+                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                            />
+                            
+                            {toolTipIndex ===0? toolTip[0] :<div></div> }
+                        </div>
+                    </div>
+
+                    <div className="bg-guideYellow h-10 rounded flex flex-col-2 space-x-2 items-center mb-5 ">
+                    <Icon path={mdiAlertCircle} size={1} className="text-warningOrange ml-2 items-center " />
+                        <div className='text-sm font-bold ml-2 items-center'>Fique atento!  </div>
+                        <div className='text-sm items-center'> Você pode adicionar até 10 itens em cada seção, entre aulas e  exercícios.</div>
+                    </div>
                     
                     {/** Section update area */}
                     <form
@@ -172,7 +212,22 @@ const deleteSection = async () => {
  
                         {/** Section Description Field */}
                         <div className="flex flex-col space-y-2">
+
+                            <div className='flex flex-row-2'>                            
                             <label htmlFor='description'>Descrição da seção</label>{/** Description of the section */}
+
+                            {/** Tooltip for description of section*/}
+                                <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(2)}>
+                                    <Icon
+                                        path={mdiInformationSlabCircleOutline}
+                                        size={1}
+                                        className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                                    />
+                                    
+                                    {toolTipIndex ===2? toolTip[2]: <div></div>}
+                                </div>
+                             </div>
+
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("description", { required: false })}
@@ -217,7 +272,18 @@ const deleteSection = async () => {
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
                     
-
+                    {/** NOT COMPLETE DUE TO DEPENDENCY Tooltip for number of item/item in section, missing location*/}
+                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
+                            <Icon
+                                path={mdiInformationSlabCircleOutline}
+                                size={1}
+                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                            />
+                            
+                            {toolTipIndex ===1?toolTip[1]:<div></div>}
+                        </div>
+                     </div>
+          
                     {/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
                     {limit  <10 ?
                     <div className="navbar bg-none p-6">
@@ -232,7 +298,8 @@ const deleteSection = async () => {
 
 
                 </div>
-            </div>
+           
+            
         </Layout>
     )
 }

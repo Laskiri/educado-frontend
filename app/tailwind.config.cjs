@@ -7,7 +7,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#5ECCE9',
+        primary: '#166276',
         secondary: '#F1F9FB',
         tertiary: '#FFFFFF',
         primaryHover: ' #4DAACB',
@@ -24,6 +24,9 @@ module.exports = {
         star: "#F1CC4F",
         primaryDarkBlue: "#166276",
         warning: '#FF4949',
+        guideYellow: '#FFF3D6',
+        warningOrange:'#FA9F47',
+
 
 
         
