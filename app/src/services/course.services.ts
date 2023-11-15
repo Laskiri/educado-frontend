@@ -65,16 +65,15 @@ const updateCoverImage = async ( id: any, token: string) => {
 const getAllCourses = async ( token: string) => {
   const { id } = getUserInfo();
 
-  return await axios.get(`${BACKEND_URL}/api/courses/creator/${id}`, { headers: { Authorization: `Bearer ${token}`, token: token } })
+  const res = await axios.get(`${BACKEND_URL}/api/courses/creator/${id}`, { headers: { Authorization: `Bearer ${token}`, token: token } });
 
-    .then(res => {
-      // Convert dates in course data to Date objects
-      res.data.forEach((course: any) => {
-        course.dateCreated = new Date(course.dateCreated);
-        course.dateUpdated = new Date(course.dateUpdated);
-      });
-      return res.data;
-    });
+  // Convert dates in course data to Date objects
+  res.data.forEach((course: any) => {
+    course.dateCreated = new Date(course.dateCreated);
+    course.dateUpdated = new Date(course.dateUpdated);
+  });
+
+  return res.data;
 };
 
 /**
@@ -83,14 +82,16 @@ const getAllCourses = async ( token: string) => {
  * @returns The course detail
  */
 const getCourseDetail = async (url: string/*, token: string*/) => {
-  return await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
-    .then((res) => res.data);
+  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+
+  return res.data;
 };
 
 // Get course categories - FROM LAST YEAR, NOT IMPLEMENTED, CATEGORIES ARE HARDCODED RN
-const getCourseCategories = (url: string/*, token: string*/) => {
-  return axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
-    .then(res => res.data);
+const getCourseCategories = async (url: string/*, token: string*/) => {
+  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+  
+  return res.data;
 }
 
 /**
@@ -100,11 +101,13 @@ const getCourseCategories = (url: string/*, token: string*/) => {
  * @returns Confirmation of the update
  */
 const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
-  return await axios.patch(
+  const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
     data/*,
     { headers: { Authorization: `Bearer ${token}` } }*/
-  ).then(res => res.data);
+  )
+
+  return res.data;
 }
 
 
@@ -119,7 +122,6 @@ const deleteCourse = async (id: any, token: string) => {
       `${BACKEND_URL}/api/courses/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
   );
-  
 }
 
 // Export all methods

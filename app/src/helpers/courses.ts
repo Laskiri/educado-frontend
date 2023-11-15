@@ -4,7 +4,7 @@ import { Course } from '../interfaces/Course';
 export function getTotalSubscriberCount(courses: Course[]) {
 	let subscribers = 0;
 	courses.forEach(course => {
-		subscribers += course.numOfSubscriptions;
+		subscribers += course.numOfSubscriptions ?? 0;
 	});
 	return subscribers;
 }
@@ -18,9 +18,9 @@ export function getNumberOfCourses(courses: Course[]) {
 export function getAverageRating(courses: Course[]) {
 	let avgRating = 0;
 	courses.forEach(course => {
-		avgRating += course.rating;
+		avgRating += course.rating ?? 0;
 	});
-	return avgRating / courses.length;
+	return avgRating / Math.max(courses.length, 1);
 }
 
 // Gets the number of courses with a specific status
