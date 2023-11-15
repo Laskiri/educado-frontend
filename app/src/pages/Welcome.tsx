@@ -41,7 +41,7 @@ return (
         { /*Container for right side of the page*/ }
         <div className="relative right-0 h-screen flex flex-col justify-center items-center">
         
-          <h1 className="relative text-4xl font-['Montserrat'] text-[#383838] text-center mb-6 mt-4 font-black px-10">Boas vindas à plataforma de aprendizagem!</h1> { /*Welcome to Educado*/ }
+          <h1 className="relative text-4xl font-['Lato'] text-[#383838] text-center mb-6 mt-4 font-black px-10">Boas vindas à plataforma de aprendizagem!</h1> { /*Warm welcome to the learning platform*/ }
           <h1 className="relative text-2xl font-['Montserrat'] text-[#A1ACB2] text-center mb-6 mt-4 px-20">
             Cadastre-se agora e ajude a promover seu trabalho e atingir um público mais amplo por meio da criação de conteúdo.</h1> { /*Sign up now and help promote your work and reach a wider audience through content creation*/ }
           { /*Container for the buttons*/ }
