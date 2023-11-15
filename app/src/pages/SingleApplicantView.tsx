@@ -50,7 +50,7 @@ function SingleApplicantView() {
                 <div className="bg-white max-w-2xl shadow overflow-hidden sm:rounded">
                     <div className=" px-4 py-5 sm:px-6">
                         <h3 className="text-lg leading-6 font-medium text-gray-900 ">
-                            Applicant: <span className="text-blue-500">{data?.data.applicator.email}</span>
+                            Applicant: <span className="text-blue-500">mail@mail.com</span>
                         </h3>
                         <p className="mt-1 max-w-2xl text-sm text-gray-500">
                             Details and informations about the applicant.
@@ -65,7 +65,7 @@ function SingleApplicantView() {
                                     Name
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {data?.data.applicator.firstName +" "+data?.data.applicator.lastName}
+                                    FirstName LastName
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -73,7 +73,7 @@ function SingleApplicantView() {
                                     Email address
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {data?.data.applicator.email}
+                                    mail@mail.com
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -81,7 +81,7 @@ function SingleApplicantView() {
                                     Applied at:
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>{data?.data.applicator.joinedAt}</> {/** FIXME: Date object is not a valid child of HTML element */}
+                                    <>date</> {/** FIXME: Date object is not a valid child of HTML element */}
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -89,7 +89,7 @@ function SingleApplicantView() {
                                     Motivation
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>{data?.data.application.motivation}</> 
+                                    <>Long motivation</> 
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -97,7 +97,7 @@ function SingleApplicantView() {
                                     Academic Experience
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>{data?.data.application.academicExperience}</> 
+                                    <>A lot of fields</> 
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
@@ -105,7 +105,7 @@ function SingleApplicantView() {
                                     Professional Experience
                                 </dt>
                                 <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>{data?.data.application.professionalExperience}</> 
+                                    <>More Fields</> 
                                 </dd>
                             </div>
                         </dl>
