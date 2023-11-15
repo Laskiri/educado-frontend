@@ -15,9 +15,10 @@ import Loading from './Loading';
 import { CourseListCard } from '../components/Courses/CourseListCard'
 import PersonalInsights from '../components/Courses/PersonalInsights';
 
+import { getUserToken } from '../helpers/userInfo';
+
 // Images
 import noCoursesImage from '../assets/no-courses.png';
-import { getUserToken } from '../helpers/userInfo';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 /**

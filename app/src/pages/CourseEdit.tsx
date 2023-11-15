@@ -33,7 +33,7 @@ import { BACKEND_URL } from "../helpers/environment";
 // Helpers
 import categories from "../helpers/courseCategories";
 import statuses from "../helpers/courseStatuses";
-
+import { getUserToken } from '../helpers/userInfo';
 
 
 interface Inputs {
@@ -53,9 +53,7 @@ interface Inputs {
  */
 const CourseEdit = () => {
   
-
-  const token = 'dummyToken'
-  // const token = useToken();
+  const token = getUserToken();
   const { id } = useParams() // Get path params
 
   /**
@@ -64,7 +62,7 @@ const CourseEdit = () => {
   const [coverImg, setCoverImg] = useState<File | null>()
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
-  const [statusSTR, setStatusSTR] = useState<string>("");
+  const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [statusChange, setStatusChange] = useState<boolean>(false);
   
   

@@ -2,15 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link, useParams} from 'react-router-dom'
 import { useForm, SubmitHandler, set } from 'react-hook-form'
 import { toast } from 'react-toastify'
-import useSWR from 'swr'
-import { Dropzone } from '../components/Dropzone/Dropzone';
-
-
-// Hooks
-import useToken from '../hooks/useToken'
-
-// Interfaces
-import { StorageFile } from '../interfaces/File'
+import { Dropzone } from '../components/Dropzone/Dropzone'
 
 // Services
 import CourseServices from '../services/course.services'
@@ -20,25 +12,18 @@ import StorageServices from '../services/storage.services'
 import NotFound from './NotFound'
 
 // components
-import Loading from './Loading'
 import Layout from '../components/Layout'
-import { SectionList } from '../components/dnd/SectionList'
-import { SectionForm } from '../components/dnd/SectionForm'
-import { DraftCircle } from '../components/Courses/DraftCircle'
 
 // Icons
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'
-import { boolean } from 'yup';
-import { getUserInfo } from '../helpers/userInfo';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { getUserInfo } from '../helpers/userInfo'
+import { Navigate, useNavigate } from 'react-router-dom'
 
 
-import { BACKEND_URL } from "../helpers/environment";
+import { BACKEND_URL } from "../helpers/environment"
 
 // Helpers
-import categories from "../helpers/courseCategories";
-import statuses from "../helpers/courseStatuses";
-import { Item } from '../components/dnd/@dnd/Item'
+import categories from "../helpers/courseCategories"
+import { getUserToken } from '../helpers/userInfo'
 
 
 
@@ -61,8 +46,8 @@ const CourseCreation = () => {
     const [coverImage, setCoverImage] = useState(null);
     const navigate = useNavigate();
 
-  const token = 'dummyToken'
-  // const token = useToken();
+
+  const token = getUserToken();
   const { id } = useParams() // Get path params
 
   /**
