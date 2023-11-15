@@ -53,7 +53,6 @@ const CourseCreation = () => {
   /**
      * FIX LATER: removed cover image since it has not been implemented to work yet
      */
-  const [coverImg, setCoverImg] = useState<File | null>()
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [charCount, setCharCount] = useState<number>(0);
@@ -96,8 +95,8 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
         }, token)
       .then(res => {
         console.log(res);
-        StorageServices.uploadFile({ id: res.data._id + "/0", filePath: coverImage });
-        //CourseServices.updateCoverImage(res.data._id, token); // pass the required arguments
+        StorageServices.uploadFile({ id: res.data._id, file: coverImage, parentType: "c" });
+        CourseServices.updateCourseDetail(res.data, token); // pass the required arguments
         toast.success("Salvou")
         // navigate(`/courses/edit/${res.data._id}`);
       })
@@ -136,9 +135,10 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
         }
     }
 
-    function returnFunction(coverImage: any) {
-        setCoverImage(coverImage);
-      }
+    
+  function returnFunction(coverImage: any) {
+    setCoverImage(coverImage);
+  }
 
 
     
@@ -200,11 +200,11 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex flex-col w-1/2 space-y-2 text-left  ">
                     <label htmlFor='level'>Nível</label> {/** Level */}
                     <select
-                      className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
-                      {...register("difficulty", { required: true })}
-                    >
+                    defaultValue={"Selecione o nível"}
+                    className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    {...register("difficulty", { required: true })}>
                       {/*Hard coded options by PO, should be changed to get from db*/}
-                      <option disabled selected> Selecione o nível</option>
+                      <option disabled> Selecione o nível</option>
                       <option value={1}>Iniciante </option> {/** Beginner */}
                       <option value={2}>Intermediário</option> {/** Intermediate */}
                       <option value={3}>Avançado </option> {/** Advanced */}
@@ -219,8 +219,8 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                     <select
                         defaultValue={"Selecione a categoria"} 
                         className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
-                        {...register("category", { required: true })}
-                    >   <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
+                        {...register("category", { required: true })}>
+                             <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
                         {/*Hard coded options by PO, should be changed to get from db*/}
                         {categoriesOptions}
 
@@ -251,7 +251,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex flex-col space-y-2 text-left">
                     <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */} 
                       </div>
-                        <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+                        <Dropzone inputType='image' callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
                         {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
                       </div>
                       <div className='text-right' >
