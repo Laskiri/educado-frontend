@@ -1,19 +1,33 @@
 import { useState, ChangeEvent} from "react";
 import Icon from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
-import { Link } from "react-router-dom"
-import Motivation from "../components/Motivation";
-import AcademicExperiences from "../components/AcademicExperiences";
-import ProfessionalExperience from "../components/ProfessionalExperience";
-
+import { Link, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 
+import AdminService from "../services/admin.service"
+
 export interface NewApplication {
+  baseUser: String | undefined;
   motivation: String;
+
+  academicLevel: String;
+  academicStatus: String;
+  major: String;
+  institution: String;
+  educationStartDate: String;
+  educationEndDate: String;
+
+  company: String;
+  position: String;
+  workStartDate: String;
+  workEndDate: String;
+  workActivities: String;
 }
 
 const Application = () => {
 
+  const { id } = useParams();
+  
   const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
 
   const [toggleMotivation, setToggleMotivation] = useState(true);
@@ -21,7 +35,16 @@ const Application = () => {
   const [toggleProfessionalExperience, setToggleProfessionalExperience] = useState(false);
 
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-  console.log(data.motivation)
+    AdminService.postNewApplication({
+      motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
+      major: data.major, institution: data.institution, educationStartDate: data.educationStartDate,
+      educationEndDate: data.educationEndDate, company: data.company, position: data.position, 
+      workStartDate: data.workStartDate, workEndDate: data.workEndDate, workActivities: data.workActivities,
+
+      baseUser: id
+    }).then((res) =>{
+      console.log(res)
+    })
   };
 
   const [motivation, setMotivation] = useState('');
@@ -60,7 +83,7 @@ return (
         Precisamos de algumas informações para aprovar seu acesso de criador de conteúdo. Retornaremos com uma resposta via e-mail
       </p>
     </div>
-
+    <form onSubmit={handleSubmit(onSubmit)}>
     {/*Box for the Motivation */}
     <div className="w-[65%] justify-center items-center">
       <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
@@ -119,51 +142,58 @@ return (
           </div>
           <div className="relative flex gap-10">
             <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            id="AcademicLevel">
-              <option value="basic">Básico</option>
-              <option value="medium">Médio</option>
-              <option value="superior">Superior</option>
+            id="academicLevel"
+            {...register("academicLevel", {required: true})}>
+              <option value="Básico">Básico</option>
+              <option value="Médio">Médio</option>
+              <option value="Superior">Superior</option>
+              
             </select>
         
             <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            id="AcademicStatus">
-              <option value="Progressing">Em andamento</option>
-              <option value="Done">Concluída</option>
-              <option value="Not Done">Não finalizado</option>
+            id="academicStatus"
+            {...register("academicStatus", { required: true })}>
+              <option value="Em andamento">Em andamento</option>
+              <option value="Concluída">Concluída</option>
+              <option value="Não finalizado">Não finalizado</option>
             </select>
           </div>
           <div className="grid grid-cols-2 gap-10"> 
-            <p>Curso</p>
-            <p>Instituição</p>
+            <p>Curso</p> { /* Major*/ }
+            <p>Instituição</p> { /* Institution*/ }
           </div>
           <div className="relative flex gap-10">
             <input
-            type="text" id="AcademicCourse"
+            type="text" id="major"
             className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
             placeholder="Curso"
+            {...register("major", { required: true })}
             />
         
             <input
-            type="text" id="AcademicInstitution"
+            type="text" id="institution"
             className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
             placeholder="Instituição"
+            {...register("institution", { required: true })}
             />
           </div>
           <div className="grid grid-cols-2 gap-10"> 
-            <p>Início</p>
-            <p>Fim</p>
+            <p>Início</p> { /*Start Date*/ }
+            <p>Fim</p> { /*End Date*/ }
           </div>
           <div className="relative flex gap-10">
             <input
-            type="text" id="AcademicStart"
+            type="text" id="educationStartDate"
             className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
             placeholder="Mês / Ano"
+            {...register("educationStartDate", { required: true })}
             />
         
             <input
-            type="text" id="AcademicEnd"
+            type="text" id="educationEndDate"
             className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
             placeholder="Mês / Ano"
+            {...register("educationEndDate", { required: true })}
             />
           </div>
         </div>
@@ -192,15 +222,17 @@ return (
         </div>
         <div className="relative flex gap-10">
           <input
-          type="text" id="ProfessionalCompany"
+          type="text" id="company"
           className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="Mobile Education"
+          {...register("company", { required: true })}
           />
     
           <input
-          type="text" id="ProfessionalPosition"
+          type="text" id="position"
           className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="Product Designer"
+          {...register("position", { required: true })}
           />
         </div>
         <div className="grid grid-cols-2 gap-10"> 
@@ -209,15 +241,17 @@ return (
         </div>
         <div className="relative flex gap-10">
           <input
-          type="text" id="ProfessionalStart"
+          type="text" id="workStartDate"
           className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="Mês / Ano"
+          {...register("workStartDate", { required: true })}
           />
     
           <input
-          type="text" id="ProfessionalEnd"
+          type="text" id="workEndDate"
           className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="Mês / Ano"
+          {...register("workEndDate", { required: true })}
           />
         </div>
         <div className="grid grid-cols-1"> 
@@ -225,9 +259,10 @@ return (
         </div>
         <div className="relative flex">
           <input
-          type="text" id="ProfessionalActivities"
+          type="text" id="workActivities"
           className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="Escreva aqui as suas responsabilidades"
+          {...register("workActivities", { required: true })}
           />
         </div>
       </div>
@@ -239,6 +274,7 @@ return (
         Enviar para análise   
       </button>
     </div>
+    </form>
   </body>
 </main>
 )    
