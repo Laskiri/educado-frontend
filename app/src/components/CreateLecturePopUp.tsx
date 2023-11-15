@@ -55,6 +55,11 @@ export const CreateLecture = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
     const [charCount, setCharCount] = useState(0);
+    const [contentType, setContentType] = useState<string>("");
+
+    const toggler = (value:string) => {
+        setContentType(value);
+    }
 
     const onCharCountChange = (e: any) => {
         setCharCount(e.target.value.length);
@@ -66,13 +71,14 @@ export const CreateLecture = () => {
      * @param {Inputs} data The data from each field in the form put into an object
      */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        
+     
         setIsLoading(true);
         LectureService.addLecture({
             title: data.title,
             description: data.description,
             contentType: data.contentType,
-            content: data.content},
+            content: data.content
+        },
             token, 
             sid)
             .then(res =>{ 
@@ -129,12 +135,40 @@ export const CreateLecture = () => {
                             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}
                         </div>
 
-                        {/*One day this will be file*/}
-                        <div className="flex flex-col space-y-2 text-left">    
-                            <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
-                                    <Dropzone inputType='image' callBack={returnFunction}></Dropzone>
-                               {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
+                        <label htmlFor='content-type'>Tipo de conteúdo</label> {/*Content type*/}
+                        <div className='flex flex-row space-x-8'>
+                            <div>
+                                <label htmlFor="radio1" >
+                                    <input className='mr-2' type="radio" id="radio1" value="video" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
+
+                                Video</label>
+
+
                             </div>
+
+                            <div >
+                                <label htmlFor="radio2" className='space-x-2'>
+                                    <input type="radio" className='mr-2'     id="radio2" value="text" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
+                                    
+                                Texto Estilizado</label>
+                            </div>
+                            
+                            {errors.contentType && <span className='text-warning'>Este campo é obrigatório</span>}
+                        </div>
+
+                        {/*One day this will be file*/}
+                        <div className="flex flex-col space-y-2 text-left">
+                            <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
+                            {contentType === "video" ?
+                                <Dropzone inputType='video' callBack={returnFunction}></Dropzone>
+                                :
+                                contentType === "text" ?
+                                <Dropzone inputType='image' callBack={returnFunction}></Dropzone>
+                                :
+                                <p>lkdnfpsn</p>
+                            }
+                               {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
+                        </div>
 
                         {/*Create and cancel buttons*/}
                         <div className='modal-action'>
