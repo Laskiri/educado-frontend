@@ -24,6 +24,7 @@ import Loading from './Loading'
 import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
+import { DraftCircle } from '../components/Courses/DraftCircle'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -70,8 +71,6 @@ const CourseCreation = () => {
   const [coverImg, setCoverImg] = useState<File | null>()
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
-  const [statusSTR, setStatusSTR] = useState<string>("");
-  const [statusChange, setStatusChange] = useState<string>("");
   const [charCount, setCharCount] = useState<number>(0);
   
   
@@ -83,14 +82,11 @@ const CourseCreation = () => {
           )));
     }, []);
         
-    
-    
 
-//  // Fetch Categories
-//   const { data: categoriesData, error: categoriesError } = useSWR(
-//     token ? [`${BACKEND_URL}/api/categories`, token] : null,
-//     CourseServices.getCourseCategories
-//   )
+
+const SectionCreation = () => {
+  navigate("/sections-creation");
+}
 
 // React useForm setup
 const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
@@ -101,19 +97,7 @@ const { register, handleSubmit, formState: { errors } } = useForm<Inputs>()
 */
 
 // success on submit handler
-const onSubmit: SubmitHandler<Inputs> = async (data, draft) => {
-
-  let newStatus;
-
-  if(statusChange){
-    if(statusChange === "Published"){
-      newStatus = "published";}
-      else{
-        newStatus = "draft";}
-      
-  
-  
-}
+const onSubmit: SubmitHandler<Inputs> = async (data) => {
 
     const { id } = getUserInfo();
     setIsLoading(true);
@@ -123,13 +107,14 @@ const onSubmit: SubmitHandler<Inputs> = async (data, draft) => {
       category: data.category,
       difficulty: data.difficulty,
       creator: id,
-      status: "newStatus",
+      status: "draft",
         }, token)
       .then(res => {
         console.log(res);
         StorageServices.uploadFile({ id: res.data._id + "/0", filePath: coverImage });
         //CourseServices.updateCoverImage(res.data._id, token); // pass the required arguments
-        navigate(`/courses/edit/${res.data._id}`);
+        toast.success("Salvou")
+        // navigate(`/courses/edit/${res.data._id}`);
       })
       .catch(err => console.log(err))
       .finally();
@@ -200,16 +185,15 @@ const onSubmit: SubmitHandler<Inputs> = async (data, draft) => {
         <Layout meta={`Course: ${id}`}>
             {/*Everything on the left side of the site*/}
             <div className="m-8"> 
-              <div className="w-2/5 float-left">
+              <div className="w-1/4 float-left">
               </div>
-
+              
             {/*Everything on the right side of the site*/}
-            <div className="w-3/5 float-right justify-between space-y-4 my-4">
-            <h1 className="text-2xl font-bold justify-between space-y-4"> Informações gerais </h1>
+            <div className="w-3/4 float-right justify-between space-y-4 my-4">
+              <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
             </div>
-
             {/*White bagground*/}
-            <div className="w-3/5 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
+            <div className="w-3/4 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
               <div className="m-10">
               
                {/*Field to input the title of the new course*/}
@@ -292,13 +276,13 @@ const onSubmit: SubmitHandler<Inputs> = async (data, draft) => {
                 {/*Create and cancel buttons*/}
                 <div className='modal-action'>
                   <div className="flex items-center justify-between gap-4 w-full mt-8">
-                  <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                  <label onClick={() => { navigate("/courses") }} htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                       Cancelar e Voltar {/** Cancel */}
                     </label>
                     <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                      <button type="submit" className='py-2 px-4 h-full w-full' >
+                      <label onClick={SectionCreation} className='py-2 px-4 h-full w-full cursor-pointer' >
                        Adicionar seções {/** Add sections */}
-                      </button>
+                      </label>
                     </label>
                     <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                       <button type="submit" className='underline' >
