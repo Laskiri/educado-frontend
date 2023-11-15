@@ -87,8 +87,7 @@ const SectionEdit = () => {
         token ? [`${BACKEND_URL}/api/lectures/section/${sid}`, token] : null,
         LectureServices.getLectureDetail
     );
-
-
+    
     // Create Form Hooks
     const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
   

@@ -29,6 +29,8 @@ import LectureService from '../services/lecture.services';
 type Inputs = {
     title: string,
     description: string,
+    contentType: string,
+    content: string,
 }
 
 
@@ -40,7 +42,7 @@ type Inputs = {
  */
 export const CreateLecture = () => {
     const [isLoading, setIsLoading] = useState(false);
-    const [lectureContent, setLectureContent] = useState();
+    const [lectureContent, setLectureContent] = useState(null);
     //TODO: When tokens are done, Remove dummy token and uncomment useToken
     const token = "dummyToken";
     //const token = useToken();
@@ -53,6 +55,11 @@ export const CreateLecture = () => {
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
     const [charCount, setCharCount] = useState(0);
+    const [contentType, setContentType] = useState<string>("");
+
+    const toggler = (value:string) => {
+        setContentType(value);
+    }
 
     const onCharCountChange = (e: any) => {
         setCharCount(e.target.value.length);
@@ -64,16 +71,29 @@ export const CreateLecture = () => {
      * @param {Inputs} data The data from each field in the form put into an object
      */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        
+     
         setIsLoading(true);
-        LectureService.addLecture(
-            data.title,
-            data.description,
+        LectureService.addLecture({
+            title: data.title,
+            description: data.description,
+            contentType: data.contentType,
+            content: data.content
+        },
             token, 
             sid)
-            .then(res =>{ console.log(res); window.location.reload()}) 
+            .then(res =>{ 
+                console.log(res); 
+                StorageServices.uploadFile({ id: res.data._id, file: lectureContent, parentType: "l" });
+                LectureService.updateLecture(res.data, token, res.data.id);
+                window.location.reload();
+            }) 
             .catch(err => console.log(err))
     };
+
+    function returnFunction(lectureContent: any) {
+        setLectureContent(lectureContent);
+      }
+
     return (
         <>
             {/* The button to open create lecture modal */}
@@ -115,12 +135,40 @@ export const CreateLecture = () => {
                             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}
                         </div>
 
-                        {/*One day this will be file*/}
-                        <div className="flex flex-col space-y-2 text-left">    
-                            <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
-                                    <Dropzone callBack={setLectureContent}></Dropzone>
-                               {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
+                        <label htmlFor='content-type'>Tipo de conteúdo</label> {/*Content type*/}
+                        <div className='flex flex-row space-x-8'>
+                            <div>
+                                <label htmlFor="radio1" >
+                                    <input className='mr-2' type="radio" id="radio1" value="video" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
+
+                                Video</label>
+
+
                             </div>
+
+                            <div >
+                                <label htmlFor="radio2" className='space-x-2'>
+                                    <input type="radio" className='mr-2'     id="radio2" value="text" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
+                                    
+                                Texto Estilizado</label>
+                            </div>
+                            
+                            {errors.contentType && <span className='text-warning'>Este campo é obrigatório</span>}
+                        </div>
+
+                        {/*One day this will be file*/}
+                        <div className="flex flex-col space-y-2 text-left">
+                            <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
+                            {contentType === "video" ?
+                                <Dropzone inputType='video' callBack={returnFunction}></Dropzone>
+                                :
+                                contentType === "text" ?
+                                <Dropzone inputType='image' callBack={returnFunction}></Dropzone>
+                                :
+                                <p>lkdnfpsn</p>
+                            }
+                               {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
+                        </div>
 
                         {/*Create and cancel buttons*/}
                         <div className='modal-action'>
