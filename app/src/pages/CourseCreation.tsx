@@ -279,17 +279,17 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <label onClick={() => { navigate("/courses") }} htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                       Cancelar e Voltar {/** Cancel */}
                     </label>
-                    <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                    
+                    <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                      <button type="submit" className='underline' >
+                      Salvar como Rascunho {/** Save as draft */}
+                      </button>
+                    </label>
+                    <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
                       <label onClick={SectionCreation} className='py-2 px-4 h-full w-full cursor-pointer' >
                        Adicionar seções {/** Add sections */}
                       </label>
                     </label>
-                    <label htmlFor='course-create' className="underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                      <button type="submit" className='underline' >
-                       Draft {/** Add sections */}
-                      </button>
-                    </label>
-                    
                   </div>
                 </div>
               </form>
