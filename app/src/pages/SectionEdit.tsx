@@ -177,19 +177,16 @@ function temp() {
                 <div className='max-w-3xl mx-auto bg-white p-4 rounded my-6 ' >
                     <div className='flex flex-row-2 items-center justify-center pb-6'>
                         <h1 className='text-3xl text-center font-medium'>Seção</h1>
+                        {/** Tooltip for Section header*/}
                         <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-                                            <Icon
-                                                path={mdiInformationSlabCircleOutline}
-                                                size={1}
-                                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                            />
-                                            
-                                            {toolTipIndex ===0?
-                                                    toolTip[0]
-                                                    :
-                                                    <div></div>
-                                            }
-                                        </div>
+                            <Icon
+                                path={mdiInformationSlabCircleOutline}
+                                size={1}
+                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                            />
+                            
+                            {toolTipIndex ===0? toolTip[0] :<div></div> }
+                        </div>
                     </div>
 
                     <div className="bg-guideYellow h-10 rounded flex flex-col-2 space-x-2 items-center mb-5 ">
@@ -218,20 +215,19 @@ function temp() {
 
                             <div className='flex flex-row-2'>                            
                             <label htmlFor='description'>Descrição da seção</label>{/** Description of the section */}
-                            <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(2)}>
-                                            <Icon
-                                                path={mdiInformationSlabCircleOutline}
-                                                size={1}
-                                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                            />
-                                            
-                                            {toolTipIndex ===2?
-                                                    toolTip[2]
-                                                    :
-                                                    <div></div>
-                                            }
-                                        </div>
-                            </div>
+
+                            {/** Tooltip for description of section*/}
+                                <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(2)}>
+                                    <Icon
+                                        path={mdiInformationSlabCircleOutline}
+                                        size={1}
+                                        className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                                    />
+                                    
+                                    {toolTipIndex ===2? toolTip[2]: <div></div>}
+                                </div>
+                             </div>
+
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
                                 {...registerSection("description", { required: false })}
@@ -275,24 +271,19 @@ function temp() {
                         <h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
-
-                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                                            <Icon
-                                                path={mdiInformationSlabCircleOutline}
-                                                size={1}
-                                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                            />
-                                            
-                                            {toolTipIndex ===1?
-                                                    toolTip[1]
-                                                    :
-                                                    <div></div>
-                                            }
-                                        </div>
-                     </div>
-                        
                     
-
+                    {/** NOT COMPLETE DUE TO DEPENDENCY Tooltip for number of item/item in section, missing location*/}
+                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
+                            <Icon
+                                path={mdiInformationSlabCircleOutline}
+                                size={1}
+                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                            />
+                            
+                            {toolTipIndex ===1?toolTip[1]:<div></div>}
+                        </div>
+                     </div>
+          
                     {/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
                     {limit  <10 ?
                     <div className="navbar bg-none p-6">

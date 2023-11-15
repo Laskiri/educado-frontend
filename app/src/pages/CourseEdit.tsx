@@ -250,6 +250,8 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 {/* Course status */}
                                 <div className='flex items-center justify-center pb-6 '> {/* Updated here */}
                                     <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
+                                    
+                                    {/** Tooltip for course header*/}
                                     <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
                                         <Icon
                                             path={mdiInformationSlabCircleOutline}
@@ -257,11 +259,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                             className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
                                         />
                                         
-                                        {toolTipIndex ===0?
-                                                toolTip[0]
-                                                :
-                                                <div></div>
-                                        }
+                                        {toolTipIndex ===0? toolTip[0] : <div></div> }
                                     </div>  
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
@@ -286,6 +284,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 <div className="flex flex-col space-y-2 items-start relative">
                                 <div className="flex items-center space-x-2"> {/* Container for label and icon */}
                                     <label htmlFor='description' className="flex-shrink-0">Descrição</label>
+                                    {/** Tooltip for description of course*/}
                                     <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
                                         <Icon
                                             path={mdiInformationSlabCircleOutline}
@@ -293,11 +292,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                             className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
                                         />
                                         
-                                        {toolTipIndex ===1?
-                                                toolTip[1]
-                                                :
-                                                <div></div>
-                                        }
+                                        {toolTipIndex ===1? toolTip[1] : <div></div> }
                                 </div>
                                 </div>
                                 <textarea
