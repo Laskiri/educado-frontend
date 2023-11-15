@@ -71,209 +71,211 @@ return (
     </div>
   </nav>
   
-  <body className="relative right-0 h-screen flex flex-col items-center gap-5 z-50">
-
-    {/*Box fot text*/}
-    <div className="items-center p-10 pt-20">
-      <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
-        Que bom que você quer fazer parte do Educado! {/*Vi er glad for, at du vil være en del af Educado!*/}
-      </h1>
-      <p className="text-center text-neutral-700 text-base font-normal font-['Montserrat']">
-        {/*Vi har brug for nogle oplysninger for at godkende din adgang som indholdsskaber. Vi vender tilbage til dig med et svar via e-mail.*/}
-        Precisamos de algumas informações para aprovar seu acesso de criador de conteúdo. Retornaremos com uma resposta via e-mail
-      </p>
-    </div>
-    <form onSubmit={handleSubmit(onSubmit)}>
-    {/*Box for the Motivation */}
-    <div className="w-[65%] justify-center items-center">
-      <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-      onClick={() => setToggleMotivation(!toggleMotivation)}>
-        <div className="flex items-start">
-          {toggleMotivation ? (
-            <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
-          ) : (
-            <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
-          )}
-          Motivações
-        </div>
-      </button>
-
-      {toggleMotivation && (
-        <div className="relative border border-[#166276] p-4 rounded-b-lg text-left bg-white z-50">
-        <div className="flex flex-col">
-          <label htmlFor="motivation">
-            Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
-          </label>
-          <textarea
-            className="bg-sky-50 rounded-lg border-none"
-            placeholder="Escreva aqui porque você quer fazer parte de projeto"
-            maxLength={maxLength}
-            value={motivation}
-            {...register("motivation", { required: true })}
-            onChange={handleMotivationChange}
-          />
-          <div className="text-right text-gray-500 text-sm font-normal font-['Montserrat']">
-          {motivation.length}/{maxLength} caracteres
-          </div>
-        </div>
+  <body className="relative right-0 h-screen flex flex-col">
+    <form className="relative right-0 w-full overflow-none h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
+      
+      {/*Box fot text*/}
+      <div className="items-center p-10 pt-20">
+        <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
+          Que bom que você quer fazer parte do Educado! {/*Glad you want to be part of Educado!*/}
+        </h1>
+        <p className="text-center text-neutral-700 text-base font-normal font-['Montserrat']">
+          {/*We need some information to approve your content creator access. We'll get back to you with an answer via e-mail.*/}
+          Precisamos de algumas informações para aprovar seu acesso de criador de conteúdo. Retornaremos com uma resposta via e-mail
+        </p>
       </div>
-      )}
-    </div>
-
-    {/*Box for Academic Experiences*/}
-    <div className="w-[65%] justify-center items-center">
-      <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-      onClick={() => setToggleAcademicExperiences(!toggleAcademicExperiences)}>
-        <div className="flex items-start">
-          {toggleAcademicExperiences ? (
-            <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
-          ) : (
-            <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
-          )}
-          Experiências acadêmicas
-        </div>
-      </button>
-
-      {toggleAcademicExperiences && (
-        <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-10 text-left bg-white z-50">
-          <div className="grid grid-cols-2 gap-10"> 
-            <p>Formação</p>
-            <p>Status</p>
-          </div>
-          <div className="relative flex gap-10">
-            <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            id="academicLevel"
-            {...register("academicLevel", {required: true})}>
-              <option value="Básico">Básico</option>
-              <option value="Médio">Médio</option>
-              <option value="Superior">Superior</option>
-              
-            </select>
-        
-            <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            id="academicStatus"
-            {...register("academicStatus", { required: true })}>
-              <option value="Em andamento">Em andamento</option>
-              <option value="Concluída">Concluída</option>
-              <option value="Não finalizado">Não finalizado</option>
-            </select>
-          </div>
-          <div className="grid grid-cols-2 gap-10"> 
-            <p>Curso</p> { /* Major*/ }
-            <p>Instituição</p> { /* Institution*/ }
-          </div>
-          <div className="relative flex gap-10">
-            <input
-            type="text" id="major"
-            className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            placeholder="Curso"
-            {...register("major", { required: true })}
-            />
-        
-            <input
-            type="text" id="institution"
-            className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            placeholder="Instituição"
-            {...register("institution", { required: true })}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-10"> 
-            <p>Início</p> { /*Start Date*/ }
-            <p>Fim</p> { /*End Date*/ }
-          </div>
-          <div className="relative flex gap-10">
-            <input
-            type="text" id="educationStartDate"
-            className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            placeholder="Mês / Ano"
-            {...register("educationStartDate", { required: true })}
-            />
-        
-            <input
-            type="text" id="educationEndDate"
-            className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-            placeholder="Mês / Ano"
-            {...register("educationEndDate", { required: true })}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-
-    {/*Box for Professional Experience*/}
-    <div className="w-[65%] justify-center items-center">
-      <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-      onClick={() => setToggleProfessionalExperience(!toggleProfessionalExperience)}>
-        <div className="flex items-start">
-          {toggleProfessionalExperience ? (
-            <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
-          ) : (
-            <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
-          )}
-          Experiências profissionais
-        </div>
-      </button>
-
-    {toggleProfessionalExperience && (
-      <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
-        <div className="grid grid-cols-2 gap-10"> 
-          <p>Empresa</p>
-          <p>Cargo</p>
-        </div>
-        <div className="relative flex gap-10">
-          <input
-          type="text" id="company"
-          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Mobile Education"
-          {...register("company", { required: true })}
-          />
     
-          <input
-          type="text" id="position"
-          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Product Designer"
-          {...register("position", { required: true })}
-          />
+      {/*Box for the Motivation */}
+      <div className="w-[65%] justify-center items-center">
+        <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
+        onClick={() => setToggleMotivation(!toggleMotivation)}>
+          <div className="flex items-start">
+            {toggleMotivation ? (
+              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+            ) : (
+              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+            )}
+            Motivações
+          </div>
+        </button>
+
+        {toggleMotivation && (
+          <div className="relative border border-[#166276] p-4 rounded-b-lg text-left bg-white z-50">
+          <div className="flex flex-col">
+            <label htmlFor="motivation">
+              {/*We want to know more about you! Tell us about your reasons for joining Educado*/}
+              Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
+            </label>
+            <textarea
+              className="bg-sky-50 rounded-lg border-none"
+              placeholder="Escreva aqui porque você quer fazer parte de projeto"
+              maxLength={maxLength}
+              value={motivation}
+              {...register("motivation", { required: true })}
+              onChange={handleMotivationChange}
+            />
+            <div className="text-right text-gray-500 text-sm font-normal font-['Montserrat']">
+            {motivation.length}/{maxLength} caracteres
+            </div>
+          </div>
         </div>
-        <div className="grid grid-cols-2 gap-10"> 
-          <p>Início</p>
-          <p>Fim</p>
-        </div>
-        <div className="relative flex gap-10">
-          <input
-          type="text" id="workStartDate"
-          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Mês / Ano"
-          {...register("workStartDate", { required: true })}
-          />
-    
-          <input
-          type="text" id="workEndDate"
-          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Mês / Ano"
-          {...register("workEndDate", { required: true })}
-          />
-        </div>
-        <div className="grid grid-cols-1"> 
-          <p>Descrição de atividades</p>
-        </div>
-        <div className="relative flex">
-          <input
-          type="text" id="workActivities"
-          className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
-          placeholder="Escreva aqui as suas responsabilidades"
-          {...register("workActivities", { required: true })}
-          />
-        </div>
+        )}
       </div>
-    )}
-    </div>
 
-    <div className="w-[65%] flex justify-end">
-      <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
-        Enviar para análise   
-      </button>
-    </div>
+      {/*Box for Academic Experiences*/}
+      <div className="w-[65%] justify-center items-center">
+        <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
+        onClick={() => setToggleAcademicExperiences(!toggleAcademicExperiences)}>
+          <div className="flex items-start">
+            {toggleAcademicExperiences ? (
+              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+            ) : (
+              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+            )}
+            Experiências acadêmicas {/*Academic Experiences*/}
+          </div>
+        </button>
+
+        {toggleAcademicExperiences && (
+          <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-10 text-left bg-white z-50">
+            <div className="grid grid-cols-2 gap-10"> 
+              <p>Formação</p> {/* Training*/}
+              <p>Status</p> {/* Status*/}
+            </div>
+            <div className="relative flex gap-10">
+              <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              id="academicLevel"
+              {...register("academicLevel", {required: true})}>
+                <option value="Básico">Básico</option> {/* Basic*/}
+                <option value="Médio">Médio</option> {/* Medium*/}
+                <option value="Superior">Superior</option> {/* Superior*/}
+                
+              </select>
+          
+              <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              id="academicStatus"
+              {...register("academicStatus", { required: true })}>
+                <option value="Em andamento">Em andamento</option> {/* In progress*/}
+                <option value="Concluída">Concluída</option> {/* Completed*/}
+                <option value="Não finalizado">Não finalizado</option> {/* not finalised*/}
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-10"> 
+              <p>Curso</p> { /* Major*/ }
+              <p>Instituição</p> { /* Institution*/ }
+            </div>
+            <div className="relative flex gap-10">
+              <input
+              type="text" id="major"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Curso"
+              {...register("major", { required: true })}
+              />
+          
+              <input
+              type="text" id="institution"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Instituição"
+              {...register("institution", { required: true })}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-10"> 
+              <p>Início</p> { /*Start Date*/ }
+              <p>Fim</p> { /*End Date*/ }
+            </div>
+            <div className="relative flex gap-10">
+              <input
+              type="text" id="educationStartDate"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Mês / Ano"
+              {...register("educationStartDate", { required: true })}
+              />
+          
+              <input
+              type="text" id="educationEndDate"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Mês / Ano"
+              {...register("educationEndDate", { required: true })}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/*Box for Professional Experience*/}
+      <div className="w-[65%] justify-center items-center">
+        <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
+        onClick={() => setToggleProfessionalExperience(!toggleProfessionalExperience)}>
+          <div className="flex items-start">
+            {toggleProfessionalExperience ? (
+              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+            ) : (
+              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+            )}
+            Experiências profissionais {/*Professional Experience*/}
+          </div>
+        </button>
+
+        {toggleProfessionalExperience && (
+          <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
+            <div className="grid grid-cols-2 gap-10"> 
+              <p>Empresa</p> {/*company*/}
+              <p>Cargo</p> {/*position*/}
+            </div>
+            <div className="relative flex gap-10">
+              <input
+              type="text" id="company"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Mobile Education"
+              {...register("company", { required: true })}
+              />
+        
+              <input
+              type="text" id="position"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Product Designer"
+              {...register("position", { required: true })}
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-10"> 
+              <p>Início</p> {/*start*/}
+              <p>Fim</p> {/*end*/}
+            </div>
+            <div className="relative flex gap-10">
+              <input
+              type="text" id="workStartDate"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Mês / Ano"
+              {...register("workStartDate", { required: true })}
+              />
+        
+              <input
+              type="text" id="workEndDate"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Mês / Ano"
+              {...register("workEndDate", { required: true })}
+              />
+            </div>
+            <div className="grid grid-cols-1"> 
+              <p>Descrição de atividades</p> {/*Description of activities*/}
+            </div>
+            <div className="relative flex">
+              <input
+              type="text" id="workActivities"
+              className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="Escreva aqui as suas responsabilidades"
+              {...register("workActivities", { required: true })}
+              />
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="w-[65%] flex justify-end">
+        <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
+          Enviar para análise {/*Send for analysis*/}
+        </button>
+      </div>
     </form>
   </body>
 </main>
