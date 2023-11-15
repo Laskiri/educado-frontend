@@ -33,7 +33,7 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-      path: "/courses-creation",
+      path: "/courses/creation/:id",
       element: <ProtectedRoute><CourseCreation /></ProtectedRoute>,
       errorElement: <NotFound />,
     },
