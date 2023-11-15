@@ -37,13 +37,13 @@ import statuses from "../helpers/courseStatuses";
 
 
 interface Inputs {
-  coverImg?: FileList
   title: string
   description: string
   category: string
   difficulty: number
   status: string
   estimatedHours: number
+  coverImg?: string
 }
 
 /**
@@ -130,15 +130,18 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
     }
 
     if (confirm("Você tem certeza?") == true) {
+        StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
+
         const changes: Inputs = {
-            coverImg: data.coverImg,
             title: data.title,
             description: data.description,
             category: data.category,
             difficulty: data.difficulty,
             status: newStatus,
-            estimatedHours: data.estimatedHours
+            estimatedHours: data.estimatedHours,
+            coverImg: id+"_"+"c"
         }
+        //StorageService.deleteFile(id, token);
 
         // Update course details
         CourseServices.updateCourseDetail(changes, id/*, token */)
@@ -192,7 +195,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
     const image = e.target.files?.item(0)
 
     // Enables us to preview the image file before storing it
-    setCoverImgPreview(image)
     setCoverImgPreview(URL.createObjectURL(image));
     setCoverImg(image);
 
@@ -317,7 +319,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                         </div>
                                         {/* Cover image upload */}
                                         <input type="file" accept='.jpg,.jpeg,.png'
-                                            {...register('coverImg')}
                                             onChange={onCoverImgChange}
                                             className='file-input w-full input-bordered rounded-b rounded-t-none focus:outline-none'
                                         >

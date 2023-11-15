@@ -66,7 +66,7 @@ export const CreateCourseModal = () => {
         }, token)
       .then(res => {
         console.log(res);
-        StorageServices.uploadFile({ id: res.data._id + "/0", filePath: coverImage });
+        StorageServices.uploadFile({ id: res.data._id, file: coverImage, parentType: "c" });
         CourseServices.updateCourseDetail(res.data, token); // pass the required arguments
         navigate(`/courses/edit/${res.data._id}`);
       })
@@ -125,7 +125,7 @@ export const CreateCourseModal = () => {
               {/*Cover image field is made but does not interact with the db*/}
               <div className="flex flex-col space-y-2 text-left">
                 <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */}
-                <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+                <Dropzone inputType='image' callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
                 {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
               </div>
 

@@ -29,6 +29,8 @@ import LectureService from '../services/lecture.services';
 type Inputs = {
     title: string,
     description: string,
+    contentType: string,
+    content: string,
 }
 
 
@@ -66,12 +68,19 @@ export const CreateLecture = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
         
         setIsLoading(true);
-        LectureService.addLecture(
-            data.title,
-            data.description,
+        LectureService.addLecture({
+            title: data.title,
+            description: data.description,
+            contentType: data.contentType,
+            content: data.content},
             token, 
             sid)
-            .then(res =>{ console.log(res); window.location.reload()}) 
+            .then(res =>{ 
+                console.log(res); 
+                StorageServices.uploadFile({ id: res.data._id, file: lectureContent, parentType: "l" });
+                LectureService.updateLecture(res.data, token, res.data.id);
+                window.location.reload();
+            }) 
             .catch(err => console.log(err))
     };
 
@@ -123,7 +132,7 @@ export const CreateLecture = () => {
                         {/*One day this will be file*/}
                         <div className="flex flex-col space-y-2 text-left">    
                             <label htmlFor='cover-image'>Arquivo de entrada: vídeo ou imagem</label> {/*Input file*/}
-                                    <Dropzone callBack={returnFunction}></Dropzone>
+                                    <Dropzone inputType='image' callBack={returnFunction}></Dropzone>
                                {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
                             </div>
 
