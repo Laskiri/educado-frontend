@@ -36,7 +36,7 @@ const EducadoAdmin = () => {
             <div className="w-full flex flex-row space-x-2 px-6">
                 <div className="inline-block min-w-full shadow overflow-hidden rounded-xl bg-white">
                     <div className='flex flex-row no-wrap'>
-              <h1 className='text-3xl font-bold flex-1 mx-6 mt-6'>Aplicativos para criadores de conteúdo.</h1>  
+              <h1 className='text-3xl font-bold flex-1 mx-6 mt-6'>Solicitações de acesso de criação de conteúdo.</h1>  
             </div>
                 {/** Component Header bar */}
                 <div className="navbar justify-end md:w-full bg-none p-6">
@@ -70,7 +70,7 @@ const EducadoAdmin = () => {
                                         email 
                                     </th>
                                     <th scope="col" className="p-5">
-                                        Aplicado em {/** applied at */}
+                                    Enviado em {/** applied at */}
                                     </th>
                                     <th scope="col" className="p-5"></th>
                                 </tr>
