@@ -1,33 +1,19 @@
 import { useState, ChangeEvent} from "react";
 import Icon from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
-import { Link, useParams } from "react-router-dom"
+import { useNavigate, Link, useParams, Navigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import AdminService from "../services/admin.service"
+import AuthService from "../services/auth.services"
+import { NewApplication } from "../interfaces/Application"
 
-export interface NewApplication {
-  baseUser: String | undefined;
-  motivation: String;
-
-  academicLevel: String;
-  academicStatus: String;
-  major: String;
-  institution: String;
-  educationStartDate: String;
-  educationEndDate: String;
-
-  company: String;
-  position: String;
-  workStartDate: String;
-  workEndDate: String;
-  workActivities: String;
-}
 
 const Application = () => {
 
   const { id } = useParams();
   
+  const navigate = useNavigate(); 
+
   const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
 
   const [toggleMotivation, setToggleMotivation] = useState(true);
@@ -35,7 +21,7 @@ const Application = () => {
   const [toggleProfessionalExperience, setToggleProfessionalExperience] = useState(false);
 
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-    AdminService.postNewApplication({
+    AuthService.postNewApplication({
       motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
       major: data.major, institution: data.institution, educationStartDate: data.educationStartDate,
       educationEndDate: data.educationEndDate, company: data.company, position: data.position, 
@@ -43,7 +29,10 @@ const Application = () => {
 
       baseUser: id
     }).then((res) =>{
-      console.log(res)
+      console.log(res.status)
+      if(res.status == 200){
+        navigate("/login")
+      }
     })
   };
 

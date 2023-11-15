@@ -1,6 +1,8 @@
 import axios from "axios";
 import {BACKEND_URL} from "../helpers/environment"
 
+import { NewApplication } from "../interfaces/Application"
+
 export interface ContentCreatorApplication {
   firstName: String;
   lastName: String;
@@ -41,6 +43,10 @@ const RejectApplication = async (id: string): Promise<unknown> => {
   return await axios.put(`${BACKEND_URL}/api/applications/${id}reject`);
 };
 
+const postNewApplication = async (data: NewApplication) => {
+  return await axios.post(`${BACKEND_URL}/api/applications/newapplication`, data);
+};
+
 const AuthServices = Object.freeze({
   postUserLogin,
   postUserSignup,
@@ -48,6 +54,7 @@ const AuthServices = Object.freeze({
   GetSingleCCApplication,
   AcceptApplication,
   RejectApplication,
+  postNewApplication,
 });
 
 export default AuthServices;
