@@ -85,7 +85,7 @@ const Login = () => {
 
               case "E1002": //User Rejected
                 setEmailError(err); //Invalid email. Please check if you entered the email address correctly
-                setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
+                setEmailErrorMessage("A conta associada a este e-mail foi rejeitada.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
               break;
