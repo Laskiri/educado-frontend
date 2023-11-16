@@ -43,4 +43,5 @@ module.exports = {
         'bounce-short': 'bounce 1s ease-in-out 1.5',
       },
     },
+  },
 }
