@@ -241,6 +241,7 @@ function temp() {
                     </form>
 
                     <div className="divider"></div>
+                    
 
 
                     {/** Lecture list area */}
@@ -271,17 +272,7 @@ function temp() {
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
                     
-                    {/** NOT COMPLETE DUE TO DEPENDENCY Tooltip for number of item/item in section, missing location*/}
-                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                            <Icon
-                                path={mdiInformationSlabCircleOutline}
-                                size={1}
-                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                            />
-                            
-                            {toolTipIndex ===1?toolTip[1]:<div></div>}
-                        </div>
-                     </div>
+                   
           
                     {/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
                     {limit  <10 ?
@@ -295,8 +286,32 @@ function temp() {
                     <div></div>
                     }
 
+                    {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+                    <div className='flex flex-row-2'>                            
+                            <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
+
+                            {/** Tooltip for description of section*/}
+                                <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
+                                    <Icon
+                                        path={mdiInformationSlabCircleOutline}
+                                        size={1}
+                                        className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+                                    />
+                                    
+                                    {toolTipIndex ===1? toolTip[1]: <div></div>}
+                                </div>
+                             </div>
+
 
                 </div>
+                    
+            
+            
+                
+           </div>
+
+           
+
            
             
         </Layout>
