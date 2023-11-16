@@ -316,7 +316,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                     <label htmlFor='category'>Categoria</label>
 
                                     <select defaultValue={data ? data.category : "Selecione a categoria"}
-                                        className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                                        className=" focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                                         {...register("category", { required: true })}>
                                             <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
                                         {/*Hard coded options by PO, should be changed to get from db*/}
