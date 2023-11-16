@@ -42,7 +42,7 @@ function SingleApplicantView() {
 
    
     if (!data) return <Loading />
-    console.log(data.data.application)
+    console.log(data.data)
     if (data?.data.application == null){
      //navigate back to admin page
     }
@@ -65,7 +65,7 @@ function SingleApplicantView() {
                                 <dt className="text-base font-bold font-['Montserrat']  text-gray-900">
                                     Nome: {/** Name*/}
                                 </dt>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
+                                <dd id="name" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
                                 {data.data.applicator.firstName} {data.data.applicator.lastName}
                                 </dd>
                             </div>
@@ -73,7 +73,7 @@ function SingleApplicantView() {
                                 <dt className="text-base font-bold font-['Montserrat']  text-gray-900">
                                     E-mail: 
                                 </dt>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd id="email" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                 {data.data.applicator.email}
                                 </dd>
                             </div>
@@ -81,7 +81,7 @@ function SingleApplicantView() {
                                 <dt className="text-base font-bold font-['Montserrat'] text-gray-900">
                                 Enviado em: {/** Applied at*/}
                                 </dt>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd id="date" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     <>{data.data.applicator.joinedAt}</> {/** FIXME: Date object is not a valid child of HTML element */}
                                 </dd>
                             </div>
@@ -90,7 +90,7 @@ function SingleApplicantView() {
                                 Motivação: {/** motivation*/}
                                 </dt>
                             <div className=''>
-                                <dd className="mt-1 whitespace-normal text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2 text-ellipsis">
+                                <dd id="motivation" className="mt-1 whitespace-normal text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2 text-ellipsis">
                                     <>{data.data.application.motivation}</> 
                                 </dd>
                             </div>   
@@ -99,23 +99,23 @@ function SingleApplicantView() {
                                 <dt className="text-base font-bold font-['Montserrat'] text-gray-900">
                                 Experiência Acadêmica: {/** Academic Experience*/}
                                 </dt>
-                                <div className=''></div>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <div ></div> {/*Spacing*/}
+                                <dd id="academicLevel" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.academicLevel}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
+                                <dd id="academicStatus" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
                                     <>{data.data.application.academicStatus}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="major" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.major}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="institution" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.institution}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="educationStartDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.educationStartDate}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="educationEndDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.educationEndDate}</> 
                                 </dd>
                                 
@@ -124,22 +124,20 @@ function SingleApplicantView() {
                                 <dt className="text-base font-bold font-['Montserrat']  text-gray-900">
                                 Experiência profissional: {/** Professional Experience*/}
                                 </dt>
-                                <dd className="">
-                                    <> </> 
-                                </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <div></div> {/*spacing*/}
+                                <dd id="company" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.company}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="position" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.position}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="workStartDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.workStartDate}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="workEndDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.workEndDate}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
+                                <dd id="workActivities" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
                                     <>{data.data.application.workActivities}</> 
                                 </dd>
                                 
