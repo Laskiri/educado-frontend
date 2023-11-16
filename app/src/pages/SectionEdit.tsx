@@ -151,11 +151,10 @@ function temp() {
 
     const cid =  sectionData.parentCourse;
 
-    // Limiter for the number of exercises and lectures to be < 10
-    const limit = sectionData.lectures.length + sectionData.exercises.length;
-    // Limiter for the number of lectures to be < 7
-    const lectureLimit = sectionData.lectures.length;
-    
+   // Limiter for the number of exercises and lectures to be < 10
+   const limit = sectionData.components.length;
+   // Limiter for the number of lectures to be < 7
+   const lectureLimit = sectionData.components.filter((component: any) => component.type === "lecture").length;
     
 
     return (

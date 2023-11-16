@@ -21,7 +21,7 @@ import { eventType } from 'aws-sdk/clients/health';
 import { integer } from 'aws-sdk/clients/lightsail';
 import StorageServices from '../services/storage.services';
 import LectureService from '../services/lecture.services';
-
+import { toast } from 'react-toastify';
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />
 
@@ -56,6 +56,7 @@ export const CreateLecture = () => {
 
     const [charCount, setCharCount] = useState(0);
     const [contentType, setContentType] = useState<string>("");
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const toggler = (value:string) => {
         setContentType(value);
@@ -73,6 +74,7 @@ export const CreateLecture = () => {
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
      
         setIsLoading(true);
+        setIsSubmitting(true);
         LectureService.addLecture({
             title: data.title,
             description: data.description,
@@ -82,12 +84,12 @@ export const CreateLecture = () => {
             token, 
             sid)
             .then(res =>{ 
-                console.log(res); 
                 StorageServices.uploadFile({ id: res.data._id, file: lectureContent, parentType: "l" });
                 LectureService.updateLecture(res.data, token, res.data.id);
                 window.location.reload();
+                toast.success("Aula criado com sucesso");
             }) 
-            .catch(err => console.log(err))
+            .catch(err => {toast.error("Fracassado: " + err); setIsLoading(false); setIsSubmitting(false);})
     };
 
     function returnFunction(lectureContent: any) {
@@ -165,7 +167,7 @@ export const CreateLecture = () => {
                                 contentType === "text" ?
                                 <Dropzone inputType='image' callBack={returnFunction}></Dropzone>
                                 :
-                                <p>lkdnfpsn</p>
+                                <div></div>
                             }
                                {/* {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}*/}
                         </div>
@@ -174,9 +176,15 @@ export const CreateLecture = () => {
                         <div className='modal-action'>
                             <div className="flex items-center justify-between gap-4 w-full mt-8">
                                 <label htmlFor='lecture-create' className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                                    {isSubmitting === false ? 
+
                                     <button type="submit" className='py-2 px-4 h-full w-full'>
                                         Criar
                                     </button>
+                                    :
+                                    <button disabled className='py-2 px-4 h-full w-full'>
+                                        Criar
+                                    </button>}
                                 </label>
                                 <label htmlFor='lecture-create' className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                                     Cancelar
