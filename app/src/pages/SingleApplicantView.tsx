@@ -46,79 +46,86 @@ function SingleApplicantView() {
     }
     return (
         <Layout meta={`Applicant: ${id?.slice(0, 10)}...`}>
-            <div className="grid place-items-center h-screen">
-                <div className="bg-white max-w-2xl shadow overflow-hidden sm:rounded">
-                    <div className=" px-4 py-5 sm:px-6">
-                        <h3 className="text-lg leading-6 font-medium text-gray-900 ">
-                            Applicant: <span className="text-blue-500">mail@mail.com</span>
+            
+            <div className="grid place-items-center h-screen pt-16">
+                <div className="bg-white max-w-3xl shadow overflow-hidden rounded-xl ">
+                    <div className=" px-4 py-8 sm:px-10 ">
+                        <h3 className=" leading-6 text-2xl font-bold font-['Montserrat'] text-gray-900 ">
+                        Candidato: <span className="text-blue-500">mail@mail.com</span> {/** applicant*/}
                         </h3>
-                        <p className="mt-1 max-w-2xl text-sm text-gray-500">
-                            Details and informations about the applicant.
+                        <p className="mt-3 max-w-3xl text-base font-['Montserrat'] text-gray-500">
+                        Detalhes e informações sobre o candidato. {/**  Details and informations about the applicant*/}
                         </p>
                     </div>
 
-                    <div className="border-t border-gray-200">
+                    <div className="border-t mx-10 pb-1 pt-1 mt-2 bg-grayLight">
 
                         <dl>
-                            <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Name
+                            <div className="bg-[#F1F9FB] px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat']  text-gray-500">
+                                    Nome: {/** Name*/}
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     FirstName LastName
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Email address
+                            <div className="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat']  text-gray-500">
+                                    E-mail: 
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     mail@mail.com
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Applied at:
+                            <div className="bg-[#F1F9FB] px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat'] text-gray-500">
+                                Enviado em: {/** Applied at*/}
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     <>date</> {/** FIXME: Date object is not a valid child of HTML element */}
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Motivation
+                            <div className="bg-white px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat'] text-gray-500">
+                                Motivação: {/** motivation*/}
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     <>Long motivation</> 
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Academic Experience
+                            <div className="bg-[#F1F9FB] px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat'] text-gray-500">
+                                Experiência Acadêmica: {/** Academic Experience*/}
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     <>A lot of fields</> 
                                 </dd>
                             </div>
-                            <div className="bg-white px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                                <dt className="text-sm font-medium text-gray-500">
-                                    Professional Experience
+                            <div className="bg-white px-2 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-6">
+                                <dt className="text-base font-bold font-['Montserrat']  text-gray-500">
+                                Experiência profissional: {/** Professional Experience*/}
                                 </dt>
-                                <dd className="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
                                     <>More Fields</> 
                                 </dd>
                             </div>
                         </dl>
                     </div>
-                    <div className="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 ">
-                        <button onClick={handleReject} type="button" className="py-2 px-4 flex justify-center items-center  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded ">
-                            Decline
+                    
+                    
+                    <div className="bg-gray-50 px-4 py-6 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-4 mt-4">
+                        
+                        <button onClick={handleAccept} type="button" className=" py-3 px-4 flex justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                        Aprovar {/** Approve*/}
                         </button>
-                        <button onClick={handleAccept} type="button" className=" py-2 px-4 flex justify-center items-center  bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded  ">
-                            Approve
+                        <button onClick={handleReject} type="button" className="py-3 px-4 flex justify-center items-center font-['Montserrat']  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded ">
+                        Declínio {/** Decline */}
                         </button>
+
                     </div>
-                </div >
+                    
+                </div>
+                
             </div>
         </Layout>
     );

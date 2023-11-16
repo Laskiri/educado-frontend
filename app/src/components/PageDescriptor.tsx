@@ -1,6 +1,6 @@
 export const PageDescriptor = ({ title, desc }: { title: string, desc: string }) => {
     return (
-        <div className="header flex items-end justify-between p-6 from-[#C9E5EC]">
+        <div className="header flex items-end justify-between p-4 from-[#C9E5EC]">
             <div className="title">
                 <p className=" text-black text-3xl font-bold flex-1 mb-10">
                     {title}
