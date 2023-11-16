@@ -10,7 +10,7 @@ import {BACKEND_URL} from '../helpers/environment';
 // Components
 import Loading from './Loading';
 import Layout from '../components/Layout';
-import { PageDescriptor } from '../components/PageDescriptor';
+
 
 function SingleApplicantView() {
     const { id } = useParams();
