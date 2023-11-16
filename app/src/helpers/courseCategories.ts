@@ -17,6 +17,10 @@ interface CategoryMap {
 }
 
 const categories: CategoryMap = {
+    'Selecione a categoria': {
+        'icon': mdiWalletBifoldOutline,
+        'br': 'Selecione a categoria',
+    },
     'personal finance': {
         'icon': mdiWalletBifoldOutline,
         'br': 'Finanças pessoais',
