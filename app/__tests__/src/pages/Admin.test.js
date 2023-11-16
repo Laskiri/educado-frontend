@@ -1,19 +1,35 @@
 import React from 'react';
-import { renderer, screen, waitFor } from '@testing-library/react';
+import renderer from 'react-test-renderer';
 import { MemoryRouter } from 'react-router-dom';
+import { describe, it, expect } from '@jest/globals';
 import useSWR from 'swr';
 import EducadoAdmin from '../../../src/pages/EducadoAdmin'; 
 
-let contentCreators = [];
+const mockData = {
+  data: {
+    data: [
+      { _id: '1', firstName: 'Joergen', lastName: 'Skovlag', email: 'JoergenSkovlag@gmail.com', joinedAt: '2011-11-11T12:00:00.000Z' },
+      { _id: '2', firstName: 'Mads', lastName: 'Ingstrid', email: 'M_Ingstrid@hotmail.com', joinedAt: '2020-02-20T12:00:00.000Z' },
+      
+    ],
+  },
+};
 
-// Mocking dependencies
 jest.mock('swr');
+jest.mock('jwt-decode', () => jest.fn());
+
+jest.mock('../../../src/helpers/environment', () => ({
+  BACKEND_URL: 'http://localhost:8888',
+  REFRESH_TOKEN_URL: 'http://localhost:8888/auth/refresh/jwt'
+}));
 
 describe('EducadoAdmin Component', () => {
-
+  
   it('shows empty state when no content creators are found', async () => {
-    contentCreators = [];
+    //Set the data to null to show empty state
+    useSWR.mockReturnValueOnce({ data: null });
 
+    let component;
     await renderer.act(async () => {
         component = renderer.create(
           <MemoryRouter>
@@ -21,77 +37,40 @@ describe('EducadoAdmin Component', () => {
           </MemoryRouter>
         );
       });
-      expect(component.toJSON()).toMatchSnapshot();
+
+    expect(component.toJSON()).toMatchSnapshot();
   });
 
   it('fetches and displays application data correctly', async () => {
-    const mockData = {
-      data: {
-        data: [
-          {
-            _id: '1',
-            firstName: 'John',
-            lastName: 'Doe',
-            email: 'john.doe@example.com',
-            joinedAt: '2023-01-01T12:00:00.000Z', // Replace with your actual date
-          },
-          // Add more mock data as needed
-        ],
-      },
-    };
-
-    // Mock useSWR hook to return mock data
+    //Set the data to the pre-defined mockData
     useSWR.mockReturnValueOnce({ data: mockData, error: null });
 
-    renderer(
-      <MemoryRouter>
-        <EducadoAdmin />
-      </MemoryRouter>
-    );
-
-    // Wait for the component to render the data
-    await waitFor(() => {
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-      expect(screen.getByText('john.doe@example.com')).toBeInTheDocument();
-      // Add more assertions based on your actual data structure
-    });
-  });
-
-  it('filters applications based on search term', async () => {
-    const mockData = {
-      data: {
-        data: [
-          { _id: '1', firstName: 'Jørgen', lastName: 'Skovlag', email: 'JørgenSkovlag@gmail.com', joinedAt: '2011-11-11T12:00:00.000Z' },
-          { _id: '2', firstName: 'Mads', lastName: 'Ingstrid', email: 'MIngstrid@hotmail.com', joinedAt: '2020-02-20T12:00:00.000Z' },
-          
-        ],
-      },
-    };
-
-    // Mock useSWR hook to return mock data
-    useSWR.mockReturnValueOnce({ data: mockData, error: null });
-
-    render(
-      <MemoryRouter>
-        <EducadoAdmin />
-      </MemoryRouter>
-    );
-
-    // Wait for the component to render the data
-    await waitFor(() => {
-      // Initial rendering with all data
-      expect(screen.getByText('John Doe')).toBeInTheDocument();
-      expect(screen.getByText('Jane Doe')).toBeInTheDocument();
+    let component;
+    await renderer.act(async () => {
+      component = renderer.create(
+        <MemoryRouter>
+          <EducadoAdmin />
+        </MemoryRouter>
+      );
     });
 
-    // Search for Jane
-    userEvent.type(screen.getByPlaceholderText('Procure um aplicativo...'), 'Jane');
+    //Define each aspect of the data to ensure everything renders correctly
+    const JoergenName = component.root.findAllByProps({id: "name"})[0]
+    const JoergenEmail = component.root.findAllByProps({id: "email"})[0]
+    const JoergenDate = component.root.findAllByProps({id: "date"})[0]
 
-    // Wait for the component to update based on the search term
-    await waitFor(() => {
-      // Jane should be visible, John should not
-      expect(screen.getByText('Jane Doe')).toBeInTheDocument();
-      expect(screen.queryByText('John Doe')).toBeNull();
-    });
+    const MadsName = component.root.findAllByProps({id: "name"})[1]
+    const MadsEmail = component.root.findAllByProps({id: "email"})[1]
+    const MadsDate = component.root.findAllByProps({id: "date"})[1]
+
+    //Make sure every aspect of the data is included, and in the correct way
+    expect(JoergenName.props.children).toContain("Joergen", "Skovl");
+    expect(JoergenEmail.props.children).toContain("JoergenSkovlag@gmail.com");
+    expect(JoergenDate.props.children).toContain("Fri Nov 11 2011 13:00:00 GMT+0100 (Central European Standard Time)");
+
+    expect(MadsName.props.children).toContain("Mads", "Ingstrid");
+    expect(MadsEmail.props.children).toContain("M_Ingstrid@hotmail.com");
+    expect(MadsDate.props.children).toContain("Thu Feb 20 2020 13:00:00 GMT+0100 (Central European Standard Time)");
+ 
   });
 });

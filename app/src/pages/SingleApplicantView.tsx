@@ -42,6 +42,7 @@ function SingleApplicantView() {
 
    
     if (!data) return <Loading />
+    console.log(data.data.application)
     if (data?.data.application == null){
      //navigate back to admin page
     }
@@ -51,7 +52,7 @@ function SingleApplicantView() {
                 <div className="bg-white shadow overflow-hidden rounded-xl">
                     <div className=" px-4 py-8 sm:px-10">
                         <h3 className=" leading-6 text-2xl font-bold font-['Montserrat'] text-gray-900 ">
-                        Candidato: <span className="text-blue-500">mail@mail.com</span> {/** applicant*/}
+                        Candidato: <span className="text-blue-500">{data.data.applicator.email}</span> {/** applicant*/}
                         </h3>
                         <p className="mt-3 max-w-3xl text-base font-['Montserrat'] text-gray-500">
                         Detalhes e informações sobre o candidato. {/**  Details and informations about the applicant*/}
@@ -65,7 +66,7 @@ function SingleApplicantView() {
                                     Nome: {/** Name*/}
                                 </dt>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
-                                    FirstName LastName
+                                {data.data.applicator.firstName} {data.data.applicator.lastName}
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
@@ -73,7 +74,7 @@ function SingleApplicantView() {
                                     E-mail: 
                                 </dt>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
-                                    mail@mail.com
+                                {data.data.applicator.email}
                                 </dd>
                             </div>
                             <div className="bg-[#F1F9FB] px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
@@ -81,7 +82,7 @@ function SingleApplicantView() {
                                 Enviado em: {/** Applied at*/}
                                 </dt>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>date</> {/** FIXME: Date object is not a valid child of HTML element */}
+                                    <>{data.data.applicator.joinedAt}</> {/** FIXME: Date object is not a valid child of HTML element */}
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-3 sm:grid grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
@@ -90,7 +91,7 @@ function SingleApplicantView() {
                                 </dt>
                             <div className=''>
                                 <dd className="mt-1 whitespace-normal text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2 text-ellipsis">
-                                    <>long long motivation</> 
+                                    <>{data.data.application.motivation}</> 
                                 </dd>
                             </div>   
                             </div>
@@ -100,22 +101,22 @@ function SingleApplicantView() {
                                 </dt>
                                 <div className=''></div>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.academicLevel}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.academicStatus}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.major}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.institution}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.educationStartDate}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.educationEndDate}</> 
                                 </dd>
                                 
                             </div>
@@ -127,23 +128,21 @@ function SingleApplicantView() {
                                     <> </> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.company}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.position}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.workStartDate}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.workEndDate}</> 
                                 </dd>
                                 <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
+                                    <>{data.data.application.workActivities}</> 
                                 </dd>
-                                <dd className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>A lot of fields </> 
-                                </dd>
+                                
 
                             </div>
                         </dl>

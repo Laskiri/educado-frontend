@@ -101,19 +101,19 @@ const EducadoAdmin = () => {
                                             <td>
                                                 <div className="flex items-center">
                                                     <div className="ml-3">
-                                                        <p className="text-gray-900 whitespace-no-wrap">
+                                                        <p className="text-gray-900 whitespace-no-wrap" id="name">
                                                             {application.firstName} {application.lastName}
                                                         </p>
                                                     </div>
                                                 </div>
                                             </td>
                                             <td>
-                                                <p className="text-gray-900 whitespace-no-wrap">
+                                                <p className="text-gray-900 whitespace-no-wrap" id="email">
                                                     {application.email}
                                                 </p>
                                             </td>
                                             <td>
-                                                <p className="text-indigo-700 hover:text-indigo-900">
+                                                <p className="text-indigo-700 hover:text-indigo-900" id="date">
                                                     {date.toString()}
                                                 </p>
                                             </td>

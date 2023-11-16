@@ -1,10 +1,10 @@
 import {Icon} from '@mdi/react';
 import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
-import { useState } from 'react' ;
+
 import decode from 'jwt-decode';
-import { first } from 'lodash';
+
 // icons
 const Navbar = () => {
 
@@ -14,10 +14,11 @@ const Navbar = () => {
         clearToken();
     }
     const token = useAuthStore(state => state.token);
-
-    const firstName = decode(token).firstName;
-    const lastName = decode(token).lastName;
-    const email = decode(token).email;
+    const decodedToken = token ? decode(token) : null;
+    
+    const firstName = token ? decodedToken?.firstName: "Firstname";
+    const lastName = token ? decodedToken?.lastName: "Lastname";
+    const email = token ? decodedToken?.email: "mail@mail.com";
 
     
     //navbar for home, profile 
