@@ -42,7 +42,9 @@ function SingleApplicantView() {
 
    
     if (!data) return <Loading />
-    console.log(data.data)
+
+    let date = new Date(data.data.applicator.joinedAt)
+
     if (data?.data.application == null){
      //navigate back to admin page
     }
@@ -78,20 +80,20 @@ function SingleApplicantView() {
                                 </dd>
                             </div>
                             <div className="bg-[#F1F9FB] px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
-                                <dt className="text-base font-bold font-['Montserrat'] text-gray-900">
+                                <dd className="text-base font-bold font-['Montserrat'] text-gray-900">
                                 Enviado em: {/** Applied at*/}
-                                </dt>
+                                </dd>
                                 <dd id="date" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
-                                    <>{data.data.applicator.joinedAt}</> {/** FIXME: Date object is not a valid child of HTML element */}
+                                    {date.toString()} {/** FIXME: Date object is not a valid child of HTML element */}
                                 </dd>
                             </div>
                             <div className="bg-white px-4 py-3 sm:grid grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
                                 <dt className="text-base font-bold font-['Montserrat'] text-gray-900">
                                 Motivação: {/** motivation*/}
                                 </dt>
-                            <div className=''>
+                            <div>
                                 <dd id="motivation" className="mt-1 whitespace-normal text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2 text-ellipsis">
-                                    <>{data.data.application.motivation}</> 
+                                    {data.data.application.motivation}
                                 </dd>
                             </div>   
                             </div>
@@ -101,22 +103,22 @@ function SingleApplicantView() {
                                 </dt>
                                 <div ></div> {/*Spacing*/}
                                 <dd id="academicLevel" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.academicLevel}</> 
+                                    {data.data.application.academicLevel}
                                 </dd>
                                 <dd id="academicStatus" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 ">
-                                    <>{data.data.application.academicStatus}</> 
+                                    {data.data.application.academicStatus}
                                 </dd>
                                 <dd id="major" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.major}</> 
+                                    {data.data.application.major} 
                                 </dd>
                                 <dd id="institution" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.institution}</> 
+                                    {data.data.application.institution}
                                 </dd>
                                 <dd id="educationStartDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.educationStartDate}</> 
+                                    {data.data.application.educationStartDate}
                                 </dd>
                                 <dd id="educationEndDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.educationEndDate}</> 
+                                    {data.data.application.educationEndDate}
                                 </dd>
                                 
                             </div>
@@ -126,22 +128,20 @@ function SingleApplicantView() {
                                 </dt>
                                 <div></div> {/*spacing*/}
                                 <dd id="company" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.company}</> 
+                                    {data.data.application.company}
                                 </dd>
                                 <dd id="position" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.position}</> 
+                                    {data.data.application.position}
                                 </dd>
                                 <dd id="workStartDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.workStartDate}</> 
+                                    {data.data.application.workStartDate}
                                 </dd>
                                 <dd id="workEndDate" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.workEndDate}</> 
+                                    {data.data.application.workEndDate}
                                 </dd>
                                 <dd id="workActivities" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0">
-                                    <>{data.data.application.workActivities}</> 
+                                    {data.data.application.workActivities}
                                 </dd>
-                                
-
                             </div>
                         </dl>
                     </div>

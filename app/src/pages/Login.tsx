@@ -76,15 +76,17 @@ const Login = () => {
                 setEmailErrorMessage("O email fornecido não está associado a uma conta.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
+              break;
         
               case "E1001": //User Not Approved
                 setEmailError(err);
                 setEmailErrorMessage("A conta associada a este e-mail não foi aprovada.");
                 setPasswordError(null);
-                setPasswordErrorMessage('');
+                setPasswordErrorMessage('');  
+              break;
 
               case "E1002": //User Rejected
-                setEmailError(err); //Invalid email. Please check if you entered the email address correctly
+                setEmailError(err); 
                 setEmailErrorMessage("A conta associada a este e-mail foi rejeitada.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
