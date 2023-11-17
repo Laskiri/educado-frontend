@@ -1,7 +1,7 @@
 import { useState, ChangeEvent} from "react";
 import Icon from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
-import { useNavigate, Link, useParams, Navigate } from "react-router-dom"
+import { useNavigate, Link, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import AuthService from "../services/auth.services"
@@ -10,16 +10,26 @@ import { NewApplication } from "../interfaces/Application"
 
 const Application = () => {
 
+  //Get id from URL
   const { id } = useParams();
   
   const navigate = useNavigate(); 
 
+  //Function for deciding the different values in the form
   const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
 
+  //Variables for toggling the different fields' visibility
   const [toggleMotivation, setToggleMotivation] = useState(true);
   const [toggleAcademicExperiences, setToggleAcademicExperiences] = useState(false);
   const [toggleProfessionalExperience, setToggleProfessionalExperience] = useState(false);
 
+  /**
+    * OnSubmit function for Application.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    * Navigates to the Login page upon recieving a succesfull response
+    *
+    * @param {JSON} data Which includes the value of the various fields in the application
+    */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
     AuthService.postNewApplication({
       motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
@@ -29,17 +39,17 @@ const Application = () => {
 
       baseUser: id
     }).then((res) =>{
-      console.log(res.status)
       if(res.status == 200){
         navigate("/login")
       }
     })
   };
 
+  //Variable for keeping track of the length of the motivation
   const [motivation, setMotivation] = useState('');
   const maxLength = 800;
 
-  // Function to handle changes in the textarea
+  // Function to make sure motivation is not above 800 characters
   const handleMotivationChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const text = event.target.value;
     if (text.length <= maxLength) {
@@ -49,7 +59,7 @@ const Application = () => {
 
 return (
 <main>
-  { /*Navbar*/ }
+  { /* Navbar */ }
   <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
     <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
       <div className="navbar-start">
@@ -63,18 +73,18 @@ return (
   <body className="relative right-0 h-screen flex flex-col">
     <form className="relative right-0 w-full overflow-none h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
       
-      {/*Box fot text*/}
+      {/* Box fot text */}
       <div className="items-center p-10 pt-20">
         <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
-          Que bom que você quer fazer parte do Educado! {/*Glad you want to be part of Educado!*/}
+          Que bom que você quer fazer parte do Educado! {/* Glad you want to be part of Educado! */}
         </h1>
         <p className="text-center text-neutral-700 text-base font-normal font-['Montserrat']">
-          {/*We need some information to approve your content creator access. We'll get back to you with an answer via e-mail.*/}
+          {/* We need some information to approve your content creator access. We'll get back to you with an answer via e-mail. */}
           Precisamos de algumas informações para aprovar seu acesso de criador de conteúdo. Retornaremos com uma resposta via e-mail
         </p>
       </div>
     
-      {/*Box for the Motivation */}
+      {/* Box for the Motivation */}
       <div className="w-[65%] justify-center items-center">
         <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
         onClick={() => setToggleMotivation(!toggleMotivation)}>
@@ -92,8 +102,8 @@ return (
           <div className="relative border border-[#166276] p-4 rounded-b-lg text-left bg-white z-50">
           <div className="flex flex-col">
             <label htmlFor="motivation">
-              {/*We want to know more about you! Tell us about your reasons for joining Educado*/}
               Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
+              {/* We want to know more about you! Tell us about your reasons for joining Educado */}
             </label>
             <textarea
               className="bg-sky-50 rounded-lg border-none"
@@ -111,7 +121,7 @@ return (
         )}
       </div>
 
-      {/*Box for Academic Experiences*/}
+      {/* Box for Academic Experiences */}
       <div className="w-[65%] justify-center items-center">
         <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
         onClick={() => setToggleAcademicExperiences(!toggleAcademicExperiences)}>
@@ -121,24 +131,23 @@ return (
             ) : (
               <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
             )}
-            Experiências acadêmicas {/*Academic Experiences*/}
+            Experiências acadêmicas {/* Academic Experiences */}
           </div>
         </button>
 
         {toggleAcademicExperiences && (
           <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-10 text-left bg-white z-50">
             <div className="grid grid-cols-2 gap-10"> 
-              <p>Formação</p> {/* Training*/}
-              <p>Status</p> {/* Status*/}
+              <p>Formação</p> {/* Training */}
+              <p>Status</p> {/* Status */}
             </div>
             <div className="relative flex gap-10">
               <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               id="academicLevel"
               {...register("academicLevel", {required: true})}>
-                <option value="Básico">Básico</option> {/* Basic*/}
-                <option value="Médio">Médio</option> {/* Medium*/}
-                <option value="Superior">Superior</option> {/* Superior*/}
-                
+                <option value="Básico">Básico</option> {/* Basic */}
+                <option value="Médio">Médio</option> {/* Medium */}
+                <option value="Superior">Superior</option> {/* Superior */}
               </select>
           
               <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
@@ -191,7 +200,7 @@ return (
         )}
       </div>
 
-      {/*Box for Professional Experience*/}
+      {/* Box for Professional Experience */}
       <div className="w-[65%] justify-center items-center">
         <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
         onClick={() => setToggleProfessionalExperience(!toggleProfessionalExperience)}>
@@ -201,15 +210,15 @@ return (
             ) : (
               <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
             )}
-            Experiências profissionais {/*Professional Experience*/}
+            Experiências profissionais {/* Professional Experience */}
           </div>
         </button>
 
         {toggleProfessionalExperience && (
           <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
             <div className="grid grid-cols-2 gap-10"> 
-              <p>Empresa</p> {/*company*/}
-              <p>Cargo</p> {/*position*/}
+              <p>Empresa</p> {/* company */}
+              <p>Cargo</p> {/* position */}
             </div>
             <div className="relative flex gap-10">
               <input
@@ -227,8 +236,8 @@ return (
               />
             </div>
             <div className="grid grid-cols-2 gap-10"> 
-              <p>Início</p> {/*start*/}
-              <p>Fim</p> {/*end*/}
+              <p>Início</p> {/* start */}
+              <p>Fim</p> {/* end */}
             </div>
             <div className="relative flex gap-10">
               <input
@@ -246,7 +255,7 @@ return (
               />
             </div>
             <div className="grid grid-cols-1"> 
-              <p>Descrição de atividades</p> {/*Description of activities*/}
+              <p>Descrição de atividades</p> {/* Description of activities */}
             </div>
             <div className="relative flex">
               <input
@@ -262,7 +271,7 @@ return (
 
       <div className="w-[65%] flex justify-end">
         <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
-          Enviar para análise {/*Send for analysis*/}
+          Enviar para análise {/* Send for analysis */}
         </button>
       </div>
     </form>

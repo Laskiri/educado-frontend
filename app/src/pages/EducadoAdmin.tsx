@@ -13,19 +13,18 @@ import { PageDescriptor } from "../components/PageDescriptor";
 
 
 const EducadoAdmin = () => {
+    //Variable to detect and determine the search term used to filter applications
     const [searchTerm, setSearchTerm] = useState('')
-
-    // Used to navigate to the detailed view for the single applicant
-    let navigate = useNavigate();
-    let location = useLocation();
-
+    
+    //Get data from the relevant route
     const { data, error } = useSWR(
         `${BACKEND_URL}/api/applications`,
         AuthServices.GetCCApplications
     );
    
+    //If no data is found, or until the data is found, show loading page
     if (!data) return <Loading/>
-    console.log(data)
+    
     return (
         <Layout meta="Educado Admin">
             <PageDescriptor
@@ -38,15 +37,16 @@ const EducadoAdmin = () => {
                     <div className='flex flex-row no-wrap'>
               <h1 className='text-3xl font-bold flex-1 mx-6 mt-6'>Solicitações de acesso de criação de conteúdo.</h1>  
             </div>
-                {/** Component Header bar */}
+                {/* Component Header bar */}
                 <div className="navbar justify-end md:w-full bg-none p-6">
                     <div className="flex-none">
                         <form className="flex flex-col md:flex-row w-3/4 md:w-full max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center ">
+                            {/* Input for searchterm */}
                             <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none hover:bg-white focus:border-sky-500 focus:ring-[#166276] focus:ring-1 sm:text-sm"
                                 type="text"
                                 placeholder="Procure um aplicativo..." //Look for an Application
                                 onChange={(event) => {
-                                setSearchTerm(event.target.value);
+                                    setSearchTerm(event.target.value);
                                 }}
                             />
                             <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-[#166276] rounded shadow-md hover:bg-[#166276] focus:outline-none focus:ring-2 focus:ring-[#166276] focus:ring-offset-2 focus:ring-offset-blue-200" type="submit">
@@ -56,27 +56,27 @@ const EducadoAdmin = () => {
                     </div>
                 </div>
 
-                {/** Component Main */}
+                {/* Component Main */}
                 <div className='h-4 my-2 mx-4 bg-grayLight'> </div>
-                        {/** Table */}
+                        {/* Table */}
                         <table className="min-w-full leading-normal">
-                            {/** Table Header */}
+                            {/* Table Header */}
                             <thead>
                                 <tr className="bg-white border-b border-gray-200 text-gray-800  text-left text-base uppercase font-base font-['Lato']">
                                     <th scope="col" className="p-5"> 
-                                        Nome {/** name */}
+                                        Nome {/* name */}
                                     </th>
                                     <th scope="col" className="p-5">
                                         Email 
                                     </th>
                                     <th scope="col" className="p-5">
-                                    Enviado em {/** applied at */}
+                                    Enviado em {/* applied at */}
                                     </th>
                                     <th scope="col" className="p-5"></th>
                                 </tr>
                             </thead>
 
-                            {/** Table Body */}
+                            {/* Table Body: generates the table based on the curren search term. Default is empty */}
                             <tbody>
                                 {data?.data.data.filter((application: any) => {
                                     if (searchTerm == "") {
@@ -94,8 +94,7 @@ const EducadoAdmin = () => {
                                         return application;
                                     }
                                 }).map((application: any, key: number) => {
-                                    let date = new Date(application.joinedAt); // TODO: Format Time
-                                    // let dateString = new Intl.DateTimeFormat('en-US').format(date);
+                                    let date = new Date(application.joinedAt); 
                                     return (
                                         <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                             <td>
@@ -128,7 +127,7 @@ const EducadoAdmin = () => {
                             </tbody>
                         </table>
 
-                        {/** Navbar */}
+                        {/* Bottm navbar, currently not in use. Will update when new design is ready */}
                         <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
                             <div className="flex items-center">
                                 <button
