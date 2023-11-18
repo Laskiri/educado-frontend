@@ -77,7 +77,7 @@ describe('SingleApplicant Component', () => {
     expect(email.props.children).toContain("JoergenSkovlag@gmail.com");
 
     const date = component.root.findByProps({id: "date"})
-    expect(date.props.children).toContain("Fri Nov 11 2011 12:00:00 GMT+0000 (Coordinated Universal Time)");
+    expect(date.props.children).toContain("Fri Nov 11 2011 13:00:00 GMT+0100 (Central European Standard Time)");
 
     const academicLevel = component.root.findByProps({id: "academicLevel"})
     expect(academicLevel.props.children).toContain("Superior");
