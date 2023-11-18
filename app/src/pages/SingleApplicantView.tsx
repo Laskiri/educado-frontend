@@ -67,7 +67,8 @@ function SingleApplicantView() {
                     });
             }, 1);
     }
-    return (
+return (
+    <Layout meta={`Applicant: ${id?.slice(0, 10)}...`}>
         <div className="grid place-items-center h-screen pt-20">
 
             {/*Container for the contents of the page*/}
@@ -177,10 +178,8 @@ function SingleApplicantView() {
                 </div> 
             </div> 
         </div>
+    </Layout>
     );
 }
 
 export default SingleApplicantView;
-
-
-
