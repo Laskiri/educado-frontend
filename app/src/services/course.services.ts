@@ -100,7 +100,7 @@ const getCourseCategories = async (url: string/*, token: string*/) => {
  * @param id The id of the course
  * @returns Confirmation of the update
  */
-const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
+const updateCourseDetail = async (data: any, id: string | undefined/*, token: string*/) => {
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
     data/*,
@@ -117,7 +117,7 @@ const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
  * @param token token of the user 
  * @returns Delete data
  */
-const deleteCourse = async (id: any, token: string) => {
+const deleteCourse = async (id: string | undefined, token: string) => {
   return await axios.delete(
       `${BACKEND_URL}/api/courses/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }
