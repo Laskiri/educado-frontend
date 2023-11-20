@@ -240,7 +240,7 @@ function returnFunction(coverImage: any) {
               </div>
               
             {/*Everything on the right side of the site*/}
-            <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
+            <div className="flex w-2/3 float-right items-center justify-left space-y-4 my-4">
               <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
               {/** Tooltip for course header*/}
               <div className="flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
@@ -254,7 +254,7 @@ function returnFunction(coverImage: any) {
               </div> 
             </div>
             {/*White bagground*/}
-            <div className="w-3/4 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
+            <div className="w-2/3 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
               <div className="m-10">
               
                {/*Field to input the title of the new course*/}
