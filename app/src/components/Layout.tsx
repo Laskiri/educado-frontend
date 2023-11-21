@@ -3,8 +3,10 @@ import { ReactNode } from 'react'
 import { ToastContainer } from 'react-toastify';
 
 // Components
+
 import RequireAuth from './RequireAuth'
 import Navbar from './Navbar';
+
 
 /**
  * Layout component
@@ -23,21 +25,22 @@ const Layout = ({ children }: { children: Array<ReactNode> | ReactNode, meta: st
 					<main className="flex-grow overflow-x-hidden bg-gradient-to-br from-[#c8e5ec] to-[white]">
 						{children}
 					</main>
+
 			</div>
-			<ToastContainer
-				position="top-right"
-				autoClose={5000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				rtl={false}
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover={false}
-				theme="light"
-			/>
-		</RequireAuth>
-	)
+		</div>
+		<ToastContainer
+			position="top-right"
+			autoClose={5000}
+			hideProgressBar={false}
+			newestOnTop={false}
+			closeOnClick
+			rtl={false}
+			pauseOnFocusLoss
+			draggable
+			pauseOnHover={false}
+			theme="light"
+		/>
+	</>
 }
 
 export default Layout

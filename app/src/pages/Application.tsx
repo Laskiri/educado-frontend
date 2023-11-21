@@ -70,7 +70,7 @@ return (
     </div>
   </nav>
   
-  <body className="relative right-0 h-screen flex flex-col">
+  <body className="relative right-0 h-screen flex flex-col z-10">
     <form className="relative right-0 w-full overflow-none h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
       
       {/* Box fot text */}
