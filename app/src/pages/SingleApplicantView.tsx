@@ -55,18 +55,19 @@ function SingleApplicantView() {
 
     //If no data is found, or until the data is found, show loading page
     if (!data) return <Loading />
-
     //Variable used to convert the date into something semi-readable
-    let date = new Date(data.data.applicator.joinedAt)
+    
 
     //When attempting to view an application that does not exist, user will be navigated back to the applicaitons page, and be notified of the error
-    if (data?.data.application == null){
+    if (data?.data.application == undefined){
         navigate("/educado_admin/applications");
         setTimeout(() => {
             toast.error(("Este usuário não tem candidatura"), { hideProgressBar: true, 
                     });
             }, 1);
     }
+    
+    let date = new Date(data.data.applicator.joinedAt)
 return (
     <Layout meta={`Applicant: ${id?.slice(0, 10)}...`}>
         <div className="grid place-items-center h-screen pt-20">

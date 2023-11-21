@@ -39,7 +39,7 @@ const Application = () => {
 
       baseUser: id
     }).then((res) =>{
-      if(res.status == 200){
+      if(res.status == 201){
         navigate("/login")
       }
     })
