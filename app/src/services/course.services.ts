@@ -4,15 +4,9 @@ import axios from "axios";
 import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
-// Interface for posting course content
-export interface CourseInterface {
-  title: string;
-  category: string;
-  difficulty: number;
-  description: string;
-  creator: string;
-  status: string;
-}
+//interfaces
+import {Course} from "../interfaces/Course"
+
 
 const client = axios.create({
   baseURL: 'http://localhost:8888/api/courses',
@@ -27,16 +21,16 @@ const client = axios.create({
  */
 
 // Create a new course
-const createCourse = async ({ title, category, difficulty, description, creator, status }: CourseInterface, token: string) => {
+const createCourse = async (data: Course, token: string) => {
   return await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
-      title: title,
-      description: description,
-      category: category,
-      difficulty: difficulty,
-      creator: creator,
-      status: status
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      difficulty: data.difficulty,
+      creator: data.creator,
+      status: data.status
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );
@@ -100,7 +94,7 @@ const getCourseCategories = async (url: string/*, token: string*/) => {
  * @param id The id of the course
  * @returns Confirmation of the update
  */
-const updateCourseDetail = async (data: any, id: string | undefined/*, token: string*/) => {
+const updateCourseDetail = async (data: Course, id: string | undefined/*, token: string*/) => {
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
     data/*,

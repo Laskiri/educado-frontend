@@ -26,6 +26,7 @@ import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
 import { ToolTip } from '../components/Courses/ToolTip'
 import { DeleteButton, DeleteType } from '../components/Courses/DeleteButton'
+import { CourseCreationCom } from '../components/Courses/CourseCreationCom'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -194,7 +195,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
         try {
             await StorageService.uploadFile({ file: image, key: `${data.id}/coverImg` })
             toast.success('Image uploaded successfully');
-        } catch (error) {
+        } catch (error) { 
             toast.error('Image could not be uploaded, try again.');
         } 
     */
@@ -206,167 +207,33 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
   console.log(data)
 
     
-    return (
-        <Layout meta={`Course: ${id}`}>
+	return (
+		<Layout meta={`Course: ${id}`}>
 
-            {/** Course navigation */}
-            <form onSubmit={handleSubmit(onSubmit)} >
-                <div className="navbar bg-base-100 ">
-                    <div className='flex-1'>
-                        <Link to="/courses" className="btn btn-square btn-ghost normal-case text-xl" reloadDocument><ArrowLeftIcon width={24} /></Link>
-                        <a className="normal-case text-xl ml-4">{data ? data.title : ""}</a>
-                    </div>
-                    <div className="flex-none space-x-2">
-                        <DeleteButton id={id} token={token} deleteType={DeleteType.course}/> {/*Delete button*/}
-                        <button type="submit" className='std-button text-white border-0'>Atualizar</button> {/* Update button */}
-                        <button type="submit" onClick={() => setStatusChange(true)} className='std-button bg-primary text-white border-0'>{statusSTR === "draft"? "Publicar":"Definir como rascunho" }</button>
-                    </div>
-                </div>
-
-                {/** Course details edit */}
-                <div className="container mx-auto flex flex-row space-x-4 my-6">
-                    <div className='w-full max-w-5xl mx-auto bg-white rounded p-6'>
-                        <div className="grid grid-cols-1 lg:grid-cols-1 gap-6">
-                            <div className='flex flex-col space-y-6 divide'>
-
-                                {/* Course status */}
-                                <div className='flex items-center justify-center pb-6 '> {/* Updated here */}
-                                    <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
-                                    
-                                    {/** Tooltip for course header*/}
-                                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-                                        <Icon
-                                            path={mdiInformationSlabCircleOutline}
-                                            size={1}
-                                            className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                        />
-                                        
-                                        {toolTipIndex ===0? toolTip[0] : <div></div> }
-                                    </div>  
-                                  <div className='flex flex-row justify-center'>
-                                    <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
-                                    <p className='italic'>
-                                      {statuses[statusSTR].br ?? statuses.default.br}
-                                    </p>
-                                    
-                                  </div>
-                                </div>
-
-                                {/** Course Title Field */}
-                                <div className="flex flex-col space-y-2">
-                                    <label htmlFor='title'>Título</label>
-                                    <input type="text" defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
-                                        className="form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                                        {...register('title', { required: true})}
-                                    />
-                                    {errors.title && <span>Este campo é obrigatório!</span>}
-                                </div>
-
-                                {/** Course Description Field */}
-                                <div className="flex flex-col space-y-2 items-start relative">
-                                <div className="flex items-center space-x-2"> {/* Container for label and icon */}
-                                    <label htmlFor='description' className="flex-shrink-0">Descrição</label>
-                                    {/** Tooltip for description of course*/}
-                                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                                        <Icon
-                                            path={mdiInformationSlabCircleOutline}
-                                            size={1}
-                                            className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                        />
-                                        
-                                        {toolTipIndex ===1? toolTip[1] : <div></div> }
-                                </div>
-                                </div>
-                                <textarea
-                                    rows={4}
-                                    defaultValue={data ? data.description : ""}
-                                    placeholder={data ? data.description : ""}
-                                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                                    {...register('description', { required: true })}
-                                />
-                                {errors.description && <span>Este campo é obrigatório!</span>}
-                                </div>
-
-                                {/* Field to choose a category from a list of options */}
-                                <div className="flex flex-col space-y-2 text-left">
-                                    <label htmlFor='category'>Categoria</label>
-
-                                    <select defaultValue={data ? data.category : "Selecione a categoria"}
-                                        className=" focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
-                                        {...register("category", { required: true })}>
-                                            <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
-                                        {/*Hard coded options by PO, should be changed to get from db*/}
-                                        {categoriesOptions}
-
-                                    </select>
-                                    {errors.category && <span className='text-warning'>Este campo é obrigatório</span>}
-                                </div>
-
-                                {/* Field to select a level from a list of options */}
-                                <div className="flex flex-col space-y-2 text-left">
-                                    <label htmlFor='level'>Nível</label> {/* Level */}
-                                    <select defaultValue={data ? data.difficulty : 0}
-                                        className="small-form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        {...register('difficulty', { required: true })}
-                                    >
-                                        {/* Hard coded options by PO, should be changed to get from db */}
-                                        <option value={1}>Iniciante </option> {/* Beginner */}
-                                        <option value ={2}>Intermediário</option> {/* Intermediate */}
-                                        <option value={3}>Avançado </option> {/* Advanced */}
-
-                                    </select>
-                                    {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>}
-                                </div>
-
-                              
-                                {/* Field to input the estimated estimatedHours */}
-                                <div className="flex flex-col space-y-2 text-left">
-                                    <label htmlFor='title'>Tempo estimado</label> {/* Estimated time */}
-                                    <input type="number" defaultValue={data ? data.estimatedHours : 0} min={0} step={1}
-                                        className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                                        {...register('estimatedHours', { required: true })}
-                                    />
-                                    {errors.title && <span className='text-warning'>Este campo é obrigatório</span>}
-                                    
-                                </div>
-
-                                {/** Cover Image Field */}
-                                <div className="flex flex-col">
-                                    <div className='relative'>
-                                        <div className='p-0 rounded-b-none rounded-t border-gray-300 border-x border-t h-[240px] overflow-hidden'>
-                                            {bucketData ?
-                                                <img src={ coverImgPreview? coverImgPreview : "data:image;base64," + bucketData} /*alt={data.title}*/ className="object-cover w-full h-full rounded" /> :
-                                                <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>Sem imagem de capa</div>
-                                            }
-
-                                        </div>
-                                        {/* Cover image upload */}
-                                        <input type="file" accept='.jpg,.jpeg,.png'
-                                            onChange={onCoverImgChange}
-                                            className='file-input w-full input-bordered rounded-b rounded-t-none focus:outline-none'
-                                        >
-                                        </input>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
-            <div className="container mx-auto flex flex-row space-x-4 my-6">
-                <div className='w-full max-w-5xl mx-auto bg-white rounded p-6'>
-                    {/** Course Sections area  */}
-                    <div className='flex flex-col space-y-2 divide'>
-                        <h1 className='text-xl font-medium mb-4'>Seções do curso</h1>
-                        <SectionForm/>
-                        <SectionList sections={data ? data.sections : []} />
-                    </div>
-                </div>
-            </div>
-
-        </Layout>
-
+			<div className="m-8">
+				{/*Everything on the left side of the site*/}
+				<div className="w-2/5 float-left">
+				</div>
+					
+				{/*Everything on the right side of the site*/}
+				
+				<div className="w-3/5 float-right space-y-4  mr-32 my-4">
+					<CourseCreationCom token={token} id={id}/>
+				</div>
+			</div>
+						
+			<div className="container mx-auto flex flex-row space-x-4 my-6">
+				<div className='w-full max-w-5xl mx-auto bg-white rounded p-6'>
+					{/** Course Sections area  */}
+					<div className='flex flex-col space-y-2 divide'>
+						<h1 className='text-xl font-medium mb-4'>Seções do curso</h1>
+						<SectionForm/>
+						<SectionList sections={data ? data.sections : []} />
+					</div>
+				</div>
+			</div>
+		</Layout>
+		
   )
   
 }

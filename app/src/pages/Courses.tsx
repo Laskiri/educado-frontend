@@ -14,8 +14,8 @@ import Layout from '../components/Layout'
 import Loading from './Loading';
 import { CourseListCard } from '../components/Courses/CourseListCard'
 import PersonalInsights from '../components/Courses/PersonalInsights';
-
 import { getUserToken } from '../helpers/userInfo';
+
 
 // Images
 import noCoursesImage from '../assets/no-courses.png';
@@ -91,9 +91,9 @@ const Courses = () => {
                 <p>Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.</p>
                 {/* Create course button */}
                 <label htmlFor="course-create" onClick={CourseCreation} className="std-button flex modal-button  space-x-2">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
-              </label>
+                  <PencilSquareIcon className='w-5 h-5' />
+                  <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
+                </label>
               </div>
             </div>
           }
