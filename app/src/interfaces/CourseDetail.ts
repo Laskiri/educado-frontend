@@ -24,7 +24,7 @@ export interface Author {
 }
 
 export interface Section {
-    exercises:     Exercise[];
+    components:    Components[];
     _id:           string;
     parentCourse:  string;
     title:         string;
@@ -54,4 +54,9 @@ export interface Answer {
 export interface Content {
     type: string;
     url:  string;
+}
+
+export interface Components {
+    compId: string;
+    comptype:  string;
 }
