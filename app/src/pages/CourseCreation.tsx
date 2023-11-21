@@ -5,14 +5,6 @@ import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { Dropzone } from '../components/Dropzone/Dropzone'
 
-
-// Hooks
-import useToken from '../hooks/useToken'
-
-// Interfaces
-import { StorageFile } from '../interfaces/File'
-import { Section } from '../interfaces/CourseDetail';
-
 // Services
 import CourseServices from '../services/course.services'
 import StorageService from '../services/storage.services'
@@ -28,14 +20,12 @@ import { SectionForm } from '../components/dnd/SectionForm'
 import { ToolTip } from '../components/Courses/ToolTip'
 
 // Icons
-import { ArrowLeftIcon } from '@heroicons/react/24/outline'
 import { boolean } from 'yup';
 
 import { BACKEND_URL } from "../helpers/environment";
 
 // Helpers
 import categories from "../helpers/courseCategories";
-import statuses from "../helpers/courseStatuses";
 import { getUserToken } from '../helpers/userInfo';
 
 // Icons
@@ -244,30 +234,31 @@ function returnFunction(coverImage: any) {
     
     return (
         <Layout meta={`Course: ${id}`}>
-            {/*Everything on the left side of the site*/}
-            <div className="m-8"> 
-              <div className="w-1/4 float-left">
-              </div>
-              
-            {/*Everything on the right side of the site*/}
-            <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
-              <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
-              {/** Tooltip for course header*/}
-              <div className="flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-                <Icon
-                    path={mdiInformationSlabCircleOutline}
-                    size={1}
-                    className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                />
-                
-                {toolTipIndex ===0? toolTip[0] : <div></div> }
-              </div> 
+          {/*Everything on the left side of the site*/}
+          <div className="m-8"> 
+            <div className="w-1/4 float-left">
             </div>
+            
+          {/*Everything on the right side of the site*/}
+          <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
+            <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
+            {/** Tooltip for course header*/}
+            <div className="flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
+              <Icon
+                path={mdiInformationSlabCircleOutline}
+                size={1}
+                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+              />
+            
+              {toolTipIndex ===0? toolTip[0] : <div></div> }
+            </div>
+          </div>
             {/*White bagground*/}
-            <div className="w-3/4 float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
+          <div className="w-3/4 float-right pr-20">
+            <div className="w-full float-right bg-white rounded-lg shadow-lg justify-between space-y-4">
               <div className="m-10">
               
-               {/*Field to input the title of the new course*/}
+              {/*Field to input the title of the new course*/}
               <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
                 <div className="flex flex-col space-y-2 text-left">
                   <label htmlFor='title'>Nome do curso</label> {/*Title*/}
@@ -377,9 +368,10 @@ function returnFunction(coverImage: any) {
                 </div>
               </form>
             </div>
-          </div> 
           </div>
-        </Layout>
+        </div>
+      </div>
+    </Layout>
 
   )
   

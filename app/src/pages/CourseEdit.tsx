@@ -25,6 +25,7 @@ import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
 import { ToolTip } from '../components/Courses/ToolTip'
+import { DeleteButton, DeleteType } from '../components/Courses/DeleteButton'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -176,32 +177,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
         }
         } */
 
-    /**
-     * Delete courses and redirect to courses page
-     * Uses window.location.href to redirect instead of navigate, as navigate doesn't update the page
-     * 
-     * @param id The course id
-     * @param token The user token
-     */
-    const deleteCourse = async () => {
-        if (confirm("Você tem certeza?") == true) {
-            const responseCourse = await CourseServices.deleteCourse(id, token);
-            const statusDeleteCourse = responseCourse.status
-            console.log("data.coverImg is: ", data.coverImg)
-            const responseFile = await StorageService.deleteFile(data.coverImg, token);
 
-
-            if (statusDeleteCourse >= 200 && statusDeleteCourse <= 299) {
-                toast.success("Curso excluído"); {/* Course deleted */}
-                window.location.href = "/courses";
-            } else if (statusDeleteCourse >= 400 && statusDeleteCourse <= 599) {
-                toast.error(`(${statusDeleteCourse}, ${responseCourse.statusText}) while attempting to delete course`)
-            }
-        }
-    }
-
-
-    
   // TODO: update cover image function
   /**
    * Sets the cover image preview and the cover image file
@@ -241,7 +217,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                         <a className="normal-case text-xl ml-4">{data ? data.title : ""}</a>
                     </div>
                     <div className="flex-none space-x-2">
-                        <button type="button" onClick={deleteCourse} className='left-0 std-button bg-warning hover:bg-red-800 ml-4' >Excluir</button> {/*Delete button*/}
+                        <DeleteButton id={id} token={token} deleteType={DeleteType.course}/> {/*Delete button*/}
                         <button type="submit" className='std-button text-white border-0'>Atualizar</button> {/* Update button */}
                         <button type="submit" onClick={() => setStatusChange(true)} className='std-button bg-primary text-white border-0'>{statusSTR === "draft"? "Publicar":"Definir como rascunho" }</button>
                     </div>

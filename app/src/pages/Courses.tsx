@@ -44,11 +44,13 @@ const Courses = () => {
     CourseServices.getAllCourses
   );
  
-  // TODO reimplement this once login (content creators) have been fixed/implemeted
-  /*if (error) {
+  
+  if (error) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate("/login");
     return null
-  }*/
+  }
   if (!data) return <Loading />;
 
   return (
