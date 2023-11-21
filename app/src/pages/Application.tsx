@@ -57,8 +57,31 @@ const Application = () => {
     }
   };
 
+  const [major, setMajor] = useState('');
+  const [institution, setInstitution] = useState('');
+  const [educationStartDate, setEducationStartDate] = useState('');
+  const [educationEndDate, setEducationEndDate] = useState('');
+  const [company, setCompany] = useState('');
+  const [position, setPosition] = useState('');
+  const [workStartDate, setWorkStartDate] = useState('');
+  const [workEndDate, setWorkEndDate] = useState('');
+  const [workActivities, setWorkActivities] = useState('');
+    
+  function SubmitButton(){
+    if (major){
+      return <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
+              Enviar para análise {/* Send for analysis */}
+             </button>
+    } else {
+      return <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']" disabled>
+              Enviar para análise {/* Send for analysis */}
+             </button>
+    };
+  };
+
 return (
 <main>
+  
   { /* Navbar */ }
   <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
     <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
@@ -72,7 +95,7 @@ return (
   
   <body className="relative right-0 h-screen flex flex-col z-10">
     <form className="relative right-0 w-full overflow-none h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
-      
+   
       {/* Box fot text */}
       <div className="items-center p-10 pt-20">
         <h1 className="text-center text-cyan-800 text-[32px] font-bold font-['Montserrat']">
@@ -145,6 +168,7 @@ return (
               <select className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               id="academicLevel"
               {...register("academicLevel", {required: true})}>
+                
                 <option value="Básico">Básico</option> {/* Basic */}
                 <option value="Médio">Médio</option> {/* Medium */}
                 <option value="Superior">Superior</option> {/* Superior */}
@@ -168,6 +192,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Curso"
               {...register("major", { required: true })}
+              onChange={e => setMajor(e.target.value)}
               />
           
               <input
@@ -175,6 +200,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Instituição"
               {...register("institution", { required: true })}
+              onChange={e => setInstitution(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 gap-10"> 
@@ -187,6 +213,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Mês / Ano"
               {...register("educationStartDate", { required: true })}
+              onChange={e => setEducationStartDate(e.target.value)}
               />
           
               <input
@@ -194,6 +221,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Mês / Ano"
               {...register("educationEndDate", { required: true })}
+              onChange={e => setEducationEndDate(e.target.value)}
               />
             </div>
           </div>
@@ -226,6 +254,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Mobile Education"
               {...register("company", { required: true })}
+              onChange={e => setCompany(e.target.value)}
               />
         
               <input
@@ -233,6 +262,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Product Designer"
               {...register("position", { required: true })}
+              onChange={e => setPosition(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-2 gap-10"> 
@@ -245,6 +275,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Mês / Ano"
               {...register("workStartDate", { required: true })}
+              onChange={e => setWorkStartDate(e.target.value)}
               />
         
               <input
@@ -252,6 +283,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Mês / Ano"
               {...register("workEndDate", { required: true })}
+              onChange={e => setWorkEndDate(e.target.value)}
               />
             </div>
             <div className="grid grid-cols-1"> 
@@ -263,6 +295,7 @@ return (
               className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="Escreva aqui as suas responsabilidades"
               {...register("workActivities", { required: true })}
+              onChange={e => setWorkActivities(e.target.value)}
               />
             </div>
           </div>
@@ -270,9 +303,7 @@ return (
       </div>
 
       <div className="w-[65%] flex justify-end">
-        <button type="submit" className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-base font-bold font-['Montserrat']">
-          Enviar para análise {/* Send for analysis */}
-        </button>
+          <SubmitButton/>
       </div>
     </form>
   </body>
