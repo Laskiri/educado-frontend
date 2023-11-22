@@ -6,7 +6,7 @@ import {BACKEND_URL} from "../helpers/environment"
 import AuthServices from "../services/auth.services";
 
 // Components
-import Loading from "./Loading";
+import Loading from "../components/general/Loading";
 import Layout from "../components/Layout";
 import { PageDescriptor } from "../components/PageDescriptor";
 
