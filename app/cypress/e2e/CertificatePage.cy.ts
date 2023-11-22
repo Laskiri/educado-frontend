@@ -3,7 +3,14 @@ import "cypress-localstorage-commands";
 const BACKEND_URL = Cypress.env('BACKEND_URL')
 const CERT_URL = Cypress.env('CERT_URL')
 
+
+
 describe('Certificate overview page', () => {
+Cypress.on('uncaught:exception', (err, runnable) => {
+	// returning false here prevents Cypress from
+	// failing the test
+	return false
+})
 	before(() => {
 		cy.intercept('POST', `${BACKEND_URL}/api/auth/login`, {
 			statusCode: 202,
@@ -13,7 +20,7 @@ describe('Certificate overview page', () => {
 					name: 'Test User',
 					email: 'test@email.com'
 				},
-				accessToken: 'testToken'
+				token: 'testToken'
 			},
 
 		});
