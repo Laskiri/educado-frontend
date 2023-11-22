@@ -13,6 +13,7 @@ const Navbar = () => {
     const clearToken = useAuthStore(state => state.clearToken);
     const logout = () => {
         clearToken();
+        localStorage.removeItem('token');
     }
     /*
     const token = useAuthStore(state => state.token);
