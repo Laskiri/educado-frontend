@@ -23,7 +23,7 @@ import Loading from './Loading'
 import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
-import { ToolTip } from '../components/Courses/ToolTip'
+import { ToolTip } from '../components/ToolTip/ToolTipInfoBox'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -260,7 +260,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                         />
                                         
                                         {toolTipIndex ===0? toolTip[0] : <div></div> }
-                                    </div>  
+                                    </div>
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
                                     <p className='italic'>

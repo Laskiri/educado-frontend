@@ -20,7 +20,7 @@ import Loading from './Loading';
 import Layout from '../components/Layout';
 import { ExerciseArea } from '../components/ExerciseArea';
 import { LectureArea } from '../components/LectureArea';
-import { ToolTip } from '../components/Courses/ToolTip';
+import { ToolTip } from '../components/ToolTip/ToolTipInfoBox';
 
 
 // Interface
