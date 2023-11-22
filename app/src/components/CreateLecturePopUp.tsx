@@ -10,7 +10,11 @@ import { toast } from "react-toastify";
 import useToken from '../hooks/useToken';
 
 // Services
-import StorageService from '../services/storage.services';
+import StorageServices from '../services/storage.services';
+import LectureService from '../services/lecture.services';
+
+//components
+import {CreateButtonCompont} from './CreateButtonCompont';
 
 
 // Icons
@@ -20,8 +24,7 @@ import Icon from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
 import { eventType } from 'aws-sdk/clients/health';
 import { integer } from 'aws-sdk/clients/lightsail';
-import StorageServices from '../services/storage.services';
-import LectureService from '../services/lecture.services';
+
 
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />
@@ -144,17 +147,15 @@ export const CreateLecture = () => {
                             <div>
                                 <label htmlFor="radio1" >
                                     <input className='mr-2' type="radio" id="radio1" value="video" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
-
-                                Video</label>
-
-
+                                    Video
+                                </label>
                             </div>
 
                             <div >
                                 <label htmlFor="radio2" className='space-x-2'>
-                                    <input type="radio" className='mr-2'     id="radio2" value="text" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
-                                    
-                                Texto Estilizado</label>
+                                    <input type="radio" className='mr-2' id="radio2" value="text" {...register('contentType', {required:true})} onChange={(e)=>{toggler(e.target.value)}}/>
+                                    Texto Estilizado
+                                </label>
                             </div>
                             
                             {errors.contentType && <span className='text-warning'>Este campo é obrigatório</span>}
@@ -175,24 +176,8 @@ export const CreateLecture = () => {
                         </div>
 
                         {/*Create and cancel buttons*/}
-                        <div className='modal-action'>
-                            <div className="flex items-center justify-between gap-4 w-full mt-8">
-                                <label htmlFor='lecture-create' className=" bg-primary hover:bg-primaryHover border border-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                                    {isSubmitting === false ? 
-                                    
-                                    <button type="submit" className='py-2 px-4 h-full w-full'>
-                                        Criar
-                                    </button>
-                                    :
-                                    <button disabled className='py-2 px-4 h-full w-full'>
-                                        Criar
-                                    </button>}
-                                </label>
-                                <label htmlFor='lecture-create' className="py-2 px-4 bg-white hover:bg-gray-100 border border-primary  hover:border-primaryHover hover:text-primaryHover  text-primary w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                                    Cancelar
-                                </label>
-                            </div>
-                        </div>
+                        <CreateButtonCompont isSubmitting={isSubmitting}/>
+                        
                     </form>
                 </div>
             </div>

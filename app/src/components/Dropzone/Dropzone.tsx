@@ -44,15 +44,9 @@ export const Dropzone = ({callBack, inputType}:DropzoneProps) => {
                             className="relative cursor-pointer rounded-md  font-medium text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primaryHover"
                         >
                             <span>Upload a file </span>
-                            {inputType === "image" ? 
-                                <input id="file-upload" name="file-upload" accept="image/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
-                                :
-                                inputType === "video" ? 
-                                <input id="file-upload" name="file-upload" accept="video/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
-                                :
-                                <p>Dropzone says: Hey dev the type u used is not know by the system</p>
-                                
-                            }
+                          
+                            <input id="file-upload" name="file-upload" accept={inputType+"/*"} type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
+                           
                         </label>
                      
                     </div>
