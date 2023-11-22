@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useState } from 'react';
 import * as Yup from 'yup';
+import { ToastContainer, toast } from 'react-toastify';
 import {Icon} from '@mdi/react';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold, mdiAlertCircleOutline } from '@mdi/js';
 import Carousel from "../components/archive/Carousel";
@@ -87,8 +88,21 @@ const Signup = () => {
       email: data.email,
       password: data.password,
     }).then((res) => {
+
+      //If they were automatically approved as part of an instutution, they will be navigated to the Login page
+      if(res.data.contentCreatorProfile.approved == true){
+        navigate("/login")
+        setTimeout(() => {
+          toast.success(("Approved as part of "+res.data.institution.name), { hideProgressBar: true, 
+                  });
+          }, 1);
+      } else {
+
       const id = res.data.contentCreatorProfile.baseUser;
+
+      //If they are a freelance content creator, they will be navigated to the application creation page
       navigate(`/application/${id}`)
+      }
     })
     .catch(err => { setError(err); console.log(err)
       if (!err.response.data){setErrorMessage("Database Connection Failed"); console.log(err)}
@@ -191,7 +205,8 @@ const Signup = () => {
   { /*Container for right side of the page - frame 2332*/ }
   <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
 
-  { /*Container for the pages contents, + Back button*/ }  
+  { /*Container for the pages contents, + Back button*/ }
+  <ToastContainer/>
   <div className='relative py-8 px-10 w-full'>
   <div className='self-stretch'>
     <h1 className="mb-4 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
