@@ -20,7 +20,8 @@ import Loading from './Loading';
 import Layout from '../components/Layout';
 import { ExerciseArea } from '../components/ExerciseArea';
 import { LectureArea } from '../components/LectureArea';
-import { ToolTip } from '../components/ToolTip/ToolTipInfoBox';
+import { ToolTipInfoBox } from '../components/ToolTip/ToolTipInfoBox';
+import { ToolTipIcon } from '../components/ToolTip/ToolTipIcon';
 
 
 // Interface
@@ -117,18 +118,6 @@ const deleteSection = async () => {
     
 const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
-function temp() {
-    return toolTipIndex;
-}
-    
-    const [toolTip, setToolTip] = useState<JSX.Element[]>
-    ([
-    <ToolTip callBack={setToolTipIndex} textContent='👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!' myIndex={0} maxIndex={3}></ToolTip>,
-    <ToolTip callBack={setToolTipIndex} textContent='📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios' myIndex={1} maxIndex={3}></ToolTip>,
-    <ToolTip callBack={setToolTipIndex} textContent='😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!' myIndex={2} maxIndex={3}></ToolTip>,
-   
-    ]);
-    
     
     /**
      * SubmitHandler: update section
@@ -178,15 +167,8 @@ function temp() {
                     <div className='flex flex-row-2 items-center justify-center pb-6'>
                         <h1 className='text-3xl text-center font-medium'>Seção</h1>
                         {/** Tooltip for Section header*/}
-                        <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-                            <Icon
-                                path={mdiInformationSlabCircleOutline}
-                                size={1}
-                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                            />
-                            
-                            {toolTipIndex ===0? toolTip[0] :<div></div> }
-                        </div>
+                        
+                        <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"} tooltipAmount={3} callBack={setToolTipIndex}/>
                     </div>
 
                     <div className="bg-guideYellow h-10 rounded flex flex-col-2 space-x-2 items-center mb-5 ">
@@ -217,15 +199,7 @@ function temp() {
                             <label htmlFor='description'>Descrição da seção</label>{/** Description of the section */}
 
                             {/** Tooltip for description of section*/}
-                                <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(2)}>
-                                    <Icon
-                                        path={mdiInformationSlabCircleOutline}
-                                        size={1}
-                                        className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                    />
-                                    
-                                    {toolTipIndex ===2? toolTip[2]: <div></div>}
-                                </div>
+                            <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
                              </div>
 
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
@@ -246,10 +220,12 @@ function temp() {
 
                     {/** Lecture list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='lectures'>
+											<div>
+												<ToolTipIcon index={2} toolTipIndex={toolTipIndex} text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples"} tooltipAmount={3} callBack={setToolTipIndex}/>
+											</div>
                         <h1 className='text-xl  font-medium'>Aulas</h1> {/** Lecture*/}
                         <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
                     </div>
-
 
 
                     {/**Create new lecture that disappear if there is 10 or more exercise and lectures*/}
@@ -272,18 +248,7 @@ function temp() {
                         <ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
                     </div>
                     
-                    {/** NOT COMPLETE DUE TO DEPENDENCY Tooltip for number of item/item in section, missing location*/}
-                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                            <Icon
-                                path={mdiInformationSlabCircleOutline}
-                                size={1}
-                                className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                            />
-                            
-                            {toolTipIndex ===1?toolTip[1]:<div></div>}
-                        </div>
-                     </div>
-          
+                    
                     {/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
                     {limit  <10 ?
                     <div className="navbar bg-none p-6">
@@ -298,6 +263,7 @@ function temp() {
 
 
                 </div>
+            </div>
            
             
         </Layout>

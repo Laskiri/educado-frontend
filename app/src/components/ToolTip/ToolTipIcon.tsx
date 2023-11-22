@@ -3,20 +3,34 @@
 import useSWR from 'swr'
 
 import Icon from '@mdi/react';
-import { mdiWindowClose } from '@mdi/js';
+import { mdiInformationSlabCircleOutline } from '@mdi/js';
+import { ToolTipInfoBox } from './ToolTipInfoBox';
 
 interface Inputs {
-	textContent: string,
-	myIndex: number,
-	maxIndex: number,
+	index: number,
+	toolTipIndex: number,
+	text: string,
+	tooltipAmount: number,
 	callBack: Function
 }
 
 
-
 // ToolTip component
-export const ToolTipIcon = ({textContent,myIndex,maxIndex, callBack}:Inputs) => {
+export const ToolTipIcon = ({index, toolTipIndex, text, tooltipAmount, callBack}:Inputs) => {
+
 	return (
-			
-	
-	);}
+		<div className="flex flex-col space-y-2 text-left" onMouseOver={()=>callBack(index)}>
+			<Icon
+					path={mdiInformationSlabCircleOutline}
+					size={1}
+					className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+			/>
+
+			{toolTipIndex === index?
+				<ToolTipInfoBox callBack={callBack} textContent={text} myIndex={index} maxIndex={tooltipAmount}/>
+				:
+				<div></div> 
+			}
+		</div>
+	);
+}

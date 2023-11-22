@@ -23,7 +23,8 @@ import Loading from './Loading'
 import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
-import { ToolTip } from '../components/ToolTip/ToolTipInfoBox'
+import { ToolTipInfoBox } from '../components/ToolTip/ToolTipInfoBox'
+import { ToolTipIcon } from '../components/ToolTip/ToolTipIcon'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -61,7 +62,6 @@ interface Inputs {
  * @returns HTML Element
  */
 const CourseEdit = () => {
-  
 
   const token = 'dummyToken'
   // const token = useToken();
@@ -78,19 +78,7 @@ const CourseEdit = () => {
 
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
-function temp() {
-    return toolTipIndex;
-}
-  
-  const [toolTip, setToolTip] = useState<JSX.Element[]>
-  ([
-    <ToolTip callBack={setToolTipIndex} textContent='🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem! ' myIndex={0} maxIndex={2}></ToolTip>,
-    <ToolTip callBack={setToolTipIndex} textContent='😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos' myIndex={1} maxIndex={2}></ToolTip>,
-  ]);
-
- 
-  
-  
+	
   useEffect(() => {
       // get categories from db
       let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
@@ -252,15 +240,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                     <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
                                     
                                     {/** Tooltip for course header*/}
-                                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-                                        <Icon
-                                            path={mdiInformationSlabCircleOutline}
-                                            size={1}
-                                            className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                        />
-                                        
-                                        {toolTipIndex ===0? toolTip[0] : <div></div> }
-                                    </div>
+                                    <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem!"} tooltipAmount={2} callBack={setToolTipIndex}/>
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
                                     <p className='italic'>
@@ -283,17 +263,10 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 {/** Course Description Field */}
                                 <div className="flex flex-col space-y-2 items-start relative">
                                 <div className="flex items-center space-x-2"> {/* Container for label and icon */}
-                                    <label htmlFor='description' className="flex-shrink-0">Descrição</label>
-                                    {/** Tooltip for description of course*/}
-                                    <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                                        <Icon
-                                            path={mdiInformationSlabCircleOutline}
-                                            size={1}
-                                            className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                                        />
-                                        
-                                        {toolTipIndex ===1? toolTip[1] : <div></div> }
-                                </div>
+																	<label htmlFor='description' className="flex-shrink-0">Descrição</label>
+																	{/** Tooltip for description of course*/}
+																	
+																	<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos."} tooltipAmount={2} callBack={setToolTipIndex}/>
                                 </div>
                                 <textarea
                                     rows={4}

@@ -13,7 +13,6 @@ interface Inputs {
 }
 
 
-
 // ToolTip component
 export const ToolTipInfoBox = ({textContent,myIndex,maxIndex, callBack}:Inputs) => {
 	return (
@@ -70,5 +69,6 @@ export const ToolTipInfoBox = ({textContent,myIndex,maxIndex, callBack}:Inputs) 
 				}
 			</div>
 		</div>
+		
 	);
 }
