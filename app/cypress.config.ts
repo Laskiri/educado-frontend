@@ -17,8 +17,4 @@ export default defineConfig({
       bundler: "vite",
     },
   },
-	env: {
-		BACKEND_URL: 'http://localhost:8888',
-		CERT_URL: 'http://localhost:8080',
-	},
 });

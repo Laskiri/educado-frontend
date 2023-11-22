@@ -7,7 +7,6 @@ type StarRatingProps = {
   starCount?: number;
   className?: string;
   testId?: string;
-	starSize?: string;
 }
 
 /**
@@ -57,7 +56,7 @@ const StarRating = (props: StarRatingProps) => {
 
     {/* Generate empty stars */}
     {Array.from(Array(emptyStars).keys()).map((i) => {
-      return <Icon key={i} path={mdiStarOutline} className={'text-star ' + props.starSize} />
+      return <Icon key={i} path={mdiStarOutline} className='text-star' />
     })}
 
     {/* Display the rating as text */}

@@ -26,7 +26,7 @@ export interface Course {
 }
 
 export interface contentCreator {
-  firstName: string,
+  firsteName: string,
   lastName: string,
   email: string,
   motivation: string,
