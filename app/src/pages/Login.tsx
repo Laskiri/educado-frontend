@@ -74,7 +74,7 @@ const Login = () => {
             switch (err.response.data.error.code){
               case "E0004": //Invalid Email 
                 setEmailError(err);
-                setEmailErrorMessage("O email fornecido não está associado a uma conta.");
+                setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
               break;
