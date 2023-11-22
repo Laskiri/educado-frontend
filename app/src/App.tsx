@@ -11,6 +11,7 @@ import Welcome from "./pages/Welcome";
 // Auth Pages
 import Courses from "./pages/Courses";
 import CourseCreation from "./pages/CourseCreation";
+import CourseManager from "./pages/CourseManager";
 import CourseEdit from "./pages/CourseEdit";
 import SectionEdit from "./pages/SectionEdit";
 import Profile from "./pages/Profile";
@@ -32,6 +33,12 @@ function App() {
       element: <ProtectedRoute><Courses /></ProtectedRoute>,
       errorElement: <NotFound />,
     },
+    {
+      path: "/course/manager",
+      element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
+      errorElement: <NotFound />,
+    }
+    ,
     {
       path: "/courses/creation/:id",
       element: <ProtectedRoute><CourseCreation /></ProtectedRoute>,

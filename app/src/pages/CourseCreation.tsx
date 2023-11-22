@@ -5,6 +5,8 @@ import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { Dropzone } from '../components/Dropzone/Dropzone'
 
+//DELETE THIS
+import Checklist from '../components/Checklist'
 
 // Hooks
 import useToken from '../hooks/useToken'
@@ -245,9 +247,12 @@ function returnFunction(coverImage: any) {
     return (
         <Layout meta={`Course: ${id}`}>
             {/*Everything on the left side of the site*/}
-            <div className="m-8"> 
+            <Checklist></Checklist>
+            {/*
               <div className="w-1/4 float-left">
               </div>
+            */}
+            <div className="m-8"> 
               
             {/*Everything on the right side of the site*/}
             <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
