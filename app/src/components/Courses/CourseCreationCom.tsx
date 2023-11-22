@@ -30,6 +30,7 @@ import { Course } from '../../interfaces/Course'
 interface CourseCreationProps {
   token: string;
   id: string | undefined;
+  tickChangeHandler: Function;
 }
 
 
@@ -38,9 +39,10 @@ interface CourseCreationProps {
  * 
  * @param token The user token
  * @param id The course id
+ * @param tickChangeHandler The function to change the tick in the checklist
  * @returns HTML Element
  */
-export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
+export const CourseCreationCom = ({token, id, tickChangeHandler}: CourseCreationProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
   const [coverImgPreview, setCoverImgPreview] = useState<string>('')
@@ -49,7 +51,8 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
   const [statusChange, setStatusChange] = useState<boolean>(false);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [charCount, setCharCount] = useState<number>(0);
-  const {register, handleSubmit, formState: { errors } } = useForm<Course>()
+  const {register, handleSubmit, formState: { errors } } = useForm<Course>();
+  const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [toolTip, setToolTip] = useState<JSX.Element[]>
   ([
     <ToolTip callBack={setToolTipIndex} textContent='🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem! ' myIndex={0} maxIndex={2}></ToolTip>,
@@ -109,7 +112,7 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
       setStatusChange(false);
     }
   
-    if (confirm("Você tem certeza?") == true) {
+    if (!isLeaving || confirm("Você tem certeza?") === true ) {
       StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
   
       const changes: Course = {
@@ -126,17 +129,37 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
       // StorageService.deleteFile(id, token);
   
       // Update course details
+      // When the user press the button to the right, the tick changes and it goes to the next component
+      // When the user press the draft button, it saves as a draft and goes back to the course list
       if(id != "0"){
         CourseServices.updateCourseDetail(changes, id/*, token */)
-        .then(res => {toast.success('Curso atualizado'); setStatusSTR(changes.status);}) // Course updated
+        .then(res => {
+          toast.success('Curso atualizado');
+          setStatusSTR(changes.status); 
+          if(isLeaving){
+            window.location.href = "/courses";
+          }
+          else{
+            tickChangeHandler();
+          }
+        }) // Course updated
         .catch(err => toast.error(err)) // Error updating course
         
       } else {
         CourseServices.createCourse(changes, token)
-        .then(res => toast.success('Curso criado')) // Course created
+        .then(res => {
+          toast.success('Curso criado'); 
+          if(isLeaving){
+            window.location.href = "/courses";
+          }
+          else{
+            tickChangeHandler();
+          }
+        }) // Course created
         .catch(err => toast.error(err)) // Error creating course
       }
     }
+    setIsLeaving(false);
   }
 
   if (!data && id != "0") return <Loading /> // Loading course details
@@ -204,7 +227,7 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
                 {categoriesOptions}
 
               </select>
-              {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+              {errors.category && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
             </div>
 
           </div>
@@ -252,19 +275,19 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
           {/*Create and cancel buttons*/}
           <div className='modal-action'>
             <div className="flex items-center justify-between gap-4 w-full mt-8">
-              <label onClick={() => { navigate("/courses") }} htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label onClick={() => {confirm("Você tem certeza?") === true ? navigate("/courses") : navigate("") }} htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 Cancelar e Voltar {/** Cancel */}
               </label>
               
               <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                <button type="submit" className='underline'>
+                <button type="submit" onClick={()=>setIsLeaving(true)} className='underline'>
                   Salvar como Rascunho {/** Save as draft */}
                 </button>
               </label>
               <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                <label onClick={()=>navigate("/sections-creation")} className='py-2 px-4 h-full w-full cursor-pointer' >
+              <button type="submit" className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
-                </label>
+                </button>
               </label>
             </div>
           </div>

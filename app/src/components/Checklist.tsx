@@ -2,16 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import Loading from '../pages/Loading';
 
-function Checklist () {
+interface Props {
+    tickChange: number;
+}
 
-    const [tickChange, setTickChange] = useState<number>(0)
-    
-    function tickChangeHandler() {
-        if (tickChange < 2){
-            setTickChange(tickChange+1);
-        } 
-        else {setTickChange(0)}
-    }
+function Checklist ({tickChange}: Props)  {
+
+  
     
     return (
     
@@ -69,11 +66,6 @@ function Checklist () {
                         <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check3" disabled/>
                     Revisar curso</label>
                 }
-
-                {/* TEST Button - Delete */}
-                <div className="flex-col space-y-4 ">
-                    <button className="bg-green-500 text-black rounded-lg py-2 px-4" onClick={tickChangeHandler}>Test</button> {/* Save draft */}
-                </div>
                     
             </div>
             
