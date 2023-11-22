@@ -2,6 +2,7 @@ import axios from "axios";
 import {BACKEND_URL} from "../helpers/environment"
 
 import { NewApplication } from "../interfaces/Application"
+import { NewInstitution } from "../pages/NewInstitution"
 
 export interface ContentCreatorApplication {
   firstName: String;
@@ -47,6 +48,10 @@ const postNewApplication = async (data: NewApplication) => {
   return await axios.post(`${BACKEND_URL}/api/applications/newapplication`, data);
 };
 
+const addInstitution = async (data: NewInstitution) => {
+  return await axios.post(`${BACKEND_URL}/api/applications/newinstitution`, data);
+}
+
 const AuthServices = Object.freeze({
   postUserLogin,
   postUserSignup,
@@ -55,6 +60,7 @@ const AuthServices = Object.freeze({
   AcceptApplication,
   RejectApplication,
   postNewApplication,
+  addInstitution,
 });
 
 export default AuthServices;

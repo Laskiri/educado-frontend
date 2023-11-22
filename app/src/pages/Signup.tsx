@@ -93,7 +93,7 @@ const Signup = () => {
       if(res.data.contentCreatorProfile.approved == true){
         navigate("/login")
         setTimeout(() => {
-          toast.success(("Approved as part of "+res.data.institution.name), { hideProgressBar: true, 
+          toast.success(("Approved as part of "+res.data.institution.institutionName), { hideProgressBar: true, 
                   });
           }, 1);
       } else {
