@@ -68,24 +68,24 @@ return (
                 
             {/*field to add email domain*/}
             <div className="relative py-4">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-lg font-normal font-['Montserrat'] mt-6">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-base font-normal font-['Montserrat'] mt-6">
               Email Domain
             </label>
             <input
               type="email"
-              className="flex w-[100%] border-sky-50 py-3 px-4  placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
+              className="flex w-[100%] border-sky-50 py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="placeholder"
               
             />
             
             {/*field to add institution*/}
             <div className="relative gap-10 mt-10">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-lg font-normal font-['Montserrat'] mt-6">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-base font-normal font-['Montserrat'] mt-6">
               Institution
             </label>
             <input
               type="email"
-              className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
+              className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="placeholder"
             />
             </div>
