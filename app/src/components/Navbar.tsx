@@ -108,7 +108,7 @@ return (
 
                             {/* My Certificates */}
                             <li className="w-full"> {/*class to make the list item fill the width */}
-                                <Link to={"/courses"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
+                                <Link to={"/certificates"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
                                     <span><Icon path={mdiCertificate} size={1} color="#A1ACB2" /></span>
                                     <span>Meus certificados</span>
                                 </Link>
