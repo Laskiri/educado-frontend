@@ -58,22 +58,22 @@ return (
          <div className="inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-10">
             <div className="bg-white shadow overflow-hidden rounded-xl">
-              <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
+              <div className="bg-white px-6 pb-4 pt-4 sm:pb-2">
                 <div className="sm:flex sm:items-start">
 
 
                    {/*main heading and description text*/}
                   <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                     <h3 className=" leading-6 text-3xl font-bold font-['Montserrat'] text-gray-900 mt-4">Integração Institucional</h3> {/* Institutional Integration */}
-                      <p className="mt-6 mb-10 max-w-4xl text-base font-['Montserrat'] text-gray-500">Aqui você pode adicionar instituições ao Educado.</p> {/* Here you can add institutions to Educado. */}
+                      <p className="mt-6 max-w-4xl text-base font-['Montserrat'] text-gray-500">Aqui você pode adicionar instituições ao Educado.</p> {/* Here you can add institutions to Educado. */}
                   </div>
                 </div>
             <div>
            
-            <form onSubmit={handleSubmit(onSubmit)} className="relative py-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="relative py-2">
                           
             {/*field to add institution*/}
-            <div className="relative gap-10 mt-10">
+            <div className="relative gap-10 mt-8">
             <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-base font-normal font-['Montserrat'] mt-6">
             Instituição
             </label>
@@ -93,7 +93,7 @@ return (
             <input
               type="text"
               className="flex w-[100%] border-sky-50 py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
-              placeholder="@company.com"
+              placeholder="@Empresa.com"
               {...register("domain", { required: true })}
               
             /></div>
@@ -106,15 +106,15 @@ return (
             <input
               type="text"
               className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
-              placeholder="@company.secundário.com"
+              placeholder="@Empresa.secundário.com"
               {...register("secondaryDomain", { required: false })}
             />
             </div>
             
             {/*button to add institution*/}
-            <div className="w-[720px] h-[100px] justify-between items-center mt-20">
-              <div className="px-4 py-10 sm:flex sm:flex-row-reverse sm:px-4 gap-52">
-                <button type="submit" className="sm:w-auto py-3 px-16 flex justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded">
+            <div className="w-[720px] h-[100px] justify-between items-center mt-6 inline-flex sm:w-auto">
+              <div className="px-4 py-10 sm:flex sm:flex-row-reverse sm:px-4 gap-52 relative">
+                <button type="submit" className="sm:w-auto py-3 px-6 w-full justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded">
                 Adicionar nova instituição {/* Add new institution*/}
                 </button>
             
