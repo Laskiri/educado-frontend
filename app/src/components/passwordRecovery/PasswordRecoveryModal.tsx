@@ -121,6 +121,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
             props.setErrorMessage('Muitas tentativas de reenvio! Espere 5 minutos...') // Too many attempts, wait 5 minutes
             break;
           default:
+            console.log(error)
             props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
         }
       });

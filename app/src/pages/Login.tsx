@@ -16,7 +16,11 @@ import AuthServices from '../services/auth.services';
 
 // Helper functions
 import { setUserInfo } from '../helpers/userInfo';
+import PasswordRecoveryModal from '../components/passwordRecovery/PasswordRecoveryModal';
 import useAuthStore from '../contexts/useAuthStore';
+
+// Contexts
+export const ToggleModalContext = createContext(() => { });
 
 // Interface
 type Inputs = {
@@ -26,7 +30,8 @@ type Inputs = {
 
 const Login = () => {
     // Error state
-    const [error, setError] = useState<LoginResponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
+    const [error, setError] = useState<LoginResponseError.RootObject | string | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
+    const [showModal, setShowModal] = useState(false)
     
     // Token states
     const setToken = useAuthStore(state => state.setToken); // zustand store for key storage
@@ -38,13 +43,22 @@ const Login = () => {
     // Use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-  
+    //Variable determining the error message for reset password
+    const [errorMessage, newErrorMessage] = useState('');
+    let setErrorMessage = (errMessage: string, error?: string) => {
+      setError(error ?? 'Erro');
+      newErrorMessage(errMessage)
+      setTimeout(() => {
+        setError('')
+      }, 5000);
+    };
+
   //Variable determining the error message for both fields.
-    const [emailError, setEmailError] = useState(null);
-    const [emailErrorMessage,  setEmailErrorMessage] = useState('');
-  
-    const [passwordError, setPasswordError] = useState(null);
-    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+  const [emailError, setEmailError] = useState(null);
+  const [emailErrorMessage,  setEmailErrorMessage] = useState('');
+
+  const [passwordError, setPasswordError] = useState(null);
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
     /**
     * OnSubmit function for Login.
@@ -77,13 +91,15 @@ const Login = () => {
                 setEmailErrorMessage("O email fornecido não está associado a uma conta.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
+                setError(null);
               break;
         
               case "E1001": //User Not Approved
                 setEmailError(err);
                 setEmailErrorMessage("A conta associada a este e-mail não foi aprovada.");
                 setPasswordError(null);
-                setPasswordErrorMessage('');  
+                setPasswordErrorMessage('');
+                setError(null);
               break;
 
               case "E1002": //User Rejected
@@ -91,6 +107,7 @@ const Login = () => {
                 setEmailErrorMessage("A conta associada a este e-mail foi rejeitada.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
+                setError(null);
               break;
 
               case "E0105": //Invalid Password
@@ -98,6 +115,7 @@ const Login = () => {
               setEmailErrorMessage('');
               setPasswordError(err);
               setPasswordErrorMessage("Senha Incorreta.");
+              setError(null);
               break;
               
               default: console.log(error);
@@ -163,6 +181,16 @@ const Login = () => {
 
     { /*Container for right side of the page - frame 2332*/ }
     <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
+
+    { /*Error message for when email or password is incorrect*/}
+          <div className="fixed right-0 top-[4rem] z-10">
+            {error && (
+              <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
+                <p className="font-bold text-lg">{error.toString()}</p>
+                <p id='error-message' className='text-base'>{errorMessage}</p>
+              </div>
+            )}
+          </div>
             
       { /*Container for the page's contents, + Back button*/ }
       <div className='relative py-8 px-10 w-full'>
@@ -236,32 +264,41 @@ const Login = () => {
       </div>
 
             
-    { /*Forgot password button*/ }
-      <div className=" flex flex-col items-end text-right gap-3">
-       <span className="text-neutral-700 text-lg font-normal font-['Montserrat']"></span>{" "}
-          <Link to="/forgotpassword" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</Link>
-        </div>
-          
-        <span className="h-12" /> {/* spacing */}  
-          
-      { /*Enter button*/ }
-        <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-          disabled>
-            Entrar {/*Enter*/}
-          </button>
+      { /*Forgot password button*/}
+              <div className=" flex flex-col items-end gap-3">
+                <span className="text-neutral-700 text-right text-base font-normal font-['Montserrat']"></span>{" "}
+                <label id='modalToggle' onClick={() => setShowModal(true)} className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</label>
+              </div>
+
+
+
+              <span className="h-12" /> {/* spacing */}
+
+              { /*Enter button*/}
+              <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-cyan-500 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#5ECCE9] text-white transition duration-100 ease-in hover:bg-cyan-500 hover:text-gray-50 text-base font-bold font-['Montserrat']"
+                disabled>
+                Entrar {/*Enter*/}
+              </button>
 
               <span className="h-4" /> {/* spacing */}
 
-          { /*Link to Signup page*/ }
-          <div className="flex justify-center space-x-1"> 
-            <span className= "text-[#A1ACB2] text-lg font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
-            <Link to="/signup" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
+              { /*Link to Signup page*/}
+              <div className="flex justify-center">
+                <span className="text-[#A1ACB2] text-base font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span>
+                <Link to="/signup" className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link>
+              </div>
+            </form>
+
+
           </div>
-        </form>
+        </div>
       </div>
-    </div>
-  </div>
-</main>
-)};
+      {showModal &&
+        <ToggleModalContext.Provider value={() => setShowModal(!showModal)}>
+          <PasswordRecoveryModal toggleModal={() => {setShowModal(!showModal)}} setErrorMessage={setErrorMessage} />
+        </ToggleModalContext.Provider>}
+    </main>
+  )
+};
 
 export default Login

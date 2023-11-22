@@ -7,6 +7,7 @@ describe('Password recovery modal', () => {
   });
 
   it('gives a success message upon correct information in all steps', () => {
+    cy.log(BACKEND_URL)
     cy.intercept('POST', `${BACKEND_URL}/api/auth/reset-password*`, {})
     cy.intercept('PATCH', `${BACKEND_URL}/api/auth/reset-password`, {})
 
