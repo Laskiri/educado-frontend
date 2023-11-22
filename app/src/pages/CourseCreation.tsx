@@ -26,6 +26,7 @@ import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
 import { ToolTip } from '../components/Courses/ToolTip'
+import { SectionCreation } from '../components/SectionCreation'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -82,6 +83,8 @@ const CourseCration = () => {
     <ToolTip callBack={setToolTipIndex} textContent='🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem! ' myIndex={0} maxIndex={2}></ToolTip>,
     <ToolTip callBack={setToolTipIndex} textContent='😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos' myIndex={1} maxIndex={2}></ToolTip>,
   ]);
+
+
 
   const navigate = useNavigate();
   
@@ -169,10 +172,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
     }
 }
 
-const SectionCreation = () => {
-  navigate("/sections-creation");
-}
-
 function returnFunction(coverImage: any) {
   setCoverImg(coverImage);
 }
@@ -249,6 +248,7 @@ function returnFunction(coverImage: any) {
               <div className="w-1/4 float-left">
               </div>
               
+            <SectionCreation test='hey'/>
             {/*Everything on the right side of the site*/}
             <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
               <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
@@ -278,6 +278,7 @@ function returnFunction(coverImage: any) {
                   {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
                 </div>
 
+                
                 
 
                 <div className="flex items-center gap-8 w-full mt-8">
@@ -369,16 +370,29 @@ function returnFunction(coverImage: any) {
                       </button>
                     </label>
                     <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                      <label onClick={SectionCreation} className='py-2 px-4 h-full w-full cursor-pointer' >
+                      <label className='py-2 px-4 h-full w-full cursor-pointer' >
                        Adicionar seções {/** Add sections */}
                       </label>
                     </label>
                   </div>
                 </div>
+
+                  
+
               </form>
+              
             </div>
+          
           </div> 
+
+          
+
+          
+          
           </div>
+
+          
+          
         </Layout>
 
   )
