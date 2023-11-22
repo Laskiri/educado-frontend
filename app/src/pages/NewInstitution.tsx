@@ -12,6 +12,7 @@ import {BACKEND_URL} from '../helpers/environment';
 // Components
 import Layout from "../components/Layout";
 import { PageDescriptor } from "../components/PageDescriptor";
+import { error } from "cypress/types/jquery";
 
 // Interface
 export type NewInstitution = {
@@ -36,16 +37,33 @@ const NewInstitution = () => {
   //Function to execute upon accepting an application
   //It will navigate to the applicaitons page, and display a toastify message notifying the user that the content creator was approved
   const onSubmit: SubmitHandler<NewInstitution> = async (data) => {
-    console.log(data)
-      AuthServices.addInstitution({domain: data.domain, institutionName: data.institutionName, secondaryDomain: data.secondaryDomain})
-          .then((res) => { 
-              navigate("/educado_admin/applications"); 
-                setTimeout(() => {
-              toast.success("Added New Institution"); //CHANGE TO PORTUGUESE
-              }, 1);
-          })
-      .catch(_ => toast.error(`Failed to add Institution`));
-              
+      AuthServices.addInstitution({
+        domain: data.domain, 
+        institutionName: data.institutionName, 
+        secondaryDomain: data.secondaryDomain
+      })
+      .then((res) => { console.log(res)
+            navigate("/educado_admin/applications"); 
+              setTimeout(() => {
+            toast.success("Adicionado "+res.data.institution.institutionName+" como nova instituição", { hideProgressBar: true, 
+            }); //CHANGE TO PORTUGUESE
+            }, 1);
+      })
+      .catch((res) => { console.log(res)
+        //If an error occurs, display the appropriate message, along with the value that causes the error
+        const errorCause = res.response.data.errorCause;
+
+        switch(res.response.data.error.code){
+          case "E1201" : 
+            toast.error("Não foi possível carregar a Instituição",{ hideProgressBar: true }); break;
+          case "E1202" : 
+            toast.error(errorCause+" já é uma instituição registrada",{ hideProgressBar: true }); break;
+          case "E1203" : 
+            toast.error(errorCause+" já está registrado em outra instituição",{ hideProgressBar: true }); break;
+          case "E1204" : 
+            toast.error(errorCause+" já está registrado em outra instituição",{ hideProgressBar: true }); break;
+        }
+    });
   };  
 
 return (
