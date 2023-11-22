@@ -13,6 +13,7 @@ const Navbar = () => {
     const clearToken = useAuthStore(state => state.clearToken);
     const logout = () => {
         clearToken();
+        localStorage.removeItem("token");
     }
     /*
     const token = useAuthStore(state => state.token);
@@ -31,7 +32,7 @@ const Navbar = () => {
     
     //navbar for home, profile 
     return (
-        <main className="relative min-h-screen bg-gradient-to-br from-[#c8e5ec] to-[white] overflow-hidden">
+        <main className="relative bg-gradient-to-br from-[#c8e5ec] to-[white] overflow-hidden">
             {/* Navigation Bar */}
             <nav className="flex fixed w-full items-center justify-between py-3 px-6"
                 style={{

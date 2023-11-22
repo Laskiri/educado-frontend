@@ -6,7 +6,7 @@ import {Icon} from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
-
+import { ToastContainer, toast } from 'react-toastify';
 
 // Interfaces
 import { LoginResponseError } from "../interfaces/LoginResponseError"
@@ -165,6 +165,7 @@ const Login = () => {
     <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
             
       { /*Container for the page's contents, + Back button*/ }
+      <ToastContainer/>
       <div className='relative py-8 px-10 w-full'>
         <div className=''>
           <h1 className="mb-10 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
