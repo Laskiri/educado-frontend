@@ -2,7 +2,7 @@
 
 exports[`SingleApplicant Component shows empty state when no content creators are found 1`] = `
 <div
-  className="w-screen h-screen bg-white opacity-75 z-50"
+  className="w-full h-full bg-white opacity-75 z-50"
   id="loading-screen"
 >
   <div

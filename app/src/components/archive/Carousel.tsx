@@ -42,9 +42,9 @@ const Carousel: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(next, 8000);
 
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(intervalId);
-  }, []);
+		// Clean up the interval when the component unmounts
+		return () => clearInterval(intervalId);
+	}, []);
 
   return (
     //Containters for the texts
