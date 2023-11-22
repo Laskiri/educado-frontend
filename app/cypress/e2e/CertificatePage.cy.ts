@@ -13,7 +13,7 @@ describe('Certificate overview page', () => {
 					name: 'Test User',
 					email: 'test@email.com'
 				},
-				token: 'testToken'
+				accessToken: 'testToken'
 			},
 
 		});
