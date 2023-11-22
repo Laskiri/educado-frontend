@@ -17,10 +17,9 @@ function SingleApplicantView() {
     //Get user id from URL
     const { id } = useParams();
     const navigate = useNavigate();
-
     //Get data from the relevant route
     const { data, error } = useSWR(
-        `${BACKEND_URL}/api/applications/${id}`,
+        id,
         AuthServices.GetSingleCCApplication
     );
     

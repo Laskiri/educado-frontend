@@ -30,7 +30,6 @@ const Courses = () => {
   // States and Hooks
   const navigate = useNavigate();
   const token = getUserToken();
-  console.log(token)
   // Fetch all courses
 
   // TODO: Implement proper backend call once backend is ready

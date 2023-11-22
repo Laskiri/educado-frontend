@@ -19,7 +19,7 @@ const postUserApplication = async (formData: ContentCreatorApplication) => {
   return await axios.post(`${BACKEND_URL}/api/applications`, formData);
 };
 
-const postUserCredentialsLogin = async (credentials: any) => {
+const postUserCredentialsLogin = async (credentials: any ) => {
   return await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
 };
 
@@ -31,8 +31,8 @@ const GetCCApplications = async () => {
   return await axios.get(`${BACKEND_URL}/api/applications`);
 };
 
-const GetSingleCCApplication = async (url: string) => {
-  return await axios.get(url)
+const GetSingleCCApplication = async (id: string | undefined) => {
+  return await axios.get(`${BACKEND_URL}/api/applications/${id}`)
 };
 
 const AcceptApplication = async (id: string): Promise<unknown> => {

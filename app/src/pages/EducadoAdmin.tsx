@@ -10,6 +10,8 @@ import Loading from "./Loading";
 import Layout from "../components/Layout";
 import { PageDescriptor } from "../components/PageDescriptor";
 
+import { getUserToken } from '../helpers/userInfo';
+
 
 
 const EducadoAdmin = () => {
@@ -19,10 +21,11 @@ const EducadoAdmin = () => {
     //Location and navigation 
     let navigate = useNavigate();
     let location = useLocation();
+    const token = getUserToken();
 
     //Get data from the relevant route
     const { data, error } = useSWR(
-        `${BACKEND_URL}/api/applications`,
+        'api/applications',
         AuthServices.GetCCApplications
     );
    
