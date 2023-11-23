@@ -14,7 +14,6 @@ module.exports = {
         primaryLight: '#c9e4eb',
         warning: '#FF4949',
         white: "#FFFFFF",
-        black: "#383838",
         grayLight: "#E4E4E4",
         grayMedium: "#A1ACB2",
         grayDark: "#383838",
@@ -22,14 +21,8 @@ module.exports = {
         success: "#4AA04A",
         disabled: "#E4F2F5",
         star: "#F1CC4F",
-        primaryDarkBlue: "#166276",
-        warning: '#FF4949',
         guideYellow: '#FFF3D6',
-        warningOrange:'#FA9F47',
-
-
-
-        
+        warningOrange:'#FA9F47',        
       },
       display: ["group-hover"],
       keyframes: {

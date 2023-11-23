@@ -198,7 +198,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 <div className="flex flex-col space-y-2 text-left">
                   <label htmlFor='title'>Nome do curso</label> {/*Title*/}
                   <input type="text" defaultValue={""}
-                    className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     {...register("title", { required: true })}
                   />
                   {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
@@ -212,7 +212,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex flex-col space-y-2 text-left  ">
                     <label htmlFor='level'>Nível</label> {/** Level */}
                     <select
-                      className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                      className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       {...register("difficulty", { required: true })}
                     >
                       {/*Hard coded options by PO, should be changed to get from db*/}
@@ -229,7 +229,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                     <label htmlFor='category'>Categoria</label> {/** Category */}
                     <select
                         defaultValue={"personal finance"}
-                        className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        className="form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                         {...register("category", { required: true })}
                     >
                         {/*Hard coded options by PO, should be changed to get from db*/}
@@ -245,7 +245,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 <div className="flex flex-col space-y-2 text-left ">
                   <label htmlFor='description'>Descrição</label> {/** Description */}
                   <textarea rows={4} defaultValue={""}
-                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
+                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
                     {...register("description", { required: true })}
                   />
                   {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
@@ -257,7 +257,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                   <div className="flex flex-col space-y-2 text-left">
                     <label htmlFor='title'>Tempo estimado</label> 
                     <input type="number" defaultValue={""} min={0} step={1}
-                    className="form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
+                    className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
                     {...register("estimatedHours", { required: true })}
                     />
                     {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required*/}
@@ -275,7 +275,7 @@ const onSubmit: SubmitHandler<Inputs> = async (data) => {
                 {/*Create and cancel buttons*/}
                 <div className='modal-action'>
                   <div className="flex items-center justify-between gap-4 w-full mt-8">
-                    <label htmlFor='course-create' className=" bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                    <label htmlFor='course-create' className=" bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                       <button type="submit" className='py-2 px-4 h-full w-full'>
                        Adicionar seções {/** Add sections */}
                       </button>

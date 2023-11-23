@@ -23,7 +23,7 @@ export const ToolTipIcon = ({index, toolTipIndex, text, tooltipAmount, callBack}
 			<Icon
 					path={mdiInformationSlabCircleOutline}
 					size={1}
-					className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
+					className="text-primary" // Add cursor-pointer for hover effect
 			/>
 
 			{toolTipIndex === index?
