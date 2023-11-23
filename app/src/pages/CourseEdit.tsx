@@ -307,7 +307,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                     {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>}
                                 </div>
 
-                              
                                 {/* Field to input the estimated estimatedHours */}
                                 <div className="flex flex-col space-y-2 text-left">
                                     <label htmlFor='title'>Tempo estimado</label> {/* Estimated time */}
@@ -356,7 +355,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
             </div>
 
         </Layout>
-  )  
+  )
 }
 
 export default CourseEdit
