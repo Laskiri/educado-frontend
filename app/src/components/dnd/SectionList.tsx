@@ -63,21 +63,24 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
   }
 
   return (
-    <div className='flex flex-col space-y-2'>
+    <div className='w-full'>
       <DndContext
         modifiers={[restrictToVerticalAxis]}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+      
       >
         <SortableContext items={items.map(item => item._id)} strategy={verticalListSortingStrategy}>
           {items.map((item, key: React.Key) => <SortableItem key={key} item={item} />)}
         </SortableContext>
 
-        <DragOverlay>
+       
+        <DragOverlay className='w-full' >
           {activeId ? <Item id={activeId} /> : null}
         </DragOverlay>
+        
       </DndContext>
     </div>
   );
