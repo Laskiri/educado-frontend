@@ -7,21 +7,34 @@ describe('Tooltip on Course Page', () => {
     cy.visit(`http://localhost:3000/courses/edit/${ID}`)
   });
 
-  it('gives a success message upon correct information in all steps', () => {
-		cy.get('#tooltipIcon0').click()
-    cy.get('#tooltipBox').should('exist')
 
-    cy.get('#tooltipNext').click()
-    cy.get('#tooltipFinish').click()
-
-    cy.get('#tooltipBox').should('not.exist')
-
-    cy.get('#tooltipIcon1').click()
+  it('Close tooltip', () => {
+    cy.get('#tooltipIcon0').hover()
     cy.get('#tooltipBox').should('exist')
     
-    cy.get('#tooltipBack').click()
     cy.get('#tooltipClose').click()
     cy.get('#tooltipBox').should('not.exist')
   });
+  
+
+  it('Cycle through tooltips', () => {
+    cy.get('#tooltipIcon0').hover()
+    cy.get('#tooltipBox').should('exist')
+    
+    cy.get('#tooltipNext').click()
+    cy.get('#tooltipBack').click()
+
+    cy.get('#tooltipClose').click()
+    cy.get('#tooltipBox').should('not.exist')
+  });
+
+  it('Finish tooltip', () => {
+    cy.get('#tooltipIcon1').hover()
+    cy.get('#tooltipBox').should('exist')
+    
+    cy.get('#tooltipFinish').click()
+    cy.get('#tooltipBox').should('not.exist')
+  });
+
 });
 
