@@ -356,14 +356,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
             </div>
 
         </Layout>
-
-
-
-  )
-
-  
+  )  
 }
-
-
 
 export default CourseEdit
