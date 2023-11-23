@@ -37,12 +37,6 @@ import categories from "../helpers/courseCategories";
 import statuses from "../helpers/courseStatuses";
 
 
-// Icons
-import Icon from '@mdi/react';
-import { mdiInformationSlabCircleOutline } from '@mdi/js';
-
-
-
 
 interface Inputs {
   coverImg?: FileList
