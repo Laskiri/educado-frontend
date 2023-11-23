@@ -14,12 +14,13 @@ import useToken from '../../hooks/useToken';
 // Services
 import CourseServices from '../../services/course.services';
 import StorageServices from '../../services/storage.services';
+import CertificateServices from '../../services/certificate.services';
 
 
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Navigate, useNavigate } from 'react-router-dom';
-import Icon from '@mdi/react';
+import {Icon} from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
 import { getUserInfo } from '../../helpers/userInfo';
 
@@ -66,9 +67,11 @@ export const CreateCourseModal = () => {
         }, token)
       .then(res => {
         console.log(res);
+
         StorageServices.uploadFile({ id: res.data._id, file: coverImage, parentType: "c" });
         CourseServices.updateCourseDetail(res.data, token); // pass the required arguments
         navigate(`/courses/edit/${res.data._id}`);
+
       })
       .catch(err => console.log(err))
       .finally();
