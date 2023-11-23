@@ -5,9 +5,6 @@ import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
 
-// Contexts
-import useToken from '../hooks/useToken';
-
 // Services
 import SectionServices from '../services/section.services';
 import ExerciseServices from '../services/exercise.services';
@@ -20,8 +17,8 @@ import Loading from './Loading';
 import Layout from '../components/Layout';
 import { ExerciseArea } from '../components/ExerciseArea';
 import { LectureArea } from '../components/LectureArea';
-import { ToolTipInfoBox } from '../components/ToolTip/ToolTipInfoBox';
 import { ToolTipIcon } from '../components/ToolTip/ToolTipIcon';
+import { YellowWarning } from '../components/Courses/YellowWarning';
 
 
 // Interface
@@ -29,12 +26,9 @@ import { Section } from '../interfaces/CourseDetail';
 import { Exercise } from '../interfaces/Exercise'
 import { Lecture } from '../interfaces/Lecture'
 
-// Icons
-import Icon from '@mdi/react';
-import { mdiInformationSlabCircleOutline } from '@mdi/js';
-import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
-import { mdiAlertCircle } from '@mdi/js';
 
+// Icons
+import ArrowLeftIcon from '@heroicons/react/24/outline/ArrowLeftIcon';
 
 
 // Backend URL from .env file (automatically injected) 
@@ -171,11 +165,7 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
                         <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"} tooltipAmount={3} callBack={setToolTipIndex}/>
                     </div>
 
-                    <div className="bg-guideYellow h-10 rounded flex flex-col-2 space-x-2 items-center mb-5 ">
-                    <Icon path={mdiAlertCircle} size={1} className="text-warningOrange ml-2 items-center " />
-                        <div className='text-sm font-bold ml-2 items-center'>Fique atento!  </div>
-                        <div className='text-sm items-center'> Você pode adicionar até 10 itens em cada seção, entre aulas e  exercícios.</div>
-                    </div>
+                    <YellowWarning text={'Você pode adicionar até 10 itens em cada seção, entre aulas e  exercícios.'}/>
                     
                     {/** Section update area */}
                     <form
@@ -199,7 +189,7 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
                             <label htmlFor='description'>Descrição da seção</label>{/** Description of the section */}
 
                             {/** Tooltip for description of section*/}
-                            <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+                            <ToolTipIcon index={2} toolTipIndex={toolTipIndex} text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples"} tooltipAmount={3} callBack={setToolTipIndex}/>
                              </div>
 
                             <textarea rows={4} defaultValue={section?.description || sectionData?.description} placeholder={sectionData?.description}
@@ -220,9 +210,9 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
                     {/** Lecture list area */}
                     <div className='flex flex-col space-y-4 mb-4' id='lectures'>
-											<div>
-												<ToolTipIcon index={2} toolTipIndex={toolTipIndex} text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples"} tooltipAmount={3} callBack={setToolTipIndex}/>
-											</div>
+                        <div className='flex'>
+                            <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+                        </div>
                         <h1 className='text-xl  font-medium'>Aulas</h1> {/** Lecture*/}
                         <LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
                     </div>

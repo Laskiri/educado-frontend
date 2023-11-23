@@ -9,7 +9,6 @@ module.exports = {
       colors: {
         primary: '#166276',
         secondary: '#F1F9FB',
-        tertiary: '#FFFFFF',
         primaryHover: ' #4DAACB',
         primaryLight: '#c9e4eb',
         warning: '#FF4949',
