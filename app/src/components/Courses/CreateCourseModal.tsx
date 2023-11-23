@@ -67,15 +67,11 @@ export const CreateCourseModal = () => {
         }, token)
       .then(res => {
         console.log(res);
-        StorageServices.uploadFile({ id: res._id + "/0", filePath: coverImage });
-        //CourseServices.updateCoverImage(res.data._id, token); // pass the required arguments
 
-				CertificateServices.createCertificate({
-					creatorId: id,
-					courseId: res._id,
-				});
+        StorageServices.uploadFile({ id: res.data._id, file: coverImage, parentType: "c" });
+        CourseServices.updateCourseDetail(res.data, token); // pass the required arguments
+        navigate(`/courses/edit/${res.data._id}`);
 
-        navigate(`/courses/edit/${res._id}`);
       })
       .catch(err => console.log(err))
       .finally();
@@ -95,9 +91,6 @@ export const CreateCourseModal = () => {
 
       {/* Put this part before </body> tag */}
       <input type="checkbox" id="course-create" className="modal-toggle" />
-      {
-        //onclick = function () {StorageServices.uploadFile({bucketName: "educado-bucket", id: "testFoto", filePath: "c:/Users/perni/Downloads/settings_icon.png"});}
-      }
       {/*Text shown in the top of create course*/}
       <div className="modal" id="course-create-modal">
         <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
@@ -135,7 +128,7 @@ export const CreateCourseModal = () => {
               {/*Cover image field is made but does not interact with the db*/}
               <div className="flex flex-col space-y-2 text-left">
                 <label htmlFor='cover-image'>Imagem de capa</label> {/** Cover image */}
-                <Dropzone callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+                <Dropzone inputType='image' callBack={returnFunction}></Dropzone> {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
                 {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
               </div>
 
