@@ -17,32 +17,32 @@ interface Inputs {
 
 
 // Create section
-export const SectionCreation = ({test}:Inputs) => {
- 
+export const SectionCreation = ({ test }: Inputs) => {
   const [sections, setSections] = useState<JSX.Element[]>([]);
 
-  function addnewsection (){
-    const tong = sections.concat(<SectionDetail test="hey" selfDestroy={removeSection} index={sections.length}/>);
-    console.log("the section 3 ",sections);
-
-    
-    setSections(tong);
+  function addnewsection() {
+    const newSectionIndex = sections.length;
+    const newSection = (
+      <SectionDetail
+        key={newSectionIndex} // Ensure each section has a unique key
+        test="hey"
+        selfDestroy={() => removeSection(newSectionIndex)} // Pass the correct index
+        index={newSectionIndex}
+      />
+    );
+    const updatedSections = sections.concat(newSection);
+    setSections(updatedSections);
   }
 
   function removeSection(index: number) {
-    setSections(prevSections => {
-      console.log("remove section", index);
-      console.log("the section 1 ", prevSections);
-  
-      let updatedSections = prevSections.filter((_, i) => i !== index);
-      console.log("remove section", index);
-      console.log("the section 1 ", prevSections);
-  
-      console.log("the section 2 ", prevSections, updatedSections);
-  
+    setSections((prevSections) => {
+      const updatedSections = prevSections.filter((_, i) => i !== index);
       return updatedSections;
     });
   }
+
+  // ... rest of your component code
+
   
     return (
       
