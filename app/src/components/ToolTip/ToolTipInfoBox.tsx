@@ -16,8 +16,8 @@ interface Inputs {
 // ToolTip component
 export const ToolTipInfoBox = ({textContent,myIndex,maxIndex, callBack}:Inputs) => {
 	return (
-		<div id={'tooltipBox'} className="group relative ">
-			<div className={`flex-col w-70 group-hover:visible absolute  text-white p-2 rounded-md duration-300 text-left bg-primary`} >
+		<div className="group relative ">
+			<div id={'tooltipBox'} className={`flex-col w-70 group-hover:visible absolute  text-white p-2 rounded-md duration-300 text-left bg-primary`} >
 				<div className='flex-col-2'>
 					<div className={'flex flex-row-reverse w-70'}>
 						<div id={'tooltipClose'} className='std-button underline shadow-none hover:bg-transparent hover:text-white-400 bg-transparent text-right' onClick={()=>{callBack(maxIndex+1);}}> 
