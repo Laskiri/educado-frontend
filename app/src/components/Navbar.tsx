@@ -2,7 +2,7 @@ import {Icon} from '@mdi/react';
 import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
 import { Link } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
-import { getUserToken } from '../helpers/userInfo';
+import { getUserInfo } from '../helpers/userInfo';
 
 import decode from 'jwt-decode';
 
@@ -23,14 +23,20 @@ export const Navbar = () => {
     const lastName = token ? decodedToken?.lastName: "Lastname";
     const email = token ? decodedToken?.email: "mail@mail.com";
     */
-    const token = getUserToken();
-    const decodedToken: any = token ? decode(token) : null;
+    const userInfo:any = getUserInfo();
+
+    let firstName;
+    userInfo.firstName ? firstName = userInfo.firstName : firstName = "Firstname";
     
-    const firstName = token ? decodedToken?.firstName: "Firstname";
-    const lastName = token ? decodedToken?.lastName: "Lastname";
-    const email = token ? decodedToken?.email: "mail@mail.com";
+    let lastName = "Lastname"
+    userInfo.lastName ? lastName = userInfo.lastName : lastName = "Lastname";
+
+    let email = "email";
+    userInfo.email ? email = userInfo.email : email = "Email";
     
-    //navbar for home, profile 
+
+    
+//navbar for home, profile 
 return (
     <main>
         {/* Navigation Bar */}

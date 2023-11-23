@@ -75,11 +75,10 @@ const Login = () => {
           password: data.password,})
           .then((res) => {
               if(res.status == 202){
-                  //setToken(res.data.accessToken);
-                  localStorage.setItem("token", res.data.accessToken)
-                  setUserInfo(res.data.userInfo);
-                  
-                  navigate("/courses");
+                localStorage.setItem("token", res.data.accessToken);
+                localStorage.setItem("id", res.data.userInfo.id);
+                setUserInfo(res.data.userInfo);
+                navigate("/courses");
               }
              
           // error messages for email and password  
