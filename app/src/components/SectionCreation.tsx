@@ -29,16 +29,19 @@ export const SectionCreation = ({test}:Inputs) => {
     setSections(tong);
   }
 
-  function removeSection (index:number){
-    console.log("remove section",index);
-
-    console.log("the section 1 ",sections);
-
-    let tong = sections.filter((_, i) => i !== index);
-
-    
-    setSections(tong);
-    console.log("the section 2 ",sections, tong);
+  function removeSection(index: number) {
+    setSections(prevSections => {
+      console.log("remove section", index);
+      console.log("the section 1 ", prevSections);
+  
+      let updatedSections = prevSections.filter((_, i) => i !== index);
+      console.log("remove section", index);
+      console.log("the section 1 ", prevSections);
+  
+      console.log("the section 2 ", prevSections, updatedSections);
+  
+      return updatedSections;
+    });
   }
   
     return (

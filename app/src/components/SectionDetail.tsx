@@ -19,7 +19,7 @@ interface Inputs {
 // Create section on the course creation page
 export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> {
     const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
-    const [sectionTitle, setSectionTitle] = useState<string>("Nome da seção");
+    const [sectionTitle, setSectionTitle] = useState<string>("Nome da seção " +index);
     
     //Toggles the arrow direction between up and down
     function changeArrowDirection (){
@@ -64,7 +64,7 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
               
               <div className=" ">
                       <label htmlFor='title'>Nome </label> {/*Title of section*/}
-                      <input type="text"  placeholder={"Nome da seção"} onChange={(e) => setSectionTitle(e.target.value)}
+                      <input type="text"  placeholder={"Nome da seção "+index} onChange={(e) => setSectionTitle(e.target.value)}
                         className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                       />
                       
