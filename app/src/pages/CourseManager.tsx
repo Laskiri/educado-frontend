@@ -2,17 +2,23 @@ import Checklist from "../components/Checklist"
 import Layout from "../components/Layout"
 import { CourseCreationCom } from "../components/Courses/CourseCreationCom"
 import { useState } from "react"
+import { useParams } from "react-router"
 
-const token = "dummyToken";
-const id = "0";
+import { getUserToken } from '../helpers/userInfo';
+
 
 
 
 const CourseManager = () => {
+
+  const token = getUserToken();
+  let { id } = useParams();
+
+
   const [tickChange, setTickChange] = useState<number>(0)
   const [formComponents, setFormComponents] = useState<JSX.Element[]>
   ([
-  <CourseCreationCom token={token} id={id} tickChangeHandler={tickChangeHandler}/>
+  <CourseCreationCom token={token} id={id} tickChangeHandler={tickChangeHandler} setId={setId}/>
   ,<p>Section</p>
 ])
       
@@ -22,6 +28,11 @@ const CourseManager = () => {
       } 
       else {setTickChange(0)}
   }
+
+  function setId(idInput: string){
+    id = idInput;
+  }
+
   return (
     <Layout meta="Course Manager">
 

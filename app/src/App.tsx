@@ -34,11 +34,10 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-      path: "/course/manager",
+      path: "/course/manager/:id",
       element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
       errorElement: <NotFound />,
-    }
-    ,
+    },
     {
       path: "/courses/creation/:id",
       element: <ProtectedRoute><CourseCreation /></ProtectedRoute>,
