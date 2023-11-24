@@ -91,13 +91,13 @@ const Signup = () => {
 
       //If they were automatically approved as part of an instutution, they will be navigated to the Login page
       if(res.data.contentCreatorProfile.approved == true){
+        console.log(res)
         navigate("/login")
         setTimeout(() => {
           toast.success(("Aprovado como parte de "+res.data.institution.institutionName), { hideProgressBar: true, 
                   });
           }, 1);
       } else {
-
       const id = res.data.contentCreatorProfile.baseUser;
 
       //If they are a freelance content creator, they will be navigated to the application creation page
