@@ -6,9 +6,6 @@ import useSWR from 'swr'
 import { Dropzone } from '../components/Dropzone/Dropzone'
 
 
-// Hooks
-import useToken from '../hooks/useToken'
-
 // Interfaces
 import { StorageFile } from '../interfaces/File'
 import { Section } from '../interfaces/CourseDetail';

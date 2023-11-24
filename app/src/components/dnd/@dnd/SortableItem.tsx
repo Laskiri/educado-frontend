@@ -94,36 +94,42 @@ export function SortableItem(props: any) {
   //Else show the sections.
   return (
 
-    <div>
+    <div >
       <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg m-4'>
-          <input type="checkbox" className="peer w-3/4" onChange={changeArrowDirection} />
+          <input type="checkbox" className="peer w-4/5 " onChange={changeArrowDirection} />
 
-          <div className="collapse-title rounded-top hover:text-gray-700 text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
-            <div className=' flex float-left'>
-              <Icon path={arrowDirction} size={1} />
-              <p className="font-semibold">
-                {data.title ?? "Nome da seção"}
-              </p>
-            </div>
+          
+            <div className="collapse-title flex flex-row-2  rounded-top text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
+              <div className='flex w-5/6 '>
+                <Icon path={arrowDirction} size={1} />
+                <p className="font-semibold">
+                  {data.title ?? "Nome da seção"}
+                </p>
+                </div>
+                <div className='flex collapse ml-80'>
+                    <div className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
+                      {/**delete and move buttons on the left side of the section headers */}
+                      <Icon path={mdiDeleteCircle} size={1.2}></Icon>
+                      
+                    </div>  
+                    <div  className="flex w-32 collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
+                    <div className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
+                      {/**delete and move buttons on the left side of the section headers */}
+                      <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
+                      
+                    </div>  
+                    </div>
+               
+              </div>  
           </div> 
 
-          <div  className="collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
-            <div className='btn btn-ghost'>
-              {/**delete and move buttons on the left side of the section headers */}
-              <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
-              
-            </div>
-          </div>
-           
-            
-            
-            <div className="collapse-content flex flex-col rounded-lg h-100  w-full rounded space-2  p-4 px-128 space-y-5">
+            <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
               <form
                   onSubmit={handleSectionUpdate(onSubmit)}
 
               >
-                  <div className=" ">
-                    <label htmlFor='title'>Nome </label> {/*Title of section*/}
+                  <div className="pt-5  ">
+                    <label htmlFor='title '>Nome </label> {/*Title of section*/}
                     <input type="text"  placeholder={data.title?? "Nome da seção"}
                       className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                       {...registerSection("title", { required: true })}
@@ -131,16 +137,13 @@ export function SortableItem(props: any) {
                     
                   </div>
 
-                  <div className="">
+                  <div className="pt-5">
                     <label htmlFor='title'>Descrição </label> {/*description of section*/}
                     <textarea placeholder={data.description ??"Descrição da seção"}
                       className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                     />
-                    
-                  </div>
-              </form>
-                
-              {/**ADD lecture and exercise to the section */}
+
+                    {/**ADD lecture and exercise to the section */}
               <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
                   <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
                     <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center "> 
@@ -158,8 +161,19 @@ export function SortableItem(props: any) {
               {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
               <div className='flex flex-row-reverse'>                            
                     <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
+              
+                    
+                  </div>
+              </form>
+                
+              
               </div>
+              
+
+          
+
         </div>
+        
     </div>
   );
 }

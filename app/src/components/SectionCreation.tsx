@@ -21,39 +21,20 @@ import CourseServices from '../services/course.services';
 
 
 interface Inputs {
-    test: string,
+    id: string,
 }
 
 
 
 
 // Create section
-export const SectionCreation = ({ test }: Inputs) => {
+export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
   const [sections, setSections] = useState<JSX.Element[]>([]);
 
   const token = getUserToken();
-  let id = useParams().id
+  let id = useParams().id // TODO: remove when merge with Course Manager
 
-  function addnewsection() {
-
-    const newSection = (
-      <SectionDetail
-        key={sections.length} // Ensure each section has a unique key
-        test="hey"
-        selfDestroy={() => removeSection(sections.length)} // Pass the correct index
-        index={sections.length}
-      />
-    );
-    const updatedSections = sections.concat(newSection);
-    setSections(updatedSections);
-  }
-
-  function removeSection(index: number) {
-    setSections((prevSections) => {
-      const updatedSections = prevSections.filter((_, i) => i !== index);
-      return updatedSections;
-    });
-  }
+ 
 
   /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
@@ -120,30 +101,10 @@ export const SectionCreation = ({ test }: Inputs) => {
           {sections}
         </div>
 
-
-         
-        <label className="mt-5 flex bg-transparent hover:bg-transparent h-10  w-3/4 float-right space-y-4 btn std-btn  border border-dashed border-gray-400 ">
-          <label onClick={addnewsection} className=" h-10 w-full rounded-lg flex justify-center space-x-2 items-center mb-5 ">
-          <p className="hover:text-gray text-gray-500 normal-case font-semibold flex  items-center text-align:center"> 
-                <Icon path={mdiPlus} size={1} className=" " />
-              Nova seção</p>
-          </label>
-
-        </label >
-        
-          
-        
-
-        
-        
-
     </div> 
           
 
     </div> 
-             
-                
-                    
-        
     
-    );}
+    
+);}
