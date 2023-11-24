@@ -113,7 +113,7 @@ describe('SingleApplicant Component', () => {
     expect(workEndDate.props.children).toContain("Current");
 
     const workStartDate = component.root.findByProps({id: "workStartDate"})
-    expect(workStartDate.props.children).toContain("5/22");
+    expect(workStartDate.props.children).toContain("05/22");
  
   });
 });

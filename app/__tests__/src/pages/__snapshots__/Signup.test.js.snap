@@ -158,6 +158,9 @@ exports[`Signup Component can render signup page without errors 1`] = `
       className="relative right-0 h-screen flex flex-col justify-center items-center"
     >
       <div
+        className="Toastify"
+      />
+      <div
         className="relative py-8 px-10 w-full"
       >
         <div
