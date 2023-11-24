@@ -29,7 +29,6 @@ interface Inputs {
 
 // Create section
 export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
-  const [sections, setSections] = useState<JSX.Element[]>([]);
   const [submitCallBackList, setSubmitCallBackList] = useState<Function[]>([]); //observer pattern
 
   function addSubmitCallBack(callback: Function) {
@@ -108,14 +107,9 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
                       <Icon path={mdiAlertCircle} size={1} className="text-warningOrange ml-2 items-center " />
                           <div className='text-sm font-bold ml-2 items-center'>Fique atento!  </div>
                           <div className='text-sm items-center'> Você pode adicionar até 10 itens em cada seção, entre aulas e  exercícios.</div>
-            </div>
+          </div>
           
         </div >
-
-        {/** List of new section */}
-        <div className="flex flex-col w-3/4 float-right space-y-4 ">
-          {sections}
-        </div>
 
     </div> 
           

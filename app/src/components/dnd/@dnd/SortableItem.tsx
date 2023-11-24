@@ -20,17 +20,18 @@ import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVertical
 
 import Icon from '@mdi/react';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import SectionServices from '../../../services/section.services';
 
+
 interface Props {
-  key: Key,
+
   id: string,
   addSubmitCallBack: Function
 }
 
-export function SortableItem({key, id, addSubmitCallBack}: Props) {
+export function SortableItem({id, addSubmitCallBack}: Props) {
 
   const sid =id;
 
@@ -99,7 +100,9 @@ export function SortableItem({key, id, addSubmitCallBack}: Props) {
  }
 
 
-  addSubmitCallBack(onSubmit(data));
+
+  
+ //addSubmitCallBack(onSubmit);
 
   //If data is not found yet, show a loading message.
   if(data === undefined) return (<p>Loading...</p>);
