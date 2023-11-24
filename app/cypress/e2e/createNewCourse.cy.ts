@@ -2,7 +2,7 @@ import "cypress-localstorage-commands";
 
 const BACKEND_URL = Cypress.env('BACKEND_URL');
 
-describe('im busiiiiiiiiiiii', () => {
+describe('temp', () => {
   before(() => {
     cy.intercept('POST', `${BACKEND_URL}/api/auth/login`, {
         statusCode: 202,
@@ -14,31 +14,8 @@ describe('im busiiiiiiiiiiii', () => {
             },
             token: 'testToken'
         },
-
     });
 
-    cy.intercept('GET', `${BACKEND_URL}/api/courses/creator/1`, {
-        statusCode: 200,
-        courses: [
-            {
-                _id: '1241513i5hb31',
-                status: "draft",
-                rating: 0,
-                numOfSubscriptions: 0,
-                section: [],
-                title: 'Test Course',
-                category: 'sewing',
-                difficulty: 2,
-                description: 'houink',
-                creator: '1',
-                coverImg: "",
-                dateCreated: "2023-11-23T09:22:31.894+00:00",
-                dateUpdated: "2023-11-23T09:22:31.894+00:00",
-                estimatedHours: 0,   
-            }
-        ]
-    });
-    
     cy.visit('http://localhost:3000/login')
     cy.get('#email-field').type('test@email.com')
     cy.get('#password-field').type('password')
@@ -48,9 +25,36 @@ describe('im busiiiiiiiiiiii', () => {
 
 });
 
-beforeEach(() => {
-    cy.restoreLocalStorage();
-});
+    beforeEach(() => {
+        cy.intercept('GET', `${BACKEND_URL}/api/courses/creator/*`, {
+            statusCode: 200,
+            body: [
+                {
+                    _id: 1,
+                    title: "Test Course",
+                    category: "sewing",
+                    coverImg: null,
+                    description: "This is a test course.",
+                    creator: "Test User",
+                    status: "published",
+                    estimatedHours: 0,
+                    rating: 1,
+                    difficulty: 1,
+                    numOfSubscriptions: 0,
+                    dateUpdated: Date.now(),
+                    dateCreated: Date.now(),
+                    sections: [],
+                    __v: 2
+                },
+            ]
+        });
+  
+      cy.visit('http://localhost:3000/courses')
+      cy.restoreLocalStorage();
+    });
+
+
+
 
 it('should create a new course', () => {
   cy.url().should('include', '/courses')
@@ -74,3 +78,5 @@ before('should create a new course', () => {
   }); 
 });*/
 });
+
+export {}
