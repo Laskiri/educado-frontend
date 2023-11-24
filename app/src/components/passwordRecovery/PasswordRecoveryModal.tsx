@@ -138,7 +138,6 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
         setCodeVerified(true);
       })
       .catch((error) => {
-        console.log(error)
         switch (error?.error?.code) {
           case 'E0404':
             setCodeError('Código expirado'); // Expired code
