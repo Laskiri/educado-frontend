@@ -16,6 +16,29 @@ describe('temp', () => {
         },
     });
 
+    cy.intercept('GET', `${BACKEND_URL}/api/courses/creator/*`, {
+        statusCode: 200,
+        body: [
+            {
+                _id: 1,
+                title: "Test Course",
+                category: "sewing",
+                coverImg: null,
+                description: "This is a test course.",
+                creator: "Test User",
+                status: "published",
+                estimatedHours: 0,
+                rating: 1,
+                difficulty: 1,
+                numOfSubscriptions: 0,
+                dateUpdated: Date.now(),
+                dateCreated: Date.now(),
+                sections: [],
+                __v: 2
+            },
+        ]
+    });  
+
     cy.visit('http://localhost:3000/login')
     cy.get('#email-field').type('test@email.com')
     cy.get('#password-field').type('password')
@@ -26,57 +49,25 @@ describe('temp', () => {
 });
 
     beforeEach(() => {
-        cy.intercept('GET', `${BACKEND_URL}/api/courses/creator/*`, {
-            statusCode: 200,
-            body: [
-                {
-                    _id: 1,
-                    title: "Test Course",
-                    category: "sewing",
-                    coverImg: null,
-                    description: "This is a test course.",
-                    creator: "Test User",
-                    status: "published",
-                    estimatedHours: 0,
-                    rating: 1,
-                    difficulty: 1,
-                    numOfSubscriptions: 0,
-                    dateUpdated: Date.now(),
-                    dateCreated: Date.now(),
-                    sections: [],
-                    __v: 2
-                },
-            ]
-        });
-  
-      cy.visit('http://localhost:3000/courses')
-      cy.restoreLocalStorage();
+        cy.restoreLocalStorage();
     });
 
 
 
 
 it('should create a new course', () => {
-  cy.url().should('include', '/courses')
+    cy.url().should('include', '/courses')
+    cy.get('.std-button').click()
+    cy.url().should('include', '/manager/0')
+    cy.get('#courseName').type('Test Course')
+    cy.get('#level').select('Iniciante')
+    cy.get('#category').select('Costura')
+    cy.get('#description').type('This is a test course.')
+    cy.get('#coverImg')
+    cy.get('#addCourse').click()
 })
 
-/*
 
-before('should create a new course', () => {
-  cy.intercept('POST', `${BACKEND_URL}/api/courses`, {
-      statusCode: 201,
-      body: {
-          id: '1',
-          name: 'Test Course',
-          description: 'Test Description',
-          category: 'sewing',
-          difficulty: 'beginner',
-          creator: '1',
-          status: 'Draft',
-      },
-      token: 'testToken'
-  }); 
-});*/
 });
 
 export {}

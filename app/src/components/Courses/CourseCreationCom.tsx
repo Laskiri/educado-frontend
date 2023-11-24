@@ -196,7 +196,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
         <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor='title'>Nome do curso</label> {/*Title*/}
-            <input type="text" defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
+            <input type="text" id='courseName' defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
               {...register("title", { required: true })}
             />
@@ -208,7 +208,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
             {/*Field to select a level from a list of options*/}
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='level'>Nível</label> {/** Level */}
-              <select
+              <select id='level'
               defaultValue={data ? data.difficulty : "Selecione o nível"}
               className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
               {...register("difficulty", { required: true })}>
@@ -225,7 +225,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
             {/*Field to choose a category from a list of options*/}
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='category'>Categoria</label> {/** Category */}
-              <select
+              <select id='category'
                 defaultValue={data ? data.category : "Selecione a categoria"}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                 {...register("category", { required: true })}>
@@ -252,7 +252,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
                 {toolTipIndex ===1? toolTip[1] : <div></div> }
               </div>
             </div>
-            <textarea maxLength={400} rows={4}
+            <textarea id='description' maxLength={400} rows={4}
             defaultValue={data ? data.description : ""}
             placeholder={data ? data.description : ""}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
@@ -292,7 +292,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
                 </button>
               </label>
               <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                <button type="submit" className='py-2 px-4 h-full w-full cursor-pointer' >
+                <button type="submit" id="addCourse" className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
                 </button>
               </label>
