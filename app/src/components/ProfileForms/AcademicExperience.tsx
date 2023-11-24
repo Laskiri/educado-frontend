@@ -31,6 +31,7 @@ export default function AcademicExperienceForm({
             : ""
         }`}
       >
+        {/* only display border on last form otherwise create distance */}
         <label className="text-[#A1ACB2] font-['Montserrat']">
           Experiências acadêmicas {index + 1}
         </label>{" "}
