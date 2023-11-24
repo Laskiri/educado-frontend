@@ -18,6 +18,8 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
+import NewInstitution from "./pages/NewInstitution";
+
 
 function App() {
   // router
@@ -66,6 +68,10 @@ function App() {
     {
       path: "/educado_admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
+    },
+    {
+      path: "/NewInstitution",
+      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
     },
     {
       path: "/educado_admin/applications",
