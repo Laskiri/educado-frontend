@@ -23,6 +23,8 @@ import Loading from '../components/general/Loading'
 import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
+import { ToolTipInfoBox } from '../components/ToolTip/ToolTipInfoBox'
+import { ToolTipIcon } from '../components/ToolTip/ToolTipIcon'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -46,13 +48,14 @@ interface Inputs {
   coverImg?: string
 }
 
+
+
 /**
  * This page is responsible for showing and editing courses to the creator.
  *
  * @returns HTML Element
  */
 const CourseEdit = () => {
-  
 
   const token = 'dummyToken'
   // const token = useToken();
@@ -66,8 +69,10 @@ const CourseEdit = () => {
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("");
   const [statusChange, setStatusChange] = useState<boolean>(false);
-  
-  
+
+  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
+
+	
   useEffect(() => {
       // get categories from db
       let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
@@ -237,8 +242,11 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                             <div className='flex flex-col space-y-6 divide'>
 
                                 {/* Course status */}
-                                <div className='flex flex-col justify-center pb-6'>
-                                  <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
+                                <div className='flex items-center justify-center pb-6 '> {/* Updated here */}
+                                    <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
+                                    
+                                    {/** Tooltip for course header*/}
+                                    <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem!"} tooltipAmount={2} callBack={setToolTipIndex}/>
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
                                     <p className='italic'>
@@ -259,13 +267,21 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 </div>
 
                                 {/** Course Description Field */}
-                                <div className="flex flex-col space-y-2">
-                                    <label htmlFor='description'>Descrição</label>
-                                    <textarea rows={4} defaultValue={data.description} placeholder={data.description}
-                                        className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                                        {...register('description', { required: true })}
-                                    />
-                                    {errors.description && <span>Este campo é obrigatório!</span>}
+                                <div className="flex flex-col space-y-2 items-start relative">
+                                <div className="flex items-center space-x-2"> {/* Container for label and icon */}
+																	<label htmlFor='description' className="flex-shrink-0">Descrição</label>
+																	{/** Tooltip for description of course*/}
+																	
+																	<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos."} tooltipAmount={2} callBack={setToolTipIndex}/>
+                                </div>
+                                <textarea
+                                    rows={4}
+                                    defaultValue={data.description}
+                                    placeholder={data.description}
+                                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                    {...register('description', { required: true })}
+                                />
+                                {errors.description && <span>Este campo é obrigatório!</span>}
                                 </div>
 
                                 {/* Field to choose a category from a list of options */}
@@ -305,6 +321,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                         {...register('estimatedHours', { required: true })}
                                     />
                                     {errors.title && <span className='text-warning'>Este campo é obrigatório</span>}
+                                    
                                 </div>
 
                                 {/** Cover Image Field */}
