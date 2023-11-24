@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
+import Application from "./pages/Application";
 
 // Auth Pages
 import Courses from "./pages/Courses";
@@ -18,6 +19,9 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
+import NewInstitution from "./pages/NewInstitution";
+
+
 
 function App() {
   // router
@@ -64,8 +68,17 @@ function App() {
       errorElement: <NotFound />
     },
     {
+      path: "/application/:id",
+      element: <NonProtectedRoute><Application /></NonProtectedRoute>,
+      errorElement: <NotFound />
+    },
+    {
       path: "/educado_admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
+    },
+    {
+      path: "/NewInstitution",
+      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
     },
     {
       path: "/educado_admin/applications",

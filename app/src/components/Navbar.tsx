@@ -1,27 +1,19 @@
-import { Link, useNavigate } from 'react-router-dom'
+import {Icon} from '@mdi/react';
+import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
+import { Link } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
+import { getUserToken } from '../helpers/userInfo';
 
-// static
-
-import Logo from "../assets/educado.png"
-import LogoBlack from "../assets/educado-logo-black.svg"
-import LogoWhite from "../assets/educado-logo-white.svg"
-
+import decode from 'jwt-decode';
 
 // icons
-import {
-    BookOpenIcon,
-    ShieldCheckIcon
-} from "@heroicons/react/24/outline";
-
-export const Navbar = () => {
-    const navigate = useNavigate();
+const Navbar = () => {
 
     //logout handler
     const clearToken = useAuthStore(state => state.clearToken);
     const logout = () => {
         clearToken();
-        localStorage.removeItem('token');
+        localStorage.removeItem("token");
     }
 
     // List to generete dropdown li's 
@@ -31,41 +23,33 @@ export const Navbar = () => {
     ]
 
     return (
-        <div className="navbar bg-base-100 border-b">
-            <div className="navbar-start">
-                <div className="dropdown">
-                    <label tabIndex={0} className="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                    </label>
-                    <ul tabIndex={0} className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52">
-                        <li>
-                            <Link to={"/courses"} className="flex">
-                                <BookOpenIcon width={20} /><span>Courses</span>
-                            </Link>
-                        </li>
-                        <li>
-                            <Link to={"/educado_admin/applications"} className="flex">
-                                <ShieldCheckIcon width={20} /><span>Admin</span>
-                            </Link>
-                        </li>
-                    </ul>
+        <main className="relative bg-gradient-to-br from-[#c8e5ec] to-[white] overflow-hidden">
+            {/* Navigation Bar */}
+            <nav className="flex fixed w-full items-center justify-between py-3 px-6"
+                style={{
+                    background: 'var(--secondary, #F1F9FB)',
+                    boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)'
+                }}>
+
+                {/* Logos for navbar */}
+                <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-8">
+                    <div className="navbar-start">
+                        <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
+                            <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src='/educado.svg' alt="educado" className="h-6" />
+                        </Link>
+                    </div>
                 </div>
 
-                <Link to="/" className="flex flex-shrink-0 items-center space-x-3 normal-case text-xl" >
-                    <img src={LogoBlack} alt="ecs-logo" className='h-6'/>
-                </Link>
-            </div>
-
-            <div className="navbar-center hidden lg:flex">
+                <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
                     <li>
-                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom" data-tip="see your courses">
-                            <BookOpenIcon width={20} /><span>Courses</span>
+                        <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom text-lg font-['Montserrat'] active:bg-[#166276]" data-tip="Veja seus cursos"> {/* see your courses */}
+                        <Icon path={mdiNotebookOutline} size={1} color="#A1ACB2" /> <span>Cursos</span> {/*courses*/}
                         </Link>
                     </li>
                     <li>
-                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover tooltip-bottom" data-tip="Check Applications">
-                            <ShieldCheckIcon width={20} /><span>Admin</span>
+                        <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                        <Icon path={mdiAccount} size={1} color="#A1ACB2" /><span>Admin</span> {/*admin*/}
                         </Link>
                     </li>
                 </ul>

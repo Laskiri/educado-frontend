@@ -30,6 +30,7 @@ const Courses = () => {
   // States and Hooks
   const navigate = useNavigate();
   const token = getUserToken();
+  console.log(token)
   // Fetch all courses
 
   // TODO: Implement proper backend call once backend is ready
@@ -48,6 +49,10 @@ const Courses = () => {
   
   return (
     <Layout meta="Course overview" >
+
+  {/* gap between navbar and courses */}    
+  <div className="relative h-20 w-32 ...">
+  </div>
       <div className='grid lg:grid-cols-[3fr_1fr] h-full'>
         {/* Left side displaying courses, filtering for these and create new button */}
         <div className='m-8 p-8 pb-0 bg-white rounded-xl overflow-hidden flex flex-col'>
