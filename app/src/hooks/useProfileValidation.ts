@@ -1,8 +1,10 @@
+// Importing the 'useState' hook from React
 import { useState } from "react";
 
 
 //Validation for month and day input
 export default ()=>{
+  // State for education & experience date errors 
     const [educationErrors, setEducationErrors] = useState([
         {
           startDate: "",
@@ -18,6 +20,7 @@ export default ()=>{
       ]);
       const [experienceErrorState, setExperienceErrorState] = useState(false);
       
+       // validating date format & creating integer limits on the date format
       const dateValidation = (value: any) => {
         console.log(value.substring(0, 2));
         let month =
@@ -36,7 +39,10 @@ export default ()=>{
           value.substring(3, 5) == 0
         );
       };
+
+      // Handling validation based on form type (education/experience)
     const handleValidation = (index: any, name: any, value: any, forForm :any) => {
+      // Set education error state and update error messages based on the input field
         if(forForm == 'education'){
           if (dateValidation(value)) {
             if (name === "startDate") {
@@ -55,6 +61,7 @@ export default ()=>{
               });
             }
           } else {
+            // Reset education error state and clear error messages based on the input field
             setEducationErrorState(false);
             if (name === "startDate") {
               setEducationErrors((prevState) => {
@@ -71,6 +78,7 @@ export default ()=>{
             }
           }
         }else{
+          // Set experience error state and update error messages based on the input field
           if (dateValidation(value)) {
             if (name === "startDate") {
               setExperienceErrorState(true);
@@ -88,6 +96,7 @@ export default ()=>{
               });
             }
           } else {
+            // Reset experience error state and clear error messages based on the input field
             setExperienceErrorState(false);
             if (name === "startDate") {
               setExperienceErrors((prevState) => {
@@ -105,6 +114,7 @@ export default ()=>{
           }
         }
       };
+       // Returning states and validation function
     return {
         handleValidation,
         experienceErrors, setExperienceErrors,
