@@ -45,10 +45,8 @@ type FormData = {
 
 //Yup Schemas
 const profileSchema = Yup.object().shape({
-  UserName: Yup.string().required("This field is required!"),
-  UserEmail: Yup.string()
-    .email("You need a suitable email to submit")
-    .required("This field is required!"),
+  UserName: Yup.string(),
+  UserEmail: Yup.string().email("You need a suitable email to submit"),
   linkedin: Yup.lazy((value) => {
     if (value) {
       return Yup.string().matches(
@@ -448,34 +446,13 @@ const Profile = () => {
   //Form submit, sends data to backend, upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
     //if fields are filled & errors ar handled submit form
-
-    try {
-      // Your conditional Yup validation logic here
-      if (index === 0) {
-        console.log("Yup validation for toggleMenu1");
-        // Apply Yup validation for the relevant form section
-        await profileSchema.validate(data, { abortEarly: false });
-      } else if (index === 1 && !toggleMenu2) {
-        console.log("Yup validation for toggleMenu2");
-        // Apply Yup validation for the relevant form section
-        await profileSchema.validate(data, { abortEarly: false });
-      }
-      console.log("Form data:", data);
-
-      // Perform your form submission logic here
-    } catch (error) {
-      // Handle Yup validation errors
-      console.error("Yup validation error:", errors);
-    }
-
     if (
-      (!educationErrorState &&
-        !experienceErrorState &&
-        dynamicInputsFilled("education") &&
-        dynamicInputsFilled("experience") &&
-        toggleMenu1 === true) ||
-      toggleMenu2 === true ||
-      toggleMenu3 === true
+      !educationErrorState &&
+      !experienceErrorState &&
+      dynamicInputsFilled("education") &&
+      dynamicInputsFilled("experience") &&
+      formData.UserEmail !== "" &&
+      formData.UserName !== ""
     ) {
       const formDataToSend = {
         userID: userID,
@@ -1462,7 +1439,7 @@ const Profile = () => {
                             <div className="flex items-center justify-center">
                               <button
                                 type="button"
-                                className="education_add_button w-full px-4 py-2 rounded-lg border-dotted border-2 border-[#A1ACB2]"
+                                className="third_form_add w-full px-4 py-2 rounded-lg border-dotted border-2 border-[#A1ACB2]"
                                 onClick={() => {
                                   addNewExperienceForm(index);
                                 }}

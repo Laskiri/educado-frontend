@@ -72,9 +72,9 @@ function App() {
     {
       path: "/profile",
       element: (
-        <NonProtectedRoute>
+        <ProtectedRoute>
           <Profile />
-        </NonProtectedRoute>
+        </ProtectedRoute>
       ),
     },
     {
