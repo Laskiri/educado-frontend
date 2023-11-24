@@ -31,6 +31,7 @@ interface CourseCreationProps {
   token: string;
   id: string | undefined;
   tickChangeHandler: Function;
+  setId: Function;
 }
 
 
@@ -40,12 +41,12 @@ interface CourseCreationProps {
  * @param token The user token
  * @param id The course id
  * @param tickChangeHandler The function to change the tick in the checklist
+ * @param setId The function to set the course id
  * @returns HTML Element
  */
-export const CourseCreationCom = ({token, id, tickChangeHandler}: CourseCreationProps) => {
+export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseCreationProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
-  const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [statusChange, setStatusChange] = useState<boolean>(false);
@@ -140,6 +141,9 @@ export const CourseCreationCom = ({token, id, tickChangeHandler}: CourseCreation
             window.location.href = "/courses";
           }
           else{
+            if(id === "0"){
+             setId(res.data._id)
+            }
             tickChangeHandler();
           }
         }) // Course updated
@@ -153,6 +157,9 @@ export const CourseCreationCom = ({token, id, tickChangeHandler}: CourseCreation
             window.location.href = "/courses";
           }
           else{
+            if(id === "0"){
+             setId(res.data._id)
+            }
             tickChangeHandler();
           }
         }) // Course created
@@ -285,7 +292,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler}: CourseCreation
                 </button>
               </label>
               <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-              <button type="submit" className='py-2 px-4 h-full w-full cursor-pointer' >
+                <button type="submit" className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
                 </button>
               </label>
