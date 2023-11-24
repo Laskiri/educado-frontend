@@ -30,6 +30,20 @@ interface Inputs {
 // Create section
 export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
   const [sections, setSections] = useState<JSX.Element[]>([]);
+  const [submitCallBackList, setSubmitCallBackList] = useState<Function[]>([]); //observer pattern
+
+  function addSubmitCallBack(callback: Function) {
+    setSubmitCallBackList([...submitCallBackList, callback]);
+  }
+
+  function removeSubmitCallBack(callback: Function) {
+    setSubmitCallBackList(submitCallBackList.filter((cb) => cb !== callback));
+  }
+
+  function notifySubmitCallBack() {
+    submitCallBackList.forEach((callBack) => callBack());
+  }
+
 
   const token = getUserToken();
   let id = useParams().id // TODO: remove when merge with Course Manager
@@ -47,9 +61,11 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
     const res:any = await CourseServices.getCourseDetail(url/*, token*/)
 
     return res;
-}
+  }
 
-    // Fetch Course Details
+  
+
+     // Fetch Course Details
     if(id != "0"){
         var { data, error } = useSWR(
             token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
@@ -62,7 +78,7 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
             StorageServices.getFile
         )
     }
-
+  
   // ... rest of your component code
 
   
@@ -82,8 +98,8 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
 
               {/** Course Sections area  */}
               <div className='flex w-full flex-col space-y-2 '>
-                  <SectionList sections={data ? data.sections : []} />
-                  <SectionForm/>
+                  <SectionList sections={data ? data.sections : []} addSubmitCallBack={addSubmitCallBack} />
+                  <SectionForm callOnSubmit={()=>window.location.reload()}/>
               </div>
         </div>
 

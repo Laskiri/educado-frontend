@@ -29,7 +29,13 @@ import { Item } from './@dnd/Item';
 // Intefaces
 import { Section } from '../../interfaces/CourseDetail';
 
-export const SectionList = ({ sections }: { sections: Array<Section> }) => {
+interface Props {
+  sections: Array<Section>
+  addSubmitCallBack: Function
+}
+
+
+export const SectionList = ({ sections, addSubmitCallBack }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
   const [items, setItems] = useState(sections);
@@ -73,7 +79,7 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
       
       >
         <SortableContext items={items.map(item => item._id)} strategy={verticalListSortingStrategy}>
-          {items.map((item, key: React.Key) => <SortableItem key={key} item={item} />)}
+          {items.map((item, key: React.Key) => <SortableItem key={key} id={item._id} addSubmitCallBack={addSubmitCallBack} />)}
         </SortableContext>
 
        

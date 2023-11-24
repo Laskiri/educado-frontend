@@ -1,6 +1,7 @@
 import { Link, useLocation} from 'react-router-dom';
 import useSWR from 'swr';
-import { useForm, SubmitHandler, set } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { Key } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -10,6 +11,8 @@ import useToken from '../../../hooks/useToken';
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
+
+
 
 // icons
 
@@ -21,9 +24,17 @@ import { useState } from 'react';
 
 import SectionServices from '../../../services/section.services';
 
-export function SortableItem(props: any) {
+interface Props {
+  key: Key,
+  id: string,
+  addSubmitCallBack: Function
+}
 
-  const sid = props.item;
+export function SortableItem({key, id, addSubmitCallBack}: Props) {
+
+  const sid =id;
+
+ 
 
   
   //const token = "dummyToken";
@@ -68,7 +79,7 @@ export function SortableItem(props: any) {
   // Create Form Hooks
   const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<SectionPartial>();
   
-
+  
  
 
   /**
@@ -87,8 +98,11 @@ export function SortableItem(props: any) {
      .catch(err => toast.error(err));
  }
 
+
+  addSubmitCallBack(onSubmit(data));
+
   //If data is not found yet, show a loading message.
-  if(data === undefined) return (<div>Loading...</div>);
+  if(data === undefined) return (<p>Loading...</p>);
   
 
   //Else show the sections.
@@ -128,23 +142,23 @@ export function SortableItem(props: any) {
                   onSubmit={handleSectionUpdate(onSubmit)}
 
               >
-                  <div className="pt-5  ">
-                    <label htmlFor='title '>Nome </label> {/*Title of section*/}
-                    <input type="text"  placeholder={data.title?? "Nome da seção"}
-                      className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
-                      {...registerSection("title", { required: true })}
-                    />
-                    
-                  </div>
+                <div className="pt-5  ">
+                  <label htmlFor='title '>Nome </label> {/*Title of section*/}
+                  <input type="text"  placeholder={data.title?? "Nome da seção"}
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    {...registerSection("title", { required: true })}
+                  />
+                  
+                </div>
 
-                  <div className="pt-5">
-                    <label htmlFor='title'>Descrição </label> {/*description of section*/}
-                    <textarea placeholder={data.description ??"Descrição da seção"}
-                      className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
-                    />
+                <div className="pt-5">
+                  <label htmlFor='title'>Descrição </label> {/*description of section*/}
+                  <textarea placeholder={data.description ??"Descrição da seção"}
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                />
 
                     {/**ADD lecture and exercise to the section */}
-              <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
+                <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
                   <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
                     <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center "> 
                     <Icon path={mdiPlus} size={1} className=" " />
@@ -156,12 +170,12 @@ export function SortableItem(props: any) {
                     <Icon path={mdiPlus} size={1} className=" " />
                     Adicionar Exercício</p>
                   </label>
-              </div>
+                </div>
 
-              {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-              <div className='flex flex-row-reverse'>                            
-                    <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
-              
+                  {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+                  <div className='flex flex-row-reverse'>                            
+                        <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
+                  
                     
                   </div>
               </form>

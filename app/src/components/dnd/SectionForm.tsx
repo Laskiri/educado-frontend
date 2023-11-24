@@ -16,12 +16,16 @@ import Icon from '@mdi/react';
 
  type Inputs = {
     title: string
+    
 }
 
-export const SectionForm = () => {
+interface Props {
+    callOnSubmit: Function
+}   
+
+export const SectionForm = ({callOnSubmit}: Props) => {
     // Query Params
     const token = getUserToken();
-    //const token = useToken();
     const { id } = useParams();
 
     
@@ -35,6 +39,7 @@ export const SectionForm = () => {
         SectionServices.createSection(data, id, token)
             .then(res => {
                console.log(res);
+                callOnSubmit();
             })
             .catch(err => console.log(err));
     }
