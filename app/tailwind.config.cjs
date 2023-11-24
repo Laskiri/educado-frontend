@@ -22,7 +22,8 @@ module.exports = {
                 success: "#4AA04A",
                 disabled: "#E4F2F5",
                 star: "#F1CC4F",
-                darkBG: 'rgba(0,0,0,0.2)'
+                darkBG: 'rgba(0,0,0,0.2)',
+                blueButton: "#166276",
             },
             display: ["group-hover"],
             keyframes: {

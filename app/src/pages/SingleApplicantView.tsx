@@ -85,7 +85,7 @@ return (
                 {/* Container for application*/}
                 <div className="border-t mx-10 pb-1 pt-1 bg-grayLight">
                     <dl>
-                        <div className="bg-[#F1F9FB] px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
+                        <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
                             <dt className="text-base font-bold font-['Montserrat']  text-gray-900">
                                 Nome: {/** Name*/}
                             </dt>
@@ -101,7 +101,7 @@ return (
                             {data.data.applicator.email}
                             </dd>
                         </div>
-                        <div className="bg-[#F1F9FB] px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
+                        <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
                             <dd className="text-base font-bold font-['Montserrat'] text-gray-900">
                             Enviado em: {/* Applied at*/}
                             </dd>
@@ -119,7 +119,7 @@ return (
                             </dd>
                         </div>   
                         </div>
-                        <div className="bg-[#F1F9FB] px-4 py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6 space-x-8">
+                        <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6 space-x-8">
                             <dt className="text-base font-bold font-['Montserrat'] text-gray-900">
                             Experiência Acadêmica: {/* Academic Experience*/}
                             </dt>

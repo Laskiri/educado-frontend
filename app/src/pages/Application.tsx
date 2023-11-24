@@ -83,7 +83,7 @@ return (
 <main>
   
   { /* Navbar */ }
-  <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
+  <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50 bg-F1F9FB shadow-[0px 4px 4px 0px rgba(35, 100, 130, 0.25)]>
     <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
       <div className="navbar-start">
         <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
@@ -113,16 +113,16 @@ return (
         onClick={() => setToggleMotivation(!toggleMotivation)}>
           <div className="flex items-start">
             {toggleMotivation ? (
-              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronUp} size={1} color="white" />
             ) : (
-              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronDown} size={1} color="white" />
             )}
             Motivações
           </div>
         </button>
 
         {toggleMotivation && (
-          <div className="relative border border-[#166276] p-4 rounded-b-lg text-left bg-white z-50">
+          <div className="relative border border-blueButton p-4 rounded-b-lg text-left bg-white z-50">
           <div className="flex flex-col">
             <label htmlFor="motivation">
               Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
@@ -150,16 +150,16 @@ return (
         onClick={() => setToggleAcademicExperiences(!toggleAcademicExperiences)}>
           <div className="flex items-start">
             {toggleAcademicExperiences ? (
-              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronUp} size={1} color="tertiary" />
             ) : (
-              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronDown} size={1} color="tertiary" />
             )}
             Experiências acadêmicas {/* Academic Experiences */}
           </div>
         </button>
 
         {toggleAcademicExperiences && (
-          <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-10 text-left bg-white z-50">
+          <div className="relative border flex-row border-blueButton p-4 rounded-b-lg gap-10 text-left bg-white z-50">
             <div className="grid grid-cols-2 gap-10"> 
               <p>Formação</p> {/* Training */}
               <p>Status</p> {/* Status */}
@@ -234,16 +234,16 @@ return (
         onClick={() => setToggleProfessionalExperience(!toggleProfessionalExperience)}>
           <div className="flex items-start">
             {toggleProfessionalExperience ? (
-              <Icon path={mdiChevronUp} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronUp} size={1} color="tertiary" />
             ) : (
-              <Icon path={mdiChevronDown} size={1} color="#FFFFFF" />
+              <Icon path={mdiChevronDown} size={1} color="tertiary" />
             )}
             Experiências profissionais {/* Professional Experience */}
           </div>
         </button>
 
         {toggleProfessionalExperience && (
-          <div className="relative border flex-row border-[#166276] p-4 rounded-b-lg gap-5 text-left bg-white z-50">
+          <div className="relative border flex-row border-blueButton p-4 rounded-b-lg gap-5 text-left bg-white z-50">
             <div className="grid grid-cols-2 gap-10"> 
               <p>Empresa</p> {/* company */}
               <p>Cargo</p> {/* position */}

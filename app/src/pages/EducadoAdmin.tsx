@@ -49,14 +49,14 @@ const EducadoAdmin = () => {
                     <div className="flex-none">
                         <form className="flex flex-col md:flex-row w-3/4 md:w-full max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center ">
                             {/* Input for searchterm */}
-                            <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none hover:bg-white focus:border-sky-500 focus:ring-[#166276] focus:ring-1 sm:text-sm"
+                            <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none hover:bg-white focus:border-sky-500 focus:ring-blueButtonfocus:ring-1 sm:text-sm"
                                 type="text"
                                 placeholder="Procure um aplicativo..." //Look for an Application
                                 onChange={(event) => {
                                     setSearchTerm(event.target.value);
                                 }}
                             />
-                            <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-[#166276] rounded shadow-md hover:bg-[#166276] focus:outline-none focus:ring-2 focus:ring-[#166276] focus:ring-offset-2 focus:ring-offset-blue-200" type="submit">
+                            <button className="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-[#166276] rounded shadow-md hover:bg-blueButton focus:outline-none focus:ring-2 focus:ring-blueButton focus:ring-offset-2 focus:ring-offset-blue-200" type="submit">
                                 Filter
                             </button>
                         </form>
@@ -124,7 +124,7 @@ const EducadoAdmin = () => {
                                                 </p>
                                             </td>
                                             <td className="flex items-center p-4">
-                                                <Link to={`${location.pathname}/${application._id}`} className="flex items-center justify-center p-2 w-full bg-[#166276] rounded font-semibold text-base text-white">
+                                                <Link to={`${location.pathname}/${application._id}`} className="flex items-center justify-center p-2 w-full bg-blueButton rounded font-semibold text-base text-white">
                                                 Ver detalhes {/** see details */}
                                                 </Link>
                                             </td>

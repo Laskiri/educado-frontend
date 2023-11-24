@@ -40,11 +40,7 @@ export const Navbar = () => {
 return (
     <main>
         {/* Navigation Bar */}
-        <nav className="navbar flex fixed w-full items-center justify-between py-3 px-6"
-            style={{
-                background: 'var(--secondary, #F1F9FB)',
-                boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)'
-            }}>
+        <nav className="navbar flex fixed w-full items-center justify-between py-3 px-6 bg-secondary shadow-[0px 4px 4px 0px rgba(35, 100, 130, 0.25)]">
 
             {/* Logos for navbar */}
             <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-8">
@@ -58,13 +54,13 @@ return (
             <div className="navbar-center hidden lg:flex">
             <ul className="menu menu-horizontal p-0">
                 <li>
-                    <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom text-lg font-['Montserrat'] active:bg-[#166276]" data-tip="Veja seus cursos"> {/* see your courses */}
-                    <Icon path={mdiNotebookOutline} size={1} color="#A1ACB2" /> <span>Cursos</span> {/*courses*/}
+                    <Link to={"/courses"} className="flex tooltip tooltip-hover tooltip-bottom text-lg font-['Montserrat']" data-tip="Veja seus cursos"> {/* see your courses */}
+                    <Icon path={mdiNotebookOutline} size={1} color="grayMedium" /> <span>Cursos</span> {/*courses*/}
                     </Link>
                 </li>
                 <li>
-                    <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat'] active:bg-[#166276]" data-tip="Verifique os aplicativos"> {/* Check Applications */}
-                    <Icon path={mdiAccount} size={1} color="#A1ACB2" /><span>Admin</span> {/*admin*/}
+                    <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat']" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                    <Icon path={mdiAccount} size={1} color="grayMedium" /><span>Admin</span> {/*admin*/}
                     </Link>
                 </li>
             </ul>
@@ -74,13 +70,13 @@ return (
             <div className="relative w-133px h-10 flex items-center gap-6 pr-12">
                 <span className='hidden sm:block container overflow-hidden'>
                     <Icon
-                    path={mdiBellOutline} size={1} color={'#A1ACB2'} />
+                    path={mdiBellOutline} size={1} color={'grayMedium'} />
                 </span>
 
 
                 <div className="flex flex-col items-start">
-                    <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-base font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
-                    <span className="hidden sm:block container overflow-hidden text-[#A1ACB2] text-sm font-normal font-['Montserrat']">{email}</span>
+                    <span className="hidden sm:block container overflow-hidden text-grayMedium text-base font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
+                    <span className="hidden sm:block container overflow-hidden text-grayMedium text-sm font-normal font-['Montserrat']">{email}</span>
                 </div>
 
                 {/* Dropdown for User Actions */}
@@ -97,35 +93,31 @@ return (
                         </label>
 
                         {/* Dropdown Content */}
-                        <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[245px] mt-2 bg-[#FFFFFF] rounded-lg"
-                            style={{
-                                background: 'var(--secondary, #FFFFFF)',
-                                boxShadow: '0px 2px 4px 0px #B3B3B3'
-                            }}>
+                        <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[245px] mt-2 bg-tertiary rounded-lg shadow-[0px 2px 4px 0px #B3B3B3]">
 
                             {/* Edit Profile/settings */}
                             <li className="w-full"> {/*class to make the list item fill the width */}
-                                <Link to={"/profile"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
-                                    <span><Icon path={mdiAccountCog} size={1} color="#A1ACB2" /></span>
+                                <Link to={"/profile"} className="text-grayDark text-lg font-normal font-['Montserrat'] hover:bg-grayLight">
+                                    <span><Icon path={mdiAccountCog} size={1} color="grayMedium" /></span>
                                     <span>Editar perfil</span>
                                 </Link>
                             </li>
-                            <hr className="relative w-full h-[1px] border-[#E4E4E4] mt-3 mb-3" />
+                            <hr className="relative w-full h-[1px] border-grayLight mt-3 mb-3" />
 
                             {/* My Certificates */}
                             <li className="w-full"> {/*class to make the list item fill the width */}
-                                <Link to={"/certificates"} className="text-[#383838] text-lg font-normal font-['Montserrat'] hover:bg-[#E4E4E4]">
-                                    <span><Icon path={mdiCertificate} size={1} color="#A1ACB2" /></span>
+                                <Link to={"/certificates"} className="text-grayDark text-lg font-normal font-['Montserrat'] hover:bg-grayLight">
+                                    <span><Icon path={mdiCertificate} size={1} color="grayMedium" /></span>
                                     <span>Meus certificados</span>
                                 </Link>
                             </li>
 
-                            <hr className="relative w-full h-[1px] border-[#E4E4E4] mt-3 mb-3" />
+                            <hr className="relative w-full h-[1px] border-grayLight mt-3 mb-3" />
 
                             {/* Logout */}
                             <li className="w-full"> {/* class to make the list item fill the width */}
-                                <Link to={"/welcome"} onClick={logout} className=" text-[#FF4949] text-lg font-bold font-['Montserrat'] hover:bg-[#E4E4E4]">
-                                    <span><Icon path={mdiLogoutVariant} size={1} color="#FF4949" /></span>
+                                <Link to={"/welcome"} onClick={logout} className=" text-warning text-lg font-bold font-['Montserrat'] hover:bg-grayLight">
+                                    <span><Icon path={mdiLogoutVariant} size={1} color="warning" /></span>
                                     <span>Sair</span>
                                 </Link>
                             </li>
