@@ -101,12 +101,20 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
      SectionServices.saveSection(changes, sid, token)
      .then(res => toast.success('Seção atualizada'))
      .catch(err => toast.error(err));
- }
+  }
+
+  function deleteSection(){
+    if(confirm("Tem certeza que deseja excluir?") == true){
+      SectionServices.deleteSection(sid, token)
+      .then(res => {toast.success('Seção excluída'); window.location.reload();})
+      .catch(err => toast.error(err));
+    }
+  }
   
 
 
  useEffect(() => {
-  
+  openRef.current?.checked;
   addOnSubmitSubscriber(()=>{ subRef.current?.click() });
  },[]);
 
@@ -119,7 +127,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
     <div >
       <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg m-4'>
-          <input type="checkbox" className="peer w-4/5 " onChange={changeArrowDirection} ref={openRef} />
+          <input type="checkbox" className="peer w-4/5 " defaultChecked={data.title ==="Nova seção"} onChange={changeArrowDirection} ref={openRef} />
 
           
             <div className="collapse-title flex flex-row-2  rounded-top text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
@@ -130,7 +138,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                 </p>
                 </div>
                 <div className='flex collapse ml-80'>
-                    <div className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
+                    <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
                       {/**delete and move buttons on the left side of the section headers */}
                       <Icon path={mdiDeleteCircle} size={1.2}></Icon>
                       
