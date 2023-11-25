@@ -32,7 +32,7 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
 
   function addOnSubmitSubscriber(callback: Function) {
-    console.log("add subscriber");
+    //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [
       ...prevSubscribers,
       callback,

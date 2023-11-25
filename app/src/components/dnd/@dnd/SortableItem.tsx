@@ -19,10 +19,10 @@ import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVertical
 
 import Icon from '@mdi/react';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 import SectionServices from '../../../services/section.services';
-import { add } from 'cypress/types/lodash';
+import { add, set } from 'cypress/types/lodash';
 
 
 interface Props {
@@ -34,6 +34,11 @@ interface Props {
 export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
   const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
+  const [title, setTitle] = useState<string>();
+  const [description, setDescription] = useState<string>(); 
+  const subRef= useRef<HTMLInputElement>(null);
+  const openRef= useRef<HTMLInputElement>(null);
+  
 
   
   //const token = "dummyToken";
@@ -45,8 +50,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
     SectionServices.getSectionDetail
   );
 
-  
-    
+
 
   const {
     attributes,
@@ -76,8 +80,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
   };
   // Create Form Hooks
   const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<SectionPartial>();
-  
-  
+
  
 
   /**
@@ -87,7 +90,9 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
     */
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
     if(data === undefined) return;
-    console.log(data);
+    if(title === undefined && description === undefined) return;
+
+    console.log("i passed", data.title, title, description);
     const changes: SectionPartial = {
         title: data.title,
         description: data.description
@@ -97,19 +102,16 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
      .then(res => toast.success('Seção atualizada'))
      .catch(err => toast.error(err));
  }
+  
 
- useCallback(() => {
-  console.log("want to be add",sid)
-  addOnSubmitSubscriber(()=>{onSubmit(data); });
- },[data]);
+
+ useEffect(() => {
+  
+  addOnSubmitSubscriber(()=>{ subRef.current?.click() });
+ },[]);
 
   //If data is not found yet, show a loading message.
-  if(data === undefined) return (<p>Loading...</p>);
-  
-
-  
-
-  
+  if(data === undefined) {return (<p>Loading...</p>)}
 
 
   //Else show the sections.
@@ -117,14 +119,14 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
     <div >
       <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg m-4'>
-          <input type="checkbox" className="peer w-4/5 " onChange={changeArrowDirection} />
+          <input type="checkbox" className="peer w-4/5 " onChange={changeArrowDirection} ref={openRef} />
 
           
             <div className="collapse-title flex flex-row-2  rounded-top text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
               <div className='flex w-5/6 '>
                 <Icon path={arrowDirction} size={1} />
                 <p className="font-semibold">
-                  {data.title ?? "Nome da seção"}
+                  {title ?? data.title}
                 </p>
                 </div>
                 <div className='flex collapse ml-80'>
@@ -154,9 +156,10 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                   <input type="text"  placeholder={data.title?? "Nome da seção"}
                     className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                     {...registerSection("title", { required: true })}
+                    onChange={(e) => setTitle(e.target.value) } //update the section title
                     
                   />
-                  
+                  {sectionErrors.title && <span>Este campo é obrigatório!</span>}{/** This field is required */}
                 </div>
 
                 <div className="pt-5">
@@ -164,7 +167,11 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                   <textarea placeholder={data.description ??"Descrição da seção"}
                     className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                     {...registerSection("description", { required: true })}
-                />
+                    onChange={(e) => setDescription(e.target.value) } //update the section title
+
+                  />
+                  {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+
 
                     {/**ADD lecture and exercise to the section */}
                 <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
@@ -186,6 +193,9 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                         <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
                   
                     
+                  </div>
+                  <div className='hidden' onClick={()=>{onSubmit(data)}}>
+                      <input type='submit' ref={subRef} />
                   </div>
               </form>
                 
