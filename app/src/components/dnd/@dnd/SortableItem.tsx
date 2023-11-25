@@ -1,7 +1,6 @@
-import { Link, useLocation} from 'react-router-dom';
+
 import useSWR from 'swr';
 import { useForm, SubmitHandler } from 'react-hook-form'
-import { Key } from 'react';
 import { toast } from 'react-toastify';
 
 
@@ -20,22 +19,21 @@ import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVertical
 
 import Icon from '@mdi/react';
 
-import { useState, useEffect } from 'react';
+import { useState, useCallback } from 'react';
 
 import SectionServices from '../../../services/section.services';
+import { add } from 'cypress/types/lodash';
 
 
 interface Props {
 
-  id: string,
-  addSubmitCallBack: Function
+  sid: string,
+  addOnSubmitSubscriber: Function
 }
 
-export function SortableItem({id, addSubmitCallBack}: Props) {
+export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
-  const sid =id;
-
- 
+  const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
 
   
   //const token = "dummyToken";
@@ -47,7 +45,6 @@ export function SortableItem({id, addSubmitCallBack}: Props) {
     SectionServices.getSectionDetail
   );
 
-  const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
   
     
 
@@ -89,6 +86,8 @@ export function SortableItem({id, addSubmitCallBack}: Props) {
      * @param data  The data to be updated
     */
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
+    if(data === undefined) return;
+    console.log(data);
     const changes: SectionPartial = {
         title: data.title,
         description: data.description
@@ -99,14 +98,19 @@ export function SortableItem({id, addSubmitCallBack}: Props) {
      .catch(err => toast.error(err));
  }
 
-
-
-  
- //addSubmitCallBack(onSubmit);
+ useCallback(() => {
+  console.log("want to be add",sid)
+  addOnSubmitSubscriber(()=>{onSubmit(data); });
+ },[data]);
 
   //If data is not found yet, show a loading message.
   if(data === undefined) return (<p>Loading...</p>);
   
+
+  
+
+  
+
 
   //Else show the sections.
   return (
@@ -150,6 +154,7 @@ export function SortableItem({id, addSubmitCallBack}: Props) {
                   <input type="text"  placeholder={data.title?? "Nome da seção"}
                     className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
                     {...registerSection("title", { required: true })}
+                    
                   />
                   
                 </div>
@@ -158,6 +163,7 @@ export function SortableItem({id, addSubmitCallBack}: Props) {
                   <label htmlFor='title'>Descrição </label> {/*description of section*/}
                   <textarea placeholder={data.description ??"Descrição da seção"}
                     className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    {...registerSection("description", { required: true })}
                 />
 
                     {/**ADD lecture and exercise to the section */}

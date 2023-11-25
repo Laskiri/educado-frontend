@@ -225,10 +225,6 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
   }
     
   if(error) return <NotFound/> // Course not found
-
-  console.log("data is: ")
-  console.log(data)
-
     
     return (
         <Layout meta={`Course: ${id}`}>
@@ -378,17 +374,7 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                 </div>
             </form>
 
-            <div className="container mx-auto flex flex-row space-x-4 my-6">
-                <div className='w-full max-w-5xl mx-auto bg-white rounded p-6'>
-                    {/** Course Sections area  */}
-                    <div className='flex flex-col space-y-2 divide'>
-                        <h1 className='text-xl font-medium mb-4'>Seções do curso</h1>
-                        <SectionForm/>
-                        <SectionList sections={data ? data.sections : []} />
-                    </div>
-                </div>
-            </div>
-
+           
         </Layout>
 
   )

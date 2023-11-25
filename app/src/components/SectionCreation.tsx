@@ -29,25 +29,36 @@ interface Inputs {
 
 // Create section
 export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
-  const [submitCallBackList, setSubmitCallBackList] = useState<Function[]>([]); //observer pattern
+  const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
 
-  function addSubmitCallBack(callback: Function) {
-    setSubmitCallBackList([...submitCallBackList, callback]);
+  function addOnSubmitSubscriber(callback: Function) {
+    console.log("add subscriber");
+    setOnSubmitSubscribers((prevSubscribers) => [
+      ...prevSubscribers,
+      callback,
+    ]);
   }
 
-  function removeSubmitCallBack(callback: Function) {
-    setSubmitCallBackList(submitCallBackList.filter((cb) => cb !== callback));
+  function removeOnSubmitSubscriber(callback: Function) {
+    setOnSubmitSubscribers((prevSubscribers) =>
+      prevSubscribers.filter((cb) => cb !== callback)
+    );
   }
 
-  function notifySubmitCallBack() {
-    submitCallBackList.forEach((callBack) => callBack());
+  function notifyOnSubmitSubscriber() {
+    onSubmitSubscribers.forEach((cb) => cb());
   }
 
 
   const token = getUserToken();
   let id = useParams().id // TODO: remove when merge with Course Manager
 
- 
+  function onSubmit() {
+    if(confirm("Tem certeza que deseja sair? As alterações não salvas serão perdidas.") == true){
+      notifyOnSubmitSubscriber();
+      //TODO increses teck count when merge with Course Manager
+    }
+  }
 
   /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
@@ -97,7 +108,7 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
 
               {/** Course Sections area  */}
               <div className='flex w-full flex-col space-y-2 '>
-                  <SectionList sections={data ? data.sections : []} addSubmitCallBack={addSubmitCallBack} />
+                  <SectionList sections={data ? data.sections : []} addOnSubmitSubscriber={addOnSubmitSubscriber} />
                   <SectionForm callOnSubmit={()=>window.location.reload()}/>
               </div>
         </div>
@@ -110,6 +121,29 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
           </div>
           
         </div >
+
+        {/*Create and cancel buttons*/}
+        <div className='className="flex w-3/4 float-right space-y-4 "'>
+          <div className="flex items-center justify-between gap-4 w-full mt-8">
+            <label  htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                Cancelar e Voltar {/** Cancel */}
+            </label>
+            
+            <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label  className='underline' >
+              Salvar como Rascunho {/** Save as draft */}
+              </label>
+            </label>
+            <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+              <label onClick={onSubmit} className='py-2 px-4 h-full w-full cursor-pointer' >
+                Adicionar seções {/** Add sections */}
+              </label>
+            </label>
+          </div>
+        </div>
+
+       
+
 
     </div> 
           

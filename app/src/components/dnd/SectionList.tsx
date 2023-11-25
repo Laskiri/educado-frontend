@@ -30,12 +30,12 @@ import { Item } from './@dnd/Item';
 import { Section } from '../../interfaces/CourseDetail';
 
 interface Props {
-  sections: Array<Section>
-  addSubmitCallBack: Function
+  sections: Array<string>
+  addOnSubmitSubscriber: Function
 }
 
 
-export const SectionList = ({ sections, addSubmitCallBack }: Props) => {
+export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
   const [items, setItems] = useState(sections);
@@ -78,8 +78,8 @@ export const SectionList = ({ sections, addSubmitCallBack }: Props) => {
         onDragEnd={handleDragEnd}
       
       >
-        <SortableContext items={items.map(item => item._id)} strategy={verticalListSortingStrategy}>
-          {items.map((item, key: React.Key) => <SortableItem key={key} id={item._id} addSubmitCallBack={addSubmitCallBack} />)}
+        <SortableContext items={items.map(item => item)} strategy={verticalListSortingStrategy}>
+          {items.map((item, key: React.Key) => <SortableItem key={key} sid={item} addOnSubmitSubscriber={addOnSubmitSubscriber} />)}
         </SortableContext>
 
        

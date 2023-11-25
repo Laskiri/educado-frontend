@@ -233,10 +233,6 @@ function returnFunction(coverImage: any) {
 
   if (!data && id != "0") return <Loading /> // Loading course details
   if(error) return <NotFound/> // Course not found
-
-  console.log("data is: ")
-  console.log(data)
-
     
     return (
         <Layout meta={`Course: ${id}`}>
@@ -245,7 +241,7 @@ function returnFunction(coverImage: any) {
               <div className="w-1/4 float-left">
               </div>
               
-            <SectionCreation test='hey'/>
+            <SectionCreation/>
             {/*Everything on the right side of the site*/}
             <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
               <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
