@@ -84,4 +84,65 @@ describe('Tooltip on Course Page', () => {
 
 });
 
+describe('Create Course', () => {
+
+  before(() => {
+    cy.intercept('POST', `${BACKEND_URL}/api/auth/login`, {
+      statusCode: 202,
+      body: {
+        userInfo: {
+          id: '1',
+          name: 'Test User',
+          email: 'test@email.com'
+        },
+        token: 'testToken'
+      },
+    });
+
+    cy.visit('http://localhost:3000/login')
+    cy.get('#email-field').type('test@email.com')
+    cy.get('#password-field').type('password')
+    cy.get('#submitLoginButton').click()
+    cy.url().should('include', '/courses')
+    cy.saveLocalStorage();
+  });
+
+
+  beforeEach(() => {
+    cy.intercept('PUT', `${BACKEND_URL}/api/courses/`, {
+      statusCode: 200,
+      body: {
+        status: "draft"
+      },
+    });
+
+    cy.visit(`http://localhost:3000/courses/edit/0`)
+    cy.restoreLocalStorage();
+  });
+
+  it('Create Course', () => {
+
+    //check if title and description field is empty
+    cy.get('#title-field').should('be.empty')
+    cy.get('#description-field').should('be.empty')
+
+    //fill in the different fields
+    cy.get('#title-field').type('Test Course')
+    cy.get('#description-field').type('This is a test course.')
+    cy.get('#category-field').select('sewing')
+    cy.get('#difficulty-field').select('1')
+
+    //check if the fields are filled in
+    cy.get('#title-field').should('have.value', 'Test Course')
+    cy.get('#description-field').should('have.value', 'This is a test course.')
+    cy.get('#category-field').should('have.value', 'sewing')
+    cy.get('#difficulty-field').should('have.value', '1')
+
+    //save the course
+    cy.get('#SaveAsDraft').click()
+
+  });
+
+});
+
 export {}

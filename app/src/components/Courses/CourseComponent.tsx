@@ -149,7 +149,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
         <form className="flex h-full flex-col justify-between space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor='title'>Nome do curso</label> {/*Title*/}
-            <input type="text" defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
+            <input id="title-field" type="text" defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("title", { required: true })}
             />
@@ -161,16 +161,15 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
             {/*Field to select a level from a list of options*/}
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='level'>Nível</label> {/** Level */}
-              <select
+              <select id="difficulty-field" 
               defaultValue={data ? data.difficulty : "Selecione o nível"}
               className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("difficulty", { required: true })}>
                 {/*Hard coded options by PO, should be changed to get from db*/}
                 <option disabled> Selecione o nível</option>
-                <option value={1}>Iniciante </option> {/** Beginner */}
+                <option value={1}>Iniciante</option> {/** Beginner */}
                 <option value={2}>Intermediário</option> {/** Intermediate */}
-                <option value={3}>Avançado </option> {/** Advanced */}
-
+                <option value={3}>Avançado</option> {/** Advanced */}
               </select>
               {errors.difficulty && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
             </div>
@@ -178,7 +177,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
             {/*Field to choose a category from a list of options*/}
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='category'>Categoria</label> {/** Category */}
-              <select
+              <select id="category-field" 
                 defaultValue={data ? data.category : "Selecione a categoria"}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("category", { required: true })}>
@@ -189,7 +188,6 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
               </select>
               {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
             </div>
-
           </div>
 
           {/*Field to input the description of the course*/}
@@ -198,7 +196,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
               <label className='text-left' htmlFor='description'>Descrição </label> {/** Description */} 
               <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
-            <textarea maxLength={400} rows={4}
+            <textarea id="description-field" maxLength={400} rows={4}
             defaultValue={data ? data.description : ""}
             placeholder={data ? data.description : ""}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
@@ -210,7 +208,6 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
             <div className='text-right' >
             <label htmlFor="">{charCount}/400</label>
             </div>
-          
           </div> 
           
           <div>
@@ -233,7 +230,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
               </label>
               
               <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                <button type="submit" className='underline'>
+                <button id="SaveAsDraft" type="submit" className='underline'>
                   Salvar como Rascunho {/** Save as draft */}
                 </button>
               </label>
