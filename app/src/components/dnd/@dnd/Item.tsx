@@ -1,17 +1,17 @@
 import { forwardRef } from 'react';
 
 // icons
-import { ChevronUpDownIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+import { mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
+import Icon from '@mdi/react';
 
 export const Item = forwardRef(({ id, ...props }: { id: any }, ref:React.ForwardedRef<null>) => {
   return (
-    <div {...props} ref={ref} className="bg-white w-full flex justify-between items-center border rounded p-2">
-      <div className='flex space-x-2'>
-        <ChevronUpDownIcon width={24} />
-        <p className='font-semibold'>{id}</p>
-      </div>
+    <div {...props} ref={ref} className="bg-gray-300  pl-3.5 pt-2 w-14 flex justify-center items-center border rounded p-2">
+      <div className='flex space-x-2'>        
+      
+        <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
 
-      <PencilSquareIcon width={20} className="text-blue-500 hover:text-blue-700" />
+      </div>
     </div>
   )
 });

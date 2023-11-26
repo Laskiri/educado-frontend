@@ -29,7 +29,13 @@ import { Item } from './@dnd/Item';
 // Intefaces
 import { Section } from '../../interfaces/CourseDetail';
 
-export const SectionList = ({ sections }: { sections: Array<Section> }) => {
+interface Props {
+  sections: Array<string>
+  addOnSubmitSubscriber: Function
+}
+
+
+export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
   const [items, setItems] = useState(sections);
@@ -63,21 +69,24 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
   }
 
   return (
-    <div className='flex flex-col space-y-2'>
+    <div className='w-full'>
       <DndContext
         modifiers={[restrictToVerticalAxis]}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+      
       >
-        <SortableContext items={items.map(item => item._id)} strategy={verticalListSortingStrategy}>
-          {items.map((item, key: React.Key) => <SortableItem key={key} item={item} />)}
+        <SortableContext items={items.map(item => item)} strategy={verticalListSortingStrategy}>
+          {items.map((item, key: React.Key) => <SortableItem key={key} sid={item} addOnSubmitSubscriber={addOnSubmitSubscriber} />)}
         </SortableContext>
 
-        <DragOverlay>
+       
+        <DragOverlay className='w-full' >
           {activeId ? <Item id={activeId} /> : null}
         </DragOverlay>
+        
       </DndContext>
     </div>
   );

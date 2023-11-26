@@ -7,6 +7,7 @@ export interface Main {
 
 // TODO: Make sure this is in accordance with the backend
 
+
 export interface Course {
   _id?:               string;
   title:             string;

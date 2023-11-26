@@ -26,7 +26,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
       <Link
-        to={`/courses/edit/${course._id}`}
+        to={`/courses/manager/${course._id}`}
         className="w-full block h-full relative group"
       >
 

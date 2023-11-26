@@ -20,22 +20,22 @@ const client = axios.create({
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
  */
 
-// Create a new course
-const createCourse = async ({ title, category, difficulty, estimatedHours, description, creator, status }: Course, token: string) => {
-  const course = await axios.put(
+
+const createCourse = async (data: Course, token: string) => {
+  return await axios.put(
+
     `${BACKEND_URL}/api/courses`,
     {
-      title: title,
-      description: description,
-      category: category,
-      difficulty: difficulty,
-      creator: creator,
-      status: status
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      difficulty: data.difficulty,
+      creator: data.creator,
+      status: data.status
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );
 
-	return course.data;
 };
 
 // TODO: Foundation for updating coverimage. Implement next PR. Possibly merge with updateCourseDetail
@@ -94,9 +94,11 @@ const getCourseCategories = async (url: string, token: string) => {
  * Update a specific course
  * @param data the data of the course to be updated 
  * @param id The id of the course
+ * @param token The token of the user
  * @returns Confirmation of the update
  */
 const updateCourseDetail = async (data: Course, id: string | undefined, token: string) => {
+
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
     data,

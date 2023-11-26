@@ -27,6 +27,8 @@ import { Course } from '../../interfaces/Course'
 interface CourseComponentProps {
   token: string;
   id: string | undefined;
+  increaseTickHandler: Function;
+  setId: Function;
 }
 
 
@@ -37,7 +39,7 @@ interface CourseComponentProps {
  * @param id The course id
  * @returns HTML Element
  */
-export const CourseComponent = ({token, id}: CourseComponentProps) => {
+export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseComponentProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
@@ -45,6 +47,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
   const [statusChange, setStatusChange] = useState<boolean>(false);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [charCount, setCharCount] = useState<number>(0);
+  const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const {register, handleSubmit, formState: { errors } } = useForm<Course>();
 
 
@@ -103,7 +106,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
       setStatusChange(false);
     }
   
-    if (confirm("Você tem certeza?") == true) {
+    if (!isLeaving || confirm("Você tem certeza?") === true ) {
       StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
   
       const changes: Course = {
@@ -120,17 +123,43 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
       // StorageService.deleteFile(id, token);
   
       // Update course details
+      // When the user press the button to the right, the tick changes and it goes to the next component
+      // When the user press the draft button, it saves as a draft and goes back to the course list
       if(id != "0"){
         CourseServices.updateCourseDetail(changes, id, token )
-        .then(res => {toast.success('Curso atualizado'); setStatusSTR(changes.status);}) // Course updated
+        .then(res => {
+          toast.success('Curso atualizado');
+          setStatusSTR(changes.status); 
+          if(isLeaving){
+            window.location.href = "/courses";
+          }
+          else{
+            if(id === "0"){
+             setId(res.data._id)
+            }
+            increaseTickHandler();
+          }
+        }) // Course updated
         .catch(err => toast.error(err)) // Error updating course
         
       } else {
         CourseServices.createCourse(changes, token)
-        .then(res => toast.success('Curso criado')) // Course created
+        .then(res => {
+          toast.success('Curso criado'); 
+          if(isLeaving){
+            window.location.href = "/courses";
+          }
+          else{
+            if(id === "0"){
+             setId(res.data._id)
+            }
+            increaseTickHandler();
+          }
+        }) // Course created
         .catch(err => toast.error(err)) // Error creating course
       }
     }
+    setIsLeaving(false);
   }
 
   if (!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
@@ -238,9 +267,9 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
                 </button>
               </label>
               <label htmlFor='course-create' className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                <label onClick={()=>navigate("/sections-creation")} className='py-2 px-4 h-full w-full cursor-pointer' >
+                <button  className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
-                </label>
+                </button>
               </label>
             </div>
           </div>
