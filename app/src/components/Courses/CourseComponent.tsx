@@ -15,19 +15,16 @@ import { BACKEND_URL } from '../../helpers/environment';
 
 // Components
 import { Dropzone } from '../Dropzone/Dropzone'
-import { ToolTip } from '../Courses/ToolTip'
-import Loading from '../../pages/Loading'
+import { ToolTipIcon } from '../ToolTip/ToolTipIcon'
 import NotFound from '../../pages/NotFound'
-
-// Icons
-import Icon from '@mdi/react';
-import { mdiInformationSlabCircleOutline } from '@mdi/js';
+import Loading from '../general/Loading'
+import Layout from '../Layout'
 
 // Interface
 import { Course } from '../../interfaces/Course'
 
 
-interface CourseCreationProps {
+interface CourseComponentProps {
   token: string;
   id: string | undefined;
 }
@@ -40,24 +37,18 @@ interface CourseCreationProps {
  * @param id The course id
  * @returns HTML Element
  */
-export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
+export const CourseComponent = ({token, id}: CourseComponentProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
-  const [coverImgPreview, setCoverImgPreview] = useState<string>('')
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [statusChange, setStatusChange] = useState<boolean>(false);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [charCount, setCharCount] = useState<number>(0);
-  const {register, handleSubmit, formState: { errors } } = useForm<Course>()
-  const [toolTip, setToolTip] = useState<JSX.Element[]>
-  ([
-    <ToolTip callBack={setToolTipIndex} textContent='🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem! ' myIndex={0} maxIndex={2}></ToolTip>,
-    <ToolTip callBack={setToolTipIndex} textContent='😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos' myIndex={1} maxIndex={2}></ToolTip>,
-  ]);
+  const {register, handleSubmit, formState: { errors } } = useForm<Course>();
+
 
   const navigate = useNavigate()
-
   /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
      * 
@@ -139,7 +130,7 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
     }
   }
 
-  if (!data && id != "0") return <Loading /> // Loading course details
+  if (!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
   if(error) return <NotFound/> // Course not found
 
 
@@ -148,15 +139,7 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
       <div className='w-full flex flex-row py-5'>
         <h1 className="text-2xl text-left font-bold justify-between space-y-4"> Informações gerais </h1>
         {/** Tooltip for course header*/}
-        <div className="flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(0)}>
-          <Icon
-            path={mdiInformationSlabCircleOutline}
-            size={1}
-            className="text-primaryDarkBlue m-1" // Add cursor-pointer for hover effect
-          />
-        
-          {toolTipIndex ===0? toolTip[0] : <div></div> }
-        </div>
+        <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"} tooltipAmount={2} callBack={setToolTipIndex}/>
       </div>
 
       {/*White bagground*/}
@@ -213,14 +196,7 @@ export const CourseCreationCom = ({token, id}: CourseCreationProps) => {
           <div className="flex flex-col space-y-2 ">
             <div className="flex items-center space-x-2"> {/* Container for label and icon */}
               <label className='text-left' htmlFor='description'>Descrição </label> {/** Description */} 
-              <div className="flex flex-col space-y-2 text-left" onMouseOver={()=>setToolTipIndex(1)}>
-                <Icon
-                  path={mdiInformationSlabCircleOutline}
-                  size={1}
-                  className="text-primaryDarkBlue" // Add cursor-pointer for hover effect
-                />
-                {toolTipIndex ===1? toolTip[1] : <div></div> }
-              </div>
+              <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea maxLength={400} rows={4}
             defaultValue={data ? data.description : ""}
