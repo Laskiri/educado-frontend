@@ -35,8 +35,8 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
-  const CourseCreation = () => {
-    navigate("/courses/creation/0");
+  const CourseManager = () => {
+    navigate("/course/manager/0");
   }
 
   const { data, error } = useSWR(
@@ -60,7 +60,7 @@ const Courses = () => {
             {/* Header and create course button */}
             <div className='flex flex-row no-wrap'>
               <h1 className='text-3xl font-bold flex-1'>Confira seus cursos</h1>
-              <label htmlFor="course-create" onClick={CourseCreation} className="std-button flex modal-button  space-x-2">
+              <label htmlFor="course-create" onClick={CourseManager} className="std-button flex modal-button  space-x-2">
                 <PencilSquareIcon className='w-5 h-5' />
                 <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
               </label>
@@ -88,7 +88,7 @@ const Courses = () => {
                 step-by-step instructions to develop your first course. */}
                 <p>Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.</p>
                 {/* Create course button */}
-                <label htmlFor="course-create" onClick={CourseCreation} className="std-button flex modal-button  space-x-2">
+                <label htmlFor="course-create" onClick={CourseManager} className="std-button flex modal-button  space-x-2">
                 <PencilSquareIcon className='w-5 h-5' />
                 <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
               </label>

@@ -5,6 +5,8 @@ import { toast } from 'react-toastify'
 import useSWR from 'swr'
 import { Dropzone } from '../components/Dropzone/Dropzone'
 
+//DELETE THIS
+import Checklist from '../components/Checklist'
 
 // Interfaces
 import { StorageFile } from '../interfaces/File'
@@ -237,9 +239,12 @@ function returnFunction(coverImage: any) {
     return (
         <Layout meta={`Course: ${id}`}>
             {/*Everything on the left side of the site*/}
-            <div className="m-8"> 
+            <Checklist></Checklist>
+            {/*
               <div className="w-1/4 float-left">
               </div>
+            */}
+            <div className="m-8"> 
               
             <SectionCreation/>
             {/*Everything on the right side of the site*/}

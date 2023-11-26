@@ -4,10 +4,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-
-// Contexts
-import useToken from '../hooks/useToken';
-
 // Services
 import SectionServices from '../services/section.services';
 import ExerciseServices from '../services/exercise.services';
