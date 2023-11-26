@@ -1,6 +1,6 @@
 import React from 'react';
 
-const DataDeletionRequest: React.FC = () => {
+const AccountDeletionRequest: React.FC = () => {
   const containerStyle: React.CSSProperties = {
     fontFamily: 'Arial, sans-serif',
     maxWidth: '600px',
@@ -29,16 +29,16 @@ const DataDeletionRequest: React.FC = () => {
 
   return (
     <div style={containerStyle}>
-      <h2 style={headingStyle}>Data Deletion Request</h2>
+      <h2 style={headingStyle}>Account Deletion Request</h2>
       <p>
-        If you wish to delete specific data associated with your account on Educado, please contact us at{' '}
+        To delete your entire account and associated data on Educado, please contact us at{' '}
         <a href="mailto:app.educado@gmail.com" style={emailLinkStyle}>
           app.educado@gmail.com
         </a>.
       </p>
       <p>
-        Upon processing your request, the specified data such as personal identifiable information, course
-        subscriptions, and related progress will be permanently removed from our systems.
+        Upon processing your request, all personal identifiable information and data associated with your account will
+        be permanently removed from our systems.
       </p>
       <p>
         For any further inquiries or assistance, please don't hesitate to contact us via{' '}
@@ -50,4 +50,4 @@ const DataDeletionRequest: React.FC = () => {
   );
 };
 
-export default DataDeletionRequest;
+export default AccountDeletionRequest;
