@@ -1,6 +1,7 @@
 import Checklist from "../components/Checklist"
 import Layout from "../components/Layout"
 import { CourseCreationCom } from "../components/Courses/CourseCreationCom"
+import { SectionCreation } from "../components/SectionCreation"
 import { useState } from "react"
 import { useParams } from "react-router"
 
@@ -19,7 +20,7 @@ const CourseManager = () => {
   const [formComponents, setFormComponents] = useState<JSX.Element[]>
   ([
   <CourseCreationCom token={token} id={id} tickChangeHandler={tickChangeHandler} setId={setId}/>
-  ,<p>Section</p>
+  ,<SectionCreation id={id ?? ""} token={token} tickChangeHandler={tickChangeHandler}/>
 ])
       
   function tickChangeHandler() {

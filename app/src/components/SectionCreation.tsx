@@ -22,16 +22,15 @@ import CourseServices from '../services/course.services';
 
 interface Inputs {
     id: string,
+    token: string,
+    tickChangeHandler: Function
 }
 
 
 
 
 // Create section
-export const SectionCreation = ({ id }: Inputs ) => {
-  
-  const token = getUserToken();
- 
+export const SectionCreation = ({ id,token, tickChangeHandler}: Inputs ) => {
   
   
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
@@ -58,7 +57,7 @@ export const SectionCreation = ({ id }: Inputs ) => {
   function onSubmit() {
     if(confirm("Tem certeza que deseja sair? As alterações não salvas serão perdidas.") == true){
       notifyOnSubmitSubscriber();
-      //TODO increses teck count when merge with Course Manager
+      tickChangeHandler();
     }
   }
 
@@ -100,13 +99,13 @@ export const SectionCreation = ({ id }: Inputs ) => {
        
       
       <div className="">
-        <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
           <h1 className="text-2xl text-left font-bold justify-between space-y-4">Seções do curso </h1>
 
           
         </div>
         
-        <div className="flex w-3/4 float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
 
               {/** Course Sections area  */}
               <div className='flex w-full flex-col space-y-2 '>
@@ -115,7 +114,7 @@ export const SectionCreation = ({ id }: Inputs ) => {
               </div>
         </div>
 
-        <div className="flex w-3/4 float-right space-y-4 ">
+        <div className="flex w-full float-right space-y-4 ">
           <div className="bg-guideYellow h-10 w-full rounded flex flex-col-2 space-x-2 items-center mb-5 ">
                       <Icon path={mdiAlertCircle} size={1} className="text-warningOrange ml-2 items-center " />
                           <div className='text-sm font-bold ml-2 items-center'>Fique atento!  </div>
@@ -125,7 +124,7 @@ export const SectionCreation = ({ id }: Inputs ) => {
         </div >
 
         {/*Create and cancel buttons*/}
-        <div className='className="flex w-3/4 float-right space-y-4 "'>
+        <div className='className="flex w-full float-right space-y-4 "'>
           <div className="flex items-center justify-between gap-4 w-full mt-8">
             <label  htmlFor='course-create' className="cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-warning w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 Cancelar e Voltar {/** Cancel */}
