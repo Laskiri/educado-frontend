@@ -60,6 +60,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
     const res:any = await CourseServices.getCourseDetail(url, token)
 
     setStatusSTR(res.status);
+    setCharCount(res.description.length);
     return res;
   }
 
@@ -71,10 +72,12 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
     )
 
     // Fetch Bucket Details
-    var { data: bucketData, error: bucketError } = useSWR(
-      token ? [`${BACKEND_URL}/api/bucket/${data?.coverImg}`, token] : null,
-      StorageService.getFile
-    )
+    if (data?.coverImg){
+      var { data: bucketData, error: bucketError } = useSWR(
+        token ? [`${BACKEND_URL}/api/bucket/${data?.coverImg}`, token] : null,
+        StorageService.getFile
+      )
+    }
   }
 
    
