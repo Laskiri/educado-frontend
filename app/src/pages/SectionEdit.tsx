@@ -129,9 +129,10 @@ const deleteSection = async () => {
     if (sectionError) return <p>"An error has occurred."</p>;
     if (!sectionData || !exerciseData || !lectureData) return <Loading/>;
 
-    const cid =  sectionData.parentCourse;
+    const cid = sectionData.parentCourse;
 
    // Limiter for the number of exercises and lectures to be < 10
+	 console.log(sectionData)
    const limit = sectionData.components.length;
    // Limiter for the number of lectures to be < 7
    const lectureLimit = sectionData.components.filter((component: any) => component.type === "lecture").length;
@@ -207,7 +208,7 @@ const deleteSection = async () => {
 					{/** Lecture list area */}
 					<div className='flex flex-col space-y-4 mb-4' id='lectures'>
 						{/** Tooltip for lectures and exercises of section*/}<div className='flex flex-row-2'>                            
-						<label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
+						<label htmlFor='description'>{limit}/10 items</label>{/** PLACEHOLDER TEXT */}
 							<div className='flex'>
 								<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
 							</div>
