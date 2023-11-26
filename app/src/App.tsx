@@ -19,6 +19,10 @@ import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
 
+// Delete user request for app
+import DataDeletionRequest from "./pages/DataDeletionRequest";
+import AccountDeletionRequest from "./pages/AccountDeletionRequest";
+
 function App() {
   // router
   const router = createBrowserRouter([
@@ -78,6 +82,14 @@ function App() {
     {
       path: "/welcome",
       element: <NonProtectedRoute><Welcome /></NonProtectedRoute>,
+    },
+    {
+      path: "/data_deletion_request",
+      element: <NonProtectedRoute><DataDeletionRequest /></NonProtectedRoute>,
+    },
+    {
+      path: "/account_deletion_request",
+      element: <NonProtectedRoute><AccountDeletionRequest /></NonProtectedRoute>,
     }
   ]
 )
