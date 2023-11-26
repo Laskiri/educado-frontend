@@ -50,7 +50,7 @@ export const Dropzone = ({callBack, inputType}:DropzoneProps) => {
                                 inputType === "video" ? 
                                 <input id="file-upload" name="file-upload" accept="video/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
                                 :
-                                <p>Tipo de arquivo não reconhecido</p>{/*File type not recognized*/}
+                                <p>Tipo de arquivo não reconhecido</p> /*File type not recognized*/
                                 
                             }
                         </label>

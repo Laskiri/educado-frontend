@@ -237,7 +237,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
                   Salvar como Rascunho {/** Save as draft */}
                 </button>
               </label>
-              <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+              <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
                 <label onClick={()=>navigate("/sections-creation")} className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
                 </label>

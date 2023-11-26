@@ -1,6 +1,7 @@
 import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
 
@@ -18,9 +19,6 @@ import ExerciseServices from "../../services/exercise.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";
-
-// Hooks
-import useToken from "../../hooks/useToken";
 
 
 export interface ExercisePartial {
@@ -45,7 +43,6 @@ export const CreateExercise = ({sid}:Inputs) => {
     const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
     
     const onExerciseSave: SubmitHandler<any> = data => createExercise(data);
-    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
 
     /** Token doesnt work, reimplement when it token is implemented */
