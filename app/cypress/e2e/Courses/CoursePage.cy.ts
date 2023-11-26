@@ -2,6 +2,9 @@ import "cypress-localstorage-commands";
 
 const BACKEND_URL = Cypress.env('BACKEND_URL')
 
+/**
+ * Test the tool tips on the course page
+ */
 describe('Tooltip on Course Page', () => {
 
   before(() => {
@@ -84,6 +87,9 @@ describe('Tooltip on Course Page', () => {
 
 });
 
+/**
+ * Test the create course page 
+ */
 describe('Create Course', () => {
 
   before(() => {
