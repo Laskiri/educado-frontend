@@ -209,9 +209,11 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
 					{/** Lecture list area */}
 					<div className='flex flex-col space-y-4 mb-4' id='lectures'>
-						{/** Tooltip for lectures and exercises of section*/}
-						<div className='flex'>
-							<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+						{/** Tooltip for lectures and exercises of section*/}<div className='flex flex-row-2'>                            
+						<label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
+							<div className='flex'>
+								<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+							</div>
 						</div>
 						<h1 className='text-xl  font-medium'>Aulas</h1> {/** Lecture*/}
 						<LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
@@ -249,13 +251,7 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 						<div></div>
 					}
 
-                    {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-                    <div className='flex flex-row-2'>                            
-                        <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
-
-                        {/** Tooltip for description of section*/}
-                        <ToolTipIcon index={3} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
-                    </div>
+                    
                 </div>
             </div>
         </Layout>
