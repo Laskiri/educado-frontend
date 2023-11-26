@@ -61,7 +61,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             <div className="flex flex-row justify-between">
               {/* Course rating */}
               <div className='w-[8rem]'>
-                <StarRating rating={course.rating} />
+                <StarRating rating={course.rating ?? 0} />
               </div>
               {/* Subsriber count */}
               <div className='flex flex-row'>
