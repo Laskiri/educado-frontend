@@ -36,7 +36,7 @@ describe('Tooltip on Course Page', () => {
         _id: 1,
         title: "Test Course",
         category: "sewing",
-        coverImg: null,
+        coverImg: "",
         description: "This is a test course.",
         creator: "Test User",
         status: "published",
@@ -52,7 +52,7 @@ describe('Tooltip on Course Page', () => {
     });
 
     cy.restoreLocalStorage();
-    cy.visit(`http://localhost:3000/courses/edit/1`)
+    cy.visit(`http://localhost:3000/courses/manager/1`)
   });
 
 
@@ -123,7 +123,7 @@ describe('Create Course', () => {
     });
 
     cy.restoreLocalStorage();
-    cy.visit(`http://localhost:3000/courses/edit/0`)
+    cy.visit(`http://localhost:3000/courses/manager/0`)
   });
 
   it('Create Course', () => {
