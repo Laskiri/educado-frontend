@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-import Loading from '../pages/Loading';
-
 interface Props {
     tickChange: number;
 }
 
 function Checklist ({tickChange}: Props)  {
-
-  
     
     return (
     
@@ -27,12 +23,12 @@ function Checklist ({tickChange}: Props)  {
 
                 {/* General Information */}
                 {tickChange === 0 ?
-                        <label htmlFor="check1" className="pl-2 flex items-center border-l-4 border-primaryDarkBlue" >
-                            <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check1" disabled />
+                        <label htmlFor="check1" className="pl-2 flex items-center border-l-4 border-primary" >
+                            <input className='mr-2 text-primary rounded' type="checkbox" id="check1" disabled />
                         Informações gerais</label> 
                     :
                     <label htmlFor="check1" className="pl-3 flex items-center" >
-                        <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check1" disabled checked/>
+                        <input className='mr-2 text-primary rounded' type="checkbox" id="check1" disabled checked/>
                     Informações gerais</label>
                 }
 
@@ -40,16 +36,16 @@ function Checklist ({tickChange}: Props)  {
                 {/* Course sections */}
                 {tickChange === 0 ?
                 <label htmlFor="check2" className="pl-3 flex items-center" >
-                <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check2" disabled/>
+                <input className='mr-2 text-primary rounded' type="checkbox" id="check2" disabled/>
                 Seções do curso</label>
                 :
                 tickChange === 1 ?
-                <label htmlFor="check2" className="pl-2 flex items-center border-l-4 border-primaryDarkBlue" >
-                    <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check2" disabled/>
+                <label htmlFor="check2" className="pl-2 flex items-center border-l-4 border-primary" >
+                    <input className='mr-2 text-primary rounded' type="checkbox" id="check2" disabled/>
                 Seções do curso</label>
                 :
                 <label htmlFor="check2" className="pl-3 flex items-center" >
-                    <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check2" disabled checked/>
+                    <input className='mr-2 text-primary rounded' type="checkbox" id="check2" disabled checked/>
                 Seções do curso</label>
                 }
 
@@ -59,11 +55,11 @@ function Checklist ({tickChange}: Props)  {
                 {/* Review course */}
                 {tickChange < 2 ?
                     <label htmlFor="check3" className="pl-3 flex items-center" >
-                        <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check3" disabled/>
+                        <input className='mr-2 text-primary rounded' type="checkbox" id="check3" disabled/>
                     Revisar curso</label> 
                     :
-                    <label htmlFor="check3" className="pl-2 flex items-center border-l-4 border-primaryDarkBlue" >
-                        <input className='mr-2 text-primaryDarkBlue rounded' type="checkbox" id="check3" disabled/>
+                    <label htmlFor="check3" className="pl-2 flex items-center border-l-4 border-primary" >
+                        <input className='mr-2 text-primary rounded' type="checkbox" id="check3" disabled/>
                     Revisar curso</label>
                 }
                     

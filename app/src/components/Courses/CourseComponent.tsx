@@ -27,7 +27,7 @@ import { Course } from '../../interfaces/Course'
 interface CourseComponentProps {
   token: string;
   id: string | undefined;
-  increaseTickHandler: Function;
+  setTickChange: Function;
   setId: Function;
 }
 
@@ -39,7 +39,7 @@ interface CourseComponentProps {
  * @param id The course id
  * @returns HTML Element
  */
-export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseComponentProps) => {
+export const CourseComponent = ({token, id, setTickChange, setId}: CourseComponentProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
@@ -73,19 +73,11 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
       token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
       getData
     )
-
-    // Fetch Bucket Details
-    if (data?.coverImg){
-      var { data: bucketData, error: bucketError } = useSWR(
-        token ? [`${BACKEND_URL}/api/bucket/${data?.coverImg}`, token] : null,
-        StorageService.getFile
-      )
-    }
   }
 
    
   useEffect(() => {
-    // get categories from db
+    //TODO: get categories from db
     let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
     setCategoriesOptions(inputArray.map((categoryENG: string, key: number) => (
       <option value={categoryENG} key={key} >{categories[inputArray[key]]?.br}</option>
@@ -105,10 +97,11 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
       }
       setStatusChange(false);
     }
-  
+    
     if (!isLeaving || confirm("Você tem certeza?") === true ) {
-      StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
   
+      StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
+
       const changes: Course = {
         title: data.title,
         description: data.description,
@@ -119,9 +112,9 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
         estimatedHours: data.estimatedHours,
         coverImg: id+"_"+"c"
       }
-  
+
       // StorageService.deleteFile(id, token);
-  
+
       // Update course details
       // When the user press the button to the right, the tick changes and it goes to the next component
       // When the user press the draft button, it saves as a draft and goes back to the course list
@@ -129,43 +122,42 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
         CourseServices.updateCourseDetail(changes, id, token )
         .then(res => {
           toast.success('Curso atualizado');
-          setStatusSTR(changes.status); 
+          setStatusSTR(changes.status);
+
           if(isLeaving){
             window.location.href = "/courses";
+          
+          } else{ 
+            setTickChange(1); 
           }
-          else{
-            if(id === "0"){
-             setId(res.data._id)
-            }
-            increaseTickHandler();
-          }
+
         }) // Course updated
         .catch(err => toast.error(err)) // Error updating course
         
       } else {
         CourseServices.createCourse(changes, token)
         .then(res => {
-          toast.success('Curso criado'); 
+          toast.success('Curso criado');
+
           if(isLeaving){
             window.location.href = "/courses";
-          }
-          else{
-            if(id === "0"){
-             setId(res.data._id)
-            }
-            increaseTickHandler();
+            
+          } else{
+              setId(res.data._id)
+              
           }
         }) // Course created
         .catch(err => toast.error(err)) // Error creating course
       }
     }
+
     setIsLeaving(false);
   }
 
-  if (!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
+  if(!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
   if(error) return <NotFound/> // Course not found
 
-
+  
   return (
     <div>
       <div className='w-full flex flex-row py-5'>
@@ -208,13 +200,13 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
 
             {/*Field to choose a category from a list of options*/}
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
-              <label htmlFor='category'>Categoria</label> {/** Category */}
+              <label htmlFor='category'>Categoria</label> 
               <select id="category-field"
                 defaultValue={data ? data.category : "Selecione a categoria"}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("category", { required: true })}>
-                <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
                 {/*Hard coded options by PO, should be changed to get from db*/}
+                <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>,
                 {categoriesOptions}
 
               </select>
@@ -262,12 +254,12 @@ export const CourseComponent = ({token, id, increaseTickHandler, setId}: CourseC
               </label>
               
               <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                <button id="SaveAsDraft" type="submit" className='underline'>
+                <button id="SaveAsDraft" onClick={()=>setIsLeaving(true)} type="submit" className='underline'>
                   Salvar como Rascunho {/** Save as draft */}
                 </button>
               </label>
-              <label htmlFor='course-create' className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                <button  className='py-2 px-4 h-full w-full cursor-pointer' >
+              <label htmlFor='course-create' className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+                <button type="submit" id="addCourse" className='py-2 px-4 h-full w-full cursor-pointer'>
                   Adicionar seções {/** Add sections */}
                 </button>
               </label>

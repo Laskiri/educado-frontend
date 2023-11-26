@@ -126,11 +126,11 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
   return (
 
     <div >
-      <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg m-4'>
+      <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg my-4'>
           <input type="checkbox" className="peer w-4/5 " defaultChecked={data.title ==="Nova seção"} onChange={changeArrowDirection} ref={openRef} />
 
           
-            <div className="collapse-title flex flex-row-2  rounded-top text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
+            <div className="collapse-title flex flex-row-2  rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
               <div className='flex w-5/6 '>
                 <Icon path={arrowDirction} size={1} />
                 <p className="font-semibold">
@@ -138,13 +138,13 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                 </p>
                 </div>
                 <div className='flex collapse ml-80'>
-                    <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
+                    <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primary'>
                       {/**delete and move buttons on the left side of the section headers */}
                       <Icon path={mdiDeleteCircle} size={1.2}></Icon>
                       
                     </div>  
                     <div  className="flex w-32 collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
-                    <div className='btn btn-ghost hover:bg-transparent hover:text-primaryDarkBlue'>
+                    <div className='btn btn-ghost hover:bg-transparent hover:text-primary'>
                       {/**delete and move buttons on the left side of the section headers */}
                       <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
                       
@@ -162,7 +162,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                 <div className="pt-5  ">
                   <label htmlFor='title '>Nome </label> {/*Title of section*/}
                   <input type="text"  placeholder={data.title?? "Nome da seção"}
-                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     {...registerSection("title", { required: true })}
                     onChange={(e) => setTitle(e.target.value) } //update the section title
                     
@@ -173,7 +173,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
                 <div className="pt-5">
                   <label htmlFor='title'>Descrição </label> {/*description of section*/}
                   <textarea placeholder={data.description ??"Descrição da seção"}
-                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     {...registerSection("description", { required: true })}
                     onChange={(e) => setDescription(e.target.value) } //update the section title
 

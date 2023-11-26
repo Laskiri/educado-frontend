@@ -47,7 +47,7 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
       <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg '>
         <input type="checkbox" className="peer w-3/4" onChange={changeArrowDirection} />
 
-        <div className="collapse-title rounded-top hover:text-gray-700 text-primaryDarkBlue normal-case peer-checked:bg-primaryDarkBlue peer-checked:text-white ">
+        <div className="collapse-title rounded-top hover:text-gray-700 text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
             <div className=' flex float-left'>
               <Icon path={arrowDirction} size={1} />
               <p className="font-semibold">
@@ -56,8 +56,8 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
             </div>
           </div> 
           {/**delete and move buttons on the left side of the section headers */}
-            <label className=' btn std-btn flex absolute right-0 mt-2 border border-transparent  bg-transparent hover:bg-transparent peer-checked:text-white text-primaryDarkBlue' onMouseUpCapture={changeOrder}><Icon path={mdiDotsVerticalCircle} size={1.2}></Icon></label>
-            <label className='btn std-btn flex absolute right-16 mt-2  border border-transparent bg-transparent hover:bg-transparent peer-checked:text-white text-primaryDarkBlue' onMouseDownCapture={cancelSection}><Icon path={mdiDeleteCircle} size={1.2}></Icon></label>
+            <label className=' btn std-btn flex absolute right-0 mt-2 border border-transparent  bg-transparent hover:bg-transparent peer-checked:text-white text-primary' onMouseUpCapture={changeOrder}><Icon path={mdiDotsVerticalCircle} size={1.2}></Icon></label>
+            <label className='btn std-btn flex absolute right-16 mt-2  border border-transparent bg-transparent hover:bg-transparent peer-checked:text-white text-primary' onMouseDownCapture={cancelSection}><Icon path={mdiDeleteCircle} size={1.2}></Icon></label>
 
           <div className="collapse-content w-full">
             <div className="flex flex-col rounded-lg h-100  w-full rounded space-2  p-4 px-128 space-y-5">
@@ -65,7 +65,7 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
               <div className=" ">
                       <label htmlFor='title'>Nome </label> {/*Title of section*/}
                       <input type="text"  placeholder={"Nome da seção "+index} onChange={(e) => setSectionTitle(e.target.value)}
-                        className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                       
                     </div>
@@ -73,7 +73,7 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
                 <div className="">
                       <label htmlFor='title'>Descrição </label> {/*description of section*/}
                       <input type="text" placeholder={"Descrição da seção"}
-                        className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                        className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       />
                       
                     </div>
@@ -91,10 +91,10 @@ export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> 
                           <Icon path={mdiPlus} size={1} className=" " />
                           Adicionar Exercício</p>
                         </label>
-                   </div>
+                    </div>
 
-                   {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-                   <div className='flex flex-row-reverse'>                            
+                    {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+                    <div className='flex flex-row-reverse'>                            
                         <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
                     </div>
 
