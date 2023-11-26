@@ -30,7 +30,7 @@ import { Course } from '../../interfaces/Course'
 interface CourseCreationProps {
   token: string;
   id: string | undefined;
-  tickChangeHandler: Function;
+  increaseTickHandler: Function;
   setId: Function;
 }
 
@@ -40,11 +40,11 @@ interface CourseCreationProps {
  * 
  * @param token The user token
  * @param id The course id
- * @param tickChangeHandler The function to change the tick in the checklist
+ * @param increaseTickHandler The function to change the tick in the checklist
  * @param setId The function to set the course id
  * @returns HTML Element
  */
-export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseCreationProps) => {
+export const CourseCreationCom = ({token, id, increaseTickHandler: tickChangeHandler, setId}: CourseCreationProps) => {
 
   const [coverImg, setCoverImg] = useState<File | null>()
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
@@ -286,7 +286,7 @@ export const CourseCreationCom = ({token, id, tickChangeHandler, setId}: CourseC
                 Cancelar e Voltar {/** Cancel */}
               </label>
               
-              <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label htmlFor='course-create' className="ml-54 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 <button type="submit" onClick={()=>setIsLeaving(true)} className='underline'>
                   Salvar como Rascunho {/** Save as draft */}
                 </button>

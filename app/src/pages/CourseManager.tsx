@@ -19,15 +19,22 @@ const CourseManager = () => {
   const [tickChange, setTickChange] = useState<number>(0)
   const [formComponents, setFormComponents] = useState<JSX.Element[]>
   ([
-  <CourseCreationCom token={token} id={id} tickChangeHandler={tickChangeHandler} setId={setId}/>
-  ,<SectionCreation id={id ?? ""} token={token} tickChangeHandler={tickChangeHandler}/>
+  <CourseCreationCom token={token} id={id} increaseTickHandler={increaseTickHandler} setId={setId}/>
+  ,<SectionCreation id={id ?? ""} token={token} increaseTickHandler={increaseTickHandler} decreaseTickHandler={decreaseTickHandler}/>
 ])
       
-  function tickChangeHandler() {
+  function increaseTickHandler() {
       if (tickChange < formComponents.length-1){
           setTickChange(tickChange+1);
       } 
       else {setTickChange(0)}
+  }
+
+  function decreaseTickHandler() {
+      if (tickChange > 0){
+          setTickChange(tickChange-1);
+      } 
+      else {setTickChange(formComponents.length-1)}
   }
 
   function setId(idInput: string){
