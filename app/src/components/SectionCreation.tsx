@@ -29,8 +29,12 @@ interface Inputs {
 
 // Create section
 export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
+  
+  const token = getUserToken();
+  let id = useParams().id // TODO: remove when merge with Course Manager
+  
+  
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
-
   function addOnSubmitSubscriber(callback: Function) {
     //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [
@@ -50,9 +54,7 @@ export const SectionCreation = (/*{ id }: Inputs set in remove when merge with C
   }
 
 
-  const token = getUserToken();
-  let id = useParams().id // TODO: remove when merge with Course Manager
-
+  
   function onSubmit() {
     if(confirm("Tem certeza que deseja sair? As alterações não salvas serão perdidas.") == true){
       notifyOnSubmitSubscriber();
