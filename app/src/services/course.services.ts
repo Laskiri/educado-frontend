@@ -77,15 +77,15 @@ const getAllCourses = async ( token: string) => {
  * @param url The route to get the course detail
  * @returns The course detail
  */
-const getCourseDetail = async (url: string/*, token: string*/) => {
-  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseDetail = async (url: string, token: string) => {
+  const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
 
   return res.data;
 };
 
 // Get course categories - FROM LAST YEAR, NOT IMPLEMENTED, CATEGORIES ARE HARDCODED RN
-const getCourseCategories = async (url: string/*, token: string*/) => {
-  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseCategories = async (url: string, token: string) => {
+  const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
   
   return res.data;
 }
@@ -96,11 +96,11 @@ const getCourseCategories = async (url: string/*, token: string*/) => {
  * @param id The id of the course
  * @returns Confirmation of the update
  */
-const updateCourseDetail = async (data: Course, id: string | undefined/*, token: string*/) => {
+const updateCourseDetail = async (data: Course, id: string | undefined, token: string) => {
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
-    data/*,
-    { headers: { Authorization: `Bearer ${token}` } }*/
+    data,
+    { headers: { Authorization: `Bearer ${token}` } }
   )
 
   return res.data;

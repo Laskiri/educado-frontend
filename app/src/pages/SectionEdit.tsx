@@ -60,7 +60,11 @@ const SectionEdit = () => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [lectures, setLectures] = useState<Lecture[]>([]);
     const [contentCount, setContentCount] = useState(0);
-
+		const [toolTipIndex, setToolTipIndex] = useState<number>(4);
+		
+		// Create Form Hooks
+    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
+  
 
 
     //Fetch section details
@@ -68,8 +72,6 @@ const SectionEdit = () => {
         token ? [sid, token] : null,
         SectionServices.getSectionDetail
     );
-
-   
 
     // Fetch the exercises data from the server.    
     const { data: exerciseData, error: exerciseError } = useSWR(
@@ -83,9 +85,7 @@ const SectionEdit = () => {
         LectureServices.getLectureDetail
     );
     
-    // Create Form Hooks
-    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
-  
+    
 
  /**
  * Delete section and redirect to course edit page
@@ -108,10 +108,7 @@ const deleteSection = async () => {
     }
 }
 
-    
-const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
-    
     /**
      * SubmitHandler: update section
      * 

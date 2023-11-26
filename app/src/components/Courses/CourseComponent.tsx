@@ -56,8 +56,8 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
      * @param token The user token
      * @returns The course details
      */
-  const getData = async (url: string/*, token: string*/) => {
-    const res:any = await CourseServices.getCourseDetail(url/*, token*/)
+  const getData = async (url: string, token: string) => {
+    const res:any = await CourseServices.getCourseDetail(url, token)
 
     setStatusSTR(res.status);
     return res;
@@ -118,7 +118,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
   
       // Update course details
       if(id != "0"){
-        CourseServices.updateCourseDetail(changes, id/*, token */)
+        CourseServices.updateCourseDetail(changes, id, token )
         .then(res => {toast.success('Curso atualizado'); setStatusSTR(changes.status);}) // Course updated
         .catch(err => toast.error(err)) // Error updating course
         
@@ -150,7 +150,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor='title'>Nome do curso</label> {/*Title*/}
             <input type="text" defaultValue={data ? data.title : ""} placeholder={data ? data.title : ""}
-              className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+              className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("title", { required: true })}
             />
             {errors.title && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
@@ -163,7 +163,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
               <label htmlFor='level'>Nível</label> {/** Level */}
               <select
               defaultValue={data ? data.difficulty : "Selecione o nível"}
-              className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+              className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("difficulty", { required: true })}>
                 {/*Hard coded options by PO, should be changed to get from db*/}
                 <option disabled> Selecione o nível</option>
@@ -180,7 +180,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
               <label htmlFor='category'>Categoria</label> {/** Category */}
               <select
                 defaultValue={data ? data.category : "Selecione a categoria"}
-                className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent"
+                className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("category", { required: true })}>
                 <option value={"Selecione a categoria"} disabled> Selecione a categoria</option>
                 {/*Hard coded options by PO, should be changed to get from db*/}
@@ -201,7 +201,7 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
             <textarea maxLength={400} rows={4}
             defaultValue={data ? data.description : ""}
             placeholder={data ? data.description : ""}
-            className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primaryDarkBlue focus:border-transparent bg-secondary"
+            className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
             {...register("description", { required: true })}
             onChange={(e) => setCharCount(e.target.value.length)}
             />
@@ -232,12 +232,12 @@ export const CourseComponent = ({token, id}: CourseComponentProps) => {
                 Cancelar e Voltar {/** Cancel */}
               </label>
               
-              <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primaryDarkBlue-100 text-primaryDarkBlue w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label htmlFor='course-create' className="ml-56 underline py-2 px-4 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 <button type="submit" className='underline'>
                   Salvar como Rascunho {/** Save as draft */}
                 </button>
               </label>
-              <label htmlFor='course-create' className="h-12 p-2 bg-primaryDarkBlue hover:bg-primaryDarkBlue focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg">
+              <label htmlFor='course-create' className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
                 <label onClick={()=>navigate("/sections-creation")} className='py-2 px-4 h-full w-full cursor-pointer' >
                   Adicionar seções {/** Add sections */}
                 </label>
