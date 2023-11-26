@@ -135,11 +135,11 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
     const cid =  sectionData.parentCourse;
 
     // Limiter for the number of exercises and lectures to be < 10
-    const limit = sectionData.components.length;
+    const limit = sectionData.lectures.length + sectionData.exercises.length;
     // Limiter for the number of lectures to be < 7
-    const lectureLimit = sectionData.components.filter((component: any) => component.type === "lecture").length;
+    const lectureLimit = sectionData.lectures.length;
     
-   
+    
 
 	return (
         
@@ -249,10 +249,17 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 						<div></div>
 					}
 
-				</div>
-			</div>
-		</Layout>
-	)
+                    {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+                    <div className='flex flex-row-2'>                            
+                        <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
+
+                        {/** Tooltip for description of section*/}
+                        <ToolTipIcon index={3} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+                    </div>
+                </div>
+            </div>
+        </Layout>
+    )
 }
 
 export default SectionEdit

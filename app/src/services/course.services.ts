@@ -4,15 +4,9 @@ import axios from "axios";
 import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
-// Interface for posting course content
-export interface CourseInterface {
-  title: string;
-  category: string;
-  difficulty: number;
-  description: string;
-  estimatedHours: number;
-  creator: string;
-}
+//interfaces
+import {Course} from "../interfaces/Course"
+
 
 const client = axios.create({
   baseURL: 'http://localhost:8888/api/courses',
@@ -27,7 +21,7 @@ const client = axios.create({
  */
 
 // Create a new course
-const createCourse = async ({ title, category, difficulty, estimatedHours, description, creator }: CourseInterface, token: string) => {
+const createCourse = async ({ title, category, difficulty, estimatedHours, description, creator, status }: Course, token: string) => {
   const course = await axios.put(
     `${BACKEND_URL}/api/courses`,
     {
@@ -35,8 +29,8 @@ const createCourse = async ({ title, category, difficulty, estimatedHours, descr
       description: description,
       category: category,
       difficulty: difficulty,
-      estimatedHours: estimatedHours,
       creator: creator,
+      status: status
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );
@@ -102,7 +96,7 @@ const getCourseCategories = async (url: string/*, token: string*/) => {
  * @param id The id of the course
  * @returns Confirmation of the update
  */
-const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
+const updateCourseDetail = async (data: Course, id: string | undefined/*, token: string*/) => {
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
     data/*,
@@ -119,7 +113,7 @@ const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
  * @param token token of the user 
  * @returns Delete data
  */
-const deleteCourse = async (id: any, token: string) => {
+const deleteCourse = async (id: string | undefined, token: string) => {
   return await axios.delete(
       `${BACKEND_URL}/api/courses/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }

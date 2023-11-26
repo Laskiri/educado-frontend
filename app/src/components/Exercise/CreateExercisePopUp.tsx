@@ -45,6 +45,8 @@ export const CreateExercise = ({sid}:Inputs) => {
     const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
     
     const onExerciseSave: SubmitHandler<any> = data => createExercise(data);
+    const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
 
     /** Token doesnt work, reimplement when it token is implemented */
     //const token = useAuthStore(state => state.token);
@@ -65,7 +67,6 @@ export const CreateExercise = ({sid}:Inputs) => {
         ExerciseServices.addExercise(exerciseToSave, token, sid)
             .then(() => {toast.success(`Exercício criado com sucesso`); window.location.reload();}) /** Successfully created exercise */
             .catch(err => {toast.error("Fracassado: " + err); setIsSubmitting(false);})
-
     }
 
     return (

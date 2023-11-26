@@ -25,8 +25,6 @@ import { mdiInformationSlabCircleOutline } from '@mdi/js';
 import { eventType } from 'aws-sdk/clients/health';
 import { integer } from 'aws-sdk/clients/lightsail';
 
-
-
 <Icon path={mdiInformationSlabCircleOutline} size={1} />
 
 
@@ -88,11 +86,10 @@ export const CreateLecture = () => {
             token, 
             sid)
             .then(res =>{ 
-                console.log(res); 
                 StorageServices.uploadFile({ id: res.data._id, file: lectureContent, parentType: "l" });
                 LectureService.updateLecture(res.data, token, res.data.id);
                 window.location.reload();
-                toast.success(`Aula criado com sucesso`);
+                toast.success("Aula criado com sucesso");
             }) 
             .catch(err => {toast.error("Fracassado: " + err); setIsLoading(false); setIsSubmitting(false);})
     };
