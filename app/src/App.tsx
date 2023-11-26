@@ -10,10 +10,8 @@ import Welcome from "./pages/Welcome";
 
 // Auth Pages
 import Courses from "./pages/Courses";
-
 import CourseManager from "./pages/CourseManager";
 
-import CourseEdit from "./pages/CourseEdit";
 import SectionEdit from "./pages/SectionEdit";
 import Profile from "./pages/Profile";
 
