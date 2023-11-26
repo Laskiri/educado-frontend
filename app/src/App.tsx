@@ -22,6 +22,7 @@ import Certificates from "./pages/Certificates";
 // Delete user request for app
 import DataDeletionRequest from "./pages/DataDeletionRequest";
 import AccountDeletionRequest from "./pages/AccountDeletionRequest";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 function App() {
   // router
@@ -90,6 +91,10 @@ function App() {
     {
       path: "/account_deletion_request",
       element: <NonProtectedRoute><AccountDeletionRequest /></NonProtectedRoute>,
+    },
+    {
+      path: "/privacy_policy",
+      element: <NonProtectedRoute><PrivacyPolicy /></NonProtectedRoute>,
     }
   ]
 )
