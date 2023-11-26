@@ -1,75 +1,94 @@
-// DataDeletionRequest.tsx
+import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
+import ProtectedRoute from "./services/auth.guard";
+import { NonProtectedRoute } from "./services/auth.guard";
 
-import React from 'react';
+// Non-auth pages
+import Login from "./pages/Login";
+import Signup from "./pages/Signup";
+import NotFound from "./pages/NotFound";
+import Welcome from "./pages/Welcome";
 
-const DataDeletionRequest: React.FC = () => {
-  const containerStyle: React.CSSProperties = {
-    fontFamily: 'Arial, sans-serif',
-    maxWidth: '600px',
-    margin: '0 auto',
-    padding: '20px',
-    border: '1px solid #ccc',
-    borderRadius: '5px',
-    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-    backgroundColor: '#f9f9f9',
-  };
+// Auth Pages
+import Courses from "./pages/Courses";
+import CourseEdit from "./pages/CourseEdit";
+import SectionEdit from "./pages/SectionEdit";
+import Profile from "./pages/Profile";
 
-  const headingStyle: React.CSSProperties = {
-    textAlign: 'center',
-    fontSize: '1.5rem',
-    marginBottom: '20px',
-  };
+// Educado Admin
+import EducadoAdmin from "./pages/EducadoAdmin";
+import SingleApplicantView from "./pages/SingleApplicantView";
+import Certificates from "./pages/Certificates";
 
-  const listItemStyle: React.CSSProperties = {
-    marginBottom: '15px',
-  };
+// Delete user request for app
+import DataDeletionRequest from "./pages/DataDeletionRequest";
 
-  const emailLinkStyle: React.CSSProperties = {
-    textDecoration: 'underline',
-    color: 'blue',
-  };
+function App() {
+  // router
+  const router = createBrowserRouter([
+    { // Homepage is left unused
+      path: "/",
+      element: <Navigate to={"/welcome"} />,
+      errorElement: <NotFound />
+    },
+    {
+      path: "/courses",
+      element: <ProtectedRoute><Courses /></ProtectedRoute>,
+      errorElement: <NotFound />,
+    },
+    {
+      path: "/courses/edit/:id",
+      element: <ProtectedRoute><CourseEdit /></ProtectedRoute>
+    },
+    {
+      path: "/certificates",
+      element: <ProtectedRoute><Certificates /></ProtectedRoute>,
+    },
+    {
+      path: "/sections/:sid",
+      element: <ProtectedRoute><SectionEdit /></ProtectedRoute>
+    },
+    {
+      path: "/settings",
+      element: <p>settings</p>
+    },
+    {
+      path: "/profile",
+      element: <ProtectedRoute><Profile /></ProtectedRoute>
 
-  return (
-    <div style={containerStyle}>
-      <h2 style={headingStyle}>Data Deletion Request</h2>
-      <p>
-        If you wish to delete your data associated with your account on Educado, please contact us at{' '}
-        <a href="mailto:app.educado@gmail.com" style={emailLinkStyle}>
-          app.educado@gmail.com
-        </a>.
-      </p>
-      <p>
-        To ensure a prompt response to your request, kindly provide us with the following details:
-      </p>
-      <ul>
-        <li style={listItemStyle}>
-          <strong>Steps to Request Deletion:</strong> You can delete your account and all data related to your account
-          on the Educado App. Simply navigate to your profile page within the app and click on the “delete account”
-          button. If you encounter difficulties accessing the app, please send an email to{' '}
-          <a href="mailto:app.educado@gmail.com" style={emailLinkStyle}>
-            app.educado@gmail.com
-          </a>
-          specifying your request for data deletion, and we will help you.
-        </li>
-        <li style={listItemStyle}>
-          <strong>Types of Data Deleted:</strong> Upon deletion, all personal identifiable information such as your
-          email, name, and password will be permanently removed from our systems. Additionally, information related to
-          your course subscriptions, including your progress, will be deleted.
-        </li>
-        <li style={listItemStyle}>
-          <strong>Retention Period:</strong> We commit to immediate deletion of personal identifiable information and
-          course completion data upon your request.
-        </li>
-      </ul>
-      <p>
-        We take user privacy seriously and aim to process all data deletion requests efficiently. For any further
-        inquiries or assistance, please don't hesitate to contact us via
-        <a href="mailto:app.educado@gmail.com" style={emailLinkStyle}>
-          app.educado@gmail.com
-        </a>.
-      </p>
-    </div>
-  );
-};
+    },
+    {
+      path: "/login",
+      element: <NonProtectedRoute><Login /></NonProtectedRoute>,
+      errorElement: <NotFound />
+    },
+    {
+      path: "/signup",
+      element: <NonProtectedRoute><Signup /></NonProtectedRoute>,
+      errorElement: <NotFound />
+    },
+    {
+      path: "/educado_admin",
+      element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
+    },
+    {
+      path: "/educado_admin/applications",
+      element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>
+    },
+    {
+      path: "/educado_admin/applications/:id",
+      element: <ProtectedRoute><SingleApplicantView /></ProtectedRoute>,
+    },
+    {
+      path: "/welcome",
+      element: <NonProtectedRoute><Welcome /></NonProtectedRoute>,
+    },
+    {
+      path: "/data_deletion_request",
+      element: <NonProtectedRoute><DataDeletionRequest /></NonProtectedRoute>,
+    }
+  ]
+  )
+  return <RouterProvider router={router} />;
+}
 
-export default DataDeletionRequest;
+export default App
