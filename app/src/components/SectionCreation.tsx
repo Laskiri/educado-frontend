@@ -28,10 +28,10 @@ interface Inputs {
 
 
 // Create section
-export const SectionCreation = (/*{ id }: Inputs set in remove when merge with Course Manager*/) => {
+export const SectionCreation = ({ id }: Inputs ) => {
   
   const token = getUserToken();
-  let id = useParams().id // TODO: remove when merge with Course Manager
+ 
   
   
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
