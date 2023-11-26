@@ -48,8 +48,8 @@ describe('Tooltip on Course Page', () => {
       },
     });
 
-    cy.visit(`http://localhost:3000/courses/edit/1`)
     cy.restoreLocalStorage();
+    cy.visit(`http://localhost:3000/courses/edit/1`)
   });
 
 
@@ -116,8 +116,8 @@ describe('Create Course', () => {
       },
     });
 
-    cy.visit(`http://localhost:3000/courses/edit/0`)
     cy.restoreLocalStorage();
+    cy.visit(`http://localhost:3000/courses/edit/0`)
   });
 
   it('Create Course', () => {

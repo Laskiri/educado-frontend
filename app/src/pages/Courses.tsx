@@ -43,14 +43,14 @@ const Courses = () => {
     token ? [token] : null,
     CourseServices.getAllCourses
   );
- 
-  
-  if (error) {
+
+  if (error && error.response.status === 401) {
     localStorage.removeItem("token");
     localStorage.removeItem("userInfo");
     navigate("/login");
     return null
   }
+
   if (!data) return <Layout meta='course overview'><Loading /></Layout>;
   
   return (
