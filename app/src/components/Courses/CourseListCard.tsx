@@ -25,8 +25,8 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   const maxTitleLength = 20;
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
-      <label
-        onClick={()=>window.location.href = `/courses/manager/${course._id}`}
+      <Link
+        to={`/courses/manager/${course._id}`}
         className="w-full block h-full relative group"
       >
 
@@ -98,7 +98,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             </div>
           </div>
         </div>
-      </label>
+      </Link>
     </div>
   )
 }
