@@ -129,7 +129,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
           
           } else {
             setTickChange(1);
-            // window.location.href = `/courses/manager/${id}/1`;
+            window.location.href = `/courses/manager/${id}/1`;
           }
 
         }) // Course updated
