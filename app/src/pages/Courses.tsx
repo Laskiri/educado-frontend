@@ -36,7 +36,7 @@ const Courses = () => {
   // TODO: Implement proper backend call once backend is ready
 
   const CourseManager = () => {
-    navigate("/courses/manager/0");
+    navigate("/courses/manager/0/0");
   }
 
   const { data, error } = useSWR(
