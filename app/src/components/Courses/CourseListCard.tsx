@@ -25,8 +25,8 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   const maxTitleLength = 20;
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
-      <Link
-        to={`/courses/edit/${course._id}`}
+      <label
+        onClick={()=>window.location.href = `/courses/manager/${course._id}/0`}
         className="w-full block h-full relative group"
       >
 
@@ -61,7 +61,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             <div className="flex flex-row justify-between">
               {/* Course rating */}
               <div className='w-[8rem]'>
-                <StarRating rating={course.rating} />
+                <StarRating rating={course.rating ?? 0} />
               </div>
               {/* Subsriber count */}
               <div className='flex flex-row'>
@@ -98,7 +98,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             </div>
           </div>
         </div>
-      </Link>
+      </label>
     </div>
   )
 }

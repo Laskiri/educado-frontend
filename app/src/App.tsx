@@ -10,7 +10,8 @@ import Welcome from "./pages/Welcome";
 
 // Auth Pages
 import Courses from "./pages/Courses";
-import CourseEdit from "./pages/CourseEdit";
+import CourseManager from "./pages/CourseManager";
+
 import SectionEdit from "./pages/SectionEdit";
 import Profile from "./pages/Profile";
 
@@ -38,8 +39,9 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-      path: "/courses/edit/:id",
-      element: <ProtectedRoute><CourseEdit /></ProtectedRoute>
+      path: "/courses/manager/:id/:tick",
+      element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
+      errorElement: <NotFound />,
     },
 		{
 			path: "/certificates",
@@ -56,7 +58,6 @@ function App() {
     {
       path: "/profile",
       element: <ProtectedRoute><Profile /></ProtectedRoute>
-      
     },
     {
       path: "/login",

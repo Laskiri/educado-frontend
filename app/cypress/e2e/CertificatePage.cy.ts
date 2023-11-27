@@ -21,9 +21,8 @@ describe('Certificate overview page', () => {
 
 		cy.intercept('GET', `${BACKEND_URL}/api/courses/creator/*`, {
 			statusCode: 200,
-			body: {
-				certificates: [],
-			},
+			body: [	
+			],
 		})
 		cy.visit('http://localhost:3000/login')
 		cy.get('#email-field').type('test@email.com')

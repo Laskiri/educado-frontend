@@ -6,8 +6,6 @@ interface CancelButtonProps {
 
 export const CreateButtonCompont = ({isSubmitting}:CancelButtonProps) => {
 
-
-
     return (
         <div className='modal-action'>
             <div className="flex items-center justify-between gap-4 w-full mt-8">

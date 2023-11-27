@@ -4,7 +4,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useParams } from 'react-router-dom'
 import { toast } from 'react-toastify';
 
-
 // Services
 import SectionServices from '../services/section.services';
 import ExerciseServices from '../services/exercise.services';
@@ -60,7 +59,11 @@ const SectionEdit = () => {
     const [exercises, setExercises] = useState<Exercise[]>([]);
     const [lectures, setLectures] = useState<Lecture[]>([]);
     const [contentCount, setContentCount] = useState(0);
-
+		const [toolTipIndex, setToolTipIndex] = useState<number>(4);
+		
+		// Create Form Hooks
+    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
+  
 
 
     //Fetch section details
@@ -68,8 +71,6 @@ const SectionEdit = () => {
         token ? [sid, token] : null,
         SectionServices.getSectionDetail
     );
-
-   
 
     // Fetch the exercises data from the server.    
     const { data: exerciseData, error: exerciseError } = useSWR(
@@ -83,9 +84,7 @@ const SectionEdit = () => {
         LectureServices.getLectureDetail
     );
     
-    // Create Form Hooks
-    const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<Section>();
-  
+    
 
  /**
  * Delete section and redirect to course edit page
@@ -108,10 +107,7 @@ const deleteSection = async () => {
     }
 }
 
-    
-const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
-    
     /**
      * SubmitHandler: update section
      * 
@@ -132,14 +128,15 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
     if (sectionError) return <p>"An error has occurred."</p>;
     if (!sectionData || !exerciseData || !lectureData) return <Loading/>;
 
-    const cid =  sectionData.parentCourse;
+    const cid = sectionData.parentCourse;
 
-    // Limiter for the number of exercises and lectures to be < 10
-    const limit = sectionData.components.length;
-    // Limiter for the number of lectures to be < 7
-    const lectureLimit = sectionData.components.filter((component: any) => component.type === "lecture").length;
+   // Limiter for the number of exercises and lectures to be < 10
+	 console.log(sectionData)
+   const limit = sectionData.components.length;
+   // Limiter for the number of lectures to be < 7
+   const lectureLimit = sectionData.components.filter((component: any) => component.type === "lecture").length;
     
-   
+    
 
 	return (
         
@@ -209,9 +206,11 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 
 					{/** Lecture list area */}
 					<div className='flex flex-col space-y-4 mb-4' id='lectures'>
-						{/** Tooltip for lectures and exercises of section*/}
-						<div className='flex'>
-							<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+						{/** Tooltip for lectures and exercises of section*/}<div className='flex flex-row-2'>                            
+						<label htmlFor='description'>{limit}/10 items</label>{/** PLACEHOLDER TEXT */}
+							<div className='flex'>
+								<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios"} tooltipAmount={3} callBack={setToolTipIndex}/>
+							</div>
 						</div>
 						<h1 className='text-xl  font-medium'>Aulas</h1> {/** Lecture*/}
 						<LectureArea lectures={lectures.length > 0 ? lectures : lectureData} />
@@ -221,7 +220,7 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 					{/**Create new lecture that disappear if there is 10 or more exercise and lectures*/}
 					{limit < 10 && lectureLimit < 7 ?
 						<div className="navbar bg-none p-6" >
-							<CreateLecture /> {/** Create new Lecture */}
+							<CreateLecture sid={sid ??"0"}/> {/** Create new Lecture */}
 						</div>
 						:
 						<div></div>
@@ -236,8 +235,8 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 						<h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
 						<ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
 					</div>
-						
-						
+					
+					
 					{/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
 					{limit  <10 ?
 						<div className="navbar bg-none p-6">
@@ -249,10 +248,11 @@ const [toolTipIndex, setToolTipIndex] = useState<number>(4);
 						<div></div>
 					}
 
-				</div>
-			</div>
-		</Layout>
-	)
+                    
+                </div>
+            </div>
+        </Layout>
+    )
 }
 
 export default SectionEdit
