@@ -1,5 +1,9 @@
-import { Link, useLocation} from 'react-router-dom';
+
 import useSWR from 'swr';
+import { useForm, SubmitHandler } from 'react-hook-form'
+import { toast } from 'react-toastify';
+
+
 
 // Hooks
 import useToken from '../../../hooks/useToken';
@@ -7,20 +11,50 @@ import useToken from '../../../hooks/useToken';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+
+
 // icons
-import { ChevronUpDownIcon, PencilSquareIcon } from '@heroicons/react/24/outline';
+
+import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
+
+import Icon from '@mdi/react';
+
+import { useState, useCallback, useEffect, useRef } from 'react';
 
 import SectionServices from '../../../services/section.services';
+import { add, set } from 'cypress/types/lodash';
 
-export function SortableItem(props: any) {
+//pop-ups 
+import { CreateLecture } from '../../CreateLecturePopUp';
+import { CreateExercise } from '../../Exercise/CreateExercisePopUp';
+
+
+interface Props {
+
+  sid: string,
+  addOnSubmitSubscriber: Function
+}
+
+export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
+
+  const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
+  const [title, setTitle] = useState<string>();
+  const [description, setDescription] = useState<string>(); 
+  const subRef= useRef<HTMLInputElement>(null);
+  const openRef= useRef<HTMLInputElement>(null);
+  
+
+  
   //const token = "dummyToken";
   const token = useToken();
   
   // Fetch the section data from the server.
   const { data, error } = useSWR(
-    token ? [props.item, token] : null,
+    token ? [sid, token] : null,
     SectionServices.getSectionDetail
   );
+
+
 
   const {
     attributes,
@@ -28,31 +62,167 @@ export function SortableItem(props: any) {
     setNodeRef,
     transform,
     transition,
-  } = useSortable({ id: props.item });
+  } = useSortable({ id: sid });
   
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
   };
+  
+  //Toggles the arrow direction between up and down
+  function changeArrowDirection (){
+    if (arrowDirction === mdiChevronDown){
+      setArrowDirection(mdiChevronUp);
+    }else{
+      setArrowDirection(mdiChevronDown);
+    }
+  }
+
+  type SectionPartial = {
+    title: string;
+    description: string;
+  };
+  // Create Form Hooks
+  const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<SectionPartial>();
+
+ 
+
+  /**
+     * SubmitHandler: update section
+     * 
+     * @param data  The data to be updated
+    */
+  const onSubmit: SubmitHandler<SectionPartial> = (data) => {
+    if(data === undefined) return;
+    if(title === undefined && description === undefined) return;
+
+    console.log("i passed", data.title, title, description);
+    const changes: SectionPartial = {
+        title: data.title,
+        description: data.description
+     }
+     
+     SectionServices.saveSection(changes, sid, token)
+     .then(res => toast.success('Seção atualizada'))
+     .catch(err => toast.error(err));
+  }
+
+  function deleteSection(){
+    if(confirm("Tem certeza que deseja excluir?") == true){
+      SectionServices.deleteSection(sid, token)
+      .then(res => {toast.success('Seção excluída'); window.location.reload();})
+      .catch(err => toast.error(err));
+    }
+  }
+  
+
+
+ useEffect(() => {
+  openRef.current?.checked;
+  addOnSubmitSubscriber(()=>{ subRef.current?.click() });
+ },[]);
 
   //If data is not found yet, show a loading message.
-  if(data === undefined) return (<div>Loading...</div>);
+  if(data === undefined) {return (<p>Loading...</p>)}
+
 
   //Else show the sections.
   return (
-    <div className="flex justify-between items-center border rounded p-1">
-      <div ref={setNodeRef} style={style} {...attributes} {...listeners} >
-        <div className='btn btn-ghost'>
-          <ChevronUpDownIcon width={24} />
-        </div>
-      </div>
 
-      <div className='flex justify-between items-center w-full space-x-2'>
-        <p className='font-semibold indent-8'>{data.title}</p>
-        <Link to={`/sections/${data._id}`} className='btn btn-ghost'>
-          <PencilSquareIcon width={20} className="text-blue-500 hover:text-blue-700" />
-          </Link>
-      </div>
+    <div >
+      <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg my-4'>
+          <input type="checkbox" className="peer w-4/5 " defaultChecked={data.title ==="Nova seção"} onChange={changeArrowDirection} ref={openRef} />
+
+          
+            <div className="collapse-title flex flex-row-2  rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
+              <div className='flex w-5/6 '>
+                <Icon path={arrowDirction} size={1} />
+                <p className="font-semibold">
+                  {title ?? data.title}
+                </p>
+                </div>
+                <div className='flex collapse ml-80'>
+                    <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primary'>
+                      {/**delete and move buttons on the left side of the section headers */}
+                      <Icon path={mdiDeleteCircle} size={1.2}></Icon>
+                      
+                    </div>  
+                    <div  className="flex w-32 collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
+                    <div className='btn btn-ghost hover:bg-transparent hover:text-primary'>
+                      {/**delete and move buttons on the left side of the section headers */}
+                      <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
+                      
+                    </div>  
+                    </div>
+               
+              </div>  
+          </div> 
+
+            <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
+              <form
+                  onSubmit={handleSectionUpdate(onSubmit)}
+
+              >
+                <div className="pt-5  ">
+                  <label htmlFor='title '>Nome </label> {/*Title of section*/}
+                  <input type="text"  placeholder={data.title?? "Nome da seção"}
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    {...registerSection("title", { required: true })}
+                    onChange={(e) => setTitle(e.target.value) } //update the section title
+                    
+                  />
+                  {sectionErrors.title && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+                </div>
+
+                <div className="pt-5">
+                  <label htmlFor='title'>Descrição </label> {/*description of section*/}
+                  <textarea placeholder={data.description ??"Descrição da seção"}
+                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    {...registerSection("description", { required: true })}
+                    onChange={(e) => setDescription(e.target.value) } //update the section title
+
+                  />
+                  {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+
+
+                    {/**ADD lecture and exercise to the section */}
+                <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
+                  {/* <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
+                    <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center "> 
+                    <Icon path={mdiPlus} size={1} className=" " />
+                    Adicionar Aula</p>
+                  </label> */}
+                  <CreateLecture sid={sid}/> {/** Create new Lecture */}
+                  <p className='text-gray-500 flex items-center text:align-right '>ou</p>
+                  {/* <label className="btn std-btn bg-inherit hover:bg-transparent border border-transparent w-1/4 rounded-lg flex justify-right space-x-2  mb-5 ">
+                    <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center text:align-right"> 
+                    <Icon path={mdiPlus} size={1} className=" " />
+                    Adicionar Exercício</p>
+                    
+                  </label> */}
+                  <CreateExercise sid={sid}/> {/** Create new Exercise */}
+
+                </div>
+
+                  {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+                  <div className='flex flex-row-reverse'>                            
+                        <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
+                  
+                    
+                  </div>
+                  <div className='hidden' onClick={()=>{onSubmit(data)}}>
+                      <input type='submit' ref={subRef} />
+                  </div>
+              </form>
+                
+              
+              </div>
+              
+
+          
+
+        </div>
+        
     </div>
   );
 }

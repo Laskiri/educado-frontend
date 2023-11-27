@@ -1,8 +1,11 @@
 import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
+
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 
 
 // Components
@@ -18,9 +21,6 @@ import ExerciseServices from "../../services/exercise.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";
-
-// Hooks
-import useToken from "../../hooks/useToken";
 
 
 export interface ExercisePartial {
@@ -46,6 +46,7 @@ export const CreateExercise = ({sid}:Inputs) => {
     
     const onExerciseSave: SubmitHandler<any> = data => createExercise(data);
 
+
     /** Token doesnt work, reimplement when it token is implemented */
     //const token = useAuthStore(state => state.token);
     //const token = useToken();
@@ -65,16 +66,15 @@ export const CreateExercise = ({sid}:Inputs) => {
         ExerciseServices.addExercise(exerciseToSave, token, sid)
             .then(() => {toast.success(`Exercício criado com sucesso`); window.location.reload();}) /** Successfully created exercise */
             .catch(err => {toast.error("Fracassado: " + err); setIsSubmitting(false);})
-
     }
 
     return (
 
         <div>
             {/** The button to open create exercise modal */}
-            <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
+            <label htmlFor="exercise-create" className="btn std-btn bg-inherit hover:bg-transparent border border-transparent  rounded-lg flex justify-right space-x-2  mb-5">
+            <Icon path={mdiPlus} size={1} className="hover:text-gray-500 text-gray-500 " />
+                <p className='hover:text-gray-500 text-gray-500 normal-case' >Criar novo exercício</p>  {/** Create new Exercise */}
             </label>
 
             <input type="checkbox" id="exercise-create" className="modal-toggle" />

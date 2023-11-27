@@ -13,12 +13,13 @@ import { Course } from '../interfaces/Course';
 import Layout from '../components/Layout'
 import Loading from '../components/general/Loading';
 import { CourseListCard } from '../components/Courses/CourseListCard'
-import { CreateCourseModal } from '../components/Courses/CreateCourseModal';
 import PersonalInsights from '../components/Courses/PersonalInsights';
+import { getUserToken } from '../helpers/userInfo';
+
 
 // Images
 import noCoursesImage from '../assets/no-courses.png';
-import { getUserToken } from '../helpers/userInfo';
+import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
 /**
  * @returns HTML Element
@@ -34,16 +35,22 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
+  const CourseManager = () => {
+    navigate("/courses/manager/0/0");
+  }
+
   const { data, error } = useSWR(
     token ? [token] : null,
     CourseServices.getAllCourses
   );
- 
-  // TODO reimplement this once login (content creators) have been fixed/implemeted
-  /*if (error) {
+
+  if (error && error.response.status === 401) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     navigate("/login");
     return null
-  }*/
+  }
+
   if (!data) return <Layout meta='course overview'><Loading /></Layout>;
   
   return (
@@ -57,7 +64,10 @@ const Courses = () => {
             {/* Header and create course button */}
             <div className='flex flex-row no-wrap'>
               <h1 className='text-3xl font-bold flex-1'>Confira seus cursos</h1>
-              <CreateCourseModal />
+              <label htmlFor="course-create" onClick={CourseManager} className="std-button flex modal-button  space-x-2">
+                <PencilSquareIcon className='w-5 h-5' />
+                <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
+              </label>
             </div>
             {/* Card/compact view toggle and filters */}
             <div className='h-10 my-8 bg-grayLight'>
@@ -82,7 +92,10 @@ const Courses = () => {
                 step-by-step instructions to develop your first course. */}
                 <p>Você ainda não criou nenhum curso. Clique no botão abaixo e siga o passo a passo para desenolver o seu primeiro curso.</p>
                 {/* Create course button */}
-                <CreateCourseModal />
+                <label htmlFor="course-create" onClick={CourseManager} className="std-button flex modal-button  space-x-2">
+                  <PencilSquareIcon className='w-5 h-5' />
+                  <p className='font-normal '>Criar novo curso</p> {/** Create new course */}
+                </label>
               </div>
             </div>
           }

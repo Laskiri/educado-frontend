@@ -4,15 +4,9 @@ import axios from "axios";
 import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
-// Interface for posting course content
-export interface CourseInterface {
-  title: string;
-  category: string;
-  difficulty: number;
-  description: string;
-  estimatedHours: number;
-  creator: string;
-}
+//interfaces
+import {Course} from "../interfaces/Course"
+
 
 const client = axios.create({
   baseURL: 'http://localhost:8888/api/courses',
@@ -26,22 +20,22 @@ const client = axios.create({
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
  */
 
-// Create a new course
-const createCourse = async ({ title, category, difficulty, estimatedHours, description, creator }: CourseInterface, token: string) => {
-  const course = await axios.put(
+
+const createCourse = async (data: Course, token: string) => {
+  return await axios.put(
+
     `${BACKEND_URL}/api/courses`,
     {
-      title: title,
-      description: description,
-      category: category,
-      difficulty: difficulty,
-      estimatedHours: estimatedHours,
-      creator: creator,
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      difficulty: data.difficulty,
+      creator: data.creator,
+      status: data.status
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );
 
-	return course.data;
 };
 
 // TODO: Foundation for updating coverimage. Implement next PR. Possibly merge with updateCourseDetail
@@ -83,15 +77,15 @@ const getAllCourses = async ( token: string) => {
  * @param url The route to get the course detail
  * @returns The course detail
  */
-const getCourseDetail = async (url: string/*, token: string*/) => {
-  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseDetail = async (url: string, token: string) => {
+  const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
 
   return res.data;
 };
 
 // Get course categories - FROM LAST YEAR, NOT IMPLEMENTED, CATEGORIES ARE HARDCODED RN
-const getCourseCategories = async (url: string/*, token: string*/) => {
-  const res = await axios.get(url/*, { headers: { Authorization: `Bearer ${token}` } }*/)
+const getCourseCategories = async (url: string, token: string) => {
+  const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
   
   return res.data;
 }
@@ -100,13 +94,15 @@ const getCourseCategories = async (url: string/*, token: string*/) => {
  * Update a specific course
  * @param data the data of the course to be updated 
  * @param id The id of the course
+ * @param token The token of the user
  * @returns Confirmation of the update
  */
-const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
+const updateCourseDetail = async (data: Course, id: string | undefined, token: string) => {
+
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${id}`,
-    data/*,
-    { headers: { Authorization: `Bearer ${token}` } }*/
+    data,
+    { headers: { Authorization: `Bearer ${token}` } }
   )
 
   return res.data;
@@ -119,7 +115,7 @@ const updateCourseDetail = async (data: any, id: any/*, token: string*/) => {
  * @param token token of the user 
  * @returns Delete data
  */
-const deleteCourse = async (id: any, token: string) => {
+const deleteCourse = async (id: string | undefined, token: string) => {
   return await axios.delete(
       `${BACKEND_URL}/api/courses/${id}`,
       { headers: { Authorization: `Bearer ${token}` } }

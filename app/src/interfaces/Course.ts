@@ -7,25 +7,27 @@ export interface Main {
 
 // TODO: Make sure this is in accordance with the backend
 
+
 export interface Course {
-  _id:               string;
+  _id?:               string;
   title:             string;
-  category:          string;
-  coverImg?:         string;
   description:       string;
-  creator:           string;
-  status:            string;
-  estimatedHours:    number;
-  rating:            number;
   difficulty:        number;
-  numOfSubscriptions:   number;
-  dateUpdated:       Date;
-  dateCreated:       Date;
-  sections:          Section[];
-  __v:               number;
+  dateCreated?:       Date;
+  dateUpdated?:       Date;
+  coverImg?:         string;
+  category:          string;
+  sections?:          Section[];
+  creator?:           string;
+  status:            string;
+  estimatedHours?:    number;
+  rating?:            number;
+  numOfSubscriptions?:   number;
+  __v?:               number;
 }
 
 export interface contentCreator {
+	_id: string;
   firstName: string,
   lastName: string,
   email: string,

@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 export default function Certificates() {
   return (
     <Layout meta="Certificates">
+
     {/* gap between navbar and courses */}    
     <div className="relative h-20 w-32 ..."/>
       <div className='h-[93%] align-self-center lg:px-20 xl:px-40'>
