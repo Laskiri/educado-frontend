@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import ActionButton from "./ActionButton";
 
 
-
 export default function CertificateCard(props: { certificate: Certificate, num: number }) {
 	const { certificate } = props;
 	const { course, creator } = certificate;
