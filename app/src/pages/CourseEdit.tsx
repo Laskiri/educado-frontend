@@ -23,6 +23,8 @@ import Loading from '../components/general/Loading'
 import Layout from '../components/Layout'
 import { SectionList } from '../components/dnd/SectionList'
 import { SectionForm } from '../components/dnd/SectionForm'
+import { ToolTipInfoBox } from '../components/ToolTip/ToolTipInfoBox'
+import { ToolTipIcon } from '../components/ToolTip/ToolTipIcon'
 
 // Icons
 import { ArrowLeftIcon } from '@heroicons/react/24/outline'
@@ -37,14 +39,16 @@ import statuses from "../helpers/courseStatuses";
 
 
 interface Inputs {
-  coverImg?: FileList
   title: string
   description: string
   category: string
   difficulty: number
   status: string
   estimatedHours: number
+  coverImg?: string
 }
+
+
 
 /**
  * This page is responsible for showing and editing courses to the creator.
@@ -52,7 +56,6 @@ interface Inputs {
  * @returns HTML Element
  */
 const CourseEdit = () => {
-  
 
   const token = 'dummyToken'
   // const token = useToken();
@@ -66,8 +69,10 @@ const CourseEdit = () => {
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("");
   const [statusChange, setStatusChange] = useState<boolean>(false);
-  
-  
+
+  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
+
+	
   useEffect(() => {
       // get categories from db
       let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
@@ -97,6 +102,12 @@ const CourseEdit = () => {
         getData
     )
 
+    // Fetch Bucket Details
+    const { data: bucketData, error: bucketError } = useSWR(
+        token ? [`${BACKEND_URL}/api/bucket/${data?.coverImg}`, token] : null,
+        StorageService.getFile
+    )
+
 //  // Fetch Categories
 //   const { data: categoriesData, error: categoriesError } = useSWR(
 //     token ? [`${BACKEND_URL}/api/categories`, token] : null,
@@ -124,15 +135,18 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
     }
 
     if (confirm("Você tem certeza?") == true) {
+        StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
+
         const changes: Inputs = {
-            coverImg: data.coverImg,
             title: data.title,
             description: data.description,
             category: data.category,
             difficulty: data.difficulty,
             status: newStatus,
-            estimatedHours: data.estimatedHours
+            estimatedHours: data.estimatedHours,
+            coverImg: id+"_"+"c"
         }
+        //StorageService.deleteFile(id, token);
 
         // Update course details
         CourseServices.updateCourseDetail(changes, id/*, token */)
@@ -160,14 +174,17 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
      */
     const deleteCourse = async () => {
         if (confirm("Você tem certeza?") == true) {
-            const response = await CourseServices.deleteCourse(id, token);
-            const statusDelete = response.status
+            const responseCourse = await CourseServices.deleteCourse(id, token);
+            const statusDeleteCourse = responseCourse.status
+            console.log("data.coverImg is: ", data.coverImg)
+            const responseFile = await StorageService.deleteFile(data.coverImg, token);
 
-            if (statusDelete >= 200 && statusDelete <= 299) {
+
+            if (statusDeleteCourse >= 200 && statusDeleteCourse <= 299) {
                 toast.success("Curso excluído"); {/* Course deleted */}
                 window.location.href = "/courses";
-            } else if (statusDelete >= 400 && statusDelete <= 599) {
-                toast.error(`(${statusDelete}, ${response.statusText}) while attempting to delete course`)
+            } else if (statusDeleteCourse >= 400 && statusDeleteCourse <= 599) {
+                toast.error(`(${statusDeleteCourse}, ${responseCourse.statusText}) while attempting to delete course`)
             }
         }
     }
@@ -180,28 +197,28 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
    * Though bucket is not implemented yet, so most of this is commented out
    */
   const onCoverImgChange = async (e: any) => {
-    const image = 'https://www.shutterstock.com/image-illustration/red-stamp-on-white-background-260nw-1165179109.jpg'
-    // const image = e.target.files[0];
+    const image = e.target.files?.item(0)
 
     // Enables us to preview the image file before storing it
-    setCoverImgPreview(image)
-    // setCoverImgPreview(URL.createObjectURL(image));
-    /* setCoverImg(image);
+    setCoverImgPreview(URL.createObjectURL(image));
+    setCoverImg(image);
 
+    /*
         try {
             await StorageService.uploadFile({ file: image, key: `${data.id}/coverImg` })
             toast.success('Image uploaded successfully');
         } catch (error) {
             toast.error('Image could not be uploaded, try again.');
-        } */
+        } 
+    */
   }
 
-  if (error /* || categoriesError */) return <NotFound />
-  if (!data /* || !categories || (!data && !categories) */) return <Loading/>
-  
- 
 
-  return (
+    if (!data /* || !categories || (!data && !categories) */) return <Loading/>
+    if (error /* || categoriesError */) return <NotFound />
+    
+    
+    return (
         <Layout meta={`Course: ${id}`}>
 
             {/** Course navigation */}
@@ -225,8 +242,11 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                             <div className='flex flex-col space-y-6 divide'>
 
                                 {/* Course status */}
-                                <div className='flex flex-col justify-center pb-6'>
-                                  <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
+                                <div className='flex items-center justify-center pb-6 '> {/* Updated here */}
+                                    <h1 className='text-3xl text-center font-medium'>Curso</h1> {/* Course details */}
+                                    
+                                    {/** Tooltip for course header*/}
+                                    <ToolTipIcon index={0} toolTipIndex={toolTipIndex} text={"🔈 Nesse ambiente você insere as informações gerais do curso que serão apresentadas aos alunos para se inscreverem!"} tooltipAmount={2} callBack={setToolTipIndex}/>
                                   <div className='flex flex-row justify-center'>
                                     <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[statusSTR].color ?? statuses.default.color)} />
                                     <p className='italic'>
@@ -247,13 +267,21 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                 </div>
 
                                 {/** Course Description Field */}
-                                <div className="flex flex-col space-y-2">
-                                    <label htmlFor='description'>Descrição</label>
-                                    <textarea rows={4} defaultValue={data.description} placeholder={data.description}
-                                        className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
-                                        {...register('description', { required: true })}
-                                    />
-                                    {errors.description && <span>Este campo é obrigatório!</span>}
+                                <div className="flex flex-col space-y-2 items-start relative">
+                                <div className="flex items-center space-x-2"> {/* Container for label and icon */}
+																	<label htmlFor='description' className="flex-shrink-0">Descrição</label>
+																	{/** Tooltip for description of course*/}
+																	
+																	<ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos."} tooltipAmount={2} callBack={setToolTipIndex}/>
+                                </div>
+                                <textarea
+                                    rows={4}
+                                    defaultValue={data.description}
+                                    placeholder={data.description}
+                                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent"
+                                    {...register('description', { required: true })}
+                                />
+                                {errors.description && <span>Este campo é obrigatório!</span>}
                                 </div>
 
                                 {/* Field to choose a category from a list of options */}
@@ -293,22 +321,22 @@ const onSubmit: SubmitHandler<Inputs> = (data) => {
                                         {...register('estimatedHours', { required: true })}
                                     />
                                     {errors.title && <span className='text-warning'>Este campo é obrigatório</span>}
+                                    
                                 </div>
 
                                 {/** Cover Image Field */}
                                 <div className="flex flex-col">
                                     <div className='relative'>
                                         <div className='p-0 rounded-b-none rounded-t border-gray-300 border-x border-t h-[240px] overflow-hidden'>
-                                            {data.coverImg ?
-                                                <img src={data.coverImg} alt={data.title} className="w-full h-max rounded object-cover" /> :
+                                            {bucketData ?
+                                                <img src={ coverImgPreview? coverImgPreview : "data:image;base64," + bucketData} /*alt={data.title}*/ className="object-cover w-full h-full rounded" /> :
                                                 <div className='h-full w-full oceanic-gradient flex justify-center items-center text-2xl text-white'>Sem imagem de capa</div>
                                             }
 
                                         </div>
                                         {/* Cover image upload */}
                                         <input type="file" accept='.jpg,.jpeg,.png'
-                                            {...register('coverImg')}
-                                            // onChange={onCoverImgChange}
+                                            onChange={onCoverImgChange}
                                             className='file-input w-full input-bordered rounded-b rounded-t-none focus:outline-none'
                                         >
                                         </input>
