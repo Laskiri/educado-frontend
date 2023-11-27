@@ -235,8 +235,8 @@ const deleteSection = async () => {
 						<h1 className='text-xl font-medium'>Exercícios</h1> {/** Exercises*/}
 						<ExerciseArea exercises={exercises.length > 0 ? exercises : exerciseData} />
 					</div>
-						
-						
+					
+					
 					{/**Create new exercise that disappear if there is 10 or more exercise and lectures  */}
 					{limit  <10 ?
 						<div className="navbar bg-none p-6">
