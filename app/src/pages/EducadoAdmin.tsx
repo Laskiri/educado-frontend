@@ -51,7 +51,7 @@ const EducadoAdmin = () => {
                     <form className="flex flex-col md:flex-row w-3/4 md:w-full max-w-full md:space-x-3 space-y-3 md:space-y-0 justify-center ">
                     <Link className="flex-shrink-0 px-12 py-3 text-base font-semiboldborder font-['Montserrat'] hover:bg-cyan-900 hover:text-gray-50 border-[#166276] bg-[#166276] rounded font-semibold text-white shadow-md  focus:outline-none focus:ring-2 focus:ring-[#166276] focus:ring-offset-2 focus:ring-offset-blue-200"
                             to="/NewInstitution"> 
-                            <button
+                            <button 
                                 type="submit"
                                 >Add institution
                             </button>

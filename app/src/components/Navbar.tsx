@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 import useAuthStore from '../contexts/useAuthStore'
 import { getUserInfo } from '../helpers/userInfo';
 
-import decode from 'jwt-decode';
-
 // icons
 export const Navbar = () => {
 
@@ -15,15 +13,8 @@ export const Navbar = () => {
         clearToken();
         localStorage.removeItem("token")
     }
-    /*
-    const token = useAuthStore(state => state.token);
-    const decodedToken = token ? decode(token) : null;
-    
-    const firstName = token ? decodedToken?.firstName: "Firstname";
-    const lastName = token ? decodedToken?.lastName: "Lastname";
-    const email = token ? decodedToken?.email: "mail@mail.com";
-    */
-    const userInfo:any = getUserInfo();
+
+    const userInfo: any = getUserInfo();
 
     let firstName;
     userInfo.firstName ? firstName = userInfo.firstName : firstName = "Firstname";
@@ -40,7 +31,7 @@ export const Navbar = () => {
 return (
     <main>
         {/* Navigation Bar */}
-        <nav className="navbar flex fixed w-full items-center justify-between py-3 px-6 bg-secondary shadow-[0px 4px 4px 0px rgba(35, 100, 130, 0.25)]">
+        <nav className="navbar flex fixed w-full items-center justify-between py-3 px-6 bg-white shadow-md">
 
             {/* Logos for navbar */}
             <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-8">
