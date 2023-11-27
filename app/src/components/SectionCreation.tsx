@@ -13,7 +13,8 @@ import StorageServices from '../services/storage.services';
 import CourseServices from '../services/course.services';
 import { YellowWarning } from './Courses/YellowWarning';
 
-
+import Loading from './general/Loading'
+import Layout from './Layout'
 
 interface Inputs {
     id: string,
@@ -53,6 +54,10 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
     //setTickChange(2)(); //TODO: add in when next page is implemented
   }
 
+  function changeTick(tick: number) {
+    setTickChange(tick);
+    window.location.href = `/courses/manager/${id}/0`;
+  }
 
     /**
        * Extra function to handle the response from the course service before it is passed to the useSWR hook
@@ -75,7 +80,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
         getData
       )
     }
-
+    
+    if(!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
   
     return (
       <div>
@@ -99,7 +105,7 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
           {/*Create and cancel buttons*/}
           <div className='className="flex w-full float-right space-y-4 "'>
             <div className="flex items-center justify-between gap-4 w-full mt-8">
-              <label onClick={()=>setTickChange(0)}  htmlFor='course-create' className=" w-full cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label onClick={()=>changeTick(0)}  htmlFor='course-create' className=" w-full cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                   Voltar para Informações {/** GO BACK TO COURSE CREATION PAGE 1/3 IN THE CHECKLIST */}
               </label>
 

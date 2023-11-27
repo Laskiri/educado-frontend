@@ -127,8 +127,9 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
           if(isLeaving){
             window.location.href = "/courses";
           
-          } else{ 
-            setTickChange(1); 
+          } else {
+            setTickChange(1);
+            // window.location.href = `/courses/manager/${id}/1`;
           }
 
         }) // Course updated

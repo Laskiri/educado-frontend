@@ -34,12 +34,10 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-
-      path: "/courses/manager/:id",
+      path: "/courses/manager/:id/:tick",
       element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
       errorElement: <NotFound />,
     },
-
 		{
 			path: "/certificates",
 			element: <ProtectedRoute><Certificates /></ProtectedRoute>,
@@ -55,7 +53,6 @@ function App() {
     {
       path: "/profile",
       element: <ProtectedRoute><Profile /></ProtectedRoute>
-      
     },
     {
       path: "/login",

@@ -11,10 +11,10 @@ import { getUserToken } from '../helpers/userInfo';
 const CourseManager = () => {
   
   const token = getUserToken();
-  let { id } = useParams();
+  let { id, tick } = useParams();
   
   
-  const [tickChange, setTickChange] = useState<number>(0)
+  const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"))
   const [formComponents, setFormComponents] = useState<JSX.Element[]>
   ([
     <CourseComponent token={token} id={id} setTickChange={setTickChange} setId={setId}/>,
