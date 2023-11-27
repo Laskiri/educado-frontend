@@ -22,6 +22,7 @@ import { PencilSquareIcon } from '@heroicons/react/24/outline'
 import { Navigate, useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
+import { mdiPlus } from '@mdi/js';
 import { eventType } from 'aws-sdk/clients/health';
 import { integer } from 'aws-sdk/clients/lightsail';
 
@@ -35,14 +36,16 @@ type Inputs = {
     content: string,
 }
 
-
+interface Props {
+    sid: string
+}
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
  * It has a form to input the data of the new lecture.
  *
  * @returns HTML Element
  */
-export const CreateLecture = () => {
+export const CreateLecture = ({sid}: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [lectureContent, setLectureContent] = useState(null);
     //TODO: When tokens are done, Remove dummy token and uncomment useToken
@@ -51,7 +54,7 @@ export const CreateLecture = () => {
     const navigate = useNavigate();
     const { mutate } = useSWRConfig();
     
-    const sid = window.location.pathname.split("/")[2];
+    //const sid = window.location.pathname.split("/")[2];
    
     // use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
@@ -101,9 +104,9 @@ export const CreateLecture = () => {
     return (
         <>
             {/* The button to open create lecture modal */}
-            <label htmlFor="lecture-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar nova aula</p>
+            <label htmlFor="lecture-create" className="btn std-btn bg-inherit hover:bg-transparent border border-transparent w-1/4 rounded-lg flex justify-right space-x-2  mb-5">
+                <Icon path={mdiPlus} size={1} className="hover:text-gray-500 text-gray-500 " />
+                <p className='hover:text-gray-500 text-gray-500 normal-case ' >Criar nova aula</p>
             </label>
             
             {/* Put this part before </body> tag */}

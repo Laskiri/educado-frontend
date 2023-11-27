@@ -220,7 +220,7 @@ const deleteSection = async () => {
 					{/**Create new lecture that disappear if there is 10 or more exercise and lectures*/}
 					{limit < 10 && lectureLimit < 7 ?
 						<div className="navbar bg-none p-6" >
-							<CreateLecture /> {/** Create new Lecture */}
+							<CreateLecture sid={sid ??"0"}/> {/** Create new Lecture */}
 						</div>
 						:
 						<div></div>

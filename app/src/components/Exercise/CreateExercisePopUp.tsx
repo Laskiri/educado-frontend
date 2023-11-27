@@ -4,6 +4,8 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 
 
 // Components
@@ -70,9 +72,9 @@ export const CreateExercise = ({sid}:Inputs) => {
 
         <div>
             {/** The button to open create exercise modal */}
-            <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
+            <label htmlFor="exercise-create" className="btn std-btn bg-inherit hover:bg-transparent border border-transparent  rounded-lg flex justify-right space-x-2  mb-5">
+            <Icon path={mdiPlus} size={1} className="hover:text-gray-500 text-gray-500 " />
+                <p className='hover:text-gray-500 text-gray-500 normal-case' >Criar novo exercício</p>  {/** Create new Exercise */}
             </label>
 
             <input type="checkbox" id="exercise-create" className="modal-toggle" />

@@ -24,6 +24,10 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import SectionServices from '../../../services/section.services';
 import { add, set } from 'cypress/types/lodash';
 
+//pop-ups 
+import { CreateLecture } from '../../CreateLecturePopUp';
+import { CreateExercise } from '../../Exercise/CreateExercisePopUp';
+
 
 interface Props {
 
@@ -183,17 +187,21 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
                     {/**ADD lecture and exercise to the section */}
                 <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
-                  <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
+                  {/* <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
                     <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center "> 
                     <Icon path={mdiPlus} size={1} className=" " />
                     Adicionar Aula</p>
-                  </label>
+                  </label> */}
+                  <CreateLecture sid={sid}/> {/** Create new Lecture */}
                   <p className='text-gray-500 flex items-center text:align-right '>ou</p>
-                  <label className="btn std-btn bg-inherit hover:bg-transparent border border-transparent w-1/4 rounded-lg flex justify-right space-x-2  mb-5 ">
+                  {/* <label className="btn std-btn bg-inherit hover:bg-transparent border border-transparent w-1/4 rounded-lg flex justify-right space-x-2  mb-5 ">
                     <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center text:align-right"> 
                     <Icon path={mdiPlus} size={1} className=" " />
                     Adicionar Exercício</p>
-                  </label>
+                    
+                  </label> */}
+                  <CreateExercise sid={sid}/> {/** Create new Exercise */}
+
                 </div>
 
                   {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
