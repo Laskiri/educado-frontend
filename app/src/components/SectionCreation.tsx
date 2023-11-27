@@ -12,6 +12,7 @@ import { BACKEND_URL } from "../helpers/environment";
 import StorageServices from '../services/storage.services';
 import CourseServices from '../services/course.services';
 import { YellowWarning } from './Courses/YellowWarning';
+import { useNavigate } from 'react-router-dom';
 
 import Loading from './general/Loading'
 import Layout from './Layout'
@@ -28,6 +29,7 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
 
 
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
+  const navigate = useNavigate();
   function addOnSubmitSubscriber(callback: Function) {
     //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [
@@ -56,7 +58,7 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
 
   function changeTick(tick: number) {
     setTickChange(tick);
-    window.location.href = `/courses/manager/${id}/0`;
+    navigate(`/courses/manager/${id}/0`);
   }
 
     /**
