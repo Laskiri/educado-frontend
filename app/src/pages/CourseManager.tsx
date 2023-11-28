@@ -27,9 +27,6 @@ const CourseManager = () => {
 
   return (
     <Layout meta="Course Manager">
-      {/* gap between navbar and courses */}    
-      <div className="relative h-20 w-32 ..."/>
-      
       <div className="flex flex-row">
 
           <Checklist tickChange={tickChange}/>

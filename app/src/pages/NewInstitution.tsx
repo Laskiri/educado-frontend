@@ -1,18 +1,15 @@
+//Hooks
 import { Link } from "react-router-dom"
 import { useParams, useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from 'react-toastify';
-import useSWR from 'swr';
 
 // Services
 import AuthServices from '../services/auth.services';
-import {BACKEND_URL} from '../helpers/environment';
-
 
 // Components
 import Layout from "../components/Layout";
-import { PageDescriptor } from "../components/PageDescriptor";
-import { error } from "cypress/types/jquery";
+
 
 // Interface
 export type NewInstitution = {
@@ -22,17 +19,11 @@ export type NewInstitution = {
 };
 
 const NewInstitution = () => {
-  //Get user id from URL
-  const { id } = useParams();
+
   const navigate = useNavigate();
-
-
 
   // Use-form setup
   const { register, handleSubmit, formState: { errors } } = useForm<NewInstitution>();
-
-
-    
 
   //Function to execute upon accepting an application
   //It will navigate to the applicaitons page, and display a toastify message notifying the user that the content creator was approved
@@ -68,11 +59,7 @@ const NewInstitution = () => {
 
 return (
     <Layout meta="Educado Admin">
-            <PageDescriptor
-                title="Educado Admin"
-                desc="" //
-            />
-                   {/*Container for the contents of the page*/}
+        {/*Container for the contents of the page*/}
          <div className="inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 sm:items-center sm:p-10">
             <div className="bg-white shadow overflow-hidden rounded-xl">
@@ -96,7 +83,7 @@ return (
             Instituição
             </label>
             <input
-              type="text"
+              type="text" id="institutionName"
               className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="Empresa"
               {...register("institutionName", { required: true })}
@@ -109,7 +96,7 @@ return (
               Domínio de e-mail {/* Email Domain */}
             </label>
             <input
-              type="text"
+              type="text" id="domain"
               className="flex w-[100%] border-sky-50 py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="@Empresa.com"
               {...register("domain", { required: true })}
@@ -122,7 +109,7 @@ return (
               Domínio de e-mail secundário {/* Secondary Email Domain */}
             </label>
             <input
-              type="text"
+              type="text" id="secondaryDomain"
               className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="@Empresa.secundário.com"
               {...register("secondaryDomain", { required: false })}
@@ -132,8 +119,9 @@ return (
             {/*button to add institution*/}
             <div className="w-[720px] h-[100px] justify-between items-center mt-6 inline-flex sm:w-auto">
               <div className="px-4 py-10 sm:flex sm:flex-row-reverse sm:px-4 gap-52 relative">
-                <button type="submit" className="sm:w-auto py-3 px-6 w-full justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded">
-                Adicionar nova instituição {/* Add new institution*/}
+                <button type="submit" id="submit"
+                className="sm:w-auto py-3 px-6 w-full justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded">
+                  Adicionar nova instituição {/* Add new institution*/}
                 </button>
             
             { /*Button for going back to the educado admin page*/ }

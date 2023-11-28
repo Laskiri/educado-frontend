@@ -21,8 +21,8 @@ describe('Tooltip on Course Page', () => {
     });
 
     cy.visit('http://localhost:3000/login')
-    cy.get('#email-field').type('test@email.com')
-    cy.get('#password-field').type('password')
+    cy.get('#emailField').type('test@email.com')
+    cy.get('#passworField').type('password')
     cy.get('#submitLoginButton').click()
     cy.url().should('include', '/courses')
     cy.saveLocalStorage();
