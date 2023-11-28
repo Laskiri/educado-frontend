@@ -158,6 +158,9 @@ exports[`Login Component can render login page without errors 1`] = `
       className="relative right-0 h-screen flex flex-col justify-center items-center"
     >
       <div
+        className="fixed right-0 top-[4rem] z-10"
+      />
+      <div
         className="Toastify"
       />
       <div
@@ -282,19 +285,19 @@ exports[`Login Component can render login page without errors 1`] = `
             </div>
           </div>
           <div
-            className=" flex flex-col items-end text-right gap-3"
+            className=" flex flex-col items-end gap-3"
           >
             <span
-              className="text-neutral-700 text-lg font-normal font-['Montserrat']"
+              className="text-neutral-700 text-right text-base font-normal font-['Montserrat']"
             />
              
-            <a
-              className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500"
-              href="/forgotpassword"
+            <label
+              className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500"
+              id="modalToggle"
               onClick={[Function]}
             >
               Esqueceu sua senha? 
-            </a>
+            </label>
           </div>
           <span
             className="h-12"

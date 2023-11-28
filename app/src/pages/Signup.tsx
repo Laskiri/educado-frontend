@@ -333,7 +333,7 @@ const Signup = () => {
       <span className="h-10" /> {/* spacing */}  
       
         { /*Enter button*/ }
-        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem]  rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
+        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
         disabled>
             Cadastrar {/*Register*/} 
         </button>
