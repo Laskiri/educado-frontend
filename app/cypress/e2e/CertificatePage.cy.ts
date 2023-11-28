@@ -26,7 +26,7 @@ describe('Certificate overview page', () => {
 		})
 		cy.visit('http://localhost:3000/login')
 		cy.get('#emailField').type('test@email.com')
-		cy.get('#passworField').type('password')
+		cy.get('#passwordField').type('password')
 		cy.get('#submitLoginButton').click()
     cy.url().should('include', '/courses')
 		cy.saveLocalStorage();
