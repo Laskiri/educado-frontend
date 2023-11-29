@@ -47,7 +47,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado_admin/applications/${id}`)
+		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {
@@ -68,7 +68,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado_admin/applications/${id}`)
+		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {
@@ -93,7 +93,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado_admin/applications/${id}`)
+		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {

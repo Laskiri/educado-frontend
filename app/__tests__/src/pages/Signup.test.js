@@ -79,7 +79,7 @@ it("can navigate to the welcome page and the login pages", async () => {
         </MemoryRouter>
     )});
 
-    const submitButton = component.root.findByProps({id: "submitSignupButton"})
+    const submitButton = component.root.findByProps({id: "submit-signup-button"})
     expect(submitButton.props.disabled).toBe(true);
   });
 

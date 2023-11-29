@@ -58,8 +58,8 @@ describe('Application overview page', () => {
             },
         })
 
-		cy.visit('http://localhost:3000/educado_admin/applications')
-        cy.visit('http://localhost:3000/educado_admin/newinstitution')
+		cy.visit('http://localhost:3000/educado-admin/applications')
+        cy.visit('http://localhost:3000/educado-admin/new-institution')
 
 		cy.get('#institution-name').type('MyInstitution')
         cy.get('#domain').type('@institution.role.domain')

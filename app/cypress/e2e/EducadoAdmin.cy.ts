@@ -44,7 +44,7 @@ describe('Application overview page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado_admin/applications')
+		cy.visit('http://localhost:3000/educado-admin/applications')
 		cy.contains("Ver detalhes").should('not.exist')
 	})
 
@@ -58,7 +58,7 @@ describe('Application overview page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado_admin/applications')
+		cy.visit('http://localhost:3000/educado-admin/applications')
 		cy.contains("Ver detalhes").should('exist')
 	});
     it('filters list of applicant based on search term', () => {
@@ -72,7 +72,7 @@ describe('Application overview page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado_admin/applications')
+		cy.visit('http://localhost:3000/educado-admin/applications')
 		cy.get('#search-term').type('John')
         cy.contains('Jane').should('not.exist')
 	});

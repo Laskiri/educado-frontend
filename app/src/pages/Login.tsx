@@ -123,7 +123,7 @@ const Login = () => {
       const inputloginEmail = document.getElementById('email-field') as HTMLInputElement;
       const inputloginPass = document.getElementById('password-field') as HTMLInputElement;
       
-      const submitloginButton = document.getElementById('submitLoginButton') as HTMLButtonElement;
+      const submitloginButton = document.getElementById('submit-login-button') as HTMLButtonElement;
      
       if(inputloginEmail.value.trim() && inputloginPass.value.trim() !== '') {
         submitloginButton.removeAttribute('disabled');
