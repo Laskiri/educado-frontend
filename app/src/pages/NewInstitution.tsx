@@ -34,7 +34,7 @@ const NewInstitution = () => {
         secondaryDomain: data.secondaryDomain
       })
       .then((res) => { console.log(res)
-            navigate("/educado_admin/applications"); 
+            navigate("/educado-admin/applications"); 
               setTimeout(() => {
             toast.success("Adicionado "+res.data.institution.institutionName+" como nova instituição", { hideProgressBar: true, 
             }); //CHANGE TO PORTUGUESE
@@ -83,7 +83,7 @@ return (
             Instituição
             </label>
             <input
-              type="text" id="institutionName"
+              type="text" id="institution-name"
               className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="Empresa"
               {...register("institutionName", { required: true })}
@@ -109,7 +109,7 @@ return (
               Domínio de e-mail secundário {/* Secondary Email Domain */}
             </label>
             <input
-              type="text" id="secondaryDomain"
+              type="text" id="secondary-domain"
               className="flex border-sky-50 w-[100%] py-3 px-4  placeholder-gray-400 text-base focus:outline-none focus:ring-2  focus:border-transparent bg-sky-50 focus:ring-sky-200 rounded-lg font-['Montserrat']"
               placeholder="@Empresa.secundário.com"
               {...register("secondaryDomain", { required: false })}
@@ -126,7 +126,7 @@ return (
             
             { /*Button for going back to the educado admin page*/ }
                 <Link className="mt-3 inline-flex w-full underline text-red-500 bg-white px-1 py-2 text-lg font-bold font-['Montserrat'] hover:text-red-700 sm:mt-0 sm:w-auto"
-                  to="/educado_admin/applications">
+                  to="/educado-admin/applications">
                     <button
                     type="button"
                     >Cancelar e Voltar

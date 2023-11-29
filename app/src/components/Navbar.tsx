@@ -50,7 +50,7 @@ return (
                 </Link>
             </li>
             <li>
-                <Link to={"/educado_admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat']" data-tip="Verifique os aplicativos"> {/* Check Applications */}
+                <Link to={"/educado-admin/applications"} className="flex tooltip tooltip-hover text-lg tooltip-bottom font-['Montserrat']" data-tip="Verifique os aplicativos"> {/* Check Applications */}
                 <Icon path={mdiAccount} size={1} color="grayMedium" /><span>Admin</span> {/*admin*/}
                 </Link>
             </li>

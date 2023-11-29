@@ -91,7 +91,7 @@ it("can navigate to the welcome page and the login pages", async () => {
             <Signup />
         </MemoryRouter>
     )});
-    const passwordField = component.root.findByProps({id: "passwordField"});
+    const passwordField = component.root.findByProps({id: "password-field"});
     expect(passwordField.props.type).toBe("password");
 
     const hidePasswordButton = component.root.findByProps({id: "hidePasswordIcon"});

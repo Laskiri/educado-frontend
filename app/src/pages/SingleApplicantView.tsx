@@ -30,7 +30,7 @@ function SingleApplicantView() {
         AuthServices.AcceptApplication(id!)
             .then((res) => { 
                 console.log(res)
-                navigate("/educado_admin/applications"); 
+                navigate("/educado-admin/applications"); 
                 setTimeout(() => {
                 toast.success((data?.data.applicator.firstName+" "+data?.data.applicator.lastName+" aprovado"), { hideProgressBar: true, 
                         });
@@ -45,7 +45,7 @@ function SingleApplicantView() {
     const handleReject = () => {
         AuthServices.RejectApplication(id!)
             .then(_ => {
-                navigate("/educado_admin/applications");
+                navigate("/educado-admin/applications");
                 setTimeout(() => {
                     toast.error((data?.data.applicator.firstName+" "+data?.data.applicator.lastName+" rejeitado"), { hideProgressBar: true, 
                             });
@@ -58,7 +58,7 @@ function SingleApplicantView() {
     if (!data) return <Loading />
     //When attempting to view an application that does not exist, user will be navigated back to the applicaitons page, and be notified of the error
     if (data?.data.application == undefined){
-        navigate("/educado_admin/applications");
+        navigate("/educado-admin/applications");
         setTimeout(() => {
             toast.error(("Este usuário não tem candidatura"), { hideProgressBar: true, 
                     });
@@ -89,10 +89,10 @@ return (
             </div>
             
             <div className="bg-gray-50 px-6 py-4 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-6">   
-                <button onClick={handleReject} id="rejectButton" type="button" className="py-3 px-4 flex justify-center items-center font-['Montserrat']  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded ">
+                <button onClick={handleReject} id="reject-button" type="button" className="py-3 px-4 flex justify-center items-center font-['Montserrat']  bg-red-600 hover:bg-red-700 focus:ring-red-500 focus:ring-offset-red-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded ">
                 Negar {/* Decline */}
                 </button>
-                <button onClick={handleAccept} id="approveButton" type="button" className=" py-3 px-4 flex justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+                <button onClick={handleAccept} id="approve-button" type="button" className=" py-3 px-4 flex justify-center items-center font-['Montserrat'] bg-green-600 hover:bg-green-700 focus:ring-green-500 focus:ring-offset-green-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 Aprovar {/* Approve*/}
                 </button>
             </div> 

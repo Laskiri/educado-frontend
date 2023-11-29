@@ -23,9 +23,9 @@ describe('Application overview page', () => {
 			],
 		})
 		cy.visit('http://localhost:3000/login')
-		cy.get('#emailField').type('test@email.com')
-		cy.get('#passwordField').type('password')
-		cy.get('#submitLoginButton').click()
+		cy.get('#email-field').type('test@email.com')
+		cy.get('#password-field').type('password')
+		cy.get('#submit-login-button').click()
         cy.url().should('include', '/courses')
 		cy.saveLocalStorage();
 	});
@@ -78,8 +78,8 @@ describe('Application overview page', () => {
 			           applicator: {firstName: "John",lastName: "Doe", email: "mail@gmail.com"}
                 }
 		})
-        cy.get('#rejectButton').should('exist')
-        cy.get('#approveButton').should('exist')
+        cy.get('#reject-button').should('exist')
+        cy.get('#approve-button').should('exist')
 	})
 
     it('should be able to approve or reject application ', () => {

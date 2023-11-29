@@ -23,9 +23,9 @@ describe('Application overview page', () => {
 			],
 		})
 		cy.visit('http://localhost:3000/login')
-		cy.get('#emailField').type('test@email.com')
-		cy.get('#passwordField').type('password')
-		cy.get('#submitLoginButton').click()
+		cy.get('#email-field').type('test@email.com')
+		cy.get('#password-field').type('password')
+		cy.get('#submit-login-button').click()
     cy.url().should('include', '/courses')
 		cy.saveLocalStorage();
 	});
@@ -73,7 +73,7 @@ describe('Application overview page', () => {
 		});
 
 		cy.visit('http://localhost:3000/educado_admin/applications')
-		cy.get('#searchTerm').type('John')
+		cy.get('#search-term').type('John')
         cy.contains('Jane').should('not.exist')
 	});
 })

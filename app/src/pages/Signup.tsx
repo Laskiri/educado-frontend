@@ -156,9 +156,9 @@ const Signup = () => {
   function areFieldsFilled() {
     const inputSignupFirstName = document.getElementById('firstNameField') as HTMLInputElement;
     const inputSignupLastName = document.getElementById('lastNameField') as HTMLInputElement;
-    const inputSignupEmail = document.getElementById('emailField') as HTMLInputElement;
-    const inputSignupPass = document.getElementById('passwordField') as HTMLInputElement;
-    const inputSignupRedoPass = document.getElementById('passwordFieldRepeat') as HTMLInputElement;
+    const inputSignupEmail = document.getElementById('email-field') as HTMLInputElement;
+    const inputSignupPass = document.getElementById('password-field') as HTMLInputElement;
+    const inputSignupRedoPass = document.getElementById('password-field-repeat') as HTMLInputElement;
     const submitSignupButton = document.getElementById('submitSignupButton') as HTMLButtonElement;
    
     if(inputSignupFirstName.value.trim() && inputSignupLastName.value.trim() && inputSignupEmail.value.trim() && inputSignupPass.value.trim() && inputSignupRedoPass.value.trim() !== '') {
@@ -261,7 +261,7 @@ const Signup = () => {
         Email 
       </label>
       <input onInput={areFieldsFilled}
-        type="email" id="emailField"
+        type="email" id="email-field"
         className="w-[100%]  flex border-gray-300 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         placeholder="usuario@gmail.com"
         {...register("email", { required: " introduza o seu e-mail." })}/>
@@ -276,11 +276,11 @@ const Signup = () => {
 
       { /*Password Field*/ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordField">
+      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="password-field">
         Senha {/*Password*/}
       </label>
       <input onInput={areFieldsFilled}
-          type={passwordVisible ? "text" : "password"} id="passwordField"
+          type={passwordVisible ? "text" : "password"} id="password-field"
           className="w-[100%] hflex border-gray-300  py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
           {...register("password", { required: "insira a senha." })} onChange={handlePasswordChange}/>
@@ -310,11 +310,11 @@ const Signup = () => {
 
       { /*Confirm Password Field */ }
       <div className="relative">
-      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-6 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="passwordFieldRepeat">
+      <label className=" flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-6 after:content-['*'] after:ml-0.5 after:text-red-500 " htmlFor="password-field.repeat">
         Confirmar Senha {/*Confirm Password*/}
       </label>
       <input onInput={areFieldsFilled}
-        type={passwordVisibleRepeat ? "text" : "password"} id="passwordFieldRepeat"
+        type={passwordVisibleRepeat ? "text" : "password"} id="password-field-repeat"
         placeholder="********** "
         className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
         {...register("confirmPassword", { required: "insira a senha." })}/>
@@ -333,7 +333,7 @@ const Signup = () => {
       <span className="h-10" /> {/* spacing */}  
       
         { /*Enter button*/ }
-        <button type="submit" id="submitSignupButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
+        <button type="submit" id="submit-signup-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
         disabled>
             Cadastrar {/*Register*/} 
         </button>

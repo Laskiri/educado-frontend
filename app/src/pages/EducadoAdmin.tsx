@@ -46,7 +46,7 @@ return (
     <div className="navbar justify-end md:w-full bg-none p-6">
         <div className="flex-none">
         <Link className="flex-shrink-0 px-12 py-3 text-base font-semiboldborder font-['Montserrat'] hover:bg-cyan-900 hover:text-gray-50 border-[#166276] bg-[#166276] rounded font-semibold text-white shadow-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-blue-200"
-            to="/educado_admin/newinstitution"> 
+            to="/educado-admin/new-institution"> 
             <button 
                 type="submit"
                 >Add institution
@@ -56,7 +56,7 @@ return (
             
                 {/* Input for searchterm */}
                 <input className="placeholder:italic placeholder:text-slate-400 block bg-white w-full border border-slate-300 rounded-md py-2 pl-8 pr-3 shadow-sm focus:outline-none hover:bg-white focus:border-sky-500 focus:ring-1 sm:text-sm"
-                    type="text" id="searchTerm"
+                    type="text" id="search-term"
                     placeholder="Procure um aplicativo..." //Look for an Application
                     onChange={(event) => {
                         setSearchTerm(event.target.value);

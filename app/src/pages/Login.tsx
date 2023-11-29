@@ -120,8 +120,8 @@ const Login = () => {
     
     
     function areFieldsFilled() {
-      const inputloginEmail = document.getElementById('emailField') as HTMLInputElement;
-      const inputloginPass = document.getElementById('passwordField') as HTMLInputElement;
+      const inputloginEmail = document.getElementById('email-field') as HTMLInputElement;
+      const inputloginPass = document.getElementById('password-field') as HTMLInputElement;
       
       const submitloginButton = document.getElementById('submitLoginButton') as HTMLButtonElement;
      
@@ -207,11 +207,11 @@ const Login = () => {
           {/* Email field */}
           <div>
             <div className="relative">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="emailField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="email-field">
               Email
             </label>
             <input onInput={areFieldsFilled} 
-              type="email" id="emailField"
+              type="email" id="email-field"
               className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
               placeholder="usuario@gmail.com"
               {...register("email", { required: true })}/>
@@ -228,13 +228,13 @@ const Login = () => {
           {/* Password field */}
         <div>
           <div className="relative">
-            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="passwordField">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="password-field">
               Senha {/*Password*/}
           </label>
         <input
           onInput={areFieldsFilled}
           type={passwordVisible ? "text" : "password"}
-          id="passwordField"
+          id="password-field"
           className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
           placeholder="**********"
         {...register("password", { required: true })}
@@ -264,7 +264,7 @@ const Login = () => {
         <span className="h-12" /> {/* spacing */}  
           
       { /*Enter button*/ }
-        <button type="submit" id="submitLoginButton" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
+        <button type="submit" id="submit-login-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
           disabled>
             Entrar {/*Enter*/}
           </button>

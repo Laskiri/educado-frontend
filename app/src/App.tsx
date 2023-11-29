@@ -79,19 +79,19 @@ function App() {
       errorElement: <NotFound />
     },
     {
-      path: "/educado_admin",
+      path: "/educado-admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
     },
     {
-      path: "/educado_admin/newinstitution",
+      path: "/educado-admin/new-institution",
       element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
     },
     {
-      path: "/educado_admin/applications",
+      path: "/educado-admin/applications",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>
     },
     {
-      path: "/educado_admin/applications/:id",
+      path: "/educado-admin/applications/:id",
       element: <ProtectedRoute><SingleApplicantView /></ProtectedRoute>,
     },
     {
