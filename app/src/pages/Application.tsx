@@ -44,7 +44,7 @@ const Application = () => {
   };
 
 return (
-<main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
+<main className="flex flex-col min-h-screen bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
   
   { /* Navbar */ }
   <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50 bg-F1F9FB shadow-[0px 4px 4px 0px rgba(35, 100, 130, 0.25)]">
@@ -57,8 +57,8 @@ return (
     </div>
   </nav>
   
-  <body className="relative right-0 h-screen flex flex-col z-10">
-    <form className="relative right-0 w-full overflow-none h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
+  <body className="relative right-0 h-full flex-1 flex flex-col z-10">
+    <form className="relative right-0 w-full overflow-none flex-1 h-screen flex flex-col items-center gap-5 z-50" onSubmit={handleSubmit(onSubmit)}>
    
       {/* Box for text */}
       <div className="items-center p-10 pt-20">
