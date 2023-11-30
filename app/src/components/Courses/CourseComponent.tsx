@@ -145,6 +145,8 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
             
           } else{
               setId(res.data._id)
+              setTickChange(1);
+              navigate(`/courses/manager/${res.data._id}/1`);
               
           }
         }) // Course created

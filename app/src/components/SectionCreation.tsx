@@ -61,6 +61,7 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
     navigate(`/courses/manager/${id}/0`);
   }
 
+
     /**
        * Extra function to handle the response from the course service before it is passed to the useSWR hook
        * 
@@ -112,13 +113,13 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
               </label>
 
               <label htmlFor='course-create' className="pl-56 underline py-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
-                <label onClick={()=>{if(confirm("Tem certeza que deseja sair? As alterações não salvas serão perdidas.") === true){onSubmit()}}} className='underline' >
+                <label onClick={onSubmit} className='underline' >
                 Salvar como Rascunho {/** Save as draft */}
                 </label>
               </label>
 
               <label htmlFor='course-create' className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-                <label onClick={()=>onSubmit()} className='py-2 px-4 h-full w-full cursor-pointer' >
+                <label onClick={onSubmit} className='py-2 px-4 h-full w-full cursor-pointer' >
                     Revisar Curso {/** Go to the Revisar curso page which is not yet implemented therefore it is just a save  */}
                 </label>
               </label>

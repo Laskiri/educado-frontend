@@ -15,7 +15,7 @@ import ExerciseServices from "../services/exercise.services";
 import { toast } from "react-toastify";
 
 // Hooks
-import useToken from "../hooks/useToken";
+import { getUserToken } from "../helpers/userInfo";
 
 export interface ExercisePartial {
     title: string,
@@ -32,10 +32,8 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
     const onExerciseSave: SubmitHandler<any> = data => updateExercise(data);
 
 /** Token doesnt work, reimplement when it token is implemented */
-    //const token = useAuthStore(state => state.token);
-    //const token = useToken();
-    const token = "dummyToken";
-
+    const token = getUserToken();
+    
     const updateExercise = (data: any) => {
 
         const exerciseToSave: ExercisePartial = {
