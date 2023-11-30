@@ -158,7 +158,7 @@ export default function ProfessionalExperienceForm({
               onChange={(value) => {
                 handleExperienceInputChange(value, index);
               }}
-            />
+            />{" "}
             <div className="text-right text-xs text-gray-400">
               {handleCountExperience(index)}/400 caracteres
             </div>

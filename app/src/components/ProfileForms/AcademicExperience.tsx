@@ -43,6 +43,7 @@ export default function AcademicExperienceForm({
                 *
               </span>
             </label>
+            {/* Drop down list for educationLevel */}
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
               name="educationLevel"
@@ -56,6 +57,7 @@ export default function AcademicExperienceForm({
               <option value="Superior">Superior</option>
             </select>
           </div>
+          {/* Drop down list for status */}
           <div className="flex flex-col ">
             <label htmlFor="status" className="font-['Montserrat']">
               Status
@@ -63,7 +65,6 @@ export default function AcademicExperienceForm({
                 *
               </span>
             </label>
-
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
               name="status"

@@ -1,10 +1,11 @@
-// hook import
+// import hooks
 import { useState } from "react";
-import { getUserInfo } from '../helpers/userInfo';
 
-// service and utility import
+// import service and utility
 import ProfileServices from "../services/profile.services";
 import useProfileValidation from "../utilities/useProfileValidation"
+// import helpers
+import { getUserInfo } from '../helpers/userInfo';
 import {
   useEducationFormData,
   useExperienceFormData,
@@ -254,6 +255,10 @@ export default () => {
 
   //Count characters written in professional description
   const handleCountExperience = (index: any) => {
+    // if description is not existing then return nothing
+    if(experienceformData.length === 0 || !experienceformData[index].description) {
+      return 0;
+    }
     let text = experienceformData[index].description;
     text = text.replace(/\s/g, "");
     return text.length;
@@ -269,6 +274,7 @@ export default () => {
       return;
     }
     if (name == "startDate" || name == "endDate") {
+
       value = value.replace(/[^0-9/]/g, "");
     }
     handleValidation(index, name, value, "experience");

@@ -178,6 +178,32 @@ const Profile = () => {
   const [toggleMenu2, setToggleMenu2] = useState(false);
   const [toggleMenu3, setToggleMenu3] = useState(false);
 
+  // Create empty object for professional experience
+  const emptyAcademicObject = [
+    {
+      status: "",
+      institution: "",
+      course: "",
+      educationLevel: "",
+      startDate: "",
+      endDate: "",
+      _id: null,
+    },
+  ];
+
+  // Create empty object for professional experience
+  const emptyProfessionalObject = [
+    {
+      company: "",
+      jobTitle: "",
+      startDate: "",
+      endDate: "",
+      checkBool: false,
+      description: "",
+      _id: null,
+    },
+  ];
+
   //render and fetch signup userdetails
   useEffect(() => {
     fetchuser();
@@ -186,7 +212,6 @@ const Profile = () => {
   //render and fetch userData
   useEffect(() => {
     if (userID) {
-      console.log("userid: ", userID);
       fetchDynamicData();
       fetchStaticData();
     }
@@ -263,19 +288,35 @@ const Profile = () => {
               </div>
 
               {/* Academic experience form */}
-              {toggleMenu2 &&
-                educationformData.map((form, index) => (
-                  // Retrieve child compononent
+              {/* Conditional rendering empty form when database is empty */}
+              {toggleMenu2 ? (
+                educationformData.length === 0 ? (
                   <AcademicExperienceForm
-                    key={index}
-                    index={index}
-                    educationformData={educationformData}
+                    key={0}
+                    index={0}
+                    educationformData={emptyAcademicObject}
                     handleEducationInputChange={handleEducationInputChange}
                     educationErrors={educationErrors}
                     addNewEducationForm={addNewEducationForm}
                     handleEducationDelete={handleEducationDelete}
                   />
-                ))}
+                ) : (
+                  educationformData.map((form, index) => (
+                    // Retrieve child compononent
+                    <AcademicExperienceForm
+                      key={index}
+                      index={index}
+                      educationformData={educationformData}
+                      handleEducationInputChange={handleEducationInputChange}
+                      educationErrors={educationErrors}
+                      addNewEducationForm={addNewEducationForm}
+                      handleEducationDelete={handleEducationDelete}
+                    />
+                  ))
+                )
+              ) : (
+                <></>
+              )}
 
               <div className="hidden sm:block" aria-hidden="true">
                 <div className="py-3"></div>
@@ -305,12 +346,13 @@ const Profile = () => {
               </div>
 
               {/* Professional experience form */}
-              {toggleMenu3 &&
-                experienceformData.map((form, index) => (
+              {/* Conditional rendering empty form when database is empty */}
+              {toggleMenu3 ? (
+                experienceformData.length === 0 ? (
                   <ProfessionalExperienceForm
-                    key={index}
-                    index={index}
-                    experienceformData={experienceformData}
+                    key={0}
+                    index={0}
+                    experienceformData={emptyProfessionalObject}
                     handleExperienceInputChange={handleExperienceInputChange}
                     experienceErrors={experienceErrors}
                     addNewExperienceForm={addNewExperienceForm}
@@ -318,7 +360,24 @@ const Profile = () => {
                     handleCountExperience={handleCountExperience}
                     handleCheckboxChange={handleCheckboxChange}
                   />
-                ))}
+                ) : (
+                  experienceformData.map((form, index) => (
+                    <ProfessionalExperienceForm
+                      key={index}
+                      index={index}
+                      experienceformData={experienceformData}
+                      handleExperienceInputChange={handleExperienceInputChange}
+                      experienceErrors={experienceErrors}
+                      addNewExperienceForm={addNewExperienceForm}
+                      handleExperienceDelete={handleExperienceDelete}
+                      handleCountExperience={handleCountExperience}
+                      handleCheckboxChange={handleCheckboxChange}
+                    />
+                  ))
+                )
+              ) : (
+                <></>
+              )}
             </>
             <div>
               {submitError && (

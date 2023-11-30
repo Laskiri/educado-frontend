@@ -38,9 +38,6 @@ export interface ExperienceFormData {
   _id: string | null;
 }
 
-export interface DecodedToken {
-  email: string;
-} 
 
 
 

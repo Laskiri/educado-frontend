@@ -1,65 +1,70 @@
+//imports
 import axios from "axios";
 import { BACKEND_URL } from '../helpers/environment';
 
 
-//Get requests
+//Upload image request
+const postImage = async (formData: any) => {
+  return await axios.post(
+      `${BACKEND_URL}/api/bucket/upload`,
+      formData
+    );
+}
+
+//---Get requests---//
+// Send get request to personal information form
 const getUserFormOne = async (userID: any) => {
-  console.log("Static user form is recieved");
   return await axios.get(
     `${BACKEND_URL}/api/users/fetch/${userID}`
   );
 }
 
+// Send get request to academic experience form
 const getUserFormTwo = async (userID: any) => {
   return await axios.get(
-    `${BACKEND_URL}/api/users/getEducation/${userID}`
+    `${BACKEND_URL}/api/users/get-education/${userID}`
   );
 }
-
+// Send get request to professional experience form
 const getUserFormThree = async (userID: any) => {
   return await axios.get(
-    `${BACKEND_URL}/api/users/getExperience/${userID}`
+    `${BACKEND_URL}/api/users/get-experience/${userID}`
   );
 }
 
-//Delete additional forms 
+//---Delete requests---//
+//Delete additional academic forms 
 const deleteEducationForm = async (_id: any) => {
   return await axios.delete(
-    `${BACKEND_URL}/api/users/deleteEducation/${_id}`
+    `${BACKEND_URL}/api/users/delete-education/${_id}`
   );
 }
 
+//Delete additional professional forms
 const deleteExperienceForm = async (_id: any) => {
   return await axios.delete(
-    `${BACKEND_URL}/api/users/deleteExperience/${_id}`
+    `${BACKEND_URL}/api/users/delete-experience/${_id}`
   );
 }
 
-//Update Forms 
+//---Update requests---//
+//Update personal form
 const putFormOne = async (formDataToSend: any) => {
-  console.log("formData: ", formDataToSend)
   return await axios.put(
-    `${BACKEND_URL}/api/users/updateProfile/`,
+    `${BACKEND_URL}/api/users/update-personal/`,
     formDataToSend)
 }
 
+//Update academic form
 const putFormTwo = async (data: any) => {
-  console.log("FormTwo: ", data)
   return await axios.put(
-    `${BACKEND_URL}/api/users/addEducation`, data)
+    `${BACKEND_URL}/api/users/add-education`, data)
 }
 
+//Update professional form
 const putFormThree = async (data: any) => {
-  return await axios.put(`${BACKEND_URL}/api/users/addExperience`, data);
+  return await axios.put(`${BACKEND_URL}/api/users/add-experience`, data);
 };
-
-//Profile image
-const postImage = async (formData: any) => {
-    return await axios.post(
-        `${BACKEND_URL}/api/bucket/upload`,
-        formData
-      );
-}
 
 
 

@@ -20,7 +20,6 @@ export default () => {
 
   //Fetch static data
   const fetchStaticData = async () => {
-    console.log(userID)
     const response = await ProfileServices.getUserFormOne(userID);
     const data = response.data;
     setFormData((prevData) => ({
@@ -35,7 +34,6 @@ export default () => {
 
   //Handle for Profile Image
   const handleFileChange = async (event: any) => {
-    console.log("filechange")
     const formData = new FormData();
     formData.append("file", event.target.files && event.target.files[0]);
     formData.append(
@@ -85,6 +83,7 @@ export default () => {
     let email = "email";
     userInfo.email ? (email = userInfo.email) : (email = "Email");
 
+    //set formData state to name and email given by signup
     if (userInfo) {
       setFormData((prevData) => ({
         ...prevData,

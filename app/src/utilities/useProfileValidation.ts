@@ -11,11 +11,9 @@ export default ()=>{
 
       // validating date format & creating integer limits on the date format
       const dateValidation = (value: any) => {
-        console.log(value.substring(0, 2));
         let month =
           parseInt(value.substring(0, 2)) >= 1 &&
           parseInt(value.substring(0, 2)) <= 12;
-        console.log(month);
         const regex = new RegExp("/", "g");
         let matchResult = value.match(regex);
         let count = matchResult ? matchResult.length : 0;
