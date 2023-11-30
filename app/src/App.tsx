@@ -12,7 +12,6 @@ import Welcome from "./pages/Welcome";
 import Courses from "./pages/Courses";
 import CourseManager from "./pages/CourseManager";
 
-import SectionEdit from "./pages/SectionEdit";
 import Profile from "./pages/Profile";
 
 // Educado Admin
@@ -47,10 +46,6 @@ function App() {
 			path: "/certificates",
 			element: <ProtectedRoute><Certificates /></ProtectedRoute>,
 		},
-    {
-      path: "/sections/:sid",
-      element: <ProtectedRoute><SectionEdit /></ProtectedRoute>
-    },
     {
       path: "/settings",
       element: <p>settings</p>

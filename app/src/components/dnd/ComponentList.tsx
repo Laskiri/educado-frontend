@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // DND-KIT
 import {
@@ -23,23 +23,25 @@ import {
 } from "@dnd-kit/modifiers";
 
 // Components
-import { SortableItem } from './@dnd/SortableItem';
+import { SortableComponentItem } from './@dnd/SortableComponentItem';
 import { Item } from './@dnd/Item';
 
 // Intefaces
 import { Section } from '../../interfaces/CourseDetail';
+import ComponentService from '../../services/component.service';
 
 interface Props {
-  sections: Array<string>
+  sid: string
+  componentIds: Array<string>
+  componentTypesMap:  Map<string, string>
+  idMap: Map<string, string>
   addOnSubmitSubscriber: Function
 }
 
-
-export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
+export const ComponentList = ({sid, componentIds, componentTypesMap, idMap, addOnSubmitSubscriber }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
-  const [items, setItems] = useState(sections);
-  const [savedSID, setSavedSID] = useState<string>("");
+  const [items, setItems] = useState(componentIds);
 
   // Setup of pointer and keyboard sensor
   const sensors = useSensors(
@@ -69,6 +71,24 @@ export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
     }
   }
 
+
+  useEffect(() => {
+    addOnSubmitSubscriber(()=>onSubmit());
+  }, [])
+
+  function onSubmit(){
+    let componentArray:any[] = [];
+    setItems((items) => {
+      for (let i = 0; i < items.length; i++) {
+        componentArray.push({_id: idMap.get(items[i]), compId: items[i], compType: componentTypesMap.get(items[i])})
+      }
+      console.log(componentArray);
+      console.log(items);
+      return(items)
+  });
+   ComponentService.setComponents(sid, componentArray);
+  }
+
   return (
     <div className='w-full'>
       <DndContext
@@ -80,7 +100,7 @@ export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
       
       >
         <SortableContext items={items.map(item => item)} strategy={verticalListSortingStrategy}>
-          {items.map((item, key: React.Key) => <SortableItem key={key} sid={item} addOnSubmitSubscriber={addOnSubmitSubscriber} savedSID={savedSID} setSavedSID={setSavedSID} />)}
+          {items.map((item, key: React.Key) => <SortableComponentItem key={key} cid={item} map={componentTypesMap} />)}
         </SortableContext>
 
        

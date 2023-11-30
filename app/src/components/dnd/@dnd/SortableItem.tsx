@@ -3,26 +3,23 @@ import useSWR from 'swr';
 import { useForm, SubmitHandler } from 'react-hook-form'
 import { toast } from 'react-toastify';
 
-
-
 // Hooks
-import useToken from '../../../hooks/useToken';
+import { getUserToken } from '../../../helpers/userInfo';
 
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
+// components
+import { SectionArrowIcon } from '../../SectionArrowIcon';
+import { ComponentList } from '../ComponentList';
 
 
 // icons
-
-import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
-
+import { mdiChevronDown, mdiChevronUp, mdiDeleteCircle, mdiDotsVerticalCircle, mdiPlus } from '@mdi/js';
 import Icon from '@mdi/react';
-
-import { useState, useCallback, useEffect, useRef } from 'react';
-
+import { useState, useEffect, useRef } from 'react';
 import SectionServices from '../../../services/section.services';
-import { add, set } from 'cypress/types/lodash';
+
 
 //pop-ups 
 import { CreateLecture } from '../../CreateLecturePopUp';
@@ -30,30 +27,27 @@ import { CreateExercise } from '../../Exercise/CreateExercisePopUp';
 
 
 interface Props {
-
   sid: string,
+  savedSID: string,
   addOnSubmitSubscriber: Function
+  setSavedSID: Function
 }
 
-export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
+export function SortableItem({ sid, addOnSubmitSubscriber, savedSID, setSavedSID}: Props) {
 
-  const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
+  const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
   const [title, setTitle] = useState<string>();
   const [description, setDescription] = useState<string>(); 
   const subRef= useRef<HTMLInputElement>(null);
   const openRef= useRef<HTMLInputElement>(null);
-  
 
-  
-  //const token = "dummyToken";
-  const token = useToken();
+  const token = getUserToken();
   
   // Fetch the section data from the server.
   const { data, error } = useSWR(
     token ? [sid, token] : null,
     SectionServices.getSectionDetail
   );
-
 
 
   const {
@@ -68,12 +62,12 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-  
+
   //Toggles the arrow direction between up and down
   function changeArrowDirection (){
-    if (arrowDirction === mdiChevronDown){
+    if (arrowDirection === mdiChevronDown){
       setArrowDirection(mdiChevronUp);
-    }else{
+    } else {
       setArrowDirection(mdiChevronDown);
     }
   }
@@ -85,7 +79,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
   // Create Form Hooks
   const { register: registerSection, handleSubmit: handleSectionUpdate, formState: { errors: sectionErrors } } = useForm<SectionPartial>();
 
- 
+
 
   /**
      * SubmitHandler: update section
@@ -96,31 +90,56 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
     if(data === undefined) return;
     if(title === undefined && description === undefined) return;
 
-    console.log("i passed", data.title, title, description);
     const changes: SectionPartial = {
         title: data.title,
         description: data.description
      }
-     
+
      SectionServices.saveSection(changes, sid, token)
-     .then(res => toast.success('Seção atualizada'))
+    //  .then(res => toast.success('Seção atualizada'))
      .catch(err => toast.error(err));
+  }
+
+  function getCompArray(compArray: any){  
+    return compArray;
   }
 
   function deleteSection(){
     if(confirm("Tem certeza que deseja excluir?") == true){
       SectionServices.deleteSection(sid, token)
-      .then(res => {toast.success('Seção excluída'); window.location.reload();})
+      .then(res => {
+        toast.success('Seção excluída');
+        window.location.reload();
+      })
       .catch(err => toast.error(err));
     }
   }
-  
+
+  useEffect(() => {
+    if(data?.title === "Nova seção"){
+      setArrowDirection(mdiChevronUp);
+    }
+    addOnSubmitSubscriber(()=>{ subRef.current?.click() });
+  },[]);
+
+  function mapIdstoTypes(){
+    let idComponentMap = new Map<string, string>();
+    for(let i = 0; i < data.components.length; i++){
+      idComponentMap.set(data.components[i].compId, data.components[i].compType);
+    }
+    return idComponentMap;
+  }
+
+  function mapIdstoIdObjIds(){
+    let idComponentMap = new Map<string, string>();
+    for(let i = 0; i < data.components.length; i++){
+      idComponentMap.set(data.components[i].compId, data.components[i]._id);
+    }
+    return idComponentMap;
+  }
 
 
- useEffect(() => {
-  openRef.current?.checked;
-  addOnSubmitSubscriber(()=>{ subRef.current?.click() });
- },[]);
+
 
   //If data is not found yet, show a loading message.
   if(data === undefined) {return (<p>Loading...</p>)}
@@ -128,101 +147,93 @@ export function SortableItem({ sid, addOnSubmitSubscriber}: Props) {
 
   //Else show the sections.
   return (
-
-    <div >
+    <div>
       <div className='collapse w-full rounded border bg-white shadow-lg rounded-lg my-4'>
-          <input type="checkbox" className="peer w-4/5 " defaultChecked={data.title ==="Nova seção"} onChange={changeArrowDirection} ref={openRef} />
-
+          <input type="checkbox" className="peer w-4/5 h-full" defaultChecked={data.title ==="Nova seção"} onChange={() => changeArrowDirection()} ref={openRef} />
           
-            <div className="collapse-title flex flex-row-2  rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
-              <div className='flex w-5/6 '>
-                <Icon path={arrowDirction} size={1} />
-                <p className="font-semibold">
-                  {title ?? data.title}
-                </p>
-                </div>
-                <div className='flex collapse ml-80'>
-                    <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primary'>
-                      {/**delete and move buttons on the left side of the section headers */}
-                      <Icon path={mdiDeleteCircle} size={1.2}></Icon>
-                      
-                    </div>  
-                    <div  className="flex w-32 collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
-                    <div className='btn btn-ghost hover:bg-transparent hover:text-primary'>
-                      {/**delete and move buttons on the left side of the section headers */}
-                      <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
-                      
-                    </div>  
-                    </div>
-               
+          <div className="collapse-title flex flex-row-2 rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
+            <div className='flex w-5/6 '>
+              <SectionArrowIcon setArrowDirection={setArrowDirection} arrowDirection={arrowDirection} Checkbox={openRef}/>
+              <p className="font-semibold">
+                {title ?? data.title}
+              </p>
+            </div>
+            <div className='flex collapse'>
+              <div onClick={deleteSection} className='btn btn-ghost hover:bg-transparent hover:text-primary'>
+                {/**delete and move buttons on the left side of the section headers */}
+                <Icon path={mdiDeleteCircle} size={1.2}></Icon>
               </div>  
-          </div> 
-
-            <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
-              <form
-                  onSubmit={handleSectionUpdate(onSubmit)}
-
-              >
-                <div className="pt-5  ">
-                  <label htmlFor='title '>Nome </label> {/*Title of section*/}
-                  <input type="text"  placeholder={data.title?? "Nome da seção"}
-                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    {...registerSection("title", { required: true })}
-                    onChange={(e) => setTitle(e.target.value) } //update the section title
-                    
-                  />
-                  {sectionErrors.title && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+              <div  className="flex collapse" ref={setNodeRef} style={style} {...attributes} {...listeners} >
+                <div className='btn btn-ghost hover:bg-transparent hover:text-primary'>
+                  {/**delete and move buttons on the left side of the section headers */}
+                  <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>    
                 </div>
-
-                <div className="pt-5">
-                  <label htmlFor='title'>Descrição </label> {/*description of section*/}
-                  <textarea placeholder={data.description ??"Descrição da seção"}
-                    className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    {...registerSection("description", { required: true })}
-                    onChange={(e) => setDescription(e.target.value) } //update the section title
-
-                  />
-                  {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
-
-
-                    {/**ADD lecture and exercise to the section */}
-                <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2 ">
-                  {/* <label className=" btn std-btn  bg-inherit hover:bg-transparent border border-transparent w-1/4 border rounded-lg flex space-x-2 mb-5 ">
-                    <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center "> 
-                    <Icon path={mdiPlus} size={1} className=" " />
-                    Adicionar Aula</p>
-                  </label> */}
-                  <CreateLecture sid={sid}/> {/** Create new Lecture */}
-                  <p className='text-gray-500 flex items-center text:align-right '>ou</p>
-                  {/* <label className="btn std-btn bg-inherit hover:bg-transparent border border-transparent w-1/4 rounded-lg flex justify-right space-x-2  mb-5 ">
-                    <p className="hover:text-gray-500 text-gray-500 normal-case flex items-center text:align-right"> 
-                    <Icon path={mdiPlus} size={1} className=" " />
-                    Adicionar Exercício</p>
-                    
-                  </label> */}
-                  <CreateExercise sid={sid}/> {/** Create new Exercise */}
-
-                </div>
-
-                  {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-                  <div className='flex flex-row-reverse'>                            
-                        <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}</div>
-                  
-                    
-                  </div>
-                  <div className='hidden' onClick={()=>{onSubmit(data)}}>
-                      <input type='submit' ref={subRef} />
-                  </div>
-              </form>
-                
-              
               </div>
+            </div>
+          </div>
+
+          <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
+            <form onSubmit={handleSectionUpdate(onSubmit)}>
+              <div className="pt-5">
+                <label htmlFor='title'>Nome </label> {/*Title of section*/}
+                <input type="text" defaultValue={data.title ?? ""} placeholder={data.title?? "Nome da seção"}
+                  className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  {...registerSection("title", { required: true })}
+                  onChange={(e) => setTitle(e.target.value) } //update the section title
+                />
+                {sectionErrors.title && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+              </div>
+
+              <div className="pt-5">
+                <label htmlFor='title'>Descrição </label> {/*description of section*/}
+                <textarea defaultValue={data.description ?? ""} placeholder={data.description ??"Descrição da seção"}
+                  className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                  {...registerSection("description", { required: true })}
+                  onChange={(e) => setDescription(e.target.value) } //update the section title
+                />
+                {sectionErrors.description && <span>Este campo é obrigatório!</span>}{/** This field is required */}
+              </div>
+
+              <div className='hidden' onClick={()=>{onSubmit(data)}}>
+                <input type='submit' ref={subRef} />
+              </div>
+            </form>  
+
+            <ComponentList sid={sid} componentIds={data.components.map((obj: any) => obj.compId)} componentTypesMap={mapIdstoTypes()} idMap={mapIdstoIdObjIds()} addOnSubmitSubscriber={addOnSubmitSubscriber}/>
+
+            {/**ADD lecture and exercise to the section */}
+            <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2">
               
+              {/* The button to open create lecture modal */}
+              <label htmlFor="lecture-create-new" onClick={() => setSavedSID(sid)} className="btn std-btn bg-inherit hover:bg-transparent border border-transparent rounded-lg flex justify-right space-x-2  mb-5">
+                  <Icon path={mdiPlus} size={1} className="hover:text-gray-500 text-gray-500 " />
+                  <p className='hover:text-gray-500 text-gray-500 normal-case ' >Criar nova aula</p>
+              </label>
+              
+              {/* Put this part before </body> tag */}
+              <input type="checkbox" id="lecture-create-new" className="modal-toggle" />
+              
+              <CreateLecture savedSID={savedSID} data={undefined}/> {/** Create new Lecture */}
+              
+              <p className='text-gray-500 flex items-center text:align-right '>ou</p>
+              
+              {/** The button to open create exercise modal */}
+              <label htmlFor="exercise-create-new" onClick={() => setSavedSID(sid)} className="btn std-btn bg-inherit hover:bg-transparent border border-transparent rounded-lg flex justify-right space-x-2  mb-5">
+              <Icon path={mdiPlus} size={1} className="hover:text-gray-500 text-gray-500 " />
+                  <p className='hover:text-gray-500 text-gray-500 normal-case' >Criar novo exercício</p>  {/** Create new Exercise */}
+              </label>
 
-          
+              <input type="checkbox" id="exercise-create-new" className="modal-toggle" />
+              
+              <CreateExercise savedSID={savedSID} data={undefined}/> {/** Create new Exercise */}
+            </div>
 
-        </div>
-        
+            {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
+            <div className='flex flex-row-reverse'>                            
+              <label htmlFor='description'>0/10 items</label>{/** PLACEHOLDER TEXT */}
+            </div>
+          </div>
+        </div>       
     </div>
   );
 }

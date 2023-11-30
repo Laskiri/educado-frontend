@@ -1,20 +1,16 @@
 // Hooks
 import useSWR from 'swr';
 import { useNavigate } from 'react-router-dom';
-import useToken from '../hooks/useToken';
+import { getUserToken } from '../helpers/userInfo';
 
 // Services
 import CourseServices from '../services/course.services';
-
-// Interfaces
-import { Course } from '../interfaces/Course';
 
 // Components
 import Layout from '../components/Layout'
 import Loading from '../components/general/Loading';
 import { CourseListCard } from '../components/Courses/CourseListCard'
 import PersonalInsights from '../components/Courses/PersonalInsights';
-import { getUserToken } from '../helpers/userInfo';
 
 
 // Images

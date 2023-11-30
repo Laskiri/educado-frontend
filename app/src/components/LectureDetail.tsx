@@ -13,7 +13,7 @@ import LectureService from "../services/lecture.services";
 import { toast } from "react-toastify";
 
 // Hooks
-import useToken from "../hooks/useToken";
+import { getUserToken } from "../helpers/userInfo";
 
 export interface LecturePartial {
     title: string,
@@ -29,10 +29,8 @@ export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string 
     const onLectureSave: SubmitHandler<any> = data => updateLecture(data);
 
     /** Token doesnt work, reimplement when it token is implemented */
-    //const token = useAuthStore(state => state.token);
-    //const token = useToken();
-    const token = "dummyToken";
-
+    const token = getUserToken();
+    
     const updateLecture = (data: any) => {
 
         const lectureToSave: LecturePartial = {
