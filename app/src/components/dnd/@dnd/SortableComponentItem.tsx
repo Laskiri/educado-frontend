@@ -13,7 +13,7 @@ import { CSS } from '@dnd-kit/utilities';
 // icons
 import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
 import Icon from '@mdi/react';
-import { mdiDraw, mdiPencilCircle, mdiTextBox } from '@mdi/js';
+import { mdiDraw, mdiPencilCircle, mdiTextBox, mdiVideo  } from '@mdi/js';
 
 import LectureService from '../../../services/lecture.services';
 import ExerciseServices  from '../../../services/exercise.services';
@@ -83,7 +83,11 @@ export function SortableComponentItem({cid, map}: Props) {
           
             <div className="flex flex-row-2 space-y-2 bg-secondary">
               <div className='flex flex-row-2 space-x-2 text-primary items-center ml-5 flex w-5/6 text-right'>
-                {map.get(cid)==="exercise"? <Icon path={mdiDraw} size={1} /> :
+                {map.get(cid)==="exercise"? 
+                <Icon path={mdiDraw} size={1} /> 
+                : data.contentType === "video" ? 
+                <Icon path={mdiVideo} size={1} /> 
+                :
                 <Icon path={mdiTextBox} size={1} />}
                 <p className="font-semibold">
                   {data.title}
