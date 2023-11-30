@@ -12,26 +12,26 @@ const getUserFormOne = async (userID: any) => {
 
 const getUserFormTwo = async (userID: any) => {
   return await axios.get(
-    `${BACKEND_URL}/api/users/getEducation?userID=${userID}`
+    `${BACKEND_URL}/api/users/getEducation/${userID}`
   );
 }
 
 const getUserFormThree = async (userID: any) => {
   return await axios.get(
-    `${BACKEND_URL}/api/users/getExperience?userID=${userID}`
+    `${BACKEND_URL}/api/users/getExperience/${userID}`
   );
 }
 
 //Delete additional forms 
 const deleteEducationForm = async (_id: any) => {
   return await axios.delete(
-    `${BACKEND_URL}/api/users/deleteEducation?_id=${_id}`
+    `${BACKEND_URL}/api/users/deleteEducation/${_id}`
   );
 }
 
 const deleteExperienceForm = async (_id: any) => {
   return await axios.delete(
-    `${BACKEND_URL}/api/users/deleteExperience?_id=${_id}`
+    `${BACKEND_URL}/api/users/deleteExperience/${_id}`
   );
 }
 
