@@ -11,15 +11,11 @@ export interface Profile {
 
 //Profile page interfaces
 export interface FormData {
-    UserName: string;
-    UserEmail: string;
-    bio: string;
-    linkedin: string;
-    academicExperience: string;
-    education: string;
-    company: string;
-    status: string;
-    photo: any;
+  UserName: string;
+  UserEmail: string;
+  bio: string;
+  linkedin: string;
+  photo: any;
   }
 
 export interface EducationFormData {
@@ -45,4 +41,6 @@ export interface ExperienceFormData {
 export interface DecodedToken {
   email: string;
 } 
+
+
 

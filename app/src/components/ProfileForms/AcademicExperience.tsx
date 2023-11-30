@@ -51,9 +51,9 @@ export default function AcademicExperienceForm({
                 handleEducationInputChange(value, index);
               }}
             >
-              <option value="basic">Básico</option>
-              <option value="medium">Médio</option>
-              <option value="superior">Superior</option>
+              <option value="Basic">Básico</option>
+              <option value="Medium">Médio</option>
+              <option value="Superior">Superior</option>
             </select>
           </div>
           <div className="flex flex-col ">

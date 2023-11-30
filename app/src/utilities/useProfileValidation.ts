@@ -1,26 +1,15 @@
 // Importing the 'useState' hook from React
 import { useState } from "react";
-
+import { useEducationErrors, useExperienceErrors } from "../helpers/formStates";
 
 //Validation for month and day input
 export default ()=>{
-  // State for education & experience date errors 
-    const [educationErrors, setEducationErrors] = useState([
-        {
-          startDate: "",
-          endDate: "",
-        },
-      ]);
-      const [educationErrorState, setEducationErrorState] = useState(false);
-      const [experienceErrors, setExperienceErrors] = useState([
-        {
-          startDate: "",
-          endDate: "",
-        },
-      ]);
-      const [experienceErrorState, setExperienceErrorState] = useState(false);
-      
-       // validating date format & creating integer limits on the date format
+
+  //import education & experience date errors states
+  const {educationErrors, setEducationErrors, educationErrorState, setEducationErrorState } = useEducationErrors();
+  const {experienceErrors, setExperienceErrors, experienceErrorState, setExperienceErrorState} = useExperienceErrors();
+
+      // validating date format & creating integer limits on the date format
       const dateValidation = (value: any) => {
         console.log(value.substring(0, 2));
         let month =
