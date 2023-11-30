@@ -17,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 import Loading from './general/Loading'
 import Layout from './Layout'
 import { is } from 'cypress/types/bluebird';
+import { toast } from 'react-toastify';
 
 interface Inputs {
     id: string,
@@ -56,6 +57,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
 
   function onSubmit() {
     notifyOnSubmitSubscriber();
+
+    toast.success("Seções salvas com sucesso!");
 
     setIsLeaving((isLeaving) =>{
       if(isLeaving && confirm("Tem certeza que deseja sair? Você perderá todas as alterações feitas.")){
