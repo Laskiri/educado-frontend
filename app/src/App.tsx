@@ -7,6 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
+import Application from "./pages/Application";
 
 // Auth Pages
 import Courses from "./pages/Courses";
@@ -18,6 +19,9 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
+import NewInstitution from "./pages/NewInstitution";
+
+
 
 // Delete user request for app
 import DataDeletionRequest from "./pages/DataDeletionRequest";
@@ -65,15 +69,24 @@ function App() {
       errorElement: <NotFound />
     },
     {
-      path: "/educado_admin",
+      path: "/application/:id",
+      element: <NonProtectedRoute><Application /></NonProtectedRoute>,
+      errorElement: <NotFound />
+    },
+    {
+      path: "/educado-admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
     },
     {
-      path: "/educado_admin/applications",
+      path: "/educado-admin/new-institution",
+      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
+    },
+    {
+      path: "/educado-admin/applications",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>
     },
     {
-      path: "/educado_admin/applications/:id",
+      path: "/educado-admin/applications/:id",
       element: <ProtectedRoute><SingleApplicantView /></ProtectedRoute>,
     },
     {

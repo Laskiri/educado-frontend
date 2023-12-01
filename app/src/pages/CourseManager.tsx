@@ -27,7 +27,6 @@ const CourseManager = () => {
 
   return (
     <Layout meta="Course Manager">
-
       <div className="flex flex-row">
 
           <Checklist tickChange={tickChange}/>
