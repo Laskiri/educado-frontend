@@ -66,6 +66,7 @@ const Login = () => {
     */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
       AuthServices.postUserLogin({
+          isContentCreator: true,
           email: data.email,
           password: data.password,})
           .then((res) => {
@@ -85,13 +86,15 @@ const Login = () => {
                 setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
+                setError('');
               break;
         
               case "E1001": //User Not Approved
                 setEmailError(err);
                 setEmailErrorMessage("A conta associada a este e-mail não foi aprovada.");
                 setPasswordError(null);
-                setPasswordErrorMessage('');  
+                setPasswordErrorMessage('');
+                setError('');
               break;
 
               case "E1002": //User Rejected
@@ -99,6 +102,7 @@ const Login = () => {
                 setEmailErrorMessage("A conta associada a este e-mail foi rejeitada.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
+                setError('');
               break;
 
               case "E0105": //Invalid Password
@@ -106,6 +110,7 @@ const Login = () => {
               setEmailErrorMessage('');
               setPasswordError(err);
               setPasswordErrorMessage("Senha Incorreta.");
+              setError('');
               break;
               
               default: console.log(error);

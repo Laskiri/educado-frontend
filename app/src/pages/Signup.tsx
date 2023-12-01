@@ -159,7 +159,7 @@ const Signup = () => {
     const inputSignupEmail = document.getElementById('email-field') as HTMLInputElement;
     const inputSignupPass = document.getElementById('password-field') as HTMLInputElement;
     const inputSignupRedoPass = document.getElementById('password-field-repeat') as HTMLInputElement;
-    const submitSignupButton = document.getElementById('submitSignupButton') as HTMLButtonElement;
+    const submitSignupButton = document.getElementById('submit-signup-button') as HTMLButtonElement;
    
     if(inputSignupFirstName.value.trim() && inputSignupLastName.value.trim() && inputSignupEmail.value.trim() && inputSignupPass.value.trim() && inputSignupRedoPass.value.trim() !== '') {
       submitSignupButton.removeAttribute('disabled');
