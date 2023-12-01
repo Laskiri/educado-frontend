@@ -1,5 +1,5 @@
-import { Exercise } from "../interfaces/Exercise";
-import ExerciseDetail from "../pages/ExerciseDetail";
+import { Exercise } from "../../interfaces/Exercise";
+import ExerciseDetail from "../../pages/ExerciseDetail";
 
 /**
  * ExerciseArea
