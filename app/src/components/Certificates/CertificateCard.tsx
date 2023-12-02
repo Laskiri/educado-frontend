@@ -52,7 +52,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 						</CertificateField>
 						{/* Course rating */}
 						<div className=''>
-							<StarRating rating={course.rating} starSize="w-6" />
+							<StarRating rating={course.rating ?? 0} starSize="w-6" />
 						</div>
 						{/* Subsriber count */}
 						<CertificateField icon={mdiAccount} className="">

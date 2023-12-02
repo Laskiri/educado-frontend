@@ -10,8 +10,8 @@ import Welcome from "./pages/Welcome";
 
 // Auth Pages
 import Courses from "./pages/Courses";
-import CourseEdit from "./pages/CourseEdit";
-import SectionEdit from "./pages/SectionEdit";
+import CourseManager from "./pages/CourseManager";
+
 import Profile from "./pages/Profile";
 
 // Educado Admin
@@ -38,17 +38,14 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-      path: "/courses/edit/:id",
-      element: <ProtectedRoute><CourseEdit /></ProtectedRoute>
+      path: "/courses/manager/:id/:tick",
+      element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
+      errorElement: <NotFound />,
     },
 		{
 			path: "/certificates",
 			element: <ProtectedRoute><Certificates /></ProtectedRoute>,
 		},
-    {
-      path: "/sections/:sid",
-      element: <ProtectedRoute><SectionEdit /></ProtectedRoute>
-    },
     {
       path: "/settings",
       element: <p>settings</p>
@@ -56,7 +53,6 @@ function App() {
     {
       path: "/profile",
       element: <ProtectedRoute><Profile /></ProtectedRoute>
-      
     },
     {
       path: "/login",

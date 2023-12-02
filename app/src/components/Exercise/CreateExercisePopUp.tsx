@@ -1,8 +1,11 @@
 import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { getUserToken } from '../../helpers/userInfo';
 
 // Icons
 import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import Icon from '@mdi/react';
+import { mdiPlus } from '@mdi/js';
 
 
 // Components
@@ -19,9 +22,6 @@ import ExerciseServices from "../../services/exercise.services";
 // Pop-up messages
 import { toast } from "react-toastify";
 
-// Hooks
-import useToken from "../../hooks/useToken";
-
 
 export interface ExercisePartial {
     title: string,
@@ -29,59 +29,78 @@ export interface ExercisePartial {
     answers: Answer[]
 }
 
+interface Props {
+    savedSID: string,
+    data: any
+}
+
 type Inputs = {
-    sid: string|undefined;
+    title: string,
+    question: string
 };
 
 
-export const CreateExercise = ({sid}:Inputs) => {
+export const CreateExercise = ({savedSID, data}:Props) => {
 
     let TempAnswers = [{text: "", correct: true, feedback: ""}, {text: "", correct: false, feedback: ""}];
 
     const [answers, setAnswers] = useState<Answer[]>(TempAnswers);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+    const { register, handleSubmit , formState: { errors } } = useForm<Inputs>();
 
-    const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
-    
-    const onExerciseSave: SubmitHandler<any> = data => createExercise(data);
 
     /** Token doesnt work, reimplement when it token is implemented */
-    //const token = useAuthStore(state => state.token);
-    //const token = useToken();
-    const token = "dummyToken";
+    const token = getUserToken();
+    
+    const onSubmit: SubmitHandler<Inputs> = async (newData) => {
 
-    const createExercise = (data: any) => {
+        if (savedSID === ""){
+            //update 
+            ExerciseServices.updateExercise({
+                title: newData.title,
+                question: newData.question,
+                answers: answers
+            }, 
+            token, 
+            data._id)
 
-        setIsSubmitting(true);
-        const exerciseToSave: ExercisePartial = {
-            title: data.title,
-            question: data.question,
-            answers: answers
+            .then(res => {
+                toast.success("Exercício atualizada com sucesso");
+                window.location.reload();
+            })
+            .catch(err => {
+                toast.error("Fracassado: " + err); 
+                setIsSubmitting(false);
+            })
+
+        } else {
+            setIsSubmitting(true);
+            
+            ExerciseServices.addExercise({
+                title: newData.title,
+                question: newData.question,
+                answers: answers
+            }, token, savedSID)
+
+            .then(() => {
+                toast.success(`Exercício criado com sucesso`); 
+                window.location.reload();
+            }) /** Successfully created exercise */
+
+            .catch(err => {
+                toast.error("Fracassado: " + err); 
+                setIsSubmitting(false);
+            })
         }
-        
-
-
-        ExerciseServices.addExercise(exerciseToSave, token, sid)
-            .then(() => {toast.success(`Exercício criado com sucesso`); window.location.reload();}) /** Successfully created exercise */
-            .catch(err => {toast.error("Fracassado: " + err); setIsSubmitting(false);})
-
     }
 
     return (
-
-        <div>
-            {/** The button to open create exercise modal */}
-            <label htmlFor="exercise-create" className="std-button flex modal-button space-x-2 bg-primary border-primary">
-                <PencilSquareIcon className='w-5 h-5' />
-                <p className='font-normal' >Criar novo exercício</p>  {/** Create new Exercise */}
-            </label>
-
-            <input type="checkbox" id="exercise-create" className="modal-toggle" />
-            <div className="modal" id="exercise-create-modal">
+        <>
+            <div className="modal" id={`exercise-create-${data ? data._id : "new"}-modal`}>
                 <div className="bg-white bg-gradient-to-b rounded w-3/8 h-5/6">
                     <div className="p-5 bg-gradient-to-b from-primaryLight overflow-auto h-full">
-                        <form onSubmit={handleExerciseSave(onExerciseSave)}
+                        <form onSubmit={handleSubmit(onSubmit)}
                         className="flex flex-col space-y-6 divide py-2">
                             <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border">
                                 <div className="flex flex-col form-control align-items justify-content w-full">
@@ -91,6 +110,7 @@ export const CreateExercise = ({sid}:Inputs) => {
                                     <input
                                         type="text"
                                         placeholder="Adicione um título a este exercício" /*Add a title to this exercise*/
+                                        defaultValue={data ? data.title : ""}
                                         className="input input-bordered w-full max-w-xs"
                                         {...register("title", { required: true })}
                                     />
@@ -100,6 +120,7 @@ export const CreateExercise = ({sid}:Inputs) => {
                                     </label>
                                     <textarea
                                         className="textarea textarea-bordered h-24"
+                                        defaultValue={data ? data.question : ""}
                                         placeholder="Adicione uma pergunta a este exercício" /*Add a question to this exercise*/
                                         {...register("question", { required: true })}
                                     ></textarea>
@@ -116,19 +137,19 @@ export const CreateExercise = ({sid}:Inputs) => {
                             {answers ?
                                 <div className="rounded-md cursor-pointer p-2 focus:outline-none bg-base-100 border ">
                                     <h1 className='text-md font-medium'>Resposta</h1>  {/** Answer */}
-                                {   <AnswerCards update={setAnswers} initialAnswers={answers} />}
+                                {   <AnswerCards update={setAnswers} initialAnswers={data? data.answers : answers } />}
                                 </div>
                                 :
                                 <p>Carregando ...</p>  /** Loading ... */
                             }
                             {/*Create and cancel buttons*/}
-                            <CreateButtonCompont isSubmitting={isSubmitting}/>
+                            <CreateButtonCompont data={data} isSubmitting={isSubmitting} typeButtons={`exercise-create-${data ? data._id : "new"}`}/>
                             
                         </form>
                     </div>
                 </div>
             </div>
-        </div>
+        </>
 
     );
 };
