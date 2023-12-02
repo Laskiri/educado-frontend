@@ -2,7 +2,6 @@
 import { Course } from "../../interfaces/Course"
 
 // Components
-import { Link } from "react-router-dom";
 import StarRating from "../general/StarRating";
 import Icon from '@mdi/react';
 import { mdiPencil, mdiAccount } from '@mdi/js';

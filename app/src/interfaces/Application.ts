@@ -1,17 +1,17 @@
 export interface NewApplication {
-    baseUser: String | undefined;
-    motivation: String;
+    baseUser: string | undefined;
+    motivation: string;
   
-    academicLevel: String;
-    academicStatus: String;
-    major: String;
-    institution: String;
-    educationStartDate: String;
-    educationEndDate: String;
+    academicLevel: string;
+    academicStatus: string;
+    major: string;
+    institution: string;
+    educationStartDate: string;
+    educationEndDate: string;
   
-    company: String;
-    position: String;
-    workStartDate: String;
-    workEndDate: String;
-    workActivities: String;
+    company: string;
+    position: string;
+    workStartDate: string;
+    workEndDate: string;
+    workActivities: string;
   }

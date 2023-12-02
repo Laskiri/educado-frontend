@@ -3,7 +3,7 @@ export class Answer {
     feedback: string = "";
     correct: boolean = false; 
     
-    constructor(){};
+    constructor(){}
 
 
     /**

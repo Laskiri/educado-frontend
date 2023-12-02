@@ -1,9 +1,7 @@
-import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 
 // Interfaces
-import { Answer } from "../interfaces/Answer";
 import { Lecture } from "../interfaces/Lecture";
 
 // Helpers
@@ -25,7 +23,7 @@ export interface LecturePartial {
 export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string }) => {
 
 
-    const { register, handleSubmit: handleLectureSave, formState: { errors } } = useForm();
+    const { register, handleSubmit: handleLectureSave } = useForm();
     const onLectureSave: SubmitHandler<any> = data => updateLecture(data);
 
     /** Token doesnt work, reimplement when it token is implemented */
@@ -44,12 +42,6 @@ export const LectureDetail = ({ lecture, lid }: { lecture: Lecture, lid: string 
          .then(() => toast.success(`Aula salva com sucesso`)) /**  Successfully saved lecture*/
          .catch((e) => toast.error("Falha ao salvar o exercício devido a um erro: " + e)); /**Failed to save lecture due to error: */
 
-    }
-    
-    const [charCount, setCharCount] = useState(lecture.description.length);
-
-    const onCharCountChange = (e: any) => {
-        setCharCount(e.target.value.length);
     }
 
 
@@ -94,15 +86,13 @@ const deleteLecture = async () => {
                     />
  
                     <label className="label">
-                        <span className="label-text">Conteúdo da aula </span>{/*lecture question*/}{/*({charCount}/400)*/}
+                        <span className="label-text">Conteúdo da aula </span>{/*lecture question*/}
                     </label>
                     <textarea
-                        // maxLength={400}
                         className="textarea textarea-bordered h-24"
                         defaultValue={lecture.description}
                         placeholder="Adicione o conteúdo escrito dessa aula"  /** Write the lecture description here */
                         {...register("description", { required: true })}
-                        onChange={(e) => onCharCountChange(e)}
                     ></textarea>
 
                 </div>

@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react'
 import { Link, useLocation } from "react-router-dom"
 
 import Tippy from '@tippyjs/react';

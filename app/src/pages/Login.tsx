@@ -6,7 +6,7 @@ import {Icon} from '@mdi/react';
 import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 // Interfaces
 import { LoginResponseError } from "../interfaces/LoginResponseError"
@@ -37,9 +37,9 @@ const Login = () => {
     const navigate = useNavigate(); 
 
     // Use-form setup
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit } = useForm<Inputs>();
     const [errorMessage, newErrorMessage] = useState('');
-    let setErrorMessage = (errMessage: string, error?: string) => {
+    const setErrorMessage = (errMessage: string, error?: string) => {
       setError(error ?? 'Erro');
       newErrorMessage(errMessage)
       setTimeout(() => {
@@ -144,7 +144,7 @@ const Login = () => {
       setEmailErrorMessage('');
       setPasswordError(null);
       setPasswordErrorMessage('');
-    };
+    }
     // failure on submit handler FIXME: find out what this does (OLD CODE)
     //const onError: SubmitHandler<Inputs> = error => console.log(error);
 

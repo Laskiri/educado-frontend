@@ -1,15 +1,11 @@
 // Icon from: https://materialdesignicons.com/
 
-import useSWR from 'swr'
-import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from 'react';
 import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
 import Icon from '@mdi/react';
-import { SectionCreation } from './SectionCreation';
 
 
 interface Inputs {
-    test: string,
     selfDestroy: Function
     index: number
 }
@@ -17,7 +13,7 @@ interface Inputs {
 
 
 // Create section on the course creation page
-export const SectionDetail = ({test, selfDestroy, index}:Inputs) :JSX.Element=> {
+export const SectionDetail = ({selfDestroy, index}:Inputs) :JSX.Element=> {
     const [arrowDirction, setArrowDirection] = useState<any>(mdiChevronDown);
     const [sectionTitle, setSectionTitle] = useState<string>("Nome da seção " +index);
     

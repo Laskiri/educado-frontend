@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useForm, SubmitHandler, set } from 'react-hook-form'
+import { useForm, SubmitHandler } from 'react-hook-form'
 import useSWR from 'swr'
 import { toast } from 'react-toastify'
 
@@ -78,7 +78,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
    
   useEffect(() => {
     //TODO: get categories from db
-    let inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
+    const inputArray = ["personal finance","health and workplace safety","sewing","electronics"];
     setCategoriesOptions(inputArray.map((categoryENG: string, key: number) => (
       <option value={categoryENG} key={key} >{categories[inputArray[key]]?.br}</option>
       )));
@@ -120,7 +120,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
       // When the user press the draft button, it saves as a draft and goes back to the course list
       if(id != "0"){
         CourseServices.updateCourseDetail(changes, id, token )
-        .then(res => {
+        .then(() => {
           toast.success('Curso atualizado');
           setStatusSTR(changes.status);
 

@@ -20,11 +20,11 @@ import AuthServices from '../services/auth.services'
 
 // Form input interface
 interface ApplicationInputs {
-  firstName: String,
-  lastName: String,
-  email: String, 
-  password: String,
-  confirmPassword: String,
+  firstName: string,
+  lastName: string,
+  email: string, 
+  password: string,
+  confirmPassword: string,
 }
 
 // Yup schema for fields
@@ -50,18 +50,12 @@ const Signup = () => {
   const [error, setError] = useState<LoginResponseError.RootObject | null>(null);
 
   // Navigation hook
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   // Use-form setup
-  const { register, handleSubmit, formState: { errors } } = useForm<ApplicationInputs>({
+  const { register, handleSubmit } = useForm<ApplicationInputs>({
     resolver: yupResolver(SignupSchema)
   });
-
-  //Variable determining the error message
-  const [errorMessage, newErrorMessage] = useState('');
-  let setErrorMessage = (errMessage: string) => {
-    newErrorMessage(errMessage);
-  };
 
   //Variable determining the error message for both fields.
   const [emailExistsError, setEmailExistError] = useState(null);
@@ -81,7 +75,6 @@ const Signup = () => {
     * @param {String} data.password Password of the Content Creator (Will be encrypted)
     */
   const onSubmit = async (data: any) => {
-    setIsFormValid(Object.keys(errors).length === 0);
     await AuthServices.postUserSignup({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -105,7 +98,7 @@ const Signup = () => {
       }
     })
     .catch(err => { setError(err); console.log(err)
-      if (!err.response.data){setErrorMessage("Database Connection Failed"); console.log(err)}
+      if (!err.response.data){console.log(err)}
       switch (err.response.data.error.code){
         case "E0201": //User with the provided email already exists
             setEmailExistError(err);
@@ -125,8 +118,6 @@ const Signup = () => {
       });
 
   };
-
-  const [isFormValid, setIsFormValid] = useState(false);
 
   // Variables determining whether or not the password is visible
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -174,7 +165,7 @@ const Signup = () => {
     setPasswordMismatchErrorMessage('');
     setEmailExistError(null);
     setErrorExistMessage('');
-  };
+  }
 
 
   return (
