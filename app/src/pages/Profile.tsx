@@ -99,8 +99,6 @@ const Profile = () => {
       return;
     }
     setIsDisabled(true);
-    console.log("triggered top comment");
-
     if (
       !educationErrorState &&
       !experienceErrorState &&
@@ -118,8 +116,6 @@ const Profile = () => {
       };
 
       try {
-        console.log("triggered");
-
         const response = await ProfileServices.putFormOne(formDataToSend);
         if (response.status === 200) {
         }
