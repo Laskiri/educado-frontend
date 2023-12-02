@@ -29,10 +29,17 @@ import { Item } from './@dnd/Item';
 // Intefaces
 import { Section } from '../../interfaces/CourseDetail';
 
-export const SectionList = ({ sections }: { sections: Array<Section> }) => {
+interface Props {
+  sections: Array<string>
+  addOnSubmitSubscriber: Function
+}
+
+
+export const SectionList = ({ sections, addOnSubmitSubscriber }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
   const [items, setItems] = useState(sections);
+  const [savedSID, setSavedSID] = useState<string>("");
 
   // Setup of pointer and keyboard sensor
   const sensors = useSensors(
@@ -55,7 +62,7 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
       setItems((items) => {
         const oldIndex = items.indexOf(active.id);
         const newIndex = items.indexOf(over.id);
-        console.log(active.id);
+        
         
         return arrayMove(items, oldIndex, newIndex);
       });
@@ -63,21 +70,24 @@ export const SectionList = ({ sections }: { sections: Array<Section> }) => {
   }
 
   return (
-    <div className='flex flex-col space-y-2'>
+    <div className='w-full'>
       <DndContext
         modifiers={[restrictToVerticalAxis]}
         sensors={sensors}
         collisionDetection={closestCenter}
         onDragStart={handleDragStart}
         onDragEnd={handleDragEnd}
+      
       >
-        <SortableContext items={items} strategy={verticalListSortingStrategy}>
-          {items.map((item) => <SortableItem key={item.id} item={item} />)}
+        <SortableContext items={items.map(item => item)} strategy={verticalListSortingStrategy}>
+          {items.map((item, key: React.Key) => <SortableItem key={key} sid={item} addOnSubmitSubscriber={addOnSubmitSubscriber} savedSID={savedSID} setSavedSID={setSavedSID} />)}
         </SortableContext>
 
-        <DragOverlay>
+       
+        <DragOverlay className='w-full' >
           {activeId ? <Item id={activeId} /> : null}
         </DragOverlay>
+        
       </DndContext>
     </div>
   );

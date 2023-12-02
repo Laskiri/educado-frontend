@@ -6,9 +6,8 @@ export declare module CCApp {
     firstName: string;
     lastName: string;
     email: string;
-    motivation: string;
-    createdAt: Date;
-    modifiedAt: string;
+    dateCreated: Date;
+    dateUpdated: string;
     __v: number;
     rejectReason: string;
   }

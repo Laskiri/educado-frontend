@@ -5,50 +5,39 @@ export interface CourseDetail {
 }
 
 export interface Data {
-    id:          ID;
+    _id:         string;
     sections:    Section[];
     title:       string;
     category:    string;
     coverImg:    string;
     description: string;
     author:      Author;
-    published:   boolean;
-    modifiedAt:  Date;
-    createdAt:   Date;
+    dateUpdated:  Date;
+    dateCreated:   Date;
     __v:         number;
 }
 
 export interface Author {
-    id:       string;
+    id:        string;
     firstName: string;
     lastName:  string;
 }
 
-export enum ID {
-    The635Fb5B9B2Fb6C4F49084682 = "635fb5b9b2fb6c4f49084682",
-}
-
 export interface Section {
-    exercises:     Exercise[];
-    id:           string;
-    parentCourse:  ID;
+    components:    Components[];
+    _id:           string;
+    parentCourse:  string;
     title:         string;
     sectionNumber: number;
-    description:   Description;
-    createdAt:     Date;
-    modifiedAt:    Date;
+    description:   string;
+    dateCreated:     Date;
+    dateUpdated:    Date;
     __v:           number;
 }
 
-export enum Description {
-    Fe = "fe",
-    MotherLocker = "mother locker",
-    VeryInterreseting = "Very interreseting",
-}
-
 export interface Exercise {
-    id:              string;
-    modifiedAt:       Date;
+    id:               string;
+    dateUpdated:       Date;
     answers:          Answer[];
     __v:              number;
     content?:         Content;
@@ -56,13 +45,18 @@ export interface Exercise {
 }
 
 export interface Answer {
-    id:        string;
+    id:         string;
     text:       string;
     correct:    boolean;
-    modifiedAt: Date;
+    dateUpdated: Date;
 }
 
 export interface Content {
     type: string;
     url:  string;
+}
+
+export interface Components {
+    compId: string;
+    comptype:  string;
 }

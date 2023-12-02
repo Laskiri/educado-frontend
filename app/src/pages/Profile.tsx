@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from 'react-toastify';
+import PopUpDelete from '../components/profile/PopUpDelete';
 
 // Contexts
 import useAuthStore from '../contexts/useAuthStore';
 
 // Interfaces
-import { LoginReponseError as ResponseError } from "../interfaces/LoginReponseError"
+import { LoginResponseError as ResponseError } from "../interfaces/LoginResponseError"
 
 // Components
 import Layout from "../components/Layout";
@@ -19,7 +20,7 @@ import {
     EyeIcon,
     EyeSlashIcon,
 } from "@heroicons/react/24/outline";
-import useToken from '../hooks/useToken';
+import { getUserToken } from '../helpers/userInfo';
 
 type ChangePasswordInputs = {
     oldPassword: string,
@@ -33,8 +34,7 @@ type ProfileInfoInputs = {
 
 
 const Profile = () => {
-    //const token = useAuthStore(state => state.token);
-    const token = useToken();
+    const token = getUserToken();
 
     // response errors
     const [changePasswordResponseError, setChangePasswordResponseError] = useState<ResponseError.RootObject | null>(null);
@@ -42,6 +42,15 @@ const Profile = () => {
     // password show toggles
     const [showOldPassword, setShowOldPassword] = useState(false)
     const [showNewPassword, setShowNewPassword] = useState(false)
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const openModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setIsModalOpen(false);
+    };
     
     // use-form setup
     const { 
@@ -250,6 +259,17 @@ const Profile = () => {
                                     </div>
                                 </div>
                             </form>
+                            <div className="inline-flex justify-center md:grid md:grid-cols-3 md:gap-6">
+                                <a onClick={openModal} className='font-medium text-red-500 underline hover:text-red-600'
+                                    >
+                                    Deletar conta
+                                    </a>
+                                {isModalOpen && (
+                                <PopUpDelete
+                                    popupOpen={isModalOpen}
+                                    onTogglePopup={() => setIsModalOpen(!isModalOpen)}
+                                />)}
+                            </div>
                         </div>
                     </div>
                 </div>

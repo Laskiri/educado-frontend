@@ -1,35 +1,57 @@
-import AWS from "aws-sdk";
+import axios from "axios";
 
-// AWS configuration update
-AWS.config.update({
-    accessKeyId: import.meta.env.VITE_S3_ACCESS,
-    secretAccessKey: import.meta.env.VITE_S3_SECRET
-});
+// Backend URL from .env file (automatically injected) 
+import { BACKEND_URL } from "../helpers/environment";
 
 
-const myBucket = new AWS.S3({
-    params: { Bucket: import.meta.env.VITE_S3_BUCKET },
-    region: import.meta.env.VITE_S3_REGION
-});
+//import { Storage } from '@google-cloud/storage';
 
-// Props interface
-type FileUploadProps = {
-    file: any,
-    key: string // The key should be a the content plus the exercise id
+
+export interface StorageInterface {
+    uploadFile: (bucketName: string, file: any, id: string) => void;
+    downloadFile: (bucketName: string, id: string, file: any) => void; 
 }
 
-// Upload image file to storage bucket
-const uploadFile = async ({ file, key }: FileUploadProps) => {
-    await myBucket.putObject({
-        Body: file,
-        Bucket: import.meta.env.VITE_S3_BUCKET,
-        Key: key, 
-        ContentType: file.type
-    }).send();
+// Props interface for uploadFile function
+type FileProps = {
+    file: any,
+    id: string | undefined,
+    parentType: string
+}
+/**
+ * Uploads a file to a bucket
+ * @param {string} file - The local path to the file to upload 
+ * @param {string} id - The id the file will be saved as in the bucket. Format: courseId/sectionsId/componentId/index or courseId/index
+ * @param {string} pranetType - A single letter that represents the type of the parent component. Format: c for course, and  l for lecture
+ * @returns {void}
+*/
+async function uploadFile({id, file, parentType: parentType}: FileProps) {
+    if (!file || !id) {
+        return;
+    }
+    axios.postForm(`${BACKEND_URL}/api/bucket/upload`, {
+        fileName: id + "_"+ parentType,
+        file: file
+    })
+}
 
-    return key;
+const getFile = async (url: string, token: string) => {
+    return await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.data);
+  };
+
+const deleteFile = async (id: string | undefined, token: string) => {
+    if (!id) {
+        return;
+    }
+return await axios.delete(`${BACKEND_URL}/api/bucket/${id}`, { headers: { Authorization: `Bearer ${token}` } })
+    .then((res) => res.data);
 };
 
-const StorageService = Object.freeze({ uploadFile });
+const StorageServices = Object.freeze({
+    uploadFile,
+    getFile,
+    deleteFile
+});
 
-export default StorageService;
+export default StorageServices;

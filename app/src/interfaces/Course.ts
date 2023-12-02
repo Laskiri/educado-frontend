@@ -5,27 +5,55 @@ export interface Main {
   data:    Course[];
 }
 
+// TODO: Make sure this is in accordance with the backend
+
+
 export interface Course {
-  id:         string;
-  title:       string;
-  category:    Category;
-  coverImg?:   string;
-  description: string;
-  author:      Author;
-  published:   boolean;
-  modifiedAt:  Date;
-  createdAt:   Date;
-  __v:         number;
+  _id?:               string;
+  title:             string;
+  description:       string;
+  difficulty:        number;
+  dateCreated?:       Date;
+  dateUpdated?:       Date;
+  coverImg?:         string;
+  category:          string;
+  sections?:          Section[];
+  creator?:           string;
+  status:            string;
+  estimatedHours?:    number;
+  rating?:            number;
+  numOfSubscriptions?:   number;
+  __v?:               number;
 }
 
-export interface Author {
-  id:       string;
-  firstName: string;
-  lastName:  string;
+export interface contentCreator {
+	_id: string;
+  firstName: string,
+  lastName: string,
+  email: string,
+  motivation: string,
+  approved: boolean,
+  rejectionReason: string,
+  dateCreated: Date,
+  dateUpdated: Date,
 }
 
-export interface Category {
-  id:   string;
-  name:  string;
-  icon?: string;
+export interface Section {
+  _id:          string;
+  title:        string;
+  description:  string;
+  totalPoints:  number;
+  parentCourse: string;
+}
+
+export interface Lecture {
+  components:     string[];
+  title:          string
+  description:    string;
+  image:          string;
+  video:          string;
+  dateCreated:      Date;
+  updatedAt:      Date;
+  parentSection:  string;
+  __v:            number;
 }
