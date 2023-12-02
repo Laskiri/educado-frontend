@@ -1,4 +1,4 @@
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiStar, mdiStarOutline, mdiStarHalfFull } from '@mdi/js';
 
 type StarRatingProps = {

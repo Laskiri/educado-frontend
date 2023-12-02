@@ -9,7 +9,7 @@ import SectionServices from '../../services/section.services'
 // Icons
 import { useParams } from 'react-router-dom';
 import { mdiPlus,  } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 
  type Inputs = {
     title: string

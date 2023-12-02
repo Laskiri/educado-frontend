@@ -16,7 +16,7 @@ import LectureService from '../services/lecture.services';
 import {CreateButtonCompont} from './CreateButtonCompont';
 
 // Icons
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />

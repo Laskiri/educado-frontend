@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 
 
 interface Inputs {

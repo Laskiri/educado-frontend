@@ -16,7 +16,7 @@ import { ComponentList } from '../ComponentList';
 
 // icons
 import { mdiChevronDown, mdiChevronUp, mdiDeleteCircle, mdiDotsVerticalCircle, mdiPlus } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { useState, useEffect, useRef } from 'react';
 import SectionServices from '../../../services/section.services';
 

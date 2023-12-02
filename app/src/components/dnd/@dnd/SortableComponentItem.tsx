@@ -10,7 +10,7 @@ import { CSS } from '@dnd-kit/utilities';
 
 // icons
 import { mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiDraw, mdiPencilCircle, mdiTextBox, mdiVideo  } from '@mdi/js';
 
 import LectureService from '../../../services/lecture.services';

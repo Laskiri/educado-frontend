@@ -1,4 +1,4 @@
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiChevronUp } from '@mdi/js';
 import { useEffect } from 'react';
 

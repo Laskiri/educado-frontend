@@ -1,4 +1,4 @@
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { Certificate } from "../../interfaces/Certificate"
 import StarRating from "../general/StarRating"
 import { mdiAccount, mdiChevronDown, mdiDownload, mdiFileEye } from "@mdi/js";

@@ -3,7 +3,7 @@ import { Course } from "../../interfaces/Course"
 
 // Components
 import StarRating from "../general/StarRating";
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiPencil, mdiAccount } from '@mdi/js';
 import { LastEdited } from "./LastEdited";
 
