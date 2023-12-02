@@ -26,9 +26,6 @@ import {
 import { SortableItem } from './@dnd/SortableItem';
 import { Item } from './@dnd/Item';
 
-// Intefaces
-import { Section } from '../../interfaces/CourseDetail';
-
 interface Props {
   sections: Array<string>
   addOnSubmitSubscriber: Function

@@ -17,7 +17,7 @@ const useToken = (initialState: string = ""): string => {
         }
         fetchToken()
             .then(res => setToken(res))
-            .catch(_ => navigate("/login", { state: { from: useLocation() }}));
+            .catch(() => navigate("/login", { state: { from: useLocation() }}));
     }, []);
 
     return token

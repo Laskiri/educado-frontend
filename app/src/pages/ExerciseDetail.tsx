@@ -28,7 +28,7 @@ export const ExerciseDetail = ({ exercise, eid }: { exercise: Exercise, eid: str
 
     const [answers, setAnswers] = useState<Answer[]>(exercise.answers);
 
-    const { register, handleSubmit: handleExerciseSave, formState: { errors } } = useForm();
+    const { register, handleSubmit: handleExerciseSave } = useForm();
     const onExerciseSave: SubmitHandler<any> = data => updateExercise(data);
 
 /** Token doesnt work, reimplement when it token is implemented */

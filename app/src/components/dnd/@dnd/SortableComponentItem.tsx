@@ -1,7 +1,5 @@
 
 import useSWR from 'swr';
-import { useForm, SubmitHandler } from 'react-hook-form'
-import { toast } from 'react-toastify';
 import { BACKEND_URL } from '../../../helpers/environment';
 
 // Hooks
@@ -11,13 +9,12 @@ import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
 // icons
-import { mdiChevronDown, mdiChevronUp, mdiPlus, mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
+import { mdiDeleteCircle, mdiDotsVerticalCircle  } from '@mdi/js';
 import Icon from '@mdi/react';
 import { mdiDraw, mdiPencilCircle, mdiTextBox, mdiVideo  } from '@mdi/js';
 
 import LectureService from '../../../services/lecture.services';
 import ExerciseServices  from '../../../services/exercise.services';
-import ComponentService from '../../../services/component.service';
 
 //pop-ups 
 import { CreateLecture } from '../../CreateLecturePopUp';
@@ -40,7 +37,7 @@ export function SortableComponentItem({cid, map}: Props) {
   //     ComponentService.getComponentDetail
   //   );
 
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     token ? [`${BACKEND_URL}/api/${map.get(cid)}s/${cid}`, token] : null,
     LectureService.getLectureDetail
   );

@@ -1,6 +1,6 @@
 //Hooks
 import { Link } from "react-router-dom"
-import { useParams, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from 'react-toastify';
 
@@ -23,7 +23,7 @@ const NewInstitution = () => {
   const navigate = useNavigate();
 
   // Use-form setup
-  const { register, handleSubmit, formState: { errors } } = useForm<NewInstitution>();
+  const { register, handleSubmit } = useForm<NewInstitution>();
 
   //Function to execute upon accepting an application
   //It will navigate to the applicaitons page, and display a toastify message notifying the user that the content creator was approved

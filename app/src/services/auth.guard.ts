@@ -18,7 +18,7 @@ export function ProtectedRoute ({ children }: { children: JSX.Element }) {
   }, []);
   return null;
 }
-};
+}
 
 export function NonProtectedRoute ({ children }: { children: JSX.Element }) {
   const navigate = useNavigate();

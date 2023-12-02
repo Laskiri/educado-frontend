@@ -1,7 +1,5 @@
 // Icon from: https://materialdesignicons.com/
 
-import useSWR from 'swr'
-
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
 

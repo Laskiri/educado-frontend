@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useSWRConfig } from 'swr';
 import {Dropzone} from './Dropzone/Dropzone'; // Used image or video upload NOT IMPLEMENTED YET
 import { toast } from "react-toastify";
 
@@ -17,13 +16,8 @@ import LectureService from '../services/lecture.services';
 import {CreateButtonCompont} from './CreateButtonCompont';
 
 // Icons
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
-import { Navigate, useNavigate } from 'react-router-dom';
 import Icon from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
-import { mdiPlus } from '@mdi/js';
-import { eventType } from 'aws-sdk/clients/health';
-import { integer } from 'aws-sdk/clients/lightsail';
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />
 
@@ -46,29 +40,20 @@ interface Props {
  * @returns HTML Element
  */
 export const CreateLecture = ({savedSID, data}: Props) => {
-    const [isLoading, setIsLoading] = useState(false);
     const [lectureContent, setLectureContent] = useState(null);
     //TODO: When tokens are done, Remove dummy token and uncomment useToken
     const token = getUserToken();
-    
-    const navigate = useNavigate();
-    const { mutate } = useSWRConfig();
     
     //const sid = window.location.pathname.split("/")[2];
    
     // use-form setup
     const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
 
-    const [charCount, setCharCount] = useState(0);
     const [contentType, setContentType] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
     const toggler = (value:string) => {
         setContentType(value);
-    }
-
-    const onCharCountChange = (e: any) => {
-        setCharCount(e.target.value.length);
     }
 
     /**
@@ -78,7 +63,6 @@ export const CreateLecture = ({savedSID, data}: Props) => {
      */
     const onSubmit: SubmitHandler<Inputs> = async (newData) => {
     
-        setIsLoading(true);
         setIsSubmitting(true);
 
         if (savedSID === ""){
@@ -101,8 +85,7 @@ export const CreateLecture = ({savedSID, data}: Props) => {
             })
             
             .catch(err => {
-                toast.error("Fracassado: " + err); 
-                setIsLoading(false); 
+                toast.error("Fracassado: " + err);
                 setIsSubmitting(false);
             })
 
@@ -123,7 +106,7 @@ export const CreateLecture = ({savedSID, data}: Props) => {
                     window.location.reload();
                     toast.success("Aula criado com sucesso");
                 }) 
-                .catch(err => {toast.error("Fracassado: " + err); setIsLoading(false); setIsSubmitting(false);})
+                .catch(err => {toast.error("Fracassado: " + err); setIsSubmitting(false);})
         }
 
     };
@@ -154,11 +137,10 @@ export const CreateLecture = ({savedSID, data}: Props) => {
 
                         {/*Field to input the description of the lecture*/}
                         <div className="flex flex-col space-y-2 text-left">
-                            <label htmlFor='description'>Descrição</label> {/*Description*/}{/*({charCount}/400)*/}
-                            <textarea /*maxLength={400}*/ rows={4}  placeholder={"Insira o conteúdo escrito dessa aula"} defaultValue={data ? data.description: ""}
+                            <label htmlFor='description'>Descrição</label> {/*Description*/}
+                            <textarea rows={4}  placeholder={"Insira o conteúdo escrito dessa aula"} defaultValue={data ? data.description: ""}
                                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 {...register("description", { required: true })}
-                                onChange={(e) => onCharCountChange(e)}
                             />
                             {/*defaultValue=Add a description to your lecture*/}
                             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>}

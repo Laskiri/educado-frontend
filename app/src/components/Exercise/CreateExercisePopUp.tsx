@@ -2,19 +2,12 @@ import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { getUserToken } from '../../helpers/userInfo';
 
-// Icons
-import { PencilSquareIcon } from '@heroicons/react/24/outline'
-import Icon from '@mdi/react';
-import { mdiPlus } from '@mdi/js';
-
-
 // Components
 import AnswerCards from "../../components/Exercise/AnswerCards";
 import{ CreateButtonCompont } from "../CreateButtonCompont";
 
 // Interfaces
 import { Answer } from "../../interfaces/Answer";
-import { Exercise } from "../../interfaces/Exercise"
 
 // Helpers
 import ExerciseServices from "../../services/exercise.services";
@@ -42,12 +35,12 @@ type Inputs = {
 
 export const CreateExercise = ({savedSID, data}:Props) => {
 
-    let TempAnswers = [{text: "", correct: true, feedback: ""}, {text: "", correct: false, feedback: ""}];
+    const TempAnswers = [{text: "", correct: true, feedback: ""}, {text: "", correct: false, feedback: ""}];
 
     const [answers, setAnswers] = useState<Answer[]>(TempAnswers);
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-    const { register, handleSubmit , formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit } = useForm<Inputs>();
 
 
     /** Token doesnt work, reimplement when it token is implemented */
@@ -65,7 +58,7 @@ export const CreateExercise = ({savedSID, data}:Props) => {
             token, 
             data._id)
 
-            .then(res => {
+            .then(() => {
                 toast.success("Exercício atualizada com sucesso");
                 window.location.reload();
             })

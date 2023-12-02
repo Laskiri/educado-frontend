@@ -14,7 +14,7 @@ import { mdiPencil } from '@mdi/js';
  * @param toDate 
  * @returns String
  */
-const getFormattedTimeDifference = (fromDate: Date, toDate: Date): String => {
+const getFormattedTimeDifference = (fromDate: Date, toDate: Date): string => {
   const minuteDifference = Math.floor((toDate.getTime() - fromDate.getTime()) / 1000 / 60);
   
   // Minutes
