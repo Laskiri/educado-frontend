@@ -21,7 +21,6 @@ import PersonalInformationForm from "../components/ProfileForms/PersonalInformat
 import AcademicExperienceForm from "../components/ProfileForms/AcademicExperience";
 import ProfessionalExperienceForm from "../components/ProfileForms/ProfessionalExperience";
 
-
 //import utilities
 import dynamicForms from "../utilities/dynamicForms";
 import staticForm from "../utilities/staticForm";
@@ -45,7 +44,6 @@ const profileSchema = Yup.object().shape({
 });
 
 const Profile = () => {
-
   const {
     handleFileChange,
     handleCharCountBio,
@@ -147,9 +145,10 @@ const Profile = () => {
             }
           })
         );
-        fetchuser();
-        fetchDynamicData();
-        fetchStaticData();
+        if (userID) {
+          fetchDynamicData();
+          fetchStaticData();
+        }
       } catch (error) {}
     }
     setIsDisabled(false);
@@ -183,7 +182,6 @@ const Profile = () => {
           <div className="inline-block ">
             <div className="text-left mt-16 mb-20 text-neutral-700 text-[32px] font-bold font-['Montserrat']">
               Editar perfil
-
             </div>
             {/* Menu-1-personal-information drop down*/}
             <>

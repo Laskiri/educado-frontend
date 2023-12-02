@@ -30,7 +30,6 @@ export default () => {
   //dynamic form states & localstorage details
   const { educationformData, setEducationFormData } = useEducationFormData();
   const { experienceformData, setExperienceFormData } = useExperienceFormData();
-  const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
   const userInfo:any = getUserInfo();
 
   // assign userID to localstorage ID
@@ -136,9 +135,7 @@ export default () => {
   const SubmitValidation = () => {
     if (
       !dynamicInputsFilled("education") ||
-      !dynamicInputsFilled("experience") ||
-      !dynamicInputsFilled("tempEducation") ||
-      !dynamicInputsFilled("tempExperience") 
+      !dynamicInputsFilled("experience") 
     ) {
       setSubmitError(true);
     } else {
