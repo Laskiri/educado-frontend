@@ -56,38 +56,39 @@ export default function PersonalInformationForm({
       {toggleMenu1 && (
         /* Image */
         <div className="border border-[#166276] p-4 rounded-b-lg text-left bg-white shadow-xl">
-          <div onClick={imageClick}>
-            {/* Display selected image if uploaded, otherwise display icon with initials*/}
-            {formData.photo ? (
-              <img
-                src={`${BACKEND_URL}/api/bucket/${formData.photo}`}
-                className="w-[120px] h-[120px] p-[0px] bg-cyan-800 rounded-[60px] border-2 border-white inline-flex"
-                alt=""
-              />
-            ) : (
-              <div className="w-[120px] h-[120px] p-[30px] bg-cyan-800 rounded-[60px] border-2 border-white justify-center items-center gap-[30px] inline-flex">
-                <div className="text-white text-4xl font-bold font-['Montserrat']">
-                  {formData.UserName.charAt(0).toUpperCase()}
-                </div>
-              </div>
-            )}
-            <input
-              type="file"
-              name="photo"
-              accept="image/*"
-              onChange={handleFileChange}
-              ref={myRef}
-              style={{ display: "none" }}
+          {/* Display selected image if uploaded, otherwise display icon with initials*/}
+          {formData.photo ? (
+            <img
+              src={`${BACKEND_URL}/api/bucket/${formData.photo}`}
+              className="w-[120px] h-[120px] p-[0px] bg-cyan-800 rounded-[60px] border-2 border-white inline-flex"
+              alt=""
             />
-
-            {/* On button click change image*/}
-            <button
-              className=" p-7 text-center text-cyan-800 text-base font-bold font-['Montserrat'] underline"
-              onChange={handleFileChange}
+          ) : (
+            <div
+              onClick={imageClick}
+              className="w-[120px] h-[120px] p-[30px] bg-cyan-800 rounded-[60px] border-2 border-white justify-center items-center gap-[30px] inline-flex"
             >
-              Alterar foto de perfil
-            </button>
-          </div>
+              <div className="text-white text-4xl font-bold font-['Montserrat']">
+                {formData.UserName.charAt(0).toUpperCase()}
+              </div>
+            </div>
+          )}
+          <input
+            type="file"
+            name="photo"
+            accept="image/*"
+            onChange={handleFileChange}
+            ref={myRef}
+            style={{ display: "none" }}
+          />
+
+          {/* On button click change image*/}
+          <button
+            className=" p-7 text-center text-cyan-800 text-base font-bold font-['Montserrat'] underline"
+            onChange={handleFileChange}
+          >
+            Alterar foto de perfil
+          </button>
           <div className="grid grid-cols-2 gap-3 mt-7">
             {/* Username */}
             <div className="flex flex-col ">
