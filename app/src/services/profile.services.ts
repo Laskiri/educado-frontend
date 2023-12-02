@@ -16,7 +16,6 @@ const postImage = async (formData: any) => {
 const getUserFormOne = async (userID: any) => {
   return await axios.get(
     `${BACKEND_URL}/api/profiles/${userID}`
-    `${BACKEND_URL}/api/profiles/${userID}`
   );
 }
 
@@ -24,13 +23,11 @@ const getUserFormOne = async (userID: any) => {
 const getUserFormTwo = async (userID: any) => {
   return await axios.get(
     `${BACKEND_URL}/api/profiles/educations/${userID}`
-    `${BACKEND_URL}/api/profiles/educations/${userID}`
   );
 }
 // Send get request to professional experience form
 const getUserFormThree = async (userID: any) => {
   return await axios.get(
-    `${BACKEND_URL}/api/profiles/experiences/${userID}`
     `${BACKEND_URL}/api/profiles/experiences/${userID}`
   );
 }
@@ -39,7 +36,6 @@ const getUserFormThree = async (userID: any) => {
 //Delete additional academic forms 
 const deleteEducationForm = async (_id: any) => {
   return await axios.delete(
-    `${BACKEND_URL}/api/profiles/educations/${_id}`
     `${BACKEND_URL}/api/profiles/educations/${_id}`
   );
 }
@@ -56,7 +52,6 @@ const deleteExperienceForm = async (_id: any) => {
 const putFormOne = async (formDataToSend: any) => {
   return await axios.put(
     `${BACKEND_URL}/api/profiles`,
-    `${BACKEND_URL}/api/profiles`,
     formDataToSend)
 }
 
@@ -64,12 +59,10 @@ const putFormOne = async (formDataToSend: any) => {
 const putFormTwo = async (data: any) => {
   return await axios.put(
     `${BACKEND_URL}/api/profiles/educations`, data)
-    `${BACKEND_URL}/api/profiles/educations`, data)
 }
 
 //Update professional form
 const putFormThree = async (data: any) => {
-  return await axios.put(`${BACKEND_URL}/api/profiles/experiences`, data);
   return await axios.put(`${BACKEND_URL}/api/profiles/experiences`, data);
 };
 
