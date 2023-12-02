@@ -91,10 +91,16 @@ const Profile = () => {
     resolver: yupResolver(profileSchema),
   });
 
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   //Form submit, sends data to backend, upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
     //if fields are filled & errors do not occour submit form
+    if (hasSubmitted) {
+      return;
+    }
     setIsDisabled(true);
+    console.log("triggered top comment");
+
     if (
       !educationErrorState &&
       !experienceErrorState &&
@@ -112,6 +118,8 @@ const Profile = () => {
       };
 
       try {
+        console.log("triggered");
+
         const response = await ProfileServices.putFormOne(formDataToSend);
         if (response.status === 200) {
         }
@@ -149,10 +157,17 @@ const Profile = () => {
           fetchDynamicData();
           fetchStaticData();
         }
-      } catch (error) {}
+      } catch (error) {
+      } finally {
+        setIsDisabled(false);
+        setHasSubmitted(true);
+      }
     }
-    setIsDisabled(false);
   };
+
+  useEffect(() => {
+    setHasSubmitted(false);
+  }, [educationformData, experienceformData, formData]);
 
   //Drop down menues && lists
   const [toggleMenu1, setToggleMenu1] = useState(false);
