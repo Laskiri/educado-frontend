@@ -7,6 +7,7 @@ import useProfileValidation from "../utilities/useProfileValidation"
 // import helpers
 import { getUserInfo } from '../helpers/userInfo';
 import {
+  tempObjects,
   useEducationFormData,
   useExperienceFormData,
 } from "../helpers/formStates";
@@ -29,6 +30,7 @@ export default () => {
   //dynamic form states & localstorage details
   const { educationformData, setEducationFormData } = useEducationFormData();
   const { experienceformData, setExperienceFormData } = useExperienceFormData();
+  const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
   const userInfo:any = getUserInfo();
 
   // assign userID to localstorage ID
@@ -54,6 +56,7 @@ export default () => {
     } catch (error: any) {   
     }
 
+    try {
     const experienceResponse = await ProfileServices.getUserFormThree(userID);
     setExperienceFormData(experienceResponse.data);
     for (let item in experienceResponse.data) {
@@ -66,6 +69,8 @@ export default () => {
         return newState;
       });
     }
+  } catch (error: any) {   
+  }
   };
 
   //Handles for dynamic form of Education experience (input, create, delete)
@@ -102,20 +107,23 @@ export default () => {
     if (dynamicForm === "education") {
       const EducationInputsFilled = educationformData.every(
         (item) =>
-          item.startDate.trim() !== "" &&
-          item.endDate.trim() !== "" &&
-          item.course.trim() !== "" &&
-          item.institution.trim() !== ""
+          item.startDate?.trim() !== "" &&
+          item.endDate?.trim() !== "" &&
+          item.course?.trim() !== "" &&
+          item.institution?.trim() !== ""
       );
+      console.log("inputsfilled educaion", EducationInputsFilled)
       return EducationInputsFilled;
-    } else {
+    } 
+    else {
+      console.log("experience filled", experienceformData)
       const ExperienceInputsFilled = experienceformData.every(
         (item) =>
-          item.company.trim() !== "" &&
-          item.jobTitle.trim() !== "" &&
-          item.startDate.trim() !== "" &&
-          item.endDate.trim() !== "" &&
-          item.description.trim() !== ""
+          item.company?.trim() !== "" &&
+          item.jobTitle?.trim() !== "" &&
+          item.startDate?.trim() !== "" &&
+          item.endDate?.trim() !== "" &&
+          item.description?.trim() !== ""
       );
       return ExperienceInputsFilled;
     }
@@ -128,7 +136,9 @@ export default () => {
   const SubmitValidation = () => {
     if (
       !dynamicInputsFilled("education") ||
-      !dynamicInputsFilled("experience")
+      !dynamicInputsFilled("experience") ||
+      !dynamicInputsFilled("tempEducation") ||
+      !dynamicInputsFilled("tempExperience") 
     ) {
       setSubmitError(true);
     } else {
@@ -307,7 +317,7 @@ export default () => {
     userID,
     experienceformData,
     educationformData,
-    dynamicInputsFilled,
+    dynamicInputsFilled
     
   };
 };

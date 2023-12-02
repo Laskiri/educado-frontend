@@ -45,7 +45,7 @@ export default () => {
     if (response.status == 200) {
       setFormData((prevSTate) => {
         let newState = { ...prevSTate };
-        newState.photo = response.data;
+        newState.photo = event.target.files[0].name
         return newState;
       });
     }

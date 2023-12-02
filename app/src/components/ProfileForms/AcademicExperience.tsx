@@ -89,7 +89,7 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
-              placeholder="st"
+              placeholder="Curso"
               type="text"
               name="course"
               value={educationformData[index]?.course || ""}

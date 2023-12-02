@@ -77,3 +77,50 @@ const [experienceErrorState, setExperienceErrorState] = useState(false);
 
 return {experienceErrors, setExperienceErrors, experienceErrorState, setExperienceErrorState}
 }
+
+export const tempObjects = () => {
+    // Create empty object for professional experience
+    const emptyAcademicObject = [
+      {
+        status: "",
+        institution: "",
+        course: "",
+        educationLevel: "",
+        startDate: "",
+        endDate: "",
+        _id: null,
+      },
+    ];
+  
+    // Create empty object for professional experience
+    const emptyProfessionalObject = [
+      {
+        company: "",
+        jobTitle: "",
+        startDate: "",
+        endDate: "",
+        checkBool: false,
+        description: "",
+        _id: null,
+      },
+    ];
+
+    return {emptyAcademicObject, emptyProfessionalObject}
+}
+
+  export const tempData = () => {
+    // Create empty object for professional experience
+    const [tempProfessionalObject, setTempProfessionalObject] = useState<ExperienceFormData[]>([
+      {
+        company: "",
+        jobTitle: "",
+        startDate: "",
+        endDate: "",
+        checkBool: false,
+        description: "",
+        _id: null,
+      },
+    ]);
+  
+    return { tempProfessionalObject, setTempProfessionalObject };
+  }

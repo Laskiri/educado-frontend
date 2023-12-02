@@ -26,11 +26,7 @@ import dynamicForms from "../utilities/dynamicForms";
 import staticForm from "../utilities/staticForm";
 
 //import helpers
-import {
-  useEducationFormData,
-  useExperienceFormData,
-  useFormData,
-} from "../helpers/formStates";
+import { tempObjects } from "../helpers/formStates";
 
 //Yup Schema
 const profileSchema = Yup.object().shape({
@@ -56,14 +52,13 @@ const Profile = () => {
     fetchuser,
     fetchStaticData,
   } = staticForm();
-  const { setEducationFormData } = useEducationFormData();
-  const { setExperienceFormData } = useExperienceFormData();
-
+  const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
+  const [isDisabled, setIsDisabled] = useState(false);
   const {
+    dynamicInputsFilled,
     userID,
     educationErrorState,
     experienceErrorState,
-    dynamicInputsFilled,
     experienceErrors,
     educationErrors,
     handleExperienceInputChange,
@@ -99,13 +94,12 @@ const Profile = () => {
   //Form submit, sends data to backend, upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
     //if fields are filled & errors do not occour submit form
+    setIsDisabled(true);
     if (
       !educationErrorState &&
       !experienceErrorState &&
       dynamicInputsFilled("education") &&
-      dynamicInputsFilled("experience") &&
-      formData.UserEmail !== "" &&
-      formData.UserName !== ""
+      dynamicInputsFilled("experience")
     ) {
       //Fields of personalinformation will be updated using - through a put request
       const formDataToSend = {
@@ -117,11 +111,10 @@ const Profile = () => {
         userPhoto: formData.photo,
       };
 
-      const response = await ProfileServices.putFormOne(formDataToSend);
-      if (response.status === 200) {
-      }
-
       try {
+        const response = await ProfileServices.putFormOne(formDataToSend);
+        if (response.status === 200) {
+        }
         //Fields of academic experience will be looped through and updated using the relevant endpoints
         await Promise.all(
           educationformData.map(async (item, index) => {
@@ -130,15 +123,7 @@ const Profile = () => {
               userID: userID,
             };
 
-            const res = await ProfileServices.putFormTwo(data);
-
-            setEducationFormData((prevState) => {
-              const newState = [...prevState];
-              newState[index] = {
-                ...res.data,
-              };
-              return newState;
-            });
+            await ProfileServices.putFormTwo(data);
             if (item._id) {
               await ProfileServices.deleteEducationForm(item._id);
             }
@@ -153,56 +138,25 @@ const Profile = () => {
               userID: userID,
             };
 
-            const res = await ProfileServices.putFormThree(data);
+            await ProfileServices.putFormThree(data);
 
-            setExperienceFormData((prevState) => {
-              const newState = [...prevState];
-              newState[index] = {
-                ...res.data,
-              };
-              return newState;
-            });
             if (item._id) {
               await ProfileServices.deleteExperienceForm(item._id);
             }
           })
         );
-      } catch (error) {
-        console.error("Axios Error:", error);
-      }
+        fetchuser();
+        fetchDynamicData();
+        fetchStaticData();
+      } catch (error) {}
     }
+    setIsDisabled(false);
   };
 
   //Drop down menues && lists
   const [toggleMenu1, setToggleMenu1] = useState(false);
   const [toggleMenu2, setToggleMenu2] = useState(false);
   const [toggleMenu3, setToggleMenu3] = useState(false);
-
-  // Create empty object for professional experience
-  const emptyAcademicObject = [
-    {
-      status: "",
-      institution: "",
-      course: "",
-      educationLevel: "",
-      startDate: "",
-      endDate: "",
-      _id: null,
-    },
-  ];
-
-  // Create empty object for professional experience
-  const emptyProfessionalObject = [
-    {
-      company: "",
-      jobTitle: "",
-      startDate: "",
-      endDate: "",
-      checkBool: false,
-      description: "",
-      _id: null,
-    },
-  ];
 
   //render and fetch signup userdetails
   useEffect(() => {
@@ -405,6 +359,7 @@ const Profile = () => {
               </div>
               <div className="px-10 py-4 bg-cyan-800 rounded-lg justify-center items-start gap-2.5 flex">
                 <button
+                  disabled={isDisabled}
                   onClick={SubmitValidation}
                   type="submit"
                   className="text-center text-white text-base font-bold font-['Montserrat'] text-right"

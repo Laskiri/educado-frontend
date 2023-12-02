@@ -1,6 +1,7 @@
 //Imports
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Modals from "../../components/ProfileForms/Modals";
+import { BACKEND_URL } from "../../helpers/environment";
 
 //Exporting UI content&structure of
 export default function PersonalInformationForm({
@@ -24,6 +25,7 @@ export default function PersonalInformationForm({
   register: any;
   handleInputChange: any;
 }) {
+  console.log("error", errors.UserName);
   //State for pop up modals
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);
@@ -39,7 +41,15 @@ export default function PersonalInformationForm({
     setModalInputValue(numericInput);
     setIntError(!/^[0-9]*$/.test(e.target.value));
   };
-
+  const getUserImage = async () => {
+    let response = await fetch(
+      `http://localhost:8888/api/bucket/${formData.photo}`
+    );
+    console.log(response);
+  };
+  useEffect(() => {
+    getUserImage();
+  }, []);
   return (
     <>
       {/* content of personal information when drop down button is clicked */}
@@ -50,7 +60,7 @@ export default function PersonalInformationForm({
             {/* Display selected image if uploaded, otherwise display icon with initials*/}
             {formData.photo ? (
               <img
-                src={`https://storage.googleapis.com/educado-bucket/${formData.photo}`}
+                src={`${BACKEND_URL}/api/bucket/${formData.photo}`}
                 className="w-[120px] h-[120px] p-[0px] bg-cyan-800 rounded-[60px] border-2 border-white inline-flex"
                 alt=""
               />
