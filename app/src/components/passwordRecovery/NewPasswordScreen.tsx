@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import TextInput from "../general/TextInput";
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { mdiCheck } from "@mdi/js";
 import PasswordEye from "../general/PasswordEye";
 

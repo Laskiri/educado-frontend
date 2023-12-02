@@ -35,7 +35,7 @@ const PersonalInsights = (props: PersonalInsightsProps) => {
       <div className='border-y-[1px] border-grayMedium my-4 py-4'>
         <div className='grid grid-cols-4 lg:grid-cols-1 gap-y-4'>
           {/* Show stats if the user has > 0 courses */}
-          {courses.length ? <>
+          {(courses.length > 0) ? <>
             <div>
               {['published', 'draft', 'hidden'].map((status, key) => {
                 return <div key={key} className='flex flex-row gap-2'>
@@ -71,7 +71,7 @@ const PersonalInsights = (props: PersonalInsightsProps) => {
         <p className='font-bold'>Atividades</p> {/* */}
         <div className='grid grid-cols-4 lg:grid-cols-1 gap-y-2'>
           {/* Show activities if the user has > 0 courses */}
-          {courses.length ? <>
+          {(courses.length > 0) ? <>
 
             {/* If the user has 0 courses */}
           </> : <p className='italic'>Nenhuma atividade</p> /* No activities */}

@@ -1,5 +1,5 @@
-import Icon from '@mdi/react';
-import { mdiChevronDown, mdiChevronUp } from '@mdi/js';
+import { Icon } from '@mdi/react';
+import { mdiChevronUp } from '@mdi/js';
 import { useEffect } from 'react';
 
 interface SectionArrowIconProps {

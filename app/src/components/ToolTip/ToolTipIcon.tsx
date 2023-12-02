@@ -1,8 +1,6 @@
 // Icon from: https://materialdesignicons.com/
 
-import useSWR from 'swr'
-
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { mdiInformationSlabCircleOutline } from '@mdi/js';
 import { ToolTipInfoBox } from './ToolTipInfoBox';
 

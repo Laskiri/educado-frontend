@@ -10,7 +10,7 @@ import {
 interface CategoryInfo {
 	icon: string,
 	br ?: string,
-};
+}
 
 interface CategoryMap {
 	[key: string]: CategoryInfo,

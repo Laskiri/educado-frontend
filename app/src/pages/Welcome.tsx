@@ -1,17 +1,10 @@
 import { Link } from "react-router-dom"
-import FrontLogo from "../assets/WelEdnew.png"
 import background from "../assets/background.jpg"
 import Carousel from "../components/archive/Carousel";
 
 
 
 const Welcome = () => {
-
-    const responseGoogle = (response: any) => {
-        // Handle the response here (e.g., send it to your backend for verification) (OLD CODE)
-        console.log(response);
-      };
-
 
 return (
 //background for frame 2332

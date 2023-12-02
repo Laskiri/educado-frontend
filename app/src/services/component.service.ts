@@ -2,8 +2,6 @@ import axios from "axios";
 
 
 // Interfaces
-import { Lecture } from "../interfaces/Lecture";
-import { Exercise } from "../interfaces/CourseDetail";
 import { BACKEND_URL } from '../helpers/environment';
 
 const getComponentDetail = (cid:string, type:string, token:string) => {

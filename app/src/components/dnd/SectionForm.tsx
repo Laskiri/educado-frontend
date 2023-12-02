@@ -1,7 +1,5 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 
-import { useSWRConfig } from 'swr';
-
 // Hooks 
 import { getUserToken } from '../../helpers/userInfo';
 
@@ -9,10 +7,9 @@ import { getUserToken } from '../../helpers/userInfo';
 import SectionServices from '../../services/section.services'
 
 // Icons
-import { PlusIcon } from '@heroicons/react/24/outline';
 import { useParams } from 'react-router-dom';
 import { mdiPlus,  } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 
  type Inputs = {
     title: string
@@ -30,7 +27,7 @@ export const SectionForm = ({callOnSubmit}: Props) => {
 
     
     // React useForm setup
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const { handleSubmit } = useForm<Inputs>();
     const onSubmit: SubmitHandler<Inputs> = (data) => {
         data.title = "Nova seção";
         SectionServices.createSection(data, id, token)

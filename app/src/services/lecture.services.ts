@@ -1,7 +1,6 @@
 import axios from "axios";
 
 // Interfaces
-import { Lecture } from "../interfaces/Lecture";
 import { BACKEND_URL } from '../helpers/environment';
 
 // Interface for posting lecture content

@@ -1,7 +1,7 @@
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { Certificate } from "../../interfaces/Certificate"
 import StarRating from "../general/StarRating"
-import { mdiAccount, mdiBrushOutline, mdiChevronDown, mdiDownload, mdiEmail, mdiFileEye } from "@mdi/js";
+import { mdiAccount, mdiChevronDown, mdiDownload, mdiFileEye } from "@mdi/js";
 import categories from "../../helpers/courseCategories";
 import CertificateField from "./CertificateField";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import { CERT_URL } from "../../helpers/environment";
 
 export default function CertificateCard(props: { certificate: Certificate, num: number }) {
 	const { certificate } = props;
-	const { course, creator } = certificate;
+	const { course } = certificate;
 	const maxTitleLength = 20;
 
 	const [isOpen, setIsOpen] = useState(false);

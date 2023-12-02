@@ -27,7 +27,6 @@ import { SortableComponentItem } from './@dnd/SortableComponentItem';
 import { Item } from './@dnd/Item';
 
 // Intefaces
-import { Section } from '../../interfaces/CourseDetail';
 import ComponentService from '../../services/component.service';
 
 interface Props {
@@ -77,7 +76,7 @@ export const ComponentList = ({sid, componentIds, componentTypesMap, idMap, addO
   }, [])
 
   function onSubmit(){
-    let componentArray:any[] = [];
+    const componentArray:any[] = [];
     setItems((items) => {
       for (let i = 0; i < items.length; i++) {
         componentArray.push({_id: idMap.get(items[i]), compId: items[i], compType: componentTypesMap.get(items[i])})

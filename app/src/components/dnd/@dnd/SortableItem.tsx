@@ -16,7 +16,7 @@ import { ComponentList } from '../ComponentList';
 
 // icons
 import { mdiChevronDown, mdiChevronUp, mdiDeleteCircle, mdiDotsVerticalCircle, mdiPlus } from '@mdi/js';
-import Icon from '@mdi/react';
+import { Icon } from '@mdi/react';
 import { useState, useEffect, useRef } from 'react';
 import SectionServices from '../../../services/section.services';
 
@@ -44,7 +44,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber, savedSID, setSavedSID
   const token = getUserToken();
   
   // Fetch the section data from the server.
-  const { data, error } = useSWR(
+  const { data } = useSWR(
     token ? [sid, token] : null,
     SectionServices.getSectionDetail
   );
@@ -100,14 +100,10 @@ export function SortableItem({ sid, addOnSubmitSubscriber, savedSID, setSavedSID
      .catch(err => toast.error(err));
   }
 
-  function getCompArray(compArray: any){  
-    return compArray;
-  }
-
   function deleteSection(){
     if(confirm("Tem certeza que deseja excluir?") == true){
       SectionServices.deleteSection(sid, token)
-      .then(res => {
+      .then(() => {
         toast.success('Seção excluída');
         window.location.reload();
       })
@@ -123,7 +119,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber, savedSID, setSavedSID
   },[]);
 
   function mapIdstoTypes(){
-    let idComponentMap = new Map<string, string>();
+    const idComponentMap = new Map<string, string>();
     for(let i = 0; i < data.components.length; i++){
       idComponentMap.set(data.components[i].compId, data.components[i].compType);
     }
@@ -131,7 +127,7 @@ export function SortableItem({ sid, addOnSubmitSubscriber, savedSID, setSavedSID
   }
 
   function mapIdstoIdObjIds(){
-    let idComponentMap = new Map<string, string>();
+    const idComponentMap = new Map<string, string>();
     for(let i = 0; i < data.components.length; i++){
       idComponentMap.set(data.components[i].compId, data.components[i]._id);
     }

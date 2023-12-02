@@ -1,7 +1,7 @@
 //Hooks
 import { useState } from "react";
 import useSWR from "swr";
-import { useNavigate, Link, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 // Services
 import AuthServices from "../services/auth.services";
@@ -9,9 +9,6 @@ import AuthServices from "../services/auth.services";
 // Components
 import Loading from "../components/general/Loading";
 import Layout from "../components/Layout";
-
-//Functions
-import { getUserToken } from '../helpers/userInfo';
 
 
 
@@ -21,11 +18,10 @@ const EducadoAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('')
     
     //Location and navigation 
-    let navigate = useNavigate();
-    let location = useLocation();
+    const location = useLocation();
 
     //Get data from the relevant route
-    const { data, error } = useSWR(
+    const { data } = useSWR(
         'api/applications',
         AuthServices.GetCCApplications
     );
@@ -104,7 +100,7 @@ return (
                             return application;
                         }
                     }).map((application: any, key: number) => {
-                        let date = new Date(application.joinedAt); 
+                        const date = new Date(application.joinedAt); 
                         return (
                             <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                 <td>
@@ -118,7 +114,7 @@ return (
                                 </td>
                                 <td>
                                     <p className="text-gray-900 whitespace-no-wrap" id="email">
-                                        {application.email}
+                                        Mail {/* {application.email} */}
                                     </p>
                                 </td>
                                 <td>

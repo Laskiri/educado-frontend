@@ -18,10 +18,6 @@ const DataDeletionRequest: React.FC = () => {
     marginBottom: '20px',
   };
 
-  const listItemStyle: React.CSSProperties = {
-    marginBottom: '15px',
-  };
-
   const emailLinkStyle: React.CSSProperties = {
     textDecoration: 'underline',
     color: 'blue',

@@ -1,8 +1,7 @@
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import * as Services from '../../services/passwordRecovery.services';
 import CodeVerification from "./CodeVerification";
 import NewPasswordScreen from "./NewPasswordScreen";
-import { ToggleModalContext } from "../../pages/Login";
 import NavigationFooter from "./NavigationFooter";
 import { validatePasswords, validateEmail } from "../../utilities/validation";
 
@@ -42,8 +41,6 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
   const [codeError, setCodeError] = useState('');  
   const [passwordError, setPasswordError] = useState('');
   const [passwordConfirmationError, setPasswordConfirmationError] = useState('');
-
-  const toggleModal = useContext(ToggleModalContext);
 
   /**
    * Handles the continue button click. If the email has not been sent yet, validates the email and sends it.

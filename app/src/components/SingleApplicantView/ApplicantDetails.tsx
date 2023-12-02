@@ -1,6 +1,6 @@
 const ApplicantDetails = ({ data } : {data: any}) => {
   //Convert the data into something more readable
-  let date = new Date(data.data.applicator.joinedAt)
+  const date = new Date(data.data.applicator.joinedAt)
 return (
 <main>
   <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">
@@ -17,7 +17,7 @@ return (
             E-mail: 
         </dt>
         <dd id="email" className="mt-1 text-base font-['Montserrat'] text-gray-900 sm:mt-0 sm:col-span-2">
-        {data.data.applicator.email}
+          Mail {/* {data.data.applicator.email} */}
         </dd>
     </div>
       <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">

@@ -2,9 +2,8 @@ import axios from "axios";
 
 // Backend URL from enviroment
 import { CERT_URL } from '../helpers/environment';
-import { BACKEND_URL } from "../helpers/environment";
-import { getUserInfo, getUserToken } from "../helpers/userInfo";
-import { Certificate, CertificateIds } from "../interfaces/Certificate";
+import { getUserToken } from "../helpers/userInfo";
+import { CertificateIds } from "../interfaces/Certificate";
 
 // Interface for posting course content
 export interface CourseInterface {

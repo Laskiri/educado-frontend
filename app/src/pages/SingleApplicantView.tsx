@@ -19,7 +19,7 @@ function SingleApplicantView() {
     const { id } = useParams();
     const navigate = useNavigate();
     //Get data from the relevant route
-    const { data, error } = useSWR(
+    const { data } = useSWR(
         id,
         AuthServices.GetSingleCCApplication
     );
@@ -36,7 +36,7 @@ function SingleApplicantView() {
                         });
                 }, 1);
             })
-            .catch(_ => toast.error(`Falha ao Aprovar a Candidatura`));
+            .catch(() => toast.error(`Falha ao Aprovar a Candidatura`));
             
     }
 
@@ -44,14 +44,14 @@ function SingleApplicantView() {
     //It will navigate to the applicaitons page, and display a toastify message notifying the user that the content creator was rejected
     const handleReject = () => {
         AuthServices.RejectApplication(id!)
-            .then(_ => {
+            .then(() => {
                 navigate("/educado-admin/applications");
                 setTimeout(() => {
                     toast.error((data?.data.applicator.firstName+" "+data?.data.applicator.lastName+" rejeitado"), { hideProgressBar: true, 
                             });
                     }, 1);
             })
-            .catch(_ => toast.error(`Falha ao Rejeitar a Candidatura`)); //Failed to reject application
+            .catch(() => toast.error(`Falha ao Rejeitar a Candidatura`)); //Failed to reject application
     }
 
     //If no data is found, or until the data is found, show loading page
