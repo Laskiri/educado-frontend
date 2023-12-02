@@ -1,5 +1,4 @@
 import Icon from "@mdi/react";
-import { useState } from "react";
 
 type propTypes = {
 	children: React.ReactNode;

@@ -1,7 +1,5 @@
 
-import { useForm, SubmitHandler } from "react-hook-form";
 import { Answer } from "../../interfaces/AnswerClass";
-import { bool, boolean } from "yup";
 
 // find a better aleternative to onChange
 

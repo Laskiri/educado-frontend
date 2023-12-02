@@ -1,6 +1,3 @@
-import { useController } from "react-hook-form";
-import react from "react";  
-import { toast } from "react-toastify";
 
 type DropzoneProps = {
     inputType: string,

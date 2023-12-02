@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom'
 
 // Services
 import CourseServices from '../../services/course.services'
-import StorageService from '../../services/storage.services'
 import SectionServices from '../../services/section.services';
 
 export enum DeleteType {
@@ -71,7 +70,7 @@ export const DeleteButton = ({id, token, deleteType}: DeleteButtonProps) => {
     
     // const responseFile = await StorageService.deleteFile(ImgId, token);
 
-    if(statusFeedback(res.status, res.statusText)){
+    if(statusFeedback()){
       navigate("/courses");
     }
   }
@@ -86,7 +85,7 @@ export const DeleteButton = ({id, token, deleteType}: DeleteButtonProps) => {
   const deleteSection = async (id: string | undefined, token: string) => {
     setRes(await SectionServices.deleteSection(id, token));
 
-    if(statusFeedback(res.status, res.statusText)){
+    if(statusFeedback()){
       navigate("/courses"); // Should be the parent course page
     }
   }
@@ -97,7 +96,7 @@ export const DeleteButton = ({id, token, deleteType}: DeleteButtonProps) => {
    * 
    * @param status The status code of the response
    */
-  const statusFeedback = (status: number, statusText: string) => {
+  const statusFeedback = () => {
     if (res.status >= 200 && res.status <= 299) {
       toast.success("Excluído"); {/* Course deleted */}
       return true;

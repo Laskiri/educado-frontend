@@ -15,7 +15,7 @@ const CourseManager = () => {
   
   
   const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"))
-  const [formComponents, setFormComponents] = useState<JSX.Element[]>
+  const [formComponents] = useState<JSX.Element[]>
   ([
     <CourseComponent token={token} id={id} setTickChange={setTickChange} setId={setId}/>,
     <SectionCreation id={id ?? ""} token={token} setTickChange={setTickChange}/>

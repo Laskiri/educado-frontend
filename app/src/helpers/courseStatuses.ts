@@ -3,7 +3,7 @@
 interface StatusInfo {
 	color: string,
 	br ?: string,
-};
+}
 
 interface StatusMap {
 	[key: string]: StatusInfo,

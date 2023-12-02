@@ -2,19 +2,11 @@ import axios from "axios";
 
 // Backend URL from enviroment
 import { BACKEND_URL } from '../helpers/environment';
-import { getUserInfo, getUserToken } from "../helpers/userInfo";
+import { getUserInfo } from "../helpers/userInfo";
 
 //interfaces
 import {Course} from "../interfaces/Course"
 
-
-const client = axios.create({
-  baseURL: 'http://localhost:8888/api/courses',
-  headers: {
-    "Content-Type": "application/json",
-    token: getUserToken(),
-  },
-});
 
 /**
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET

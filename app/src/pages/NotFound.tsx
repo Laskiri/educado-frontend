@@ -1,11 +1,7 @@
-import React from 'react'
 import { Link } from "react-router-dom"
 import FrontLogo from "../assets/WelEdnew.png"
 import logo from "../assets/logo.png"
 import educado from "../assets/educado.png"
-import background from "../assets/background.jpg"
-
-
 
 
 const NotFound = () => {

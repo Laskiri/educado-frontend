@@ -5,22 +5,14 @@ import { NewApplication } from "../interfaces/Application"
 import { NewInstitution } from "../pages/NewInstitution"
 
 export interface ContentCreatorApplication {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
 }
 
 
 const postUserLogin = async (credentials: any) => {
-  return await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
-};
-
-const postUserApplication = async (formData: ContentCreatorApplication) => {
-  return await axios.post(`${BACKEND_URL}/api/applications`, formData);
-};
-
-const postUserCredentialsLogin = async (credentials: any ) => {
   return await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
 };
 

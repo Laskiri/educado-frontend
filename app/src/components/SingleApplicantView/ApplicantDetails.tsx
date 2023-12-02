@@ -1,6 +1,6 @@
 const ApplicantDetails = ({ data } : {data: any}) => {
   //Convert the data into something more readable
-  let date = new Date(data.data.applicator.joinedAt)
+  const date = new Date(data.data.applicator.joinedAt)
 return (
 <main>
   <div className="bg-secondary px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 space-x-8">

@@ -1,5 +1,3 @@
-import { useState, useEffect, ChangeEvent } from 'react';
-import { useDebounce } from 'usehooks-ts';
 import { Main } from '../../interfaces/Course';
 
 // Components

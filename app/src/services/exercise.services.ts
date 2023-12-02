@@ -1,7 +1,6 @@
 import axios from "axios";
 
 // Interfaces
-import { Exercise } from "../interfaces/Exercise";
 
 import { BACKEND_URL } from '../helpers/environment';
 

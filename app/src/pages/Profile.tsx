@@ -4,7 +4,6 @@ import { toast } from 'react-toastify';
 import PopUpDelete from '../components/profile/PopUpDelete';
 
 // Contexts
-import useAuthStore from '../contexts/useAuthStore';
 
 // Interfaces
 import { LoginResponseError as ResponseError } from "../interfaces/LoginResponseError"
@@ -47,10 +46,6 @@ const Profile = () => {
     const openModal = () => {
         setIsModalOpen(true);
     };
-
-    const closeModal = () => {
-        setIsModalOpen(false);
-    };
     
     // use-form setup
     const { 
@@ -71,7 +66,7 @@ const Profile = () => {
     const onProfileInfoSubmit: SubmitHandler<ProfileInfoInputs> = async (data) => {
         AccountServices.updateProfileInfo(data, token)
         .then(() => toast.success('Profile updated successfully'))
-        .catch((err) => toast.error('Failed to update profile info. Try again or refresh page'))
+        .catch(() => toast.error('Failed to update profile info. Try again or refresh page'))
     };
         
     const onChangePasswordSubmit: SubmitHandler<ChangePasswordInputs> = async (data) => {

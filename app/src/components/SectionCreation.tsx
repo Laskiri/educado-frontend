@@ -9,14 +9,12 @@ import { SectionList } from './dnd/SectionList';
 
 import { BACKEND_URL } from "../helpers/environment";
 
-import StorageServices from '../services/storage.services';
 import CourseServices from '../services/course.services';
 import { YellowWarning } from './Courses/YellowWarning';
 import { useNavigate } from 'react-router-dom';
 
 import Loading from './general/Loading'
 import Layout from './Layout'
-import { is } from 'cypress/types/bluebird';
 import { toast } from 'react-toastify';
 
 interface Inputs {
@@ -43,11 +41,14 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
   }
 
 
-  function removeOnSubmitSubscriber(callback: Function) {
-    setOnSubmitSubscribers((prevSubscribers) =>
-      prevSubscribers.filter((cb) => cb !== callback)
-    );
-  }
+  /**
+   * Currently not used, but should be implemented in the future
+   */
+  // function removeOnSubmitSubscriber(callback: Function) {
+  //   setOnSubmitSubscribers((prevSubscribers) =>
+  //     prevSubscribers.filter((cb) => cb !== callback)
+  //   );
+  // }
 
 
   function notifyOnSubmitSubscriber() {
@@ -60,12 +61,13 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
 
     toast.success("Seções salvas com sucesso!");
 
-    setIsLeaving((isLeaving) =>{
-      if(isLeaving && confirm("Tem certeza que deseja sair? Você perderá todas as alterações feitas.")){
-        window.location.href = '/courses';
-      }
-      return false;
-    });
+    if(confirm("Tem certeza que deseja sair? Você perderá todas as alterações feitas.")){
+      setIsLeaving(true);
+    }
+    
+    if(isLeaving){
+      window.location.href = '/courses';
+    }
     
     //setTickChange(2)(); //TODO: add in when next page is implemented
   }
@@ -92,7 +94,7 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
 
     // Fetch Course Details
     if(id != "0"){
-      var { data, error } = useSWR(
+      var { data } = useSWR(
         token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
         getData
       )
