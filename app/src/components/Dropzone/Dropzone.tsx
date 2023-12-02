@@ -1,7 +1,9 @@
 import { useController } from "react-hook-form";
 import react from "react";  
+import { toast } from "react-toastify";
 
 type DropzoneProps = {
+    inputType: string,
     callBack: Function
 }
 
@@ -11,7 +13,7 @@ type DropzoneProps = {
  * @returns {JSX.Element} - The image dropzone component
  */
 
-export const Dropzone = ({callBack}:DropzoneProps) => {
+export const Dropzone = ({callBack, inputType}:DropzoneProps) => {
     return (
         <div>
 
@@ -41,9 +43,16 @@ export const Dropzone = ({callBack}:DropzoneProps) => {
                             htmlFor="file-upload"
                             className="relative cursor-pointer rounded-md  font-medium text-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2 hover:text-primaryHover"
                         >
-                            <span>Upload a file </span>
-
-                            <input id="file-upload" name="file-upload" accept="image/*" type="file" className="sr-only" onChange={(e)=>{console.log("test"); callBack(e.target.value)}}/>
+                            <span>Carregamento de arquivo</span>
+                            {inputType === "image" ? 
+                                <input id="file-upload" name="file-upload" accept="image/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
+                                :
+                                inputType === "video" ? 
+                                <input id="file-upload" name="file-upload" accept="video/*" type="file" className="sr-only" onChange={(e)=>{console.log(e.target.files?.item(0)); callBack(e.target.files?.item(0))}}/>
+                                :
+                                <p>Tipo de arquivo não reconhecido</p> /*File type not recognized*/
+                                
+                            }
                         </label>
                      
                     </div>

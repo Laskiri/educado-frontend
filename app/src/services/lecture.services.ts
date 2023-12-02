@@ -4,6 +4,13 @@ import axios from "axios";
 import { Lecture } from "../interfaces/Lecture";
 import { BACKEND_URL } from '../helpers/environment';
 
+// Interface for posting lecture content
+export interface LectureInterface {
+  title: string,
+  description: string,
+  contentType: string,
+  content: string,
+}
 
 
 /**
@@ -15,12 +22,15 @@ import { BACKEND_URL } from '../helpers/environment';
  * @param sid section ID
  * @returns A complition message
 */
-const addLecture = async (title: string, description: string, token: string, sid: string) => {
+
+const addLecture = async ({title, description, contentType, content}: LectureInterface ,token: string, sid: string) => {
   return await axios.put(
     `${BACKEND_URL}/api/lectures/${sid}`,
     {
       title: title,
       description: description,
+      contentType: contentType,
+      content: content
       
     },
     { headers: { Authorization: `Bearer ${token}` } }

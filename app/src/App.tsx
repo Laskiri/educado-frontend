@@ -7,17 +7,21 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import NotFound from "./pages/NotFound";
 import Welcome from "./pages/Welcome";
+import Application from "./pages/Application";
 
 // Auth Pages
 import Courses from "./pages/Courses";
-import CourseEdit from "./pages/CourseEdit";
-import SectionEdit from "./pages/SectionEdit";
+import CourseManager from "./pages/CourseManager";
+
 import Profile from "./pages/Profile";
 
 // Educado Admin
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
+import NewInstitution from "./pages/NewInstitution";
+
+
 
 // Delete user request for app
 import DataDeletionRequest from "./pages/DataDeletionRequest";
@@ -38,17 +42,14 @@ function App() {
       errorElement: <NotFound />,
     },
     {
-      path: "/courses/edit/:id",
-      element: <ProtectedRoute><CourseEdit /></ProtectedRoute>
+      path: "/courses/manager/:id/:tick",
+      element: <ProtectedRoute><CourseManager /></ProtectedRoute>,
+      errorElement: <NotFound />,
     },
 		{
 			path: "/certificates",
 			element: <ProtectedRoute><Certificates /></ProtectedRoute>,
 		},
-    {
-      path: "/sections/:sid",
-      element: <ProtectedRoute><SectionEdit /></ProtectedRoute>
-    },
     {
       path: "/settings",
       element: <p>settings</p>
@@ -56,7 +57,6 @@ function App() {
     {
       path: "/profile",
       element: <ProtectedRoute><Profile /></ProtectedRoute>
-      
     },
     {
       path: "/login",
@@ -69,15 +69,24 @@ function App() {
       errorElement: <NotFound />
     },
     {
-      path: "/educado_admin",
+      path: "/application/:id",
+      element: <NonProtectedRoute><Application /></NonProtectedRoute>,
+      errorElement: <NotFound />
+    },
+    {
+      path: "/educado-admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
     },
     {
-      path: "/educado_admin/applications",
+      path: "/educado-admin/new-institution",
+      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
+    },
+    {
+      path: "/educado-admin/applications",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>
     },
     {
-      path: "/educado_admin/applications/:id",
+      path: "/educado-admin/applications/:id",
       element: <ProtectedRoute><SingleApplicantView /></ProtectedRoute>,
     },
     {

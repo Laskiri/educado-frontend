@@ -6,25 +6,37 @@ import categories from "../../helpers/courseCategories";
 import CertificateField from "./CertificateField";
 import { useEffect, useState } from "react";
 import ActionButton from "./ActionButton";
+import axios from "axios";
+import { CERT_URL } from "../../helpers/environment";
 
-
-/**
- * This component is responsible for displaying a card with the certificate info
- * @param props.certificate The certificate to be displayed
- * @param props.num The number of the certificate in the list
- */
 export default function CertificateCard(props: { certificate: Certificate, num: number }) {
 	const { certificate } = props;
 	const { course, creator } = certificate;
 	const maxTitleLength = 20;
 
 	const [isOpen, setIsOpen] = useState(false);
+	const [previewVisible, setPreviewVisible] = useState(false);
+	const [pdfPath, setPdfPath] = useState('');
+
+	function toggleModal() {
+		setPreviewVisible(!previewVisible);
+	}
 
 	function toggleDropdown() {
 		setIsOpen(!isOpen);
 	}
 
-	
+	useEffect(() => {
+		axios.post(CERT_URL + '/api/student-certificates/download?courseId=' + certificate.course._id + '&studentId=' + certificate.creator._id)
+			.then(res => {
+				setPdfPath(res.data);
+			});
+	}, [])
+
+	function download() {
+		console.log('download');
+		window.open(CERT_URL + pdfPath, '_blank');
+	}
 
 	return (
 		<div className="overflow-hidden w-full m-auto duration-200 shadow-md rounded-xl hover:shadow-lg group">
@@ -40,7 +52,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 						</CertificateField>
 						{/* Course rating */}
 						<div className=''>
-							<StarRating rating={course.rating} starSize="w-6" />
+							<StarRating rating={course.rating ?? 0} starSize="w-6" />
 						</div>
 						{/* Subsriber count */}
 						<CertificateField icon={mdiAccount} className="">
@@ -48,7 +60,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 							<p className="text-grayMedium hidden sm:inline-block ml-1">alunos</p>
 						</CertificateField>
 					</div>
-					<button onClick={toggleDropdown}>
+					<button id={"dropdown-" + props.num} onClick={toggleDropdown}>
 						<Icon path={mdiChevronDown} className='w-8 h-8 text-grayMedium hover:text-primary mr-5 float-right cursor-pointer' />
 					</button>
 					{isOpen && <div className="col-span-2 bg-grayLight h-[1px]"></div>}
@@ -57,13 +69,17 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 							{/** Export certificate */}
 							<p className="text-xl translate-y-2 text-grayDark">Exportar certificado: </p>
 							<div className="gap-20 flex flex-row-reverse ">
-								<ActionButton icon={mdiDownload}>
+								<ActionButton id={'download-button-' + props.num} icon={mdiDownload} onClick={download}>
 									<p>Baixar</p> {/** Download */}
 								</ActionButton>
-								<ActionButton icon={mdiFileEye}>
+								<ActionButton id={'preview-button-' + props.num} icon={mdiFileEye} onClick={toggleModal}>
 									<p> Previa </p> {/** Preview */}
 								</ActionButton>
 							</div>
+							{
+								previewVisible &&
+								<object id={'preview-window-' + props.num} className="rounded-xl justify-self-center col-span-2 mt-4" data={CERT_URL + pdfPath} type="application/pdf" width='600' height='482'/>
+							}
 						</div>
 					}
 

@@ -20,7 +20,7 @@ import {
     EyeIcon,
     EyeSlashIcon,
 } from "@heroicons/react/24/outline";
-import useToken from '../hooks/useToken';
+import { getUserToken } from '../helpers/userInfo';
 
 type ChangePasswordInputs = {
     oldPassword: string,
@@ -34,8 +34,7 @@ type ProfileInfoInputs = {
 
 
 const Profile = () => {
-    //const token = useAuthStore(state => state.token);
-    const token = useToken();
+    const token = getUserToken();
 
     // response errors
     const [changePasswordResponseError, setChangePasswordResponseError] = useState<ResponseError.RootObject | null>(null);
