@@ -1,93 +1,295 @@
-import React, { useState } from 'react'
-import { Link, useLocation, useNavigate } from "react-router-dom"
+import { createContext, useState } from 'react'
+import { Link, useNavigate } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
-
+import background from "../assets/background.jpg"
+import {Icon} from '@mdi/react';
+import { mdiChevronLeft } from '@mdi/js';
+import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
+import Carousel from '../components/archive/Carousel';
+import { ToastContainer } from 'react-toastify';
 
 // Interfaces
-import { LoginReponseError } from "../interfaces/LoginReponseError"
+import { LoginResponseError } from "../interfaces/LoginResponseError"
 
 // Services
 import AuthServices from '../services/auth.services';
-import useAuthStore from '../contexts/useAuthStore';
+
+// Helper functions
+import { setUserInfo } from '../helpers/userInfo';
+import PasswordRecoveryModal from '../components/passwordRecovery/PasswordRecoveryModal';
+
+
+// Contexts
+export const ToggleModalContext = createContext(() => { });
 
 // Interface
 type Inputs = {
-    email: string,
-    password: string,
+  email: string,
+  password: string,
 };
 
 const Login = () => {
-    // Location
-    const [error, setError] = useState<LoginReponseError.RootObject | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
-    
-    // states
-    const setToken = useAuthStore(state => state.setToken);  // zustand store for key storage
-    const setRefresh = useAuthStore(state => state.setRefresh); // zustand store for key storage
-    const navigate = useNavigate(); // hooke for redirect
+    // Error state
+    const [error, setError] = useState<LoginResponseError.RootObject | string | null>(null); // store http error objects TODO: get the error text from server instead of reponse code
+    const [showModal, setShowModal] = useState(false)
 
-    // use-form setup
-    const { register, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    // Navigation hook
+    const navigate = useNavigate(); 
 
-    // success on submit handler
-    const onSubmit: SubmitHandler<Inputs> = async (data) => {
-        AuthServices.postUserLogin(data)
-            .then((res) => {
-                setToken(res.data.data.accessToken);
-                setRefresh(res.data.data.refreshToken);
-                navigate("/");
-            })
-            .catch(err => { setError(err); console.log(err) });
+    // Use-form setup
+    const { register, handleSubmit } = useForm<Inputs>();
+    const [errorMessage, newErrorMessage] = useState('');
+    const setErrorMessage = (errMessage: string, error?: string) => {
+      setError(error ?? 'Erro');
+      newErrorMessage(errMessage)
+      setTimeout(() => {
+        setError('')
+      }, 5000);
     };
 
-    // failure on submit handler FIXME: find out what this does
-    const onError: SubmitHandler<Inputs> = error => console.log(error);
+  
+  //Variable determining the error message for both fields.
+    const [emailError, setEmailError] = useState(null);
+    const [emailErrorMessage,  setEmailErrorMessage] = useState('');
+  
+    const [passwordError, setPasswordError] = useState(null);
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 
-    return (
-        <main className="flex flex-col items-center justify-center w-screen h-screen bg-gradient-to-tl from-sky-600 to-blue-600 text-gray-200">
-            <h1 className="font-bold text-3xl">Welcome Back 👋</h1>
-            <div className="bg-white rounded p-12 shadow-lg mt-12">
-                <div className='flex flex-col divide text-gray-700'>
-                    <form className="flex flex-col" onSubmit={handleSubmit(onSubmit)}>
+    /**
+    * OnSubmit function for Login.
+    * Takes the submitted data from the form and sends it to the backend through a service.
+    * Upon receiving a success response, the token recieved from the backend will be set in the local storage.
+    *
+    * @param {JSON} data Which includes the following fields:
+    * @param {String} data.email Email of the Content Creator
+    * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    */
+    const onSubmit: SubmitHandler<Inputs> = async (data) => {
+      AuthServices.postUserLogin({
+          isContentCreator: true,
+          email: data.email,
+          password: data.password,})
+          .then((res) => {
+              if(res.status == 202){
+                localStorage.setItem("token", res.data.accessToken);
+                localStorage.setItem("id", res.data.userInfo.id);
+                setUserInfo(res.data.userInfo);
+                navigate("/courses");
+              }
+             
+          // error messages for email and password  
+          })
+          .catch(err => { setError(err); console.log(err)
+            switch (err.response.data.error.code){
+              case "E0004": //Invalid Email 
+                setEmailError(err);
+                setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
+                setError('');
+              break;
+        
+              case "E1001": //User Not Approved
+                setEmailError(err);
+                setEmailErrorMessage("A conta associada a este e-mail não foi aprovada.");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
+                setError('');
+              break;
 
-                        {error &&
-                            <div className="bg-red-200 border-red-600 text-red-600 border-t-4 p-4 w-64 mb-4 rounded" role="alert">
-                                <p className="font-bold text-sm">{error.response.statusText}</p>
-                                <p className='text-xs'>{error.response.data.msg}.</p>
-                            </div>
-                        }
+              case "E1002": //User Rejected
+                setEmailError(err); 
+                setEmailErrorMessage("A conta associada a este e-mail foi rejeitada.");
+                setPasswordError(null);
+                setPasswordErrorMessage('');
+                setError('');
+              break;
 
-                        {/* Username field */}
-                        <label className="font-semibold text-xs" htmlFor="usernameField">Email</label>
-                        <input {...register("email", { required: true })} className="auth-form-field" type="email" />
+              case "E0105": //Invalid Password
+              setEmailError(null);
+              setEmailErrorMessage('');
+              setPasswordError(err);
+              setPasswordErrorMessage("Senha Incorreta.");
+              setError('');
+              break;
+              
+              default: console.log(error);
+          }});
+    };
+    
+    // Variable determining whether or not the password is visible
+    const [passwordVisible, setPasswordVisible] = useState(false);
+    const togglePasswordVisibility = () => {
+      setPasswordVisible(!passwordVisible);
+    };
+    
+    
+    function areFieldsFilled() {
+      const inputloginEmail = document.getElementById('email-field') as HTMLInputElement;
+      const inputloginPass = document.getElementById('password-field') as HTMLInputElement;
+      
+      const submitloginButton = document.getElementById('submit-login-button') as HTMLButtonElement;
+     
+      if(inputloginEmail.value.trim() && inputloginPass.value.trim() !== '') {
+        submitloginButton.removeAttribute('disabled');
+        submitloginButton.classList.remove('opacity-20', 'bg-cyan-500');
+      } 
+      else {
+        submitloginButton.setAttribute('disabled', 'true');
+        submitloginButton.classList.add('opacity-20', 'bg-cyan-500');
+      }
 
-                        {/* Password field */}
-                        <label className="font-semibold text-xs mt-3" htmlFor="passwordField">Password</label>
-                        <input {...register("password", { required: true })} className="auth-form-field" type="password" />
+       // function to clear error messages once fields are empty 
+      setEmailError(null);
+      setEmailErrorMessage('');
+      setPasswordError(null);
+      setPasswordErrorMessage('');
+    }
+    // failure on submit handler FIXME: find out what this does (OLD CODE)
+    //const onError: SubmitHandler<Inputs> = error => console.log(error);
+
+  return (
+    <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%" >
+
+      { /*Navbar*/}
+      <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
+        <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
+          <div className="navbar-start">
+            <Link to="/" className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
+              <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6" /> <img src='/educado.svg' alt="educado" className="h-6" />
+            </Link>
+          </div>
+        </div>
+      </nav>
+
+      { /*Container for entire page*/}
+      <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-full h-screen">
+
+        { /*Container for left half of the page*/}
+        <div className='relative w-full h-screen hidden md:block container overflow-hidden'>
+          <img src={background} alt="w-[42.375rem]" className='object-cover w-full h-full' />
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <Carousel /> { /*Carousel integration*/}
+          </div>
+        </div>
 
 
-                        <button type="submit" className="flex items-center justify-center h-12 px-6 w-64 bg-blue-600 mt-8 rounded font-semibold text-sm text-blue-100 hover:bg-blue-700">
-                            Login
-                        </button>
-                    </form>
+    { /*Container for right side of the page - frame 2332*/ }
+    <div className='relative right-0 h-screen flex flex-col justify-center items-center'>
+    { /*Error message for when email or password is incorrect*/}
+          <div className="fixed right-0 top-[4rem] z-10">
+            {error && (
+              <div className="bg-white shadow border-t-4 p-4 w-52 rounded text-center animate-bounce-short" role="alert">
+                <p className="font-bold text-lg">{error.toString()}</p>
+                <p id='error-message' className='text-base'>{errorMessage}</p>
+              </div>
+            )}
+          </div>
 
-                    <Link to="/">
-                        <button className="flex items-center justify-center h-12 px-6 w-64 mt-4 rounded font-semibold text-sm bg-white border border-blue-500 shadow-md hover:border-blue-700">
-                            <img alt="google icon" src="https://developers.google.com/identity/sign-in/g-normal.png" className='mr-2 h-8 w-8' />
-                            Sign in with Google
-                        </button>
-                    </Link>
-                </div>
+            
+      { /*Container for the page's contents, + Back button*/ }
+      <ToastContainer/>
+      <div className='relative py-8 px-10 w-full'>
+        <div className=''>
+          <h1 className="mb-10 flex text-lg text-[#383838] font-normal font-['Montserrat'] underline"> 
+            <Link to="/welcome">
+              <Icon path={mdiChevronLeft} size={1} color="#383838" />
+            </Link>
+            <Link to="/welcome" className="text-lg text-[#383838] font-normal font-['Montserrat']">
+              Voltar {/*Back*/}
+            </Link>
+          </h1>
+        </div>
 
-                <div className="flex mt-6 justify-center text-xs">
-                    <a className="text-blue-400 hover:text-blue-500" href="#">Forgot Password</a>
-                    <span className="mx-2 text-gray-300">/</span>
-                    <Link to="/signup" className="text-blue-400 hover:text-blue-500">Apply for Account</Link>
-                </div>
+        { /*Title*/ }
+        <h1 className="text-[#383838] text-3xl font-bold font-['Lato'] leading-normal self-stretch mb-10 ">
+          Bem-vindo de volta ao Educado! {/*Welcome back to Educado!*/}
+        </h1>
+
+            { /*Submit form, i.e. fields to write email and password*/}
+            <form onSubmit={handleSubmit(onSubmit)} className="stretch flex flex-col space-y-2">
+
+          {/* Email field */}
+          <div>
+            <div className="relative">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="email-field">
+              Email
+            </label>
+            <input onInput={areFieldsFilled} 
+              type="email" id="email-field"
+              className="flex border-gray-300 w-[100%] py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+              placeholder="usuario@gmail.com"
+              {...register("email", { required: true })}/>
+
+            {emailError && (
+            <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+              <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+            <p className='mt-1 ml-1 text-red-500 text-sm'>{emailErrorMessage}</p>
             </div>
+          )}
+          </div>
+        </div>
 
-        </main>
-    )
-}
+          {/* Password field */}
+        <div>
+          <div className="relative">
+            <label className="after:content-['*'] after:ml-0.5 after:text-red-500 text-[#383838] text-sm font-normal font-['Montserrat'] mt-6" htmlFor="password-field">
+              Senha {/*Password*/}
+          </label>
+        <input
+          onInput={areFieldsFilled}
+          type={passwordVisible ? "text" : "password"}
+          id="password-field"
+          className="w-[100%] flex border-gray-300 gap-2.5 py-3 px-4 bg-white placeholder-gray-400 text-lg focus:outline-none focus:ring-2  focus:border-transparent focus:ring-sky-200 rounded-lg"
+          placeholder="**********"
+        {...register("password", { required: true })}
+        />
+
+      {/* Hide and show password button */}
+        <button type="button" className="absolute right-3 bottom-3" onClick={togglePasswordVisibility} id="hidePasswordIcon">
+          <Icon path={passwordVisible ? mdiEyeOutline : mdiEyeOffOutline} size={1} color="#A1ACB2" />
+       </button>
+      </div>
+
+      {passwordError && (
+        <div className="flex items-center font-normal font-['Montserrat']" role="alert">
+          <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
+          <p className='mt-1 ml-1 text-red-500 text-sm'>{passwordErrorMessage}</p>
+        </div>
+       )}
+      </div>
+
+            
+      { /*Forgot password button*/}
+              <div className=" flex flex-col items-end gap-3">
+                <span className="text-neutral-700 text-right text-base font-normal font-['Montserrat']"></span>{" "}
+                <label id='modalToggle' onClick={() => setShowModal(true)} className="text-[#383838] text-base font-normal font-['Montserrat'] underline hover:text-blue-500">Esqueceu sua senha? {/**/}</label>
+              </div>
+          
+        <span className="h-12" /> {/* spacing */}  
+          
+      { /*Enter button*/ }
+        <button type="submit" id="submit-login-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
+          disabled>
+            Entrar {/*Enter*/}
+          </button>
+
+              <span className="h-4" /> {/* spacing */}
+
+          { /*Link to Signup page*/ }
+          <div className="flex justify-center space-x-1"> 
+            <span className= "text-[#A1ACB2] text-lg font-normal font-['Montserrat']">Ainda não tem conta? {/*Don't have an account yet?*/}</span> 
+            <Link to="/signup" className="text-[#383838] text-lg font-normal font-['Montserrat'] underline hover:text-blue-500 gap-6">Cadastre-se agora {/*Register now*/}</Link> 
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {showModal &&
+    <ToggleModalContext.Provider value={() => setShowModal(!showModal)}>
+      <PasswordRecoveryModal toggleModal={() => {setShowModal(!showModal)}} setErrorMessage={setErrorMessage} />
+    </ToggleModalContext.Provider>}
+</main>
+)};
 
 export default Login
-
