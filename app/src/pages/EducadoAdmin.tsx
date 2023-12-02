@@ -114,7 +114,7 @@ return (
                                 </td>
                                 <td>
                                     <p className="text-gray-900 whitespace-no-wrap" id="email">
-                                        {application.email}
+                                        Mail {/* {application.email} */}
                                     </p>
                                 </td>
                                 <td>
