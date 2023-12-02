@@ -1,6 +1,6 @@
 //Imports
 import { mdiCheckBold, mdiEyeOffOutline, mdiEyeOutline } from "@mdi/js";
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { useState } from "react";
 
 //Exporting UI content&structure of Modal

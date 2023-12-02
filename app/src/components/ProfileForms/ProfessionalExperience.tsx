@@ -1,5 +1,5 @@
 //Imports
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { Fragment } from "react";
 import { mdiDelete } from "@mdi/js";
 

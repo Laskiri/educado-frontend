@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import ProfileServices from "../services/profile.services";
 
 //import icons
-import Icon from "@mdi/react";
+import { Icon } from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
 
 //import components
