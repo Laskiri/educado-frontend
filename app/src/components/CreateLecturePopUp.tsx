@@ -52,6 +52,11 @@ export const CreateLecture = ({savedSID, data}: Props) => {
     const [contentType, setContentType] = useState<string>("");
     const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+    const [charCount, setCharCount] = useState(data ? data.content.length : 0);
+    const onCharCountChange = (e: any) => {
+        setCharCount(e.target.value.length);
+    }
+
     const toggler = (value:string) => {
         setContentType(value);
     }
@@ -175,10 +180,12 @@ export const CreateLecture = ({savedSID, data}: Props) => {
                                 :
                                 ((data?.contentType === "text" && contentType === "") || (contentType === "text"))  ?
                                 <>
-                                    <label htmlFor='content'>Formate o seu texto abaixo</label>
+                                    <label htmlFor='content'>Formate o seu texto abaixo {charCount}/800</label>
                                     <textarea rows={4}  placeholder={"Insira o conteúdo escrito dessa aula"} defaultValue={data ? data.content : ""}
+                                        maxLength={800}
                                         className='resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent'
                                         {...register("content", { required: true })}
+                                        onChange={(e) => onCharCountChange(e)}
                                     />
                                 </>
                                 :
