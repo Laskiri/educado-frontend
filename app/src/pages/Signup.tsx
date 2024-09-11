@@ -29,10 +29,10 @@ interface ApplicationInputs {
 
 // Yup schema for fields
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string()
-    .required("Seu primeiro nome é obrigatório!"), /*Your first name is Required*/ 
+  firstName: Yup.string().trim()
+    .required("Seu primeiro nome é obrigatório!"), /*Your first name is Required*/
 
-  lastName: Yup.string()
+  lastName: Yup.string().trim()
     .required("Seu sobrenome é obrigatório!"), /*Your last name is Required*/ 
 
   password: Yup.string()
