@@ -27,11 +27,13 @@ interface ApplicationInputs {
   confirmPassword: string,
 }
 
-// Yup schema for fields
+// Yup schema for fields (new user registration form)
 const SignupSchema = Yup.object().shape({
+  // Registers user first name and removes leading/trailing whitespaces
   firstName: Yup.string().trim()
     .required("Seu primeiro nome é obrigatório!"), /*Your first name is Required*/
 
+  // Registers user last name and removes leading/trailing whitespaces
   lastName: Yup.string().trim()
     .required("Seu sobrenome é obrigatório!"), /*Your last name is Required*/ 
 
