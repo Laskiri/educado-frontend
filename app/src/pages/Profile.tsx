@@ -27,7 +27,7 @@ import staticForm from "../utilities/staticForm";
 
 //import helpers
 import { tempObjects } from "../helpers/formStates";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 //Yup Schema
 const profileSchema = Yup.object().shape({
@@ -356,12 +356,12 @@ const Profile = () => {
 
             {/* Page buttons */}
             <div className="w-[1000px] h-[52px] justify-between items-center inline-flex gap-4 mt-16">
-              <button
-                type="button"
-                className="text-center text-red-500 text-base font-bold font-['Montserrat'] underline"
-              >
+
+              {/* Link to account deletion request page */}
+              <Link to={"/account_deletion_request"} className="text-center text-red-500 text-base font-bold font-['Montserrat'] underline">
                 Deletar conta
-              </button>
+              </Link>
+
               <div className="flex-grow text-right ml-auto">
 
                 {/* Takes user back to /courses when "Cancelar edições" is pressed */}
