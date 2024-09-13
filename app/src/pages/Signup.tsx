@@ -63,7 +63,6 @@ const Signup = () => {
    */
   const onSubmit = async (data: any) => {
     // Show the email verification modal
-    setIsModalVisible(true);
     await AuthServices.postUserSignup({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -71,6 +70,7 @@ const Signup = () => {
       password: data.password,
     })
       .then((res) => {
+        setIsModalVisible(true);
         if (res.data.contentCreatorProfile.approved === true) {
           navigate("/login");
           setTimeout(() => {
