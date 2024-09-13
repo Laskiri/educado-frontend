@@ -1,9 +1,8 @@
 import { createContext, useEffect, useState } from "react";
-import * as Services from '../../services/passwordRecovery.services';
+import * as Services from '../../services/emailVerification.services';
 import CodeVerification from "./CodeVerification";
-import NewPasswordScreen from "./NewPasswordScreen";
 import NavigationFooter from "./NavigationFooter";
-import { validatePasswords, validateEmail } from "../../utilities/validation";
+import { validateEmail } from "../../utilities/validation";
 
 type propTypes = {
   toggleModal: () => void;
@@ -19,7 +18,7 @@ export const HandleContinueContext = createContext<() => void>(() => { });
  * - `setErrorMessage`: function that sets the error message
  * @returns {JSX.Element} the modal component
  */
-const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
+const EmailVerificationModal = (props: propTypes) : JSX.Element => {
 
   // States that control the flow of the modal
   const [emailSent, setEmailSent] = useState(false);
@@ -29,18 +28,11 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
   // User input
   const [code, setCode] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [passwordConfirmation, setPasswordConfirmation] = useState('');
 
-  // Password validation
-  const [passwordContainsLetter, setPasswordContainsLetter] = useState(false);
-  const [passwordLengthValid, setPasswordLengthValid] = useState(false);
 
   // Error messages
   const [emailError, setEmailError] = useState('');
   const [codeError, setCodeError] = useState('');  
-  const [passwordError, setPasswordError] = useState('');
-  const [passwordConfirmationError, setPasswordConfirmationError] = useState('');
 
   /**
    * Handles the continue button click. If the email has not been sent yet, validates the email and sends it.
@@ -62,42 +54,12 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
       verifyCode(email, code);
       return;
     }
+    /// indsæt hvad der skal ske når koden er verificeret 
     if (codeVerified) {
-      try {
-        validatePasswords(password, passwordConfirmation)
-      } catch (err: any) {
-        // Password needs to contain at least one letter
-        if(err.message === 'Os campos de senha precisam ser iguais') {
-          setPasswordConfirmationError(err.message);
-          return;
+          
         }
-        setPasswordError(err.message);
-        return;
-      }
-      
-      updatePassword();
-      return;
+
     }
-  }
-
-  /**
-   * Updates the user's password. If an unexpected error occurs, sets error to the appropriate error message.
-   */
-  async function updatePassword() {
-    Services.updatePassword(email, password, code)
-      .then(() => {
-        props.setErrorMessage('Senha alterada com sucesso!', 'Sucesso') // Password changed successfully!
-        props.toggleModal();
-      })
-      .catch((error) => {
-        switch (error?.error?.code) {
-          default:
-            props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
-        }
-      });
-  }
-
-
   /**
    * Sends an email to the user with a verification code to reset the password. 
    * If the email is not registered, sets emailError to the appropriate error message. 
@@ -160,7 +122,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
     <div id="password-reset-modal" className='absolute grid place-items-center bg-darkBG inset-0'>
       <HandleContinueContext.Provider value={handleContinue}>
         <div className="bg-gradient-to-b p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%]">
-          <h3 className="font-bold text-xl mb-4">Redefinção de senha luka</h3> {/** Reset password */}
+          <h3 className="font-bold text-xl mb-4">Redefinção de senha dsfs</h3> {/** Reset password */}
 
           {!codeVerified ?
             <CodeVerification
@@ -171,20 +133,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
               emailError={emailError}
               emailSent={emailSent}
               setCodeEntered={setCodeEntered}
-            /> :
-            <NewPasswordScreen
-              password={password}
-              setPassword={setPassword}
-              passwordError={passwordError}
-              passwordConfirmation={passwordConfirmation}
-              setPasswordConfirmation={setPasswordConfirmation}
-              passwordConfirmationError={passwordConfirmationError}
-              passwordContainsLetter={passwordContainsLetter}
-              passwordLengthValid={passwordLengthValid}
-              setPasswordContainsLetter={setPasswordContainsLetter}
-              setPasswordLengthValid={setPasswordLengthValid}
-            />
-          }
+            /> : null}
           <NavigationFooter codeVerified={codeVerified} />
         </div>
       </HandleContinueContext.Provider>
@@ -192,4 +141,4 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
   )
 }
 
-export default PasswordRecoveryModal;
+export default EmailVerificationModal;
