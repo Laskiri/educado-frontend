@@ -189,7 +189,7 @@ const Profile = () => {
       <main className="flex-grow overflow-x-hidden bg-[#E4F2F5] h-screen">
         <form
           onSubmit={handleSubmit(handleUpdateSubmit)}
-          className="text-center relative py-8 px-10 w-full"
+          className="text-center py-8 px-10 w-full"
         >
           <div className="inline-block ">
             <div className="text-left mt-16 mb-20 text-neutral-700 text-[32px] font-bold font-['Montserrat']">
@@ -200,7 +200,7 @@ const Profile = () => {
               <div className="Menu-1-personal-information">
                 <button
                   type="button"
-                  className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 relative ${
+                  className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 ${
                     toggleMenu1
                       ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-[#FFFFFF]"
                       : "rounded-lg bg-white text-neutral-700 text-[#383838]"
@@ -236,7 +236,7 @@ const Profile = () => {
               <div className="Menu-2-academic-experience ">
                 <button
                   type="button"
-                  className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 relative ${
+                  className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 ${
                     toggleMenu2
                       ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-[#FFFFFF]"
                       : "rounded-lg bg-white text-neutral-700 text-[#383838]"
@@ -294,7 +294,7 @@ const Profile = () => {
               <div className="Menu-3-professional-experience ">
                 <button
                   type="button"
-                  className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 relative ${
+                  className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold font-montserrat pl-6 ${
                     toggleMenu3
                       ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-[#FFFFFF]"
                       : "rounded-lg bg-white text-neutral-700 text-[#383838]"
