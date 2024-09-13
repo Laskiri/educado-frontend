@@ -21,7 +21,7 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
 }
 
 const postUserVerification = async(formData: ContentCreatorApplication) => {
-  return await axios.post(`${BACKEND_URL}/api/auth/email-verification`, formData)
+  return await axios.post(`${BACKEND_URL}/api/auth/verify-email`, formData)
 }
 
 const GetCCApplications = async () => {
