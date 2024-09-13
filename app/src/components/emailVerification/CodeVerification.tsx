@@ -2,10 +2,6 @@ import PinField from "react-pin-field";
 import TextInput from "../general/TextInput";
 
 type propsType = {
-  email: string;
-  setEmail: (email: string) => void;
-  emailError: string;
-  emailSent: boolean;
   codeError: string;
   setCode: (code: string) => void;
   setCodeEntered: React.Dispatch<React.SetStateAction<boolean>>;
