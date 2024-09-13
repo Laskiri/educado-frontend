@@ -54,7 +54,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
   }
 
 
-  function onSubmit() {
+  async function onSubmit() {
+    await CourseServices.updateCourseSectionOrder(sections, id, token);
     notifyOnSubmitSubscriber();
 
     toast.success("Seções salvas com sucesso!");
