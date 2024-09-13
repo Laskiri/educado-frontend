@@ -20,6 +20,10 @@ const postUserSignup = async(formData: ContentCreatorApplication) => {
   return await axios.post(`${BACKEND_URL}/api/auth/signup`, formData)
 }
 
+const postUserVerification = async(formData: ContentCreatorApplication) => {
+  return await axios.post(`${BACKEND_URL}/api/auth/email-verification`, formData)
+}
+
 const GetCCApplications = async () => {
   return await axios.get(`${BACKEND_URL}/api/applications`);
 };
@@ -53,6 +57,7 @@ const AuthServices = Object.freeze({
   RejectApplication,
   postNewApplication,
   addInstitution,
+  postUserVerification
 });
 
 export default AuthServices;
