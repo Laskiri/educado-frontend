@@ -1,13 +1,17 @@
 import { useForm } from "react-hook-form";
 import { useNavigate, Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 import * as Yup from 'yup';
 import { ToastContainer, toast } from 'react-toastify';
 import { Icon } from '@mdi/react';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiChevronLeft, mdiCheckBold, mdiAlertCircleOutline } from '@mdi/js';
 import Carousel from "../components/archive/Carousel";
 import EmailVerificationModal from "../components/emailVerification/EmailVerificationModal";
+import NavigationFooter from  "../components/emailVerification/NavigationFooter";
+
+
+export const ToggleModalContext = createContext<() => void>(() => {});
 
 // Static assets
 import background from "../assets/background.jpg";
@@ -159,6 +163,7 @@ const Signup = () => {
   }
 
   return (
+    <ToggleModalContext.Provider value={() => setIsModalVisible(!isModalVisible)}>
     <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%">
       {/* Navbar */}
       <nav className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10" style={{ background: 'var(--secondary, #F1F9FB)', boxShadow: '0px 4px 4px 0px rgba(35, 100, 130, 0.25)' }}>
@@ -313,7 +318,9 @@ const Signup = () => {
         setErrorMessage={(message: string, error?: string) => setErrorMessage(message)} />
         )}
       </div>
+      <NavigationFooter codeVerified={false} />
     </main>
+    </ToggleModalContext.Provider>
   );
 };
 
