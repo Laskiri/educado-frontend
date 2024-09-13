@@ -100,6 +100,15 @@ const updateCourseDetail = async (data: Course, id: string | undefined, token: s
   return res.data;
 }
 
+const updateCourseSectionOrder = async (sections: Array<string>, id: string | undefined, token: string) => {
+  const res = await axios.patch(
+    `${BACKEND_URL}/api/courses/${id}/sections`,
+    { sections },
+    { headers: { Authorization: `Bearer ${token}` } }
+  )
+  return res.data;
+}
+
 
 /**
  * Delete a specific course 
@@ -121,6 +130,7 @@ const CourseServices = Object.freeze({
   getCourseDetail,
   getCourseCategories,
   updateCourseDetail,
+  updateCourseSectionOrder,
   /*updateCoverImage,*/
   deleteCourse
 });
