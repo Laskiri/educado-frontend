@@ -49,6 +49,7 @@ const Signup = () => {
     resolver: yupResolver(SignupSchema),
   });
 
+
   const [emailExistsError, setEmailExistError] = useState(null);
   const [emailExistsErrorMessage, setErrorExistMessage] = useState('');
   const [passwordMismatchError, setPasswordMismatchError] = useState(null);
@@ -61,6 +62,8 @@ const Signup = () => {
    * @param {JSON} data Includes firstName, lastName, email, password fields.
    */
   const onSubmit = async (data: any) => {
+    // Show the email verification modal
+    setIsModalVisible(true);
     await AuthServices.postUserSignup({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -80,7 +83,6 @@ const Signup = () => {
           const id = res.data.contentCreatorProfile.baseUser;
           navigate(`/application/${id}`);
         }
-        setIsModalVisible(true); // Show the email verification modal upon successful signup
       })
       .catch((err) => {
         setError(err);
@@ -105,6 +107,7 @@ const Signup = () => {
           }
         }
       });
+
   };
 
   // Variables determining whether or not the password is visible
@@ -304,8 +307,11 @@ const Signup = () => {
             </form>
           </div>
         </div>
-
-        {isModalVisible && <EmailVerificationModal />}
+        {isModalVisible && (
+        <EmailVerificationModal 
+        toggleModal={() => setIsModalVisible(false)} 
+        setErrorMessage={(message: string, error?: string) => setErrorMessage(message)} />
+        )}
       </div>
     </main>
   );
