@@ -3,7 +3,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { getUserToken } from "../../helpers/userInfo";
 
 // Components
-import AnswerCards from "../../components/Exercise/AnswerCards";
+import AnswerCards from "./AnswerCards";
 import { ModalButtonCompont } from "../ModalButtonCompont";
 
 // Interfaces
@@ -14,6 +14,7 @@ import ExerciseServices from "../../services/exercise.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";
+import { use } from "chai";
 
 export interface ExercisePartial {
   title: string;
@@ -22,9 +23,8 @@ export interface ExercisePartial {
 }
 
 interface Props {
-  savedSID: string;
   data: any;
-  handleExerciseCreation: Function;
+  handleEdit: Function;
 }
 
 type Inputs = {
@@ -32,39 +32,37 @@ type Inputs = {
   question: string;
 };
 
-export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
+export const EditExercise = ({ data, handleEdit }: Props) => {
   const TempAnswers = [
     { text: "", correct: true, feedback: "" },
     { text: "", correct: false, feedback: "" },
   ];
 
-  const [answers, setAnswers] = useState<Answer[]>(TempAnswers);
+  const [answers, setAnswers] = useState<Answer[]>(data.answers);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  const { register, handleSubmit, reset } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   /** Token doesnt work, reimplement when it token is implemented */
   const token = getUserToken();
 
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
-    setIsSubmitting(true);
-    ExerciseServices.addExercise(
+    //update
+    console.log("answers", answers);
+    ExerciseServices.updateExercise(
       {
         title: newData.title,
         question: newData.question,
         answers: answers,
       },
       token,
-      savedSID
+      data._id
     )
-      .then((res) => {
-        toast.success(`Exercício criado com sucesso`);
-        handleExerciseCreation(res.data);
-        reset();
-        setIsSubmitting(false);
-        setAnswers(TempAnswers);
-      }) /** Successfully created exercise */
 
+      .then(() => {
+        toast.success("Exercício atualizada com sucesso");
+        handleEdit(newData.title);
+      })
       .catch((err) => {
         toast.error("Fracassado: " + err);
         setIsSubmitting(false);
@@ -73,7 +71,10 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
 
   return (
     <>
-      <div className="modal" id={`exercise-create-"new"}-modal`}>
+      <div
+        className="modal"
+        id={`exercise-edit-${data ? data._id : "new"}-modal`}
+      >
         <div className="bg-white bg-gradient-to-b rounded w-3/8 h-5/6">
           <div className="p-5 bg-gradient-to-b from-primaryLight overflow-auto h-full">
             <form
@@ -88,7 +89,7 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
                   <input
                     type="text"
                     placeholder="Adicione um título a este exercício" /*Add a title to this exercise*/
-                    defaultValue={""}
+                    defaultValue={data ? data.title : ""}
                     className="input input-bordered w-full max-w-xs"
                     {...register("title", { required: true })}
                   />
@@ -98,7 +99,7 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
                   </label>
                   <textarea
                     className="textarea textarea-bordered h-24"
-                    defaultValue={""}
+                    defaultValue={data ? data.question : ""}
                     placeholder="Adicione uma pergunta a este exercício" /*Add a question to this exercise*/
                     {...register("question", { required: true })}
                   ></textarea>
@@ -119,7 +120,7 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
                     {
                       <AnswerCards
                         update={setAnswers}
-                        initialAnswers={answers}
+                        initialAnswers={data ? data.answers : answers}
                       />
                     }
                   </div>
@@ -129,9 +130,9 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
               }
               {/*Create and cancel buttons*/}
               <ModalButtonCompont
-                type="create"
+                type="edit"
                 isSubmitting={isSubmitting}
-                typeButtons={`exercise-create-${savedSID}`}
+                typeButtons={`exercise-edit-${data._id}`}
               />
             </form>
           </div>
