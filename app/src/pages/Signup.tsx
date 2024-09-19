@@ -21,6 +21,7 @@ import { LoginResponseError } from "../interfaces/LoginResponseError";
 
 // services
 import AuthServices from '../services/auth.services';
+import { NonProtectedRoute } from "../services/auth.guard";
 
 // Form input interface
 interface ApplicationInputs {
@@ -72,6 +73,7 @@ const Signup = () => {
       lastName: data.lastName,
       email: data.email,
       password: data.password,
+      token: null,
     })
       .then((res) => {
         setIsModalVisible(true);
