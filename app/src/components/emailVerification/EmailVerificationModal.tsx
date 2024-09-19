@@ -71,7 +71,7 @@ const EmailVerificationModal = (props: propTypes) : JSX.Element => {
               codeError={codeError}
               setCodeEntered={setCodeEntered}
             /> : null}
-          <NavigationFooter codeVerified={codeVerified} />
+          <NavigationFooter codeVerified={codeVerified} token={code} />
         </div>
     </div>
   )

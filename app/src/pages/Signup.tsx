@@ -12,6 +12,7 @@ import NavigationFooter from  "../components/emailVerification/NavigationFooter"
 
 
 export const ToggleModalContext = createContext<() => void>(() => {});
+export const FormDataContext = createContext<any>(null);
 
 // Static assets
 import background from "../assets/background.jpg";
@@ -30,6 +31,7 @@ interface ApplicationInputs {
   email: string;
   password: string;
   confirmPassword: string;
+  token: null;
 }
 
 // Yup schema for fields
@@ -45,12 +47,14 @@ const Signup = () => {
   const [error, setError] = useState<LoginResponseError.RootObject | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [formData, setFormData] = useState<ApplicationInputs | null>(null);
+
 
   // Navigation hook
   const navigate = useNavigate();
 
   // Use-form setup
-  const { register, handleSubmit } = useForm<ApplicationInputs>({
+  const { register, handleSubmit, formState: { errors } } = useForm<ApplicationInputs>({
     resolver: yupResolver(SignupSchema),
   });
 
@@ -67,6 +71,7 @@ const Signup = () => {
    * @param {JSON} data Includes firstName, lastName, email, password fields.
    */
   const onSubmit = async (data: any) => {
+    setFormData(data); // Store the form data in state
     // Show the email verification modal
     await AuthServices.postUserSignup({
       firstName: data.firstName,
@@ -77,18 +82,6 @@ const Signup = () => {
     })
       .then((res) => {
         setIsModalVisible(true);
-        if (res.data.contentCreatorProfile.approved === true) {
-          navigate("/login");
-          setTimeout(() => {
-            toast.success(
-              `Aprovado como parte de ${res.data.institution.institutionName}`,
-              { hideProgressBar: true }
-            );
-          }, 1);
-        } else {
-          const id = res.data.contentCreatorProfile.baseUser;
-          navigate(`/application/${id}`);
-        }
       })
       .catch((err) => {
         setError(err);
@@ -165,6 +158,7 @@ const Signup = () => {
   }
 
   return (
+    <FormDataContext.Provider value={formData}>
     <ToggleModalContext.Provider value={() => setIsModalVisible(!isModalVisible)}>
     <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%">
       {/* Navbar */}
@@ -320,9 +314,10 @@ const Signup = () => {
         setErrorMessage={(message: string, error?: string) => setErrorMessage(message)} />
         )}
       </div>
-      <NavigationFooter codeVerified={false} />
+      {formData && <NavigationFooter codeVerified={false} token={""} />}
     </main>
     </ToggleModalContext.Provider>
+    </FormDataContext.Provider>
   );
 };
 
