@@ -194,9 +194,9 @@ const Signup = () => {
   }
 
   return (
-    <FormDataContext.Provider value={formData}>
-      <ToggleModalContext.Provider
-        value={() => setIsModalVisible(!isModalVisible)}>
+    <ToggleModalContext.Provider
+      value={() => setIsModalVisible(!isModalVisible)}>
+      <FormDataContext.Provider value={formData}>
         <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%">
           {/* Navbar */}
           <nav
@@ -463,8 +463,8 @@ const Signup = () => {
           </div>
           {formData && <NavigationFooter codeVerified={false} token={""} />}
         </main>
-      </ToggleModalContext.Provider>
-    </FormDataContext.Provider>
+      </FormDataContext.Provider>
+    </ToggleModalContext.Provider>
   );
 };
 
