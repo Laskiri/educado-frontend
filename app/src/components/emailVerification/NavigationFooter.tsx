@@ -1,9 +1,58 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ToggleModalContext } from "../../pages/Signup";
+import AuthServices from '../../services/auth.services';
+import { useNavigate, Link } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import { LoginResponseError } from "../../interfaces/LoginResponseError";
 
 type propsType = {
   codeVerified: boolean;
 }
+
+const onSubmit = async (data: any) => {
+  console.log(data.lastName);
+  const navigate = useNavigate();
+  const [error, setError] = useState<LoginResponseError.RootObject | null>(null);
+
+  // Show the email verification modal
+  await AuthServices.postUserVerification({
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email,
+    password: data.password,
+    token: data.token
+  })
+    .then((res) => {
+      if (res.data.contentCreatorProfile.approved === true) {
+        navigate("/login");
+        setTimeout(() => {
+          toast.success(
+            `Aprovado como parte de ${res.data.institution.institutionName}`,
+            { hideProgressBar: true }
+          );
+        }, 1);
+      } else {
+        const id = res.data.contentCreatorProfile.baseUser;
+        navigate(`/application/${id}`);
+      }
+    })
+    .catch((err) => {
+      setError(err);
+      if (!err.response?.data) {
+        console.log(err);
+      } else {
+        switch (err.response.data.error.code) {
+          case "E0201": // Email already exists
+            break;
+          case "E0105": // Password mismatch
+            break;
+          default:
+            console.log(error);
+        }
+      }
+    });
+
+};
 
 export default function NavigationFooter(props: propsType): JSX.Element {
   const toggleModal = useContext(ToggleModalContext);
@@ -15,7 +64,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
           Cancelar {/* Cancel */}
         </label>
         <label>
-          <button id="continue" onClick={() => {/* handle continue logic here */}} className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded">
+          <button id="continue" onClick={() => {onSubmit}} className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded">
             {!props.codeVerified ? 'Continuar' : 'Redefinir senha'} {/* Continue or reset password */}
           </button>
         </label>
