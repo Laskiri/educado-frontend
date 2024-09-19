@@ -4,7 +4,7 @@ import AuthServices from '../../services/auth.services';
 import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { LoginResponseError } from "../../interfaces/LoginResponseError";
-import { ToggleModalContext } from "../../pages/Login";
+import { ToggleModalContext } from "../../pages/Signup";
 type propsType = {
   codeVerified: boolean;
   token: string; // Add the token (code) prop
