@@ -29,8 +29,8 @@ type Inputs = {
 };
 
 interface Props {
-  savedSID: string;
-  handleLectureCreation: Function;
+  data: any;
+  handleEdit: Function;
 }
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
@@ -38,7 +38,7 @@ interface Props {
  *
  * @returns HTML Element
  */
-export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
+export const EditLecture = ({ data, handleEdit }: Props) => {
   const [lectureContent, setLectureContent] = useState(null);
   //TODO: When tokens are done, Remove dummy token and uncomment useToken
   const token = getUserToken();
@@ -50,7 +50,6 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<Inputs>();
 
   const [contentType, setContentType] = useState<string>("");
@@ -67,7 +66,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
    */
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
     setIsSubmitting(true);
-    LectureService.addLecture(
+    LectureService.updateLecture(
       {
         title: newData.title,
         description: newData.description,
@@ -75,23 +74,21 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
         content: newData.content,
       },
       token,
-      savedSID
+      data._id
     )
       .then((res) => {
-        if (typeof lectureContent != "string") {
+        if (typeof lectureContent != ("string" || "null")) {
           StorageServices.uploadFile({
-            id: res.data._id,
+            id: res._id,
             file: lectureContent,
             parentType: "l",
           });
         }
-        LectureService.updateLecture(res.data, token, res.data._id);
-        console.log("lecture created:", res);
-        handleLectureCreation(res.data);
+        handleEdit(newData.title);
+        toast.success("Aula atualizada com sucesso");
         setIsSubmitting(false);
-        toast.success("Aula criado com sucesso");
-        reset();
       })
+
       .catch((err) => {
         toast.error("Fracassado: " + err);
         setIsSubmitting(false);
@@ -105,7 +102,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   return (
     <>
       {/*Text shown in the top of create lecture*/}
-      <div className="modal" id={`lecture-create-${savedSID}-modal`}>
+      <div
+        className="modal"
+        id={`lecture-edit-${data ? data._id : "new"}-modal`}
+      >
         <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
           <h3 className="font-bold text-lg">Crie sua nova aula</h3>{" "}
           {/*Create your new lecture!*/}
@@ -123,7 +123,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               <input
                 type="text"
                 placeholder={"Insira o título da aula"}
-                defaultValue={""}
+                defaultValue={data ? data.title : ""}
                 className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("title", { required: true })}
               />
@@ -137,7 +137,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               <textarea
                 rows={4}
                 placeholder={"Insira o conteúdo escrito dessa aula"}
-                defaultValue={""}
+                defaultValue={data ? data.description : ""}
                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("description", { required: true })}
               />
@@ -156,7 +156,12 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                     className="mr-2"
                     id="radio1"
                     value="video"
-                    checked={contentType === "video" ? true : false}
+                    checked={
+                      (data?.contentType === "video" && contentType === "") ||
+                      contentType === "video"
+                        ? true
+                        : false
+                    }
                     {...register("contentType", { required: true })}
                     onChange={(e) => {
                       toggler(e.target.value);
@@ -173,7 +178,12 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                     className="mr-2"
                     id="radio2"
                     value="text"
-                    checked={contentType === "text"}
+                    checked={
+                      (data?.contentType === "text" && contentType === "") ||
+                      contentType === "text"
+                        ? true
+                        : false
+                    }
                     {...register("contentType", { required: true })}
                     onChange={(e) => {
                       toggler(e.target.value);
@@ -189,7 +199,8 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             </div>
             {/*One day this will be file*/}
             <div className="flex flex-col space-y-2 text-left">
-              {contentType === "video" ? (
+              {(data?.contentType === "video" && contentType === "") ||
+              contentType === "video" ? (
                 <>
                   <label htmlFor="cover-image">
                     Arquivo de entrada: vídeo ou imagem
@@ -200,13 +211,14 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                     callBack={returnFunction}
                   ></Dropzone>
                 </>
-              ) : contentType === "text" ? (
+              ) : (data?.contentType === "text" && contentType === "") ||
+                contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
                   <textarea
                     rows={4}
                     placeholder={"Insira o conteúdo escrito dessa aula"}
-                    defaultValue={""}
+                    defaultValue={data ? data.content : ""}
                     className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                     {...register("content", { required: true })}
                   />
@@ -218,9 +230,9 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             </div>
             {/*Create and cancel buttons*/}
             <ModalButtonCompont
+              type="edit"
               isSubmitting={isSubmitting}
-              typeButtons={`lecture-create-${savedSID}`}
-              type={"create"}
+              typeButtons={`lecture-edit-${data._id}`}
             />
           </form>
         </div>
