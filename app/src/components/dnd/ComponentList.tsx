@@ -26,7 +26,7 @@ import { Item } from "./@dnd/Item";
 
 // Intefaces
 import ComponentService from "../../services/component.service";
-import { Component } from "../../interfaces/sectionInfo";
+import { Component } from "../../interfaces/SectionInfo";
 
 interface Props {
   sid: string;
