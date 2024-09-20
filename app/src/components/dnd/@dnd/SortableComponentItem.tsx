@@ -18,10 +18,10 @@ import ExerciseServices from "../../../services/exercise.services";
 
 //pop-ups
 
-import { EditLecture } from "../../EditLecturePopup";
+import { EditLecture } from "../../EditLecturePopUp";
 import { EditExercise } from "../../Exercise/EditExercisePopUp";
 
-import { Component } from "../../../interfaces/sectionInfo";
+import { Component } from "../../../interfaces/SectionInfo";
 import { set } from "cypress/types/lodash";
 
 interface Props {
