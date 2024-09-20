@@ -1,8 +1,6 @@
 // Icon from: https://materialdesignicons.com/
 
-import useSWR from 'swr'
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { SectionForm } from './dnd/SectionForm';
 import { SectionList } from './dnd/SectionList';
@@ -26,10 +24,10 @@ interface Inputs {
 
 // Create section
 export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
-
-
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
+  const [sections, setSections] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   function addOnSubmitSubscriber(callback: Function) {
@@ -56,7 +54,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
   }
 
 
-  function onSubmit() {
+  async function onSubmit() {
+    await CourseServices.updateCourseSectionOrder(sections, id, token);
     notifyOnSubmitSubscriber();
 
     toast.success("Seções salvas com sucesso!");
@@ -87,21 +86,30 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
        */
     const getData = async (url: string/*, token: string*/) => {
       const res:any = await CourseServices.getCourseDetail(url, token)
-
       return res;
     }
 
-
     // Fetch Course Details
-    if(id != "0"){
-      var { data } = useSWR(
-        token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
-        getData
-      )
-    }
+    useEffect(() => {
+      if (id !== "0") {
+        getData(`${BACKEND_URL}/api/courses/${id}`)
+          .then(data => {
+            setSections(data.sections); // Array of section ID's 
+            setLoading(false);
+          })
+          .catch(err => {
+            console.error(err);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
+    }, [id, token]);
     
-    if(!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
+    if(loading && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
   
+    
+    
     return (
       <div>
         <div className="">
@@ -116,8 +124,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
           <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
             {/** Course Sections area  */}
             <div className='flex w-full flex-col space-y-2 '>
-                <SectionList sections={data ? data.sections : []} addOnSubmitSubscriber={addOnSubmitSubscriber} />
-                <SectionForm callOnSubmit={()=>window.location.reload()}/>
+                <SectionList sections={sections} setSections={setSections} addOnSubmitSubscriber={addOnSubmitSubscriber} />
+                <SectionForm setSections={setSections}/>
             </div>
           </div>
 
