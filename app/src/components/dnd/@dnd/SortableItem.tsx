@@ -12,7 +12,7 @@ import { CSS } from "@dnd-kit/utilities";
 import { SectionArrowIcon } from "../../SectionArrowIcon";
 import { ComponentList } from "../ComponentList";
 
-import { Component } from "../../../interfaces/sectionInfo";
+import { Component } from "../../../interfaces/SectionInfo";
 
 // icons
 import {
