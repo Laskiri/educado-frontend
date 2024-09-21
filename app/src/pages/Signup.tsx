@@ -100,10 +100,12 @@ const Signup = () => {
         if (
           res.status === 200 ||
           res.data.message ===
-            "Verification email sent. Please verify to complete registration."
-        ) {
+            "Verification email sent. Please verify to complete registration.") {
           // If the signup is successful, show the modal
           setIsModalVisible(true);
+        } else if ( res.status === 201){
+          const id = res.data.contentCreatorProfile.baseUser;
+          navigate(`/application/${id}`);
         }
       })
       .catch((err) => {
