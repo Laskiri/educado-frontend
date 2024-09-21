@@ -116,6 +116,8 @@ export function SortableItem({
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
     if (data === undefined) return;
     if (title === undefined && description === undefined) return;
+    data.title = title ? title : sectionData.title;
+    data.description = description ? description : sectionData.description;
 
     const changes: SectionPartial = {
       title: data.title,
