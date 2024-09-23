@@ -58,8 +58,6 @@ export const SectionCreation = ({ id: propId, token, setTickChange}: Inputs ) =>
 
 
   async function onSubmit() {
-    console.log("courseID", id)
-    console.log("sections", sections)
     await CourseServices.updateCourseSectionOrder(sections, id, token);
     notifyOnSubmitSubscriber();
 
