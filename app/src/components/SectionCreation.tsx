@@ -1,6 +1,7 @@
 // Icon from: https://materialdesignicons.com/
 
 import { useState, useEffect } from 'react';
+import { useParams } from "react-router"
 
 import { SectionForm } from './dnd/SectionForm';
 import { SectionList } from './dnd/SectionList';
@@ -23,7 +24,9 @@ interface Inputs {
 
 
 // Create section
-export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
+export const SectionCreation = ({ id: propId, token, setTickChange}: Inputs ) => {
+  const { id: urlId } = useParams<{ id: string }>();
+  const id = propId === "0" ? urlId : propId;
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
   const [sections, setSections] = useState<any[]>([]);
