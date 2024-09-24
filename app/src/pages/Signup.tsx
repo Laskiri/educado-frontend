@@ -456,14 +456,13 @@ const Signup = () => {
             </div>
             {isModalVisible && (
               <EmailVerificationModal
-                toggleModal={() => setIsModalVisible(false)}
+                toggleModal={() => setIsModalVisible(!isModalVisible)}
                 setErrorMessage={(message: string, error?: string) =>
                   setErrorMessage(message)
                 }
               />
             )}
           </div>
-          {formData && <NavigationFooter codeVerified={false} token={""} />}
         </main>
       </FormDataContext.Provider>
     </ToggleModalContext.Provider>

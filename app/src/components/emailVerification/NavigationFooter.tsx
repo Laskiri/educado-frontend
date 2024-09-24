@@ -35,7 +35,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
   };
     
 
-  const onSubmit = async () => {
+  const onSubmit1 = async () => {
     if (!formData) {
       console.error("Form data is not available");
       return;
@@ -99,7 +99,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
         <label>
           <button
             id="continue"
-            onClick={onSubmit} // Call onSubmit when clicked
+            onClick={onSubmit1} // Call onSubmit when clicked
             className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded"
           >
             {!props.codeVerified ? 'Continuar' : 'Redefinir senha'} {/* Continue or reset password */}
