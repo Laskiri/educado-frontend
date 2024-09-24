@@ -62,7 +62,7 @@ const EmailVerificationModal = (props: propTypes) : JSX.Element => {
 
   return (
     <div id="password-reset-modal" className='absolute grid place-items-center bg-darkBG inset-0'>
-        <div className="bg-gradient-to-b p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%]">
+        <div className="bg-[#F1F9FB] p-10 rounded-xl w-11/12 xl:max-w-[35%] lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%]">
           <h3 className="font-bold text-xl mb-4">Verificar e-mail</h3> {/** Reset password */}
 
           {!codeVerified ?
