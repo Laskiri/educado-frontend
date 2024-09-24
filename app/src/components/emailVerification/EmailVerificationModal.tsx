@@ -61,20 +61,23 @@ const EmailVerificationModal = (props: propTypes) : JSX.Element => {
   }, [email, code]);
 
   return (
-    <div id="password-reset-modal" className='absolute grid place-items-center bg-darkBG inset-0'>
-        <div className="bg-[#F1F9FB] p-10 rounded-xl w-11/12 xl:max-w-[35%] lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%]">
-          <h3 className="font-bold text-xl mb-4">Verificar e-mail</h3> {/** Reset password */}
+    <div id="password-reset-modal" className='absolute inset-0 grid place-items-center'>
+      
+      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+      
+      <div className="relative bg-[#F1F9FB] p-10 rounded-xl w-11/12 xl:max-w-[35%] lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%] z-20">
+        <h3 className="font-bold text-xl mb-4">Verificar e-mail</h3> {/** Reset password */}
 
-          {!codeVerified ?
-            <CodeVerification
-              setCode={setCode}
-              codeError={codeError}
-              setCodeEntered={setCodeEntered}
-            /> : null}
-          <NavigationFooter codeVerified={codeVerified} token={code} />
-        </div>
+        {!codeVerified ?
+          <CodeVerification
+            setCode={setCode}
+            codeError={codeError}
+            setCodeEntered={setCodeEntered}
+          /> : null}
+        <NavigationFooter codeVerified={codeVerified} token={code} />
+      </div>
     </div>
-  )
+  );
 }
 
 export default EmailVerificationModal;
