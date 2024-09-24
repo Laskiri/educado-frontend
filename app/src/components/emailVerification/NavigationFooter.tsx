@@ -87,7 +87,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
           <button
             id="continue"
             onClick={resendEmail} // Call onSubmit when clicked
-            className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded"
+            className="text-primary hover:text-gray-600 transition ease-in duration-200 text-base font-semibold cursor-pointer underline"
           >
           Resend Email
           </button>
