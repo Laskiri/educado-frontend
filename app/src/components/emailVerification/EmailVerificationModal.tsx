@@ -20,6 +20,10 @@ export const HandleContinueContext = createContext<() => void>(() => { });
  */
 const EmailVerificationModal = (props: propTypes) : JSX.Element => {
 
+  const onSubmit = async () => {
+    console.log('onSubmit')
+  }
+
   // States that control the flow of the modal
   const [emailSent, setEmailSent] = useState(false);
   const [codeEntered, setCodeEntered] = useState(false);

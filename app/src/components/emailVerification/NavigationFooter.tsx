@@ -17,6 +17,23 @@ export default function NavigationFooter(props: propsType): JSX.Element {
   const navigate = useNavigate();
   const [error, setError] = useState<LoginResponseError.RootObject | null>(null);
 
+  const resendEmail = async () => {
+    if (!formData) {
+      console.error("Form data is not available");
+      return;
+    }
+    console.log('Submitting formData from NavigationFooter:', formData);
+
+    // Show the email verification modal
+    await AuthServices.postUserSignup({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+      token: token
+    })
+  };
+    
 
   const onSubmit = async () => {
     if (!formData) {
@@ -66,6 +83,15 @@ export default function NavigationFooter(props: propsType): JSX.Element {
 
   return (
     <div className=''>
+      <label>
+          <button
+            id="continue"
+            onClick={resendEmail} // Call onSubmit when clicked
+            className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded"
+          >
+          Resend Email
+          </button>
+        </label>
       <div className="flex items-center justify-between gap-4 w-full mt-8">
         <label id="cancel-button" onClick={toggleModal} className="underline hover:cursor-pointer">
           Cancelar {/* Cancel */}
