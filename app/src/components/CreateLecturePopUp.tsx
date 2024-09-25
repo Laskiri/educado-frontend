@@ -14,6 +14,7 @@ import LectureService from "../services/lecture.services";
 
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
+import RichTextEditor from "./RichTextEditor";
 
 // Icons
 import { Icon } from "@mdi/react";
@@ -203,6 +204,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               ) : contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
+                  <RichTextEditor/>
                   <textarea
                     rows={4}
                     placeholder={"Insira o conteúdo escrito dessa aula"}

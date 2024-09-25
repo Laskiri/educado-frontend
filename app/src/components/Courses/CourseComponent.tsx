@@ -235,6 +235,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
             <div className='text-right' >
             <label htmlFor="">{charCount}/400</label>
             </div>
+
           </div> 
           
           <div>
