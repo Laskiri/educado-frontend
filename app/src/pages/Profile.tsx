@@ -25,6 +25,9 @@ import ProfessionalExperienceForm from "../components/ProfileForms/ProfessionalE
 import dynamicForms from "../utilities/dynamicForms";
 import staticForm from "../utilities/staticForm";
 
+// Import account deletion pop-up
+import PopUpDelete from "../components/profile/PopUpDelete";
+
 //import helpers
 import { tempObjects } from "../helpers/formStates";
 import { Link } from "react-router-dom";
@@ -93,6 +96,10 @@ const Profile = () => {
   });
 
   const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  // Account deletion popup state
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+
   //Form submit, sends data to backend, upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
     //if fields are filled & errors do not occour submit form
@@ -357,10 +364,15 @@ const Profile = () => {
             {/* Page buttons */}
             <div className="w-[1000px] h-[52px] justify-between items-center inline-flex gap-4 mt-16">
 
-              {/* Link to account deletion request page */}
-              <Link to={"/account_deletion_request"} className="text-center text-red-500 text-base font-bold font-['Montserrat'] underline">
+              {/* Account deletion link */}
+              {/* TODO: make "Confirmar" button within confirmation pop-up functional */}
+              <button
+                  type="button"
+                  onClick={() => setIsPopupOpen(true)}
+                  className="text-center text-red-500 text-base font-bold font-['Montserrat'] underline"
+              >
                 Deletar conta
-              </Link>
+              </button>
 
               <div className="flex-grow text-right ml-auto">
 
@@ -371,10 +383,10 @@ const Profile = () => {
               </div>
               <div className="px-10 py-4 bg-cyan-800 rounded-lg justify-center items-start gap-2.5 flex">
                 <button
-                  disabled={isDisabled}
-                  onClick={SubmitValidation}
-                  type="submit"
-                  className="text-center text-white text-base font-bold font-['Montserrat'] text-right"
+                    disabled={isDisabled}
+                    onClick={SubmitValidation}
+                    type="submit"
+                    className="text-center text-white text-base font-bold font-['Montserrat'] text-right"
                 >
                   Salvar edições
                 </button>
@@ -382,6 +394,14 @@ const Profile = () => {
             </div>
           </div>
         </form>
+
+        {/* Conditionally render the account deletion pop-up if isPopupOpen is true */}
+        {isPopupOpen && (
+          <PopUpDelete
+            popupOpen={isPopupOpen}
+            onTogglePopup={() => setIsPopupOpen(false)}
+          />
+        )}
       </main>
     </Layout>
   );
