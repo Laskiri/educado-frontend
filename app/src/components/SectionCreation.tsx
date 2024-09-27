@@ -1,8 +1,7 @@
 // Icon from: https://materialdesignicons.com/
 
-import useSWR from 'swr'
-
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useParams } from "react-router"
 
 import { SectionForm } from './dnd/SectionForm';
 import { SectionList } from './dnd/SectionList';
@@ -25,11 +24,13 @@ interface Inputs {
 
 
 // Create section
-export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
-
-
+export const SectionCreation = ({ id: propId, token, setTickChange}: Inputs ) => {
+  const { id: urlId } = useParams<{ id: string }>();
+  const id = propId === "0" ? urlId : propId;
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
+  const [sections, setSections] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   function addOnSubmitSubscriber(callback: Function) {
@@ -56,7 +57,8 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
   }
 
 
-  function onSubmit() {
+  async function onSubmit() {
+    await CourseServices.updateCourseSectionOrder(sections, id, token);
     notifyOnSubmitSubscriber();
 
     toast.success("Seções salvas com sucesso!");
@@ -87,21 +89,30 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
        */
     const getData = async (url: string/*, token: string*/) => {
       const res:any = await CourseServices.getCourseDetail(url, token)
-
       return res;
     }
 
-
     // Fetch Course Details
-    if(id != "0"){
-      var { data } = useSWR(
-        token ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
-        getData
-      )
-    }
+    useEffect(() => {
+      if (id !== "0") {
+        getData(`${BACKEND_URL}/api/courses/${id}`)
+          .then(data => {
+            setSections(data.sections); // Array of section ID's 
+            setLoading(false);
+          })
+          .catch(err => {
+            console.error(err);
+            setLoading(false);
+          });
+      } else {
+        setLoading(false);
+      }
+    }, [id, token]);
     
-    if(!data && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
+    if(loading && id != "0") return <Layout meta='course overview'><Loading /></Layout> // Loading course details
   
+    
+    
     return (
       <div>
         <div className="">
@@ -116,25 +127,25 @@ export const SectionCreation = ({ id, token, setTickChange}: Inputs ) => {
           <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
             {/** Course Sections area  */}
             <div className='flex w-full flex-col space-y-2 '>
-                <SectionList sections={data ? data.sections : []} addOnSubmitSubscriber={addOnSubmitSubscriber} />
-                <SectionForm callOnSubmit={()=>window.location.reload()}/>
+                <SectionList sections={sections} setSections={setSections} addOnSubmitSubscriber={addOnSubmitSubscriber} />
+                <SectionForm setSections={setSections}/>
             </div>
           </div>
 
           {/*Create and cancel buttons*/}
           <div className='className="flex w-full float-right space-y-4 "'>
             <div className="flex items-center justify-between gap-4 w-full mt-8">
-              <label onClick={()=>changeTick(0)}   className=" w-full cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label onClick={()=>changeTick(0)}   className=" w-full cursor-pointer underline py-2 px-4 bg-transparent hover:bg-warning-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                   Voltar para Informações {/** GO BACK TO COURSE CREATION PAGE 1/3 IN THE CHECKLIST */}
               </label>
 
-              <label  className="pl-56  underline py-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-base font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
+              <label  className="pl-56  underline py-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded">
                 <label onClick={()=>{setIsLeaving(true); onSubmit()}} className='hover:cursor-pointer underline' >
                 Salvar como Rascunho {/** Save as draft */}
                 </label>
               </label>
 
-              <label  className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+              <label  className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
                 <label onClick={onSubmit} className='py-2 px-4 h-full w-full cursor-pointer' >
                     Revisar Curso {/** Go to the Revisar curso page which is not yet implemented therefore it is just a save  */}
                 </label>
