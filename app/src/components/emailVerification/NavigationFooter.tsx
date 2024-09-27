@@ -84,28 +84,33 @@ export default function NavigationFooter(props: propsType): JSX.Element {
   return (
     <div className=''>
       <label>
-          <button
-            id="continue"
-            onClick={resendEmail} // Call onSubmit when clicked
-            className="flex items-center justify-between gap-4 w-full mt-8 underline hover:cursor-pointer"
-          >
-          Resend Email
-          </button>
-        </label>
-      <div className="flex items-center justify-between gap-4 w-full mt-8">
-        <label id="cancel-button" onClick={toggleModal} className="underline hover:cursor-pointer">
-          Cancelar {/* Cancel */}
-        </label>
-        <label>
-          <button
-            id="continue"
-            onClick={onSubmit1} // Call onSubmit when clicked
-            className="py-2 px-7 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded"
-          >
-            {!props.codeVerified ? 'Continuar' : 'Redefinir senha'} {/* Continue or reset password */}
-          </button>
-        </label>
-      </div>
+        <button
+          id="continue"
+          onClick={onSubmit1} // Call onSubmit when clicked
+          className="py-2 px-7 mt-8 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2  rounded"
+        >
+          {!props.codeVerified ? 'Continuar' : 'Redefinir senha'} {/* Continue or reset password */}
+        </button>
+      </label>
+  
+      <label className="flex justify-center w-full mt-4">
+  <div className="flex items-center gap-2">
+    <p>O código não chegou?</p>
+    <button
+      id="resend-email"
+      onClick={resendEmail} // Call onSubmit when clicked
+      className="underline hover:cursor-pointer"
+    >
+      Reenviar código
+    </button>
+  </div>
+</label>
+
     </div>
   );
 }
+
+
+/*<label id="cancel-button" onClick={toggleModal} className="underline hover:cursor-pointer">
+          Cancelar
+        </label> */

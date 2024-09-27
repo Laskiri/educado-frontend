@@ -60,6 +60,7 @@ const Signup = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<ApplicationInputs | null>(null);
+  const [email, setEmail] = useState(""); // Replace with actual email logic
 
   // Navigation hook
   const navigate = useNavigate();
@@ -86,7 +87,9 @@ const Signup = () => {
    * @param {JSON} data Includes firstName, lastName, email, password fields.
    */
   const onSubmit = async (data: any) => {
+
     setFormData(data); // Store the form data in state
+    setEmail(data.email);
     console.log(FormData);
     // Show the email verification modal
     await AuthServices.postUserSignup({
@@ -96,6 +99,7 @@ const Signup = () => {
       password: data.password,
       token: null,
     })
+    
       .then((res) => {
         if (
           res.status === 200 ||
@@ -457,9 +461,8 @@ const Signup = () => {
             {isModalVisible && (
               <EmailVerificationModal
                 toggleModal={() => setIsModalVisible(!isModalVisible)}
-                setErrorMessage={(message: string, error?: string) =>
-                  setErrorMessage(message)
-                }
+                setErrorMessage={(message: string, error?: string) => setErrorMessage(message)}
+                uemail={email}
               />
             )}
           </div>
