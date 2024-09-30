@@ -17,6 +17,9 @@ import PersonalInsights from '../components/Courses/PersonalInsights';
 import noCoursesImage from '../assets/no-courses.png';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
+// Notifications
+import { useNotifications } from '../components/notification/NotificationContext';
+
 /**
  * @returns HTML Element
  * 
@@ -31,8 +34,13 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
-  const CourseManager = () => {
+  // Notification handlers
+  const { addNotification } = useNotifications();
+
+  const CourseManager = () => { 
     navigate("/courses/manager/0/0");
+    const message = "Criando um novo curso";
+    addNotification(message);
   }
 
   const { data, error } = useSWR(
