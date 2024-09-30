@@ -49,6 +49,7 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   // use-form setup
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
@@ -102,19 +103,23 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
 
   const [editorValue, setEditorValue] = useState<string>('');
 
-  // Load saved data when component mounts
-  useEffect(() => {
-    const savedContent = localStorage.getItem('editorContent');
-    if (savedContent) {
-      setEditorValue(savedContent);
-    }
-  }, []);
+// Initialize the editorValue with data.content if available (for editing)
+useEffect(() => {
+  if (data?.content) {
+    setEditorValue(data.content);
+    setValue('content', data.content);  // Initialize form value as well
+  }
+}, [data, setValue]);
 
-  // Save the data when it changes
-  const handleEditorChange = (value: string) => {
-    setEditorValue(value);
-    localStorage.setItem('editorContent', value); // Save content to localStorage
-  };
+const handleEditorChange = (value: string) => {
+  setEditorValue(value); // Update local state
+  setValue('content', value); // Manually set form value
+  data.content = value;
+};
+
+useEffect(() => {
+  register('content', { required: true }); // Manually register the field with validation
+}, [register]);
 
   return (
     <>
@@ -232,14 +237,11 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
                 contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
-                  <RichTextEditor value={editorValue} onChange={handleEditorChange}/>
-                  <textarea
-                    rows={4}
-                    placeholder={"Insira o conteúdo escrito dessa aula"}
-                    defaultValue={data ? data.content : ""}
-                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    {...register("content", { required: true })}
+                  <RichTextEditor 
+                    value={editorValue}  // Use the local editorValue for the content
+                    onChange={handleEditorChange} 
                   />
+
                 </>
               ) : (
                 <p></p>

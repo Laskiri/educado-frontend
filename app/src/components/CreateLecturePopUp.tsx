@@ -49,6 +49,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   // use-form setup
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
     reset,
@@ -105,19 +106,16 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
 
   const [editorValue, setEditorValue] = useState<string>('');
 
-  // Load saved data when component mounts
-  useEffect(() => {
-    const savedContent = localStorage.getItem(`editorContent_${savedSID}`);
-    if (savedContent) {
-      setEditorValue(savedContent);
-    }
-  }, []); 
-
-  // Save the data when it changes
   const handleEditorChange = (value: string) => {
-    setEditorValue(value);
-    localStorage.setItem(`editorContent_${savedSID}`, value); // Save content to localStorage
+    setEditorValue(value); // Update local state
+    setValue("content", value); // Manually set form value
   };
+  
+
+  // Ensure that React Hook Form is aware of the content field (for initial empty value or validation)
+  useEffect(() => {
+    register("content", { required: true }); // Manually register the field with validation
+  }, [register]);
 
   return (
     <>
@@ -220,7 +218,8 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               ) : contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
-                  <RichTextEditor value={editorValue} onChange={handleEditorChange}/>
+                  <RichTextEditor value={editorValue} onChange={handleEditorChange}
+                  />
                 </>
               ) : (
                 <p></p>
