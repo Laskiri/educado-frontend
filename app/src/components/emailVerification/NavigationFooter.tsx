@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ToastContainer, toast } from 'react-toastify';
 import { LoginResponseError } from "../../interfaces/LoginResponseError";
 import { ToggleModalContext } from "../../pages/Signup";
+import { setUserInfo } from '../../helpers/userInfo';
 type propsType = {
   codeVerified: boolean;
   token: string; // Add the token (code) prop
@@ -33,7 +34,16 @@ export default function NavigationFooter(props: propsType): JSX.Element {
       token: token
     })
   };
-    
+
+  /**
+  * OnSubmit function for Login.
+  * Takes the submitted data from the form and sends it to the backend through a service.
+  * Upon receiving a success response, the token recieved from the backend will be set in the local storage.
+  *
+  * @param {JSON} data Which includes the following fields:
+  * @param {String} data.email Email of the Content Creator
+  * @param {String} data.password Password of the Content Creator (Will be encrypted)
+  */  
 
   const onSubmit1 = async () => {
     if (!formData) {
@@ -50,19 +60,25 @@ export default function NavigationFooter(props: propsType): JSX.Element {
       password: formData.password,
       token: token
     })
-      .then((res) => {
-        if (res.data.contentCreatorProfile.approved === true) {
-          navigate("/login");
-          setTimeout(() => {
-            toast.success(
-              `Aprovado como parte de ${res.data.institution.institutionName}`,
-              { hideProgressBar: true }
-            );
-          }, 1);
-        } else {
-          const id = res.data.contentCreatorProfile.baseUser;
-          navigate(`/application/${id}`);
-        }
+      .then(() => {
+        AuthServices.postUserLogin({
+          isContentCreator: true,
+          email: formData.email,
+          password: formData.password,})
+          .then((res) => {
+              if(res.status == 200){
+              const id = res.data.baseUser;
+              navigate(`/application/${id}`);         
+              }
+              if(res.status == 202){
+                localStorage.setItem("token", res.data.accessToken);
+                localStorage.setItem("id", res.data.userInfo.id);
+                setUserInfo(res.data.userInfo);
+                navigate("/courses");
+              }
+             
+          // error messages for email and password  
+          })
       })
       .catch((err) => {
         setError(err);
