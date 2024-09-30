@@ -107,16 +107,16 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
 
   // Load saved data when component mounts
   useEffect(() => {
-    const savedContent = localStorage.getItem('editorContent');
+    const savedContent = localStorage.getItem(`editorContent_${savedSID}`);
     if (savedContent) {
       setEditorValue(savedContent);
     }
-  }, []);
+  }, []); 
 
   // Save the data when it changes
   const handleEditorChange = (value: string) => {
     setEditorValue(value);
-    localStorage.setItem('editorContent', value); // Save content to localStorage
+    localStorage.setItem(`editorContent_${savedSID}`, value); // Save content to localStorage
   };
 
   return (
