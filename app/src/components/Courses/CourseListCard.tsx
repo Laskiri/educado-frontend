@@ -35,7 +35,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
         if(course.coverImg == "") {
           throw new Error("coverImg is empty");
         }
-        const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}?title=${course.title}`);
+        const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}`);
         
         const dataUrl = `data:image/png;base64, ${response.data}`;
         setImageSrc(dataUrl);
