@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Dropzone } from "./Dropzone/Dropzone"; // Used image or video upload NOT IMPLEMENTED YET
 import { toast } from "react-toastify";
+import RichTextEditor from "./RichTextEditor";
 
 // Contexts
 // import useAuthStore from '../../contexts/useAuthStore';
@@ -98,6 +99,22 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   function returnFunction(lectureContent: any) {
     setLectureContent(lectureContent);
   }
+
+  const [editorValue, setEditorValue] = useState<string>('');
+
+  // Load saved data when component mounts
+  useEffect(() => {
+    const savedContent = localStorage.getItem('editorContent');
+    if (savedContent) {
+      setEditorValue(savedContent);
+    }
+  }, []);
+
+  // Save the data when it changes
+  const handleEditorChange = (value: string) => {
+    setEditorValue(value);
+    localStorage.setItem('editorContent', value); // Save content to localStorage
+  };
 
   return (
     <>
@@ -215,6 +232,7 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
                 contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
+                  <RichTextEditor value={editorValue} onChange={handleEditorChange}/>
                   <textarea
                     rows={4}
                     placeholder={"Insira o conteúdo escrito dessa aula"}

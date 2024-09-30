@@ -1,14 +1,17 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css'; // Import the styles
+import 'react-quill/dist/quill.snow.css';
 
-const RichTextEditor: React.FC = () => {
-  const [value, setValue] = useState<string>('');
+interface RichTextEditorProps {
+  value: string;
+  onChange: (value: string) => void;
+}
 
+const RichTextEditor: React.FC<RichTextEditorProps> = ({ value, onChange }) => {
   const modules = {
     toolbar: [
-      [{ 'header': '1' }, { 'header': '2' }, { 'font': [] }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ header: '1' }, { header: '2' }, { font: [] }],
+      [{ list: 'ordered' }, { list: 'bullet' }],
       ['bold', 'italic', 'underline'],
       ['image'], // Add the image button here
       ['link'],
@@ -39,7 +42,7 @@ const RichTextEditor: React.FC = () => {
       <ReactQuill
         theme="snow"
         value={value}
-        onChange={setValue}
+        onChange={onChange} // Call parent's onChange function
         modules={modules}
       />
     </div>
