@@ -26,13 +26,18 @@ type FileProps = {
  * @returns {void}
 */
 async function uploadFile({id, file, parentType: parentType}: FileProps) {
+
+
     if (!file || !id) {
         return;
     }
-    axios.postForm(`${BACKEND_URL}/api/bucket/upload`, {
-        fileName: id + "_"+ parentType,
+
+    axios.postForm(`${BACKEND_URL}/api/bucket`, {
+        fileName: id + "_"+ parentType +".png", //TODO: SKAL IKKE HARdcodes
         file: file
-    })
+    });
+
+
 }
 
 const getFile = async (url: string, token: string) => {

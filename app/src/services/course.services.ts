@@ -23,7 +23,8 @@ const createCourse = async (data: Course, token: string) => {
       category: data.category,
       difficulty: data.difficulty,
       creator: data.creator,
-      status: data.status
+      status: data.status,
+      coverImg: data.coverImg
     },
     { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
   );

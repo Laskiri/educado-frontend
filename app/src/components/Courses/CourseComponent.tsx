@@ -102,6 +102,8 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
   
       StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
 
+      
+
       const changes: Course = {
         title: data.title,
         description: data.description,
@@ -110,8 +112,9 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
         status: newStatus,
         creator: getUserInfo().id,
         estimatedHours: data.estimatedHours,
-        coverImg: id+"_"+"c"
+        coverImg: id+"_"+"c.png"  
       }
+
 
       // StorageService.deleteFile(id, token);
 
@@ -144,7 +147,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
             window.location.href = "/courses";
             
           } else{
-              setId(res.data._id)
+              setId(res.data._id);
               setTickChange(1);
               navigate(`/courses/manager/${res.data._id}/1`);
               
