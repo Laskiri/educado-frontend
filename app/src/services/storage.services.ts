@@ -33,7 +33,7 @@ async function uploadFile({id, file, parentType: parentType}: FileProps) {
     }
 
     axios.postForm(`${BACKEND_URL}/api/bucket`, {
-        fileName: id + "_"+ parentType +".png", //TODO: SKAL IKKE HARdcodes
+        fileName: id + "_"+ parentType, //TODO: SKAL IKKE HARdcodes
         file: file
     });
 

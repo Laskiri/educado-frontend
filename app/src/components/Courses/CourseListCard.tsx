@@ -17,8 +17,6 @@ import imageNotFoundImage from '../../assets/image-not-found.png';
 import axios from "axios";
 import { BACKEND_URL } from "../../helpers/environment";
 import { useEffect, useState } from "react";
-import { getUserToken } from "../../helpers/userInfo";
-import  StorageServices from "../../services/storage.services"
 /**
  * Displays a course in a card format
  * 
@@ -30,35 +28,21 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   
   const maxTitleLength = 20;
-  //console.log(course.title + ": " + course.coverImg);
-
-  const token = getUserToken();
-
-  const file = StorageServices.getFile(`${BACKEND_URL}/api/bucket/${course.coverImg}?title=${course.title}`, token);
-  console.log(file);
-
+  
   useEffect(() => {
     const fetchImage = async () => {
       try {
         if(course.coverImg == "") {
           throw new Error("coverImg is empty");
         }
-        const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}?title=${course.title}`, {
-          responseType: 'arraybuffer'
-        });
-
-        const base64Data = btoa(
-          new Uint8Array(response.data).reduce((data, byte) => data + String.fromCharCode(byte), '')
-        );
+        const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}?title=${course.title}`);
         
-        const dataUrl = `data:image/png;base64, ${base64Data}`;
+        const dataUrl = `data:image/png;base64, ${response.data}`;
         setImageSrc(dataUrl);
-        if(course.title == "halo")
-          console.log(dataUrl);
+        
       } catch (error) {
-        //console.error("Error fetching cover image:", error);
+        console.error("Error fetching cover image:", error);
         setImageSrc(imageNotFoundImage); // Assuming imageNotFoundImage is defined elsewhere
-        //console.log(imageNotFoundImage);
       } finally {
         setIsLoading(false);
       }

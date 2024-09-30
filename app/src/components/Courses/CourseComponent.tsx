@@ -112,7 +112,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
         status: newStatus,
         creator: getUserInfo().id,
         estimatedHours: data.estimatedHours,
-        coverImg: id+"_"+"c.png"  
+        coverImg: id+"_"+"c"  
       }
 
 
