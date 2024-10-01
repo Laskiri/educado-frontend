@@ -18,7 +18,6 @@ import AuthServices from '../services/auth.services';
 import { setUserInfo } from '../helpers/userInfo';
 import PasswordRecoveryModal from '../components/passwordRecovery/PasswordRecoveryModal';
 
-//Hej
 // Contexts
 export const ToggleModalContext = createContext(() => { });
 
