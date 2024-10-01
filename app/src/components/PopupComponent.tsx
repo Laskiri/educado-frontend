@@ -7,7 +7,7 @@ interface PopupComponentProps {
     confirmBtnText?: string;
     onClose: () => void;
     isVisible?: boolean;
-    onConfirm: () => void;
+    onConfirm: () => Promise<void>;
     customStyles?: {
         overlay?: React.CSSProperties,
         title?: React.CSSProperties,
@@ -20,7 +20,7 @@ interface PopupComponentProps {
 
 /**
  * Renders a popup dialog with a title, content text and action buttons.
- * Used to display important messages or confirmation prompts to the user.
+ * Used to display important confirmation prompts to the user.
  *
  * @returns HTML Element
  */

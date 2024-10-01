@@ -12,8 +12,8 @@
     bottom: 0;
     width: 100%;
     height: 100%;
-    background: rgba(56, 56, 56, 0.6);
-    z-index: 1000;      /* Ensure popup is in the foreground */
+    background: rgba(56, 56, 56, 0.6);  /* Darkens the background */
+    z-index: 1000;                      /* Ensure popup is in the foreground */
 
     /* Flexbox to center the modal content */
     display: flex;
@@ -49,6 +49,7 @@
     font-size: 24px;
 }
 
+/* Window close button (x) */
 .close-button {
     background: none;
     border: none;
@@ -59,7 +60,7 @@
 }
 
 .popup-body {
-    font-size: 1rem;
+    font-size: 18px;
     width: 100%;
     color: #333333;
 }
@@ -75,10 +76,13 @@
     background: none;
     border: none;
     color: #166276;
-    font-size: 1rem;
+    font-size: 18px;
     font-weight: bold;
+    /*font-style: normal;
+    line-height: 22px;*/
     cursor: pointer;
     text-decoration: underline;
+    text-underline-offset: 8px
 }
 
 .confirm-button {
@@ -87,7 +91,7 @@
     padding: 12px 24px;
     border-radius: 8px;
     color: #ffffff;
-    font-size: 1rem;
+    font-size: 18px;
     font-weight: bold;
     cursor: pointer;
     text-align: center;
@@ -97,7 +101,8 @@
 }
 
 /* TODO: Effects when hovering is maybe unnecessary? */
-/*.confirm-button:hover {
+/*
+.confirm-button:hover {
     background-color: #0A3A5D; !* hover:bg-cyan-900 equivalent *!
     color: #ffffff; !* Ensure text color stays white when hovered *!
 }*/

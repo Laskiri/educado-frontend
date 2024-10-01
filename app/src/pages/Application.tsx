@@ -35,23 +35,29 @@ const Application = () => {
   /**
     * OnSubmit function for Application.
     * Takes the submitted data from the form and sends it to the backend through a service.
-    * Navigates to the Login page upon recieving a succesfull response
+    * Navigates to the Login page upon receiving a successful response
     *
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
+
+    // TODO: Remove this console.log before pushing to dev!
+    console.log("Data: ", data);
+
     AuthService.postNewApplication({
       motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
       major: data.major, institution: data.institution, educationStartDate: data.educationStartDate,
-      educationEndDate: data.educationEndDate, company: data.company, position: data.position, 
+      educationEndDate: data.educationEndDate, company: data.company, position: data.position,
       workStartDate: data.workStartDate, workEndDate: data.workEndDate, workActivities: data.workActivities,
 
       baseUser: id
     }).then((res) =>{
       if(res.status == 201){
-        navigate("/login")
+        navigate("/login");
       }
-    })
+    }).catch((error) => {
+      console.error("Error submitting application:", error);
+    });
   };
 
   return (
@@ -92,24 +98,24 @@ const Application = () => {
 
           <div className="w-[65%] flex justify-end">
             {/* Send for analysis */}
-            {/* TODO: fix text not fitting in button */}
-            <button onClick={openPopup}
-                    className="w-[238px] h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-start gap-2.5 inline-flex text-center text-white text-lg font-bold font-['Montserrat']">
+            <button type="button" onClick={openPopup}
+                    className="h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-center gap-2.5 flex text-center text-white text-lg font-bold font-['Montserrat']">
               Enviar para análise
             </button>
 
-            {/* Confirmation Popup */}
-            <PopupComponent
-                title="Enviar para análise"
-                contentText={"Você tem certeza que deseja enviar o formulário de aplicação? Essa ação não pode ser desfeita."}
-                confirmBtnText={"Confirmar"}
-                onConfirm={handleSubmit(onSubmit)}
-                onClose={closePopup}
-                isVisible={isPopupVisible}
-            />
           </div>
         </form>
       </body>
+
+      {/* Confirmation Popup */}
+      <PopupComponent
+          title="Enviar para análise"
+          contentText={"Você tem certeza que deseja enviar o formulário de aplicação? Essa ação não pode ser desfeita."}
+          confirmBtnText={"Confirmar"}
+          onConfirm={handleSubmit(onSubmit)}
+          onClose={closePopup}
+          isVisible={isPopupVisible}
+      />
     </main>
   )
 }
