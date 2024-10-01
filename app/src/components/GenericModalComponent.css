@@ -1,0 +1,86 @@
+/* TODO: Find out how to use Tailwind defined properties within this CSS
+    and relocate file to another more appropriate folder */
+
+* {
+    font-family: Montserrat, serif;
+    font-size: 18px;
+}
+
+.modal-overlay {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(56, 56, 56, 0.6);  /* Darkens the background */
+    z-index: 1000;                      /* Ensure modal is in the foreground */
+
+    /* Flexbox to center the modal */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+.modal-body {
+    width: 100%;
+}
+
+.modal-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    font-weight: bold;
+    font-size: 24px;
+}
+
+/* Window close button (X) */
+.close-button {
+    font-size: 38px;
+    font-weight: lighter;
+    cursor: pointer;
+    color: #A1ACB2;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    padding: 30px 40px;
+    gap: 20px;
+    width: 500px;
+    background: #F1F9FB;
+    border-radius: 24px;
+    color: #383838;
+}
+
+.action-buttons {
+    display: flex;
+    width: 100%;
+    margin-top: 20px;
+}
+
+.cancel-button {
+    background: none;
+    border: none;
+    color: #166276;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 8px
+}
+
+.confirm-button {
+    width: 176px;
+    height: 54px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: #ffffff;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* TODO: Ask Iara whether this effect, when hovering on confirm button, could maybe be useful? */
+/*.confirm-button:hover {
+    background-color: #0A3A5D;
+}*/

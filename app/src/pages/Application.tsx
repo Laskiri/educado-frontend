@@ -13,7 +13,7 @@ import WorkExperience from '../components/Application/ProfessionalExperience';
 
 // Confirmation popup component
 import React, { useState } from 'react';
-import PopupComponent from '../components/PopupComponent';
+import GenericModalComponent from '../components/GenericModalComponent';
 
 const Application = () => {
 
@@ -108,9 +108,10 @@ const Application = () => {
       </body>
 
       {/* Confirmation Popup */}
-      <PopupComponent
+      <GenericModalComponent
           title="Enviar para análise"
           contentText={"Você tem certeza que deseja enviar o formulário de aplicação? Essa ação não pode ser desfeita."}
+          cancelBtnText={"Cancelar"}
           confirmBtnText={"Confirmar"}
           onConfirm={handleSubmit(onSubmit)}
           onClose={closePopup}
