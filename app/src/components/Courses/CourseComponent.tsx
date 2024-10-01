@@ -49,7 +49,6 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const {register, handleSubmit, formState: { errors } } = useForm<Course>();
-  console.log(id);
 
   const navigate = useNavigate()
   /**
@@ -122,7 +121,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
         .then(() => {
           toast.success('Curso atualizado');
           setStatusSTR(changes.status);
-          
+
           //Upload image with the actual id 
           StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
 
