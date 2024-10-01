@@ -36,8 +36,22 @@ async function uploadFile({id, file, parentType: parentType}: FileProps) {
         fileName: id + "_"+ parentType,
         file: file
     });
+}
 
+/**
+ * Return a mediafile(i.e. png, jpg, mp4) from a bucket
+ * @param {string} fileName - The name of the files, that is requested 
+ * @returns {Promise<string>} - Returns a promise of a file, in string format 
+*/
 
+const getMedia = async (fileName : string) : Promise<string> => {
+    return await axios.get(`${BACKEND_URL}/api/bucket/${fileName}`)
+    .then(res => {
+        const file = res.data;
+        const mimeType = res.headers['content-type'];
+        const dataUrl = `data:${mimeType};base64,${file}`;
+        return dataUrl;
+    });
 }
 
 const getFile = async (url: string, token: string) => {
@@ -55,6 +69,7 @@ return await axios.delete(`${BACKEND_URL}/api/bucket/${id}`, { headers: { Author
 
 const StorageServices = Object.freeze({
     uploadFile,
+    getMedia,
     getFile,
     deleteFile
 });

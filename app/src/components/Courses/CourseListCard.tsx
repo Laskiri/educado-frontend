@@ -14,9 +14,9 @@ import statuses from "../../helpers/courseStatuses";
 // Images
 import imageNotFoundImage from '../../assets/image-not-found.png';
 
-import axios from "axios";
-import { BACKEND_URL } from "../../helpers/environment";
+
 import { useEffect, useState } from "react";
+import StorageServices from "../../services/storage.services";
 /**
  * Displays a course in a card format
  * 
@@ -29,20 +29,18 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   
   const maxTitleLength = 20;
   
+  //Only load the picture, when the picture is loaded
   useEffect(() => {
     const fetchImage = async () => {
       try {
-        if(course.coverImg == "") {
-          throw new Error("coverImg is empty");
+        if(course.coverImg == "" || course.coverImg == undefined) {
+          throw new Error("coverImg is empty or undefined");
         }
-        const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}`);
+        const fileSrc = await StorageServices.getMedia(course.coverImg);
 
-        
-        const dataUrl = `data:image/png;base64, ${response.data}`;
-        setImageSrc(dataUrl);
+        setImageSrc(fileSrc);
         
       } catch (error) {
-        console.error("Error fetching cover image:", error);
         setImageSrc(imageNotFoundImage);
       } finally {
         setIsLoading(false);

@@ -99,10 +99,6 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
     }
     
     if (!isLeaving || confirm("Você tem certeza?") === true ) {
-  
-      
-
-      
 
       const changes: Course = {
         title: data.title,
@@ -126,7 +122,8 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
         .then(() => {
           toast.success('Curso atualizado');
           setStatusSTR(changes.status);
-          //Upload image with the actual id
+          
+          //Upload image with the actual id 
           StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
 
           if(isLeaving){
