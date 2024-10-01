@@ -36,13 +36,14 @@ export const CourseListCard = ({ course }: { course: Course }) => {
           throw new Error("coverImg is empty");
         }
         const response = await axios.get(`${BACKEND_URL}/api/bucket/${course.coverImg}`);
+
         
         const dataUrl = `data:image/png;base64, ${response.data}`;
         setImageSrc(dataUrl);
         
       } catch (error) {
         console.error("Error fetching cover image:", error);
-        setImageSrc(imageNotFoundImage); // Assuming imageNotFoundImage is defined elsewhere
+        setImageSrc(imageNotFoundImage);
       } finally {
         setIsLoading(false);
       }
