@@ -11,18 +11,23 @@ import Motivation from '../components/Application/Motivation';
 import AcademicExperience from '../components/Application/AcademicExperience';
 import WorkExperience from '../components/Application/ProfessionalExperience';
 
-// Confirmation popup component
-import React, { useState } from 'react';
+// Confirmation modal component
+import { useState } from 'react';
 import GenericModalComponent from '../components/GenericModalComponent';
 
 const Application = () => {
 
-  // State for the confirmation popup visibility
-  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  // State for the confirmation modal visibility
+  const [isModalVisible, setIsModalVisible] = useState(false);
 
-  // Functions to open and close the confirmation popup
-  const openPopup = () => setIsPopupVisible(true);
-  const closePopup = () => setIsPopupVisible(false);
+  // Functions to open and close the confirmation modal
+  const openModal = () => {
+      setIsModalVisible(true);
+  }
+
+  const closeModal = () => {
+      setIsModalVisible(false);
+  }
 
   //Get id from URL
   const { id } = useParams();
@@ -40,10 +45,6 @@ const Application = () => {
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-
-    // TODO: Remove this console.log before pushing to dev!
-    console.log("Data: ", data);
-
     AuthService.postNewApplication({
       motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
       major: data.major, institution: data.institution, educationStartDate: data.educationStartDate,
@@ -53,7 +54,7 @@ const Application = () => {
       baseUser: id
     }).then((res) =>{
       if(res.status == 201){
-        navigate("/login");
+        navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
@@ -98,7 +99,7 @@ const Application = () => {
 
           <div className="w-[65%] flex justify-end">
             {/* Send for analysis */}
-            <button type="button" onClick={openPopup}
+            <button type="button" onClick={openModal}
                     className="h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-center gap-2.5 flex text-center text-white text-lg font-bold font-['Montserrat']">
               Enviar para análise
             </button>
@@ -107,15 +108,15 @@ const Application = () => {
         </form>
       </body>
 
-      {/* Confirmation Popup */}
+      {/* Confirmation modal */}
       <GenericModalComponent
           title="Enviar para análise"
           contentText={"Você tem certeza que deseja enviar o formulário de aplicação? Essa ação não pode ser desfeita."}
           cancelBtnText={"Cancelar"}
           confirmBtnText={"Confirmar"}
           onConfirm={handleSubmit(onSubmit)}
-          onClose={closePopup}
-          isVisible={isPopupVisible}
+          onClose={closeModal}
+          isVisible={isModalVisible}
       />
     </main>
   )
