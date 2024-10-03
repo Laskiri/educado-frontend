@@ -1,5 +1,5 @@
 import React from 'react';
-import './GenericModalComponent.css';
+import './styles/GenericModalComponent.css';
 
 interface GenericModalProps {
     title?: string;
@@ -35,29 +35,28 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
     cancelBtnText = "Cancelar",   // Renameable to e.g. "Fechar" (close) when invoking the component
     onClose,
     isVisible = false,
-    onConfirm,
-    customStyles = {}
+    onConfirm
 }) => {
 
     if (!isVisible)
         return null;
 
     return (
-        <div className="modal-overlay" style={customStyles.overlay}>
-            <div className="modal-content" style={customStyles.content}>
+        <div className="modal-overlay">
+            <div className="modal-content">
 
                 {/* Title */}
-                <div className="modal-title" style={customStyles.title}>
+                <div className="modal-title">
                     <h2>{title}</h2>
 
                     {/* Window close button (X) */}
-                    <button onClick={onClose} className="close-button" style={customStyles.closeButton}>
+                    <button onClick={onClose} className="close-button">
                         &times;
                     </button>
                 </div>
 
                 {/* Content */}
-                <div className="modal-body" style={customStyles.body}>
+                <div className="modal-body">
                     {contentText}
                 </div>
 
@@ -79,7 +78,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
                     {(confirmBtnText !== "") && (
                         <button
                             type="submit"
-                            className="confirm-button bg-primary"
+                            className="confirm-button"
                             onClick={onConfirm}
                         >
                             {confirmBtnText}
