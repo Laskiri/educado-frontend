@@ -39,7 +39,8 @@ const Motivation: React.FC<MotivationProps> = ({
       setIsMotivationFilled(true);
     else
       setIsMotivationFilled(false);
-  // Tells React to skip applying an effect if certain values haven’t changed between re-renders
+
+     // Skip applying the effect if the state of the motivation form hasn't changed
   }, [motivation]);
 
 
