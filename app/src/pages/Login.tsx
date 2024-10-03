@@ -319,9 +319,8 @@ const Login = () => {
       <GenericModalComponent
         title="Aguarde aprovação"
         contentText={"Seu cadastro está em análise e você terá retorno em até x dias."}
-        cancelBtnText={"Fechar"}    // Close
-        // TODO: fix this
-        // onConfirm={() => Promise<void>}
+        cancelBtnText={"Fechar"}      // Close (functions as the 'ok' button in this particular modal)
+        onConfirm={() => {}}    // Empty function passed in due to confirm button not being present in this particular modal
         isVisible={isModalVisible}
         onClose={closeModal}
       />

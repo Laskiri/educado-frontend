@@ -61,7 +61,7 @@
 .cancel-button {
     background: none;
     border: none;
-    color: #166276;
+    color: #166276;     /* TODO: bg-primary */
     font-weight: bold;
     cursor: pointer;
     text-decoration: underline;
@@ -80,7 +80,6 @@
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-/* TODO: Ask Iara whether this effect, when hovering on confirm button, could maybe be useful? */
-/*.confirm-button:hover {
-    background-color: #0A3A5D;
-}*/
+.confirm-button:hover {
+    background-color: #164E63;  /* bg-cyan-900 */
+}

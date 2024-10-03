@@ -1,8 +1,21 @@
-import { useState, ChangeEvent } from 'react';
+import React, { useEffect, useState, ChangeEvent } from 'react';
 import { Icon } from '@mdi/react';
 import { mdiChevronUp, mdiChevronDown } from '@mdi/js';
+import { UseFormRegister } from 'react-hook-form';
+import { NewApplication } from "../../interfaces/Application";
 
-const Motivation = ({ register }: any) => {
+interface MotivationProps {
+  // Type definitions for props
+  register: UseFormRegister<NewApplication>;
+  errors: unknown;
+  setIsMotivationFilled: (filled: boolean) => void;
+}
+
+const Motivation: React.FC<MotivationProps> = ({
+  // Destructuring of props
+  register,
+  setIsMotivationFilled
+}) => {
 
   // Variable for toggling visibility of the field
   const [toggleMotivation, setToggleMotivation] = useState(true);
@@ -10,6 +23,7 @@ const Motivation = ({ register }: any) => {
   //Variable for keeping track of the length of the motivation
   const [motivation, setMotivation] = useState('');
   const maxLength = 800;
+  const minLength = 2;    // TODO: ask Iara about this value
 
   // Function to make sure motivation is not above 800 characters
   const handleMotivationChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
@@ -18,6 +32,16 @@ const Motivation = ({ register }: any) => {
       setMotivation(text);
     }
   };
+
+  // Check if motivation is filled and disable send button if not
+  useEffect(() => {
+    if (motivation.length > minLength)
+      setIsMotivationFilled(true);
+    else
+      setIsMotivationFilled(false);
+  // Tells React to skip applying an effect if certain values haven’t changed between re-renders
+  }, [motivation]);
+
 
 return (
 <div className="w-[65%] justify-center items-center">

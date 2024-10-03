@@ -1,21 +1,22 @@
-//Hooks
+// Hooks
 import { useNavigate, Link, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from 'react';
 
-//Services
+// Services
 import AuthService from "../services/auth.services"
 import { NewApplication } from "../interfaces/Application"
 
-//Components
+// Components
 import Motivation from '../components/Application/Motivation';
 import AcademicExperience from '../components/Application/AcademicExperience';
 import WorkExperience from '../components/Application/ProfessionalExperience';
-
-// Confirmation modal component
-import { useState } from 'react';
 import GenericModalComponent from '../components/GenericModalComponent';
 
 const Application = () => {
+
+  // State for the motivation form field
+  const [isMotivationFilled, setIsMotivationFilled] = useState(false);
 
   // State for the confirmation modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -89,21 +90,26 @@ const Application = () => {
             </p>
           </div>
 
-          <Motivation register={register} errors={errors} />
+          <Motivation register={register} errors={errors} setIsMotivationFilled={setIsMotivationFilled} />
           <AcademicExperience register={register} errors={errors} />
           <WorkExperience register={register} errors={errors} />
 
-
-          {/* Box for Professional Experience */}
-
-
+          {/* Bottom div */}
           <div className="w-[65%] flex justify-end">
+
             {/* Send for analysis */}
             <button type="button" onClick={openModal}
-                    className="h-[52px] px-10 py-4 bg-cyan-800 hover:bg-cyan-900 rounded-lg justify-center items-center gap-2.5 flex text-center text-white text-lg font-bold font-['Montserrat']">
+              className={`h-[52px] px-10 py-4 rounded-lg justify-center items-center gap-2.5 flex text-center text-lg font-bold font-['Montserrat'] ${
+                // Opacity dimmed when button is disabled
+                isMotivationFilled 
+                    ? 'bg-primary hover:bg-cyan-900 text-white' 
+                    : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'}`}
+
+              // Button is disabled if motivation form field is not filled out
+              disabled={!isMotivationFilled}
+            >
               Enviar para análise
             </button>
-
           </div>
         </form>
       </body>

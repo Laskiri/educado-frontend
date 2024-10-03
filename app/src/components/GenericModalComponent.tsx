@@ -8,7 +8,7 @@ interface GenericModalProps {
     confirmBtnText?: string;
     onClose: () => void;
     isVisible?: boolean;
-    onConfirm: () => Promise<void>;
+    onConfirm: () => void;
     customStyles?: {
         overlay?: React.CSSProperties,
         body?: React.CSSProperties,
