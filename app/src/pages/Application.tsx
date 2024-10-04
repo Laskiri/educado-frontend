@@ -79,7 +79,7 @@ return (
       {/* Box for Professional Experience */}
       
 
-      <div className="w-[65%] flex justify-between ">
+      <div className="w-[65%] flex justify-between pt-10">
         <Link className="underline text-neutral-700 text-base font-normal font-['Montserrat']"
           to="/login">
             Voltar para login
