@@ -22,6 +22,8 @@ import Layout from '../Layout'
 
 // Interface
 import { Course } from '../../interfaces/Course'
+import { add } from 'cypress/types/lodash'
+
 
 
 interface CourseComponentProps {
@@ -84,7 +86,6 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
       )));
   }, []);
 
-
   const onSubmit: SubmitHandler<Course> = (data) => {
     
     let newStatus = statusSTR;
@@ -124,6 +125,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
           toast.success('Curso atualizado');
           setStatusSTR(changes.status);
 
+
           if(isLeaving){
             window.location.href = "/courses";
           
@@ -139,6 +141,7 @@ export const CourseComponent = ({token, id, setTickChange, setId}: CourseCompone
         CourseServices.createCourse(changes, token)
         .then(res => {
           toast.success('Curso criado');
+
 
           if(isLeaving){
             window.location.href = "/courses";

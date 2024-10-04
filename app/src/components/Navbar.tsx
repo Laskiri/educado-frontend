@@ -33,7 +33,7 @@ export const Navbar = () => {
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
   const sendTestNotification = () => {
-    const message = "Profile updated successfully!";
+    const message = "Test notification sent!";
     addNotification(message);
   };
 

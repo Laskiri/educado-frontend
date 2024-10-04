@@ -28,11 +28,6 @@ import staticForm from "../utilities/staticForm";
 //import helpers
 import { tempObjects } from "../helpers/formStates";
 
-
-//import notification
-import { useNotifications } from "../components/notification/NotificationContext";
-
-
 //Yup Schema
 const profileSchema = Yup.object().shape({
   UserName: Yup.string(),
@@ -87,9 +82,6 @@ const Profile = () => {
     myRef.current?.click();
   };
 
-  // Notification
-  const { addNotification } = useNotifications();
-
   //useform setup for yup for static form
   const {
     register,
@@ -126,7 +118,6 @@ const Profile = () => {
       try {
         const response = await ProfileServices.putFormOne(formDataToSend);
         if (response.status === 200) {
-          addNotification("Profile updated successfully!");
         }
         //Fields of academic experience will be looped through and updated using the relevant endpoints
         await Promise.all(

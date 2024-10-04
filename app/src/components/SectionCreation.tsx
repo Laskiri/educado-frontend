@@ -16,6 +16,10 @@ import Loading from './general/Loading'
 import Layout from './Layout'
 import { toast } from 'react-toastify';
 
+// Notification
+import { useNotifications } from './notification/NotificationContext';
+
+
 interface Inputs {
     id: string,
     token: string,
@@ -51,6 +55,8 @@ export const SectionCreation = ({ id: propId, token, setTickChange}: Inputs ) =>
   //   );
   // }
 
+  // Notification 
+  const { addNotification } = useNotifications();
 
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
@@ -61,7 +67,10 @@ export const SectionCreation = ({ id: propId, token, setTickChange}: Inputs ) =>
     await CourseServices.updateCourseSectionOrder(sections, id, token);
     notifyOnSubmitSubscriber();
 
-    toast.success("Seções salvas com sucesso!");
+    const message = "Seções salvas com sucesso!";
+    addNotification(message);
+
+    //toast.success("Seções salvas com sucesso!");
 
     if(confirm("Tem certeza que deseja sair? Você perderá todas as alterações feitas.")){
       setIsLeaving(true);
