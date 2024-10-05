@@ -13,12 +13,24 @@ export default function AcademicExperienceForm({
   handleEducationDelete,
 }: {
   index: number;
-  educationformData: any;
-  handleEducationInputChange: Function;
-  educationErrors: any;
-  addNewEducationForm: Function;
-  handleEducationDelete: Function;
+  educationformData: Record<string, any>;
+  handleEducationInputChange: (value: string, index: number) => void;
+  educationErrors: Record<string, any>;
+  addNewEducationForm: (index: number) => void;
+  handleEducationDelete: (index: number, id: string | null) => void;
 }) {
+
+  function displayInvalidDateFormatErrMsg(errorMsg: string) {
+    if(errorMsg !== "") {
+      return (
+          <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
+            {errorMsg}
+          </p>
+      );
+    }
+    return null;
+  }
+
   return (
     <Fragment>
       <div
@@ -136,12 +148,10 @@ export default function AcademicExperienceForm({
                 handleEducationInputChange(value, index);
               }}
             />
-            {/* display date input error */}
-            {educationErrors[index]?.startDate != "" && (
-              <span className="education-startDate p-3 mt-2">
-                {educationErrors[index]?.startDate}
-              </span>
-            )}
+
+            {/* Display invalid date input error message */}
+            {displayInvalidDateFormatErrMsg(educationErrors[index].startDate)}
+
           </div>
           <div className="flex flex-col ">
             <label htmlFor="endDate" className="font-['Montserrat']">
@@ -161,12 +171,10 @@ export default function AcademicExperienceForm({
                 handleEducationInputChange(value, index);
               }}
             />
-            {/* display date input error */}
-            {educationErrors[index].endDate != "" && (
-              <span className="education-endDate p-3 mt-2">
-                {educationErrors[index].endDate}
-              </span>
-            )}
+
+            {/* Display invalid date input error message */}
+            {displayInvalidDateFormatErrMsg(educationErrors[index].endDate)}
+
           </div>
         </div>
         {/* Delete button is displayed on all forms except the first one */}

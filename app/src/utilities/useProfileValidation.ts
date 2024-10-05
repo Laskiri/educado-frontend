@@ -27,86 +27,42 @@ export default ()=>{
         );
       };
 
-      // Handling validation based on form type (education/experience)
-    const handleValidation = (index: any, name: any, value: any, forForm :any) => {
-      // Set education error state and update error messages based on the input field
-        if(forForm == 'education'){
-          if (dateValidation(value)) {
-            if (name === "startDate") {
-              setEducationErrorState(true);
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].startDate = "Invalid Format";
-                return newState;
-              });
-            } else if (name === "endDate") {
-              setEducationErrorState(true);
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].endDate = "Invalid Format";
-                return newState;
-              });
-            }
-          } else {
-            // Reset education error state and clear error messages based on the input field
-            setEducationErrorState(false);
-            if (name === "startDate") {
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].startDate = "";
-                return newState;
-              });
-            } else if (name === "endDate") {
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].endDate = "";
-                return newState;
-              });
-            }
-          }
-        }else{
-          // Set experience error state and update error messages based on the input field
-          if (dateValidation(value)) {
-            if (name === "startDate") {
-              setExperienceErrorState(true);
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].startDate = "Invalid Format";
-                return newState;
-              });
-            } else if (name === "endDate") {
-              setExperienceErrorState(true);
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].endDate = "Invalid Format";
-                return newState;
-              });
-            }
-          } else {
-            // Reset experience error state and clear error messages based on the input field
-            setExperienceErrorState(false);
-            if (name === "startDate") {
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].startDate = "";
-                return newState;
-              });
-            } else if (name === "endDate") {
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].endDate = "";
-                return newState;
-              });
-            }
-          }
-        }
-      };
-       // Returning states and validation function
-    return {
-        handleValidation,
-        experienceErrors, setExperienceErrors,
-        educationErrorState, setEducationErrorState,
-        educationErrors, setEducationErrors,
-        experienceErrorState, setExperienceErrorState
-    }
+  // Handle validation based on form type (education/experience)
+  const handleValidation = (index: number, name: string, value: string, forForm: string) => {
+    const invalidDateFormatErrMsgStr = "Formato inválido! Utilize MM/AA.";
+
+    // Set isEmpty to true if value is empty
+    const isEmpty = value === "";
+
+    // Set isInvalidDate to true if isEmpty is false and dateValidation returns true
+    const isInvalidDate = !isEmpty && dateValidation(value);
+
+    // Determine which state to update based on form type
+    const setErrorState = forForm === 'education' ? setEducationErrorState : setExperienceErrorState;
+    const setErrors = forForm === 'education' ? setEducationErrors : setExperienceErrors;
+
+    // Set error state (only if there is an error and not when cleared)
+    setErrorState(isInvalidDate);
+
+    // Update error messages based on the input field
+    setErrors((prevState) => {
+
+      // Shallow copy of prevState array (good practice to avoid mutation)
+      const newState = [...prevState] as { startDate: string; endDate: string }[];
+
+      // Clear error if date input field is empty or valid
+      newState[index][name as 'startDate' | 'endDate'] = isInvalidDate ? invalidDateFormatErrMsgStr : "";
+
+      return newState;
+    });
+  };
+
+  // Return states and validation function
+  return {
+      handleValidation,
+      experienceErrors, setExperienceErrors,
+      educationErrorState, setEducationErrorState,
+      educationErrors, setEducationErrors,
+      experienceErrorState, setExperienceErrorState
+  }
 }

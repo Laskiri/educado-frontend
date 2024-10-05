@@ -1,7 +1,7 @@
 //Imports
 import { Icon } from "@mdi/react";
 import { Fragment } from "react";
-import { mdiDelete } from "@mdi/js";
+import {mdiAlertCircleOutline, mdiDelete} from "@mdi/js";
 
 //Exporting UI content&structure of
 export default function ProfessionalExperienceForm({
@@ -14,15 +14,25 @@ export default function ProfessionalExperienceForm({
   handleCountExperience,
   handleCheckboxChange,
 }: {
-  index: any;
-  experienceformData: any;
-  handleExperienceInputChange: any;
-  experienceErrors: any;
-  addNewExperienceForm: any;
-  handleExperienceDelete: any;
-  handleCountExperience: any;
-  handleCheckboxChange: any;
+  index: number;
+  experienceformData: { [key: string]: any }[];
+  handleExperienceInputChange: (value: any, index: number) => void;
+  experienceErrors: { [key: string]: any }[];
+  addNewExperienceForm: (index: number) => void;
+  handleExperienceDelete: (index: number, id: string) => void;
+  handleCountExperience: (index: number) => number;
+  handleCheckboxChange: (index: number) => void;
 }) {
+
+  function displayInvalidDateFormatErrMsg(errorMsg: string) {
+    if(errorMsg !== "") {
+      return (
+          <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
+            {errorMsg}
+          </p>);
+    }
+  }
+
   return (
     <Fragment>
       <div key={index}>
@@ -96,12 +106,10 @@ export default function ProfessionalExperienceForm({
                   handleExperienceInputChange(value, index);
                 }}
               />
-              {/* display date input error */}
-              {experienceErrors[index].startDate != "" && (
-                <span className="experience-startDate p-3 mt-2">
-                  {experienceErrors[index].startDate}
-                </span>
-              )}
+
+              {/* Display invalid date input error message */}
+              {displayInvalidDateFormatErrMsg(experienceErrors[index].startDate)}
+
             </div>
             <div className="flex flex-col ">
               <label htmlFor="email" className="font-['Montserrat']">
@@ -120,12 +128,10 @@ export default function ProfessionalExperienceForm({
                   handleExperienceInputChange(value, index);
                 }}
               />
-              {/* display date input error */}
-              {experienceErrors[index].endDate != "" && (
-                <span className="experience-endDate p-3 mt-2">
-                  {experienceErrors[index].endDate}
-                </span>
-              )}
+
+              {/* Display invalid date input error message */}
+              {displayInvalidDateFormatErrMsg(experienceErrors[index].endDate)}
+
             </div>
           </div>
           <div>
