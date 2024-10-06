@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import useSWR from 'swr';
-
+import { useNotifications } from '../components/notification/NotificationContext';
 // Services
 import AuthServices from '../services/auth.services';
 
@@ -26,23 +26,22 @@ function SingleApplicantView() {
     const [isRejecting, setIsRejecting] = useState(false);
     const [isAccepting, setIsAccepting] = useState(false);
 
-    // Get data from the relevant route
-    const { data } = useSWR(id, AuthServices.GetSingleCCApplication);
+    //Get data from the relevant route
+    const { data } = useSWR(
+        id,
+        AuthServices.GetSingleCCApplication
+    );
 
-    // Function to execute upon accepting an application
+    const {addNotification} = useNotifications();
+    
+    //Function to execute upon accepting an application
+    //It will navigate to the applicaitons page, and display a toastify message notifying the user that the content creator was approved
     const handleAccept = async () => {
         setIsAccepting(true); // Set accepting state to true
         AuthServices.AcceptApplication(id!)
-            .then((res) => {
-                navigate("/educado-admin/applications");
-                setTimeout(() => {
-                    toast.success(
-                        `${data?.data.applicator.firstName} ${data?.data.applicator.lastName} aprovado`,
-                        {
-                            hideProgressBar: true,
-                        }
-                    );
-                }, 1);
+            .then((res) => { 
+                navigate("/educado-admin/applications"); 
+                addNotification(data?.data.applicator.firstName+" "+data?.data.applicator.lastName+" aprovado"); //CHANGE TO PORTUGUESE
             })
             .catch(() => {
                 toast.error(`Falha ao Aprovar a Candidatura`);
