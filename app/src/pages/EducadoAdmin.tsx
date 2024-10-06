@@ -11,9 +11,14 @@ const EducadoAdmin = () => {
     const [selectedButton, setSelectedButton] = useState('users');
 
     const location = useLocation();
-    const { data } = useSWR('api/applications', AuthServices.GetCCApplications);
+    const { data, mutate } = useSWR('api/applications', AuthServices.GetCCApplications);
 
     if (!data) return <Loading/>
+
+    // Function to refresh the list after deletion
+    const refreshUsers = () => {
+        mutate();  // This will refetch the data after deleting a user
+    };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
@@ -153,7 +158,7 @@ const EducadoAdmin = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <DeleteUserButton applicationId={application.id}/>
+                                            <DeleteUserButton applicationId={application._id} onDelete={refreshUsers} />
                                         </td>
                                     </tr>
                                 );
