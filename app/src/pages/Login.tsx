@@ -95,7 +95,7 @@ const Login = () => {
             switch (err.response.data.error.code){
               case "E0004": //Invalid Email 
                 setEmailError(err);
-                setEmailErrorMessage("Email inválido. Por favor, verifique se você digitou o endereço de email corretamente.");
+                setEmailErrorMessage("Insira um email válido.");
                 setPasswordError(null);
                 setPasswordErrorMessage('');
                 setError('');
@@ -121,7 +121,7 @@ const Login = () => {
               setEmailError(null);
               setEmailErrorMessage('');
               setPasswordError(err);
-              setPasswordErrorMessage("Senha Incorreta.");
+              setPasswordErrorMessage("Senha Incorreta. Por favor, tente novamente.");
               setError('');
               break;
               
@@ -247,8 +247,7 @@ const Login = () => {
 
             {emailError && (
             <div className="flex items-center font-normal font-['Montserrat']" role="alert">
-              <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
-            <p className='mt-1 ml-1 text-red-500 text-sm'>{emailErrorMessage}</p>
+              <p className='mt-1 ml-4 text-red-500 text-sm'>{emailErrorMessage}</p>
             </div>
           )}
           </div>
@@ -277,8 +276,7 @@ const Login = () => {
 
       {passwordError && (
         <div className="flex items-center font-normal font-['Montserrat']" role="alert">
-          <Icon path={mdiAlertCircleOutline} size={0.6} color="red"/> 
-          <p className='mt-1 ml-1 text-red-500 text-sm'>{passwordErrorMessage}</p>
+          <p className='mt-1 ml-4 text-red-500 text-sm'>{passwordErrorMessage}</p>
         </div>
        )}
       </div>
