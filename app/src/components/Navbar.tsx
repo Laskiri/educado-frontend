@@ -177,9 +177,9 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-      </nav>
-
-      <div className="h-20" />
-    </main>
-  );
+    </nav>
+    {/* gap between navbar and other pages */}
+    <div className="h-20"/>
+</main>
+);
 };
