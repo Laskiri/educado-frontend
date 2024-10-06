@@ -23,7 +23,7 @@ export interface LectureInterface {
 */
 
 const addLecture = async ({title, description, contentType, content}: LectureInterface ,token: string, sid: string) => {
-  return await axios.put(
+  const result = await axios.put(
     `${BACKEND_URL}/api/lectures/${sid}`,
     {
       title: title,
@@ -34,6 +34,10 @@ const addLecture = async ({title, description, contentType, content}: LectureInt
     },
     { headers: { Authorization: `Bearer ${token}` } }
   )
+
+  console.log(result);
+  console.log("result:");
+  return result;
 };
 
 
@@ -49,12 +53,15 @@ const updateLecture = async (props: any, token: string, lid: string ) => {
   if (lid == undefined){
     throw("Error: updateLecture input id is undefined")
   }
+  console.log("id:");
+  console.log(lid);
+
   const response = await axios.patch(
     `${BACKEND_URL}/api/lectures/${lid}`,
     props,
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  return response.data
+  return response.data;
 };
 
 /**

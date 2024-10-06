@@ -66,6 +66,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
    * @param {Inputs} data The data from each field in the form put into an object
    */
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
+    console.log("HALLO:");
     setIsSubmitting(true);
     LectureService.addLecture(
       {
@@ -78,9 +79,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
       savedSID
     )
       .then((res) => {
+
         if (typeof lectureContent != "string") {
           StorageServices.uploadFile({
-            id: res.data._id,
+            id: res.data.compId,
             file: lectureContent,
             parentType: "l",
           });
