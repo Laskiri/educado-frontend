@@ -17,6 +17,7 @@ import PersonalInsights from '../components/Courses/PersonalInsights';
 import noCoursesImage from '../assets/no-courses.png';
 import { PencilSquareIcon } from '@heroicons/react/24/outline';
 
+
 /**
  * @returns HTML Element
  * 
@@ -31,7 +32,7 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
-  const CourseManager = () => {
+  const CourseManager = () => { 
     navigate("/courses/manager/0/0");
   }
 

@@ -12,10 +12,13 @@ import CourseServices from "../services/course.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 
-import Loading from "./general/Loading";
-import Layout from "./Layout";
-import { toast } from "react-toastify";
-import { set } from "cypress/types/lodash";
+import Loading from './general/Loading'
+import Layout from './Layout'
+import { toast } from 'react-toastify';
+
+// Notification
+import { useNotifications } from './notification/NotificationContext';
+
 
 interface Inputs {
   id: string;
@@ -53,6 +56,9 @@ export const SectionCreation = ({
   //     prevSubscribers.filter((cb) => cb !== callback)
   //   );
   // }
+
+  // Notification 
+  const { addNotification } = useNotifications();
 
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
