@@ -32,17 +32,12 @@ export const Navbar = () => {
   // Notification handlers
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
 
-  const sendTestNotification = () => {
-    const message = "Test notification sent!";
-    addNotification(message);
-  };
 
   const handleDeleteNotification = (id: number) => {
     setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
 
   const handleClearAll = () => setNotifications([]);
-
 
   return (
     <main>
@@ -54,7 +49,6 @@ export const Navbar = () => {
             <img src="/educado.svg" alt="educado" className="h-6" />
           </Link>
         </div>
-
         {/* Navbar Links */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
@@ -72,12 +66,9 @@ export const Navbar = () => {
             </li>
           </ul>
         </div>
-
+         
         {/* Notification Bell and User Info */}
         <div className="relative flex items-center gap-6 pr-12 z-50">
-          <button onClick={sendTestNotification} className="btn btn-primary ml-2">
-            Send Test Notification
-          </button>
 
           {/* Notification Bell */}
           <div className="relative flex items-center gap-6">
@@ -140,6 +131,9 @@ export const Navbar = () => {
             </span>
           </div>
 
+          
+
+         
           {/* User Actions Dropdown */}
           <div className="relative">
             <div className="dropdown dropdown-end">
@@ -177,9 +171,10 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-    </nav>
-    {/* gap between navbar and other pages */}
-    <div className="h-20"/>
-</main>
-);
+      </nav>
+
+      <div className="h-20" />
+    </main>
+  );
 };
+
