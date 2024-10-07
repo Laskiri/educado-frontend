@@ -8,6 +8,7 @@ import RichTextEditor from "./RichTextEditor";
 // import useAuthStore from '../../contexts/useAuthStore';
 // Hooks
 import { getUserToken } from "../helpers/userInfo";
+import { useNotifications } from "./notification/NotificationContext";
 
 // Services
 import StorageServices from "../services/storage.services";
@@ -56,6 +57,7 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
 
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const { addNotification } = useNotifications();
 
   const toggler = (value: string) => {
     setContentType(value);
@@ -79,7 +81,7 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
       data._id
     )
       .then((res) => {
-        if (typeof lectureContent != ("string" || "null")) {
+        if (typeof lectureContent !== "string" && lectureContent !== null) {
           StorageServices.uploadFile({
             id: res._id,
             file: lectureContent,
@@ -87,7 +89,7 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
           });
         }
         handleEdit(newData.title);
-        toast.success("Aula atualizada com sucesso");
+        addNotification("Aula atualizada com sucesso");
         setIsSubmitting(false);
       })
 
