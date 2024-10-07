@@ -95,7 +95,7 @@ const Application = () => {
           <WorkExperience register={register} errors={errors} />
 
           {/* Bottom div */}
-          <div className="w-[65%] flex justify-end pt-10">
+          <div className="w-[65%] flex justify-between pt-10">
             <Link className="underline text-neutral-700 text-base font-normal font-['Montserrat']"
             to="/login">
               Voltar para login
