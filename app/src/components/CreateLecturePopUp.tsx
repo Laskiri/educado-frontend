@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Dropzone } from "./Dropzone/Dropzone"; // Used image or video upload NOT IMPLEMENTED YET
 import { toast } from "react-toastify";
@@ -15,6 +15,7 @@ import LectureService from "../services/lecture.services";
 
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
+import RichTextEditor from "./RichTextEditor";
 
 // Icons
 import { Icon } from "@mdi/react";
@@ -49,6 +50,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   // use-form setup
   const {
     register,
+    setValue,
     handleSubmit,
     formState: { errors },
     reset,
@@ -109,6 +111,19 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   function returnFunction(lectureContent: any) {
     setLectureContent(lectureContent);
   }
+
+  const [editorValue, setEditorValue] = useState<string>('');
+
+  const handleEditorChange = (value: string) => {
+    setEditorValue(value); // Update local state
+    setValue("content", value); // Manually set form value
+  };
+  
+
+  // Ensure that React Hook Form is aware of the content field (for initial empty value or validation)
+  useEffect(() => {
+    register("content", { required: true }); // Manually register the field with validation
+  }, [register]);
 
   return (
     <>
@@ -211,12 +226,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               ) : contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
-                  <textarea
-                    rows={4}
-                    placeholder={"Insira o conteúdo escrito dessa aula"}
-                    defaultValue={""}
-                    className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                    {...register("content", { required: true })}
+                  <RichTextEditor value={editorValue} onChange={handleEditorChange}
                   />
                 </>
               ) : (
@@ -232,7 +242,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             />
           </form>
         </div>
-      </div>
+      </div> 
     </>
   );
 };

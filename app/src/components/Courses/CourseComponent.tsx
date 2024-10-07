@@ -355,8 +355,9 @@ export const CourseComponent = ({
             <div className="text-right">
               <label htmlFor="">{charCount}/400</label>
             </div>
-          </div>
 
+          </div> 
+          
           <div>
             {/*Cover image field is made but does not interact with the db*/}
             <div className="flex flex-col space-y-2 text-left">
