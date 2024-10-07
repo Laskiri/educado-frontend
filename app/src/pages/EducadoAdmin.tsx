@@ -143,7 +143,7 @@ const EducadoAdmin = () => {
                                             </p>
                                         </td>
                                         <td>
-                                            <p className="text-gray-900 hover:text-indigo-900" id="date">
+                                            <p className="text-gray-900" id="date">
                                                 {formatDate(application.joinedAt)}
                                             </p>
                                         </td>
