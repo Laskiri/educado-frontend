@@ -1,6 +1,6 @@
 import React from 'react';
-import UserServices from '../services/users.services';
 import { getUserToken } from '../helpers/userInfo';
+import AdminServices from '../services/admin.services';
 
 interface DeleteUserButtonProps {
   applicationId: string;
@@ -17,7 +17,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
         return;
       }
       console.log("Token:", token); // Log the token to verify it
-      await UserServices.deleteUser(applicationId, token);
+      await AdminServices.deleteUser(applicationId, token);
       onDelete();
     } catch (error) {
       console.error("Failed to delete user:", error);

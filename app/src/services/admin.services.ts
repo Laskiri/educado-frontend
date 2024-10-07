@@ -9,8 +9,8 @@ const deleteUser = async (id: string, token: string) => {
     return res.data;
 }
 
-const UserServices = {
+const AdminServices = {
     deleteUser
 }
 
-export default UserServices;
+export default AdminServices;
