@@ -28,7 +28,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
     <td key={applicationId}>
       <div
         id="deleteUser"
-        className="flex items-center justify-center p-4 -ml-2 mr-5 bg-[#166276] rounded-full font-semibold text-base text-white cursor-pointer hover:bg-[#2a4356]"
+        className="flex items-center justify-center p-4 -ml-2 mr-6 bg-[#166276] rounded-full font-semibold text-base text-white cursor-pointer hover:bg-[#145a63]"
         onClick={handleClick}
       >
         <svg

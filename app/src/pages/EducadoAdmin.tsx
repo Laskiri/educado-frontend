@@ -5,6 +5,7 @@ import AuthServices from "../services/auth.services";
 import Loading from "../components/general/Loading";
 import Layout from "../components/Layout";
 import DeleteUserButton from "../components/DeleteUserButton";
+import ViewUserButton from "./ViewUserButton";
 
 const EducadoAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -149,12 +150,7 @@ const EducadoAdmin = () => {
                                         </td>
                                         <td>
                                             <div className="flex items-center p-4">
-                                                <Link to={`${location.pathname}/${application._id}`} id="viewDetails" className="flex items-center justify-center p-4 bg-[#166276] rounded-full font-semibold text-base text-white">
-                                                    <svg className="shrink-0 size-3.5" width="15" height="15" viewBox="0 0 24 24" fill="white" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                                                            <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
-                                                            <path fill-rule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clip-rule="evenodd" />
-                                                    </svg>
-                                                </Link>
+                                                <ViewUserButton applicationId={application._id} />
                                             </div>
                                         </td>
                                         <td>
