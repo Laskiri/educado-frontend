@@ -73,6 +73,7 @@ const Signup = () => {
     * @param {String} data.name Name of the Content Creator
     * @param {String} data.email Email of the Content Creator
     * @param {String} data.password Password of the Content Creator (Will be encrypted)
+    * @param {String} data.role Role of the Content Creator
     */
   const onSubmit = async (data: any) => {
     await AuthServices.postUserSignup({
@@ -80,6 +81,7 @@ const Signup = () => {
       lastName: data.lastName,
       email: data.email,
       password: data.password,
+      role: 'user',
     }).then((res) => {
 
       //If they were automatically approved as part of an instutution, they will be navigated to the Login page
