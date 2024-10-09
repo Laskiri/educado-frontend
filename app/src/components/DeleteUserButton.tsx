@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { getUserToken } from '../helpers/userInfo';
 import AdminServices from '../services/admin.services';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface DeleteUserButtonProps {
   applicationId: string;
-  onDelete: () => void;  // New prop to refresh the user list after deletion
+  onDelete: () => void;
 }
 
 const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDelete }) => {
@@ -20,10 +22,12 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
       }
       console.log("Token:", token); // Log the token to verify it
       await AdminServices.deleteUser(applicationId, token);
+      toast.success("User deleted successfully!");
       onDelete();
       setShowModal(false); // Close the modal after deletion
     } catch (error) {
       console.error("Failed to delete user:", error);
+      toast.error("Failed to delete user.");
     }
   };
 
