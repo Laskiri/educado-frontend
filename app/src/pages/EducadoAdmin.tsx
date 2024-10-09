@@ -6,6 +6,7 @@ import Loading from "../components/general/Loading";
 import Layout from "../components/Layout";
 import DeleteUserButton from "../components/DeleteUserButton";
 import ViewUserButton from "./ViewUserButton";
+import AdminToggleButton from "../components/AdminToggle";
 
 const EducadoAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -115,14 +116,7 @@ const EducadoAdmin = () => {
                                 return (
                                     <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                         <td>
-                                            <p className="text-gray-900 whitespace-no-wrap ml-7" id="admin">
-                                                <div className="toggle-switch ">
-                                                    <label className="inline-flex items-center cursor-pointer">
-                                                        <input type="checkbox" value="" className="hidden peer"/>
-                                                            <div className="relative w-10 h-3.5 bg-gray-200 peer-focus:outline-none peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-300 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[-3.5px] after:start-[2px] after:bg-gray-400 peer-checked:after:bg-cyan-800  after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-toggleChecked"></div>
-                                                    </label>
-                                                </div>
-                                            </p>
+                                            <AdminToggleButton/>
                                         </td>
                                         <td>
                                             <div className="flex items-center">

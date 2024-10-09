@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
+import AdminServices from '../services/admin.services';
 
 interface UserDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
   userDetails: any; // Replace with the appropriate type
+  token: string;
+  applicationId: string;
 }
 
-const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
@@ -30,6 +33,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   };
 
   const handleApprove = () => {
+    AdminServices.changeUserRole(applicationId, token, 'creator');
     console.log('Approved');
   };
 
