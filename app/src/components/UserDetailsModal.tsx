@@ -137,7 +137,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               )}
               <button
                 onClick={toggleDropdown3}
-                className={`mt-4 ${isDropdownOpen2 ? 'bg-[#166276] text-white' : 'bg-white text-gray-900'} py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center ${
+                className={`mt-4 ${isDropdownOpen3 ? 'bg-[#166276] text-white' : 'bg-white text-gray-900'} py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center ${
                   isDropdownOpen3 ? 'rounded-b-none' : ''
                 }`}
               >
