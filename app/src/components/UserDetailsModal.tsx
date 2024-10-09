@@ -1,10 +1,7 @@
 import React, { useState } from 'react';
-<<<<<<< HEAD
 import AdminServices from '../services/admin.services';
-=======
 import RejectModal from './RejectModal';
 import ApproveModal from './ApproveModal';
->>>>>>> bf0665bfc58fe044e1f1f18c54898459c0702d88
 
 interface UserDetailsModalProps {
   isOpen: boolean;
@@ -44,16 +41,13 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   };
 
   const handleApprove = () => {
-<<<<<<< HEAD
     AdminServices.changeUserRole(applicationId, token, 'creator');
     console.log('Approved');
-=======
     setIsApproveModalOpen(true);
   };
 
   const closeApproveModal = () => {
     setIsApproveModalOpen(false);
->>>>>>> bf0665bfc58fe044e1f1f18c54898459c0702d88
   };
 
   return (
