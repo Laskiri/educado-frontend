@@ -96,7 +96,7 @@ const Signup = () => {
 
     setFormData(data); // Store the form data in state
     setEmail(data.email);
-    console.log(FormData);
+
     // Show the email verification modal
     await AuthServices.postUserSignup({
       firstName: data.firstName,
