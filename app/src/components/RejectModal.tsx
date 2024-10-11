@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
+import AuthServices from '../services/auth.services';
 
 interface RejectModalProps {
   isOpen: boolean;
   onClose: () => void;
   userDetails: any;
+  applicationId: string;
 }
 
-const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails }) => {
+const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails, applicationId }) => {
   if (!isOpen) return null;
+
+  const handleReject = async () => {
+    try {
+      console.log("Rejecting application for user ID:", applicationId);
+      await AuthServices.RejectApplication(applicationId);
+      onClose(); // Close the modal after rejection
+    } catch (error) {
+      console.error("Failed to reject application:", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -74,7 +86,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails 
             Voltar
           </button>
           <div className="flex space-x-4">
-            <button className="bg-[#FE4949] hover:bg-[#E44040] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32">
+            <button className="bg-[#FE4949] hover:bg-[#E44040] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32" onClick={handleReject}>
               Recusar
             </button>
           </div>

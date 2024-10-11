@@ -1,13 +1,25 @@
 import React, { useState } from 'react';
+import AuthServices from '../services/auth.services';
 
 interface ApproveModalProps {
   isOpen: boolean;
   onClose: () => void;
   userDetails: any;
+  applicationId: string;
 }
 
-const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, userDetails }) => {
+const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, userDetails, applicationId }) => {
   if (!isOpen) return null;
+
+  const handleAccept = async () => {
+    try {
+      console.log("Approving application for user ID:", applicationId);
+      await AuthServices.AcceptApplication(applicationId);
+      onClose(); // Close the modal after rejection
+    } catch (error) {
+      console.error("Failed to reject application:", error);
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -69,7 +81,7 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, userDetail
             Voltar
           </button>
           <div className="flex space-x-4">
-            <button className="bg-[#166276] hover:bg-[#145A68] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32">
+            <button className="bg-[#166276] hover:bg-[#145A68] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32" onClick={handleAccept}>
               Aprovar
             </button>
           </div>
