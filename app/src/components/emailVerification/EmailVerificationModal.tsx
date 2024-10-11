@@ -73,8 +73,8 @@ const EmailVerificationModal = (props: propTypes) : JSX.Element => {
       <div className="absolute inset-0 bg-[#383838] opacity-60 z-10" onClick={toggleModal}></div>
       
       <div className="relative bg-[#F1F9FB] p-10 rounded-xl max-h-[100%] z-20" style={{ width: '500px' }}>
-        <h3 className="font-bold text-xl mb-4">Redefinir senha</h3> 
-        <h1 className="mb-4">Enviamos um código para o <b>{uemail}</b> de redefinição de senha, por favor, insira o mesmo abaixo</h1>
+        <h3 className="font-bold text-xl mb-4">Confirmar email</h3> 
+        <h1 className="mb-4">Enviamos um código para o <b>{uemail}</b>, por favor, insira o mesmo abaixo</h1>
         
         {!codeVerified ?
           <CodeVerification
