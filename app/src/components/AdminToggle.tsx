@@ -4,10 +4,11 @@ import { getUserToken } from '../helpers/userInfo';
 
 interface AdminToggleButtonProps {
     applicationId: string;
+    applicationApproved: boolean;
   }
 
 
-const AdminToggleButton: React.FC<AdminToggleButtonProps> = ({ applicationId }) => {
+const AdminToggleButton: React.FC<AdminToggleButtonProps> = ({ applicationId, applicationApproved }) => {
     const [isAdmin, setIsAdmin] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
 
@@ -25,6 +26,7 @@ const AdminToggleButton: React.FC<AdminToggleButtonProps> = ({ applicationId }) 
         const userDetails = await AdminServices.getUserDetails(applicationId, token);
         const role = userDetails.role;
         setIsAdmin(role === 'admin'); 
+        applicationApproved = true;
       } catch (error) {
         console.error('Failed to fetch user role:', error);
       } finally {
@@ -52,6 +54,10 @@ const AdminToggleButton: React.FC<AdminToggleButtonProps> = ({ applicationId }) 
 
   if (loading) {
     return <div>Loading...</div>; // Show loading indicator while fetching the role
+  }
+
+  if (!applicationApproved) {
+    return null;
   }
     
     return(

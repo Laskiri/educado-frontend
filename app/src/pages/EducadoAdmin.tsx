@@ -37,6 +37,12 @@ const EducadoAdmin = () => {
         return formattedDate;
     };
 
+    const getStatusColor = (application: any) => {
+        if (application.approved) return "green";
+        if (application.rejected) return "red";
+        return "black"; // Default color for "Aguardando análise"
+    };
+
     return (
         <Layout meta="Educado Admin">
             <div className="w-full flex flex-row space-x-2 px-12 py-10">
@@ -113,10 +119,11 @@ const EducadoAdmin = () => {
                                 if (application.lastName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
                                 if (application.email.toLowerCase().includes(searchTerm.toLowerCase())) return application;
                             }).map((application: any, key: number) => {
+                                console.log(application.approved);
                                 return (
                                     <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                         <td>
-                                            <AdminToggleButton applicationId={application._id}/>
+                                            <AdminToggleButton applicationId={application._id} applicationApproved={application.approved}/>
                                         </td>
                                         <td>
                                             <div className="flex items-center">
@@ -133,8 +140,8 @@ const EducadoAdmin = () => {
                                             </p>
                                         </td>
                                         <td>
-                                            <p className="text-gray-900 whitespace-no-wrap" id="status">
-                                                Aguardando análise
+                                            <p className="text-gray-900 whitespace-no-wrap" id="status" style={{ color: getStatusColor(application) }}>
+                                                {application.approved ? "Aprovado" : application.rejected ? "Recusado" : "Aguardando análise"}
                                             </p>
                                         </td>
                                         <td>
@@ -144,11 +151,19 @@ const EducadoAdmin = () => {
                                         </td>
                                         <td>
                                             <div className="flex items-center p-4">
-                                                <ViewUserButton applicationId={application._id} />
+                                                {application.approved || application.rejected ? (
+                                                <>
+                                                    <ViewUserButton applicationId={application._id} />
+                                                    <div className="mx-2.5"></div>
+                                                    <DeleteUserButton applicationId={application._id} onDelete={refreshUsers} />
+                                                    <div className="-ml-2"></div>                                                 
+                                                </>
+                                                ) : (
+                                                <div className="ml-auto mr-4">
+                                                    <ViewUserButton applicationId={application._id} />
+                                                </div>
+                                                )}
                                             </div>
-                                        </td>
-                                        <td>
-                                            <DeleteUserButton applicationId={application._id} onDelete={refreshUsers} />
                                         </td>
                                     </tr>
                                 );

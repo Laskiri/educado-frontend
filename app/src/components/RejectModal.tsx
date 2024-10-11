@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import AuthServices from '../services/auth.services';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 interface RejectModalProps {
   isOpen: boolean;
@@ -16,6 +18,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
       console.log("Rejecting application for user ID:", applicationId);
       await AuthServices.RejectApplication(applicationId);
       onClose(); // Close the modal after rejection
+      toast.success("Application rejected!");
     } catch (error) {
       console.error("Failed to reject application:", error);
     }
