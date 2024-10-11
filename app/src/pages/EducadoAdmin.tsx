@@ -116,7 +116,7 @@ const EducadoAdmin = () => {
                                 return (
                                     <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                         <td>
-                                            <AdminToggleButton/>
+                                            <AdminToggleButton applicationId={application._id}/>
                                         </td>
                                         <td>
                                             <div className="flex items-center">
