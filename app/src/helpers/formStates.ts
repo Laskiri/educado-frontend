@@ -18,7 +18,7 @@ export const useFormData = () => {
 
 // dynamic form states - academic
 export const useEducationFormData = () => {
-  const [educationformData, setEducationFormData] = useState<EducationFormData[]>([
+  const [educationFormData, setEducationFormData] = useState<EducationFormData[]>([
     {
       status: "",
       institution: "",
@@ -30,12 +30,12 @@ export const useEducationFormData = () => {
     },
   ]);
 
-  return { educationformData, setEducationFormData };
+  return { educationFormData: educationFormData, setEducationFormData };
 };
 
 // dynamic form states - professional
 export const useExperienceFormData = () => {
-  const [experienceformData, setExperienceFormData] = useState<ExperienceFormData[]>([
+  const [experienceFormData, setExperienceFormData] = useState<ExperienceFormData[]>([
     {
       company: "",
       jobTitle: "",
@@ -47,7 +47,7 @@ export const useExperienceFormData = () => {
     },
   ]);
 
-  return { experienceformData, setExperienceFormData };
+  return { experienceFormData: experienceFormData, setExperienceFormData };
 };
 
 

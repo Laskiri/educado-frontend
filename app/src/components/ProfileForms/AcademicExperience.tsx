@@ -1,20 +1,20 @@
 //Imports
 import { Icon } from "@mdi/react";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import { mdiDelete } from "@mdi/js";
 
 //Exporting UI content&structure of
 export default function AcademicExperienceForm({
   index,
-  educationformData,
+  educationFormData,
   handleEducationInputChange,
   educationErrors,
   addNewEducationForm,
   handleEducationDelete,
 }: {
   index: number;
-  educationformData: Record<string, any>;
-  handleEducationInputChange: (value: string, index: number) => void;
+  educationFormData: Record<string, any>;
+  handleEducationInputChange: (event: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   educationErrors: Record<string, any>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
@@ -36,9 +36,9 @@ export default function AcademicExperienceForm({
       <div
         /* Styling based on conditions */
         className={`border border-[#166276] p-4 text-left bg-white shadow-xl ${
-          (educationformData?.length === 1 && index === 0) ||
-          (educationformData?.length > 1 &&
-            index === educationformData?.length - 1)
+          (educationFormData?.length === 1 && index === 0) ||
+          (educationFormData?.length > 1 &&
+            index === educationFormData?.length - 1)
             ? "rounded-b-lg"
             : ""
         }`}
@@ -59,7 +59,7 @@ export default function AcademicExperienceForm({
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
               name="educationLevel"
-              value={educationformData[index]?.educationLevel || ""}
+              value={educationFormData[index]?.educationLevel || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -80,7 +80,7 @@ export default function AcademicExperienceForm({
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
               name="status"
-              value={educationformData[index]?.status || ""}
+              value={educationFormData[index]?.status || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -104,7 +104,7 @@ export default function AcademicExperienceForm({
               placeholder="Curso"
               type="text"
               name="course"
-              value={educationformData[index]?.course || ""}
+              value={educationFormData[index]?.course || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -112,7 +112,7 @@ export default function AcademicExperienceForm({
           </div>
           <div className="flex flex-col ">
             <label htmlFor="email" className="font-['Montserrat']">
-              instituição
+              Instituição
               <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
                 *
               </span>
@@ -122,7 +122,7 @@ export default function AcademicExperienceForm({
               placeholder="Instituição"
               type="text"
               name="institution"
-              value={educationformData[index]?.institution || ""}
+              value={educationFormData[index]?.institution || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -143,7 +143,7 @@ export default function AcademicExperienceForm({
               type="text"
               max={4}
               name="startDate"
-              value={educationformData[index]?.startDate || ""}
+              value={educationFormData[index]?.startDate || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -166,7 +166,7 @@ export default function AcademicExperienceForm({
               type="text"
               max={4}
               name="endDate"
-              value={educationformData[index]?.endDate || ""}
+              value={educationFormData[index]?.endDate || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -192,8 +192,8 @@ export default function AcademicExperienceForm({
               onClick={() => {
                 handleEducationDelete(
                   index,
-                  educationformData[index]?._id
-                    ? educationformData[index]?._id
+                  educationFormData[index]?._id
+                    ? educationFormData[index]?._id
                     : null
                 );
               }}
@@ -205,13 +205,13 @@ export default function AcademicExperienceForm({
         {/* only display border on last form otherwise create distance */}
         <div
           className={
-            index === educationformData?.length - 1
+            index === educationFormData?.length - 1
               ? "border-t border-[#A1ACB2] py-2 mt-4"
               : "py-30 mt-5"
           }
         />
         {/* Btn is only visible on last created form*/}
-        {index === educationformData?.length - 1 ? (
+        {index === educationFormData?.length - 1 ? (
           <>
             <div className="flex items-center justify-center">
               <button

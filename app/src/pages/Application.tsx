@@ -5,6 +5,8 @@ import { useState } from 'react';
 
 // Services
 import AuthService from "../services/auth.services"
+
+// Interfaces
 import { NewApplication } from "../interfaces/Application"
 
 // Components
@@ -16,8 +18,7 @@ import { Icon } from "@mdi/react";
 import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
 import dynamicForms from "../utilities/dynamicForms";
 import { tempObjects } from "../helpers/formStates";
-
-import Layout from "../components/Layout";
+import MiniNavbar from "../components/navbar/MiniNavbar";
 
 const Application = () => {
 
@@ -27,9 +28,9 @@ const Application = () => {
   // State for the confirmation modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const [toggleMenu1, setToggleMenu1] = useState(false);
-  const [toggleMenu2, setToggleMenu2] = useState(false);
-  const [toggleMenu3, setToggleMenu3] = useState(false);
+  // States for whether dynamic forms are expanded or collapsed
+  const [isAcademicExperienceOpen, setIsAcademicExperienceOpen] = useState(false);
+  const [isProfessionalExperienceOpen, setIsProfessionalExperienceOpen] = useState(false);
 
   // Functions to open and close the confirmation modal
   const openModal = () => {
@@ -48,11 +49,8 @@ const Application = () => {
   // Function for deciding the different values in the form
   const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
 
+  // Destructuring of functions and states from dynamicForms and tempObjects
   const {
-    dynamicInputsFilled,
-    userID,
-    educationErrorState,
-    experienceErrorState,
     experienceErrors,
     educationErrors,
     handleExperienceInputChange,
@@ -61,18 +59,14 @@ const Application = () => {
     addNewExperienceForm,
     handleEducationDelete,
     addNewEducationForm,
-    SubmitValidation,
     submitError,
     handleEducationInputChange,
-    experienceformData,
-    educationformData,
-    fetchDynamicData,
+    experienceFormData,
+    educationFormData,
     handleCheckboxChange,
   } = dynamicForms();
 
   const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
-
-
 
   /**
     * OnSubmit function for Application.
@@ -101,21 +95,10 @@ const Application = () => {
   return (
     <main className="flex-grow overflow-x-hidden bg-[#E4F2F5] h-screen font-['Montserrat']">
 
-      {/* Navbar */}
-      <nav
-          className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-50 bg-F1F9FB shadow-[0px 4px 4px 0px rgba(35, 100, 130, 0.25)]">
-        <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
-          <div className="navbar-start">
-            <Link to="/"
-                  className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-              <img src='/logo.svg' alt="logo" className="w-[24.43px] h-6"/> <img src='/educado.svg' alt="educado"
-                                                                                 className="h-6"/>
-            </Link>
-          </div>
-        </div>
-      </nav>
+      {/* Mini navbar */}
+      <MiniNavbar />
 
-      {/* Title text */}
+      {/* Header and paragraph text */}
       <div className="items-center text-center p-10 pt-20">
 
         {/* Glad you want to be part of Educado! */}
@@ -132,7 +115,7 @@ const Application = () => {
 
       {/* Dynamic forms for motivation, academic and professional experience */}
       <form
-          onSubmit={handleSubmit(handleSubmit)}
+          onSubmit={handleSubmit(onSubmit)}
           className="text-center py-8 px-10 w-full"
       >
         <div className="inline-block">
@@ -142,96 +125,111 @@ const Application = () => {
             <Motivation register={register} errors={errors} setIsMotivationFilled={setIsMotivationFilled}/>
           </div>
 
+          {/* Space between forms */}
           <div className="hidden sm:block" aria-hidden="true">
             <div className="py-3"></div>
           </div>
 
           {/* Academic experience form */}
-          <div className="Menu-2-academic-experience">
+
+          {/* Form button */}
+          <div className="academic-experience-form">
+            {/* White and gray background, text and chevron icon when form closed; primary and white when open */}
             <button
                 type="button"
                 className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
-                    toggleMenu2
+                    isAcademicExperienceOpen
                         ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                         : "rounded-lg bg-white text-neutral-700 text-grayDark"
                 }`}
-                onClick={() => setToggleMenu2(!toggleMenu2)}
+                onClick={() => setIsAcademicExperienceOpen(!isAcademicExperienceOpen)}
             >
               <div className="flex items-start">
-                {toggleMenu2 ? (
-                    <Icon path={mdiChevronUp} size={1} className="text-white"/>
-                ) : (
-                    <Icon path={mdiChevronDown} size={1} className="text-grayDark"/>
-                )}
+                {isAcademicExperienceOpen
+                    ? ( <Icon path={mdiChevronUp} size={1} className="text-white"/> )
+                    : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark"/> )
+                }
                 Experiências acadêmicas
               </div>
             </button>
           </div>
 
-          {/* Conditional rendering empty form when database is empty */}
-          {toggleMenu2 ? (
-              educationformData.length === 0 ? (
+          {/* Render an empty form if academicFormData (form array) is empty, else render all filled forms */}
+          {isAcademicExperienceOpen && (
+            educationFormData.length === 0 ? (
+              <AcademicExperienceForm
+                  key={0}
+                  index={0}
+                  educationFormData={emptyAcademicObject}
+                  handleEducationInputChange={handleEducationInputChange}
+                  educationErrors={educationErrors}
+                  addNewEducationForm={addNewEducationForm}
+                  handleEducationDelete={handleEducationDelete}
+              />
+            ) : (
+              educationFormData.map((form, index) => (
                   <AcademicExperienceForm
-                      key={0}
-                      index={0}
-                      educationformData={emptyAcademicObject}
+                      key={index}
+                      index={index}
+                      educationFormData={educationFormData}
                       handleEducationInputChange={handleEducationInputChange}
                       educationErrors={educationErrors}
                       addNewEducationForm={addNewEducationForm}
                       handleEducationDelete={handleEducationDelete}
                   />
-              ) : (
-                  educationformData.map((form, index) => (
-                      // Retrieve child compononent
-                      <AcademicExperienceForm
-                          key={index}
-                          index={index}
-                          educationformData={educationformData}
-                          handleEducationInputChange={handleEducationInputChange}
-                          educationErrors={educationErrors}
-                          addNewEducationForm={addNewEducationForm}
-                          handleEducationDelete={handleEducationDelete}
-                      />
-                  ))
-              )
-          ) : (
-              <></>
+              ))
+            )
           )}
 
+          {/* Space between forms */}
           <div className="hidden sm:block" aria-hidden="true">
             <div className="py-3"></div>
           </div>
 
           {/* Professional experience form */}
-          <div className="Menu-3-professional-experience">
+
+          {/* Form button */}
+          <div className="professional-experience-form">
+            {/* White and gray background, text and chevron icon when form closed; primary and white when open */}
             <button
                 type="button"
                 className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
-                    toggleMenu3
+                    isProfessionalExperienceOpen
                         ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                         : "rounded-lg bg-white text-neutral-700 text-grayDark"
                 }`}
-                onClick={() => setToggleMenu3(!toggleMenu3)}
+                onClick={() => setIsProfessionalExperienceOpen(!isProfessionalExperienceOpen)}
             >
               <div className="flex items-start">
-                {toggleMenu3 ? (
-                    <Icon path={mdiChevronUp} size={1} className="text-white"/>
-                ) : (
-                    <Icon path={mdiChevronDown} size={1} className="text-grayDark"/>
-                )}
+                {isProfessionalExperienceOpen
+                    ? ( <Icon path={mdiChevronUp} size={1} className="text-white"/> )
+                    : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark"/> )
+                }
                 Experiências profisisonais
               </div>
             </button>
           </div>
 
-          {/* Professional experience form */}
-          {/* Conditional rendering empty form when database is empty */}
-          {toggleMenu3 ? (
-              experienceformData.length === 0 ? (
+          {/* Render an empty form if experienceFormData (form array) is empty, else render all filled forms */}
+          {isProfessionalExperienceOpen && (
+            experienceFormData.length === 0 ? (
+                <ProfessionalExperienceForm
+                    key={0}
+                    index={0}
+                    experienceFormData={emptyProfessionalObject}
+                    handleExperienceInputChange={handleExperienceInputChange}
+                    experienceErrors={experienceErrors}
+                    addNewExperienceForm={addNewExperienceForm}
+                    handleExperienceDelete={handleExperienceDelete}
+                    handleCountExperience={handleCountExperience}
+                    handleCheckboxChange={handleCheckboxChange}
+                />
+            ) : (
+              experienceFormData.map((form, index) => (
                   <ProfessionalExperienceForm
-                      key={0}
-                      index={0}
-                      experienceformData={emptyProfessionalObject}
+                      key={index}
+                      index={index}
+                      experienceFormData={experienceFormData}
                       handleExperienceInputChange={handleExperienceInputChange}
                       experienceErrors={experienceErrors}
                       addNewExperienceForm={addNewExperienceForm}
@@ -239,25 +237,11 @@ const Application = () => {
                       handleCountExperience={handleCountExperience}
                       handleCheckboxChange={handleCheckboxChange}
                   />
-              ) : (
-                  experienceformData.map((form, index) => (
-                      <ProfessionalExperienceForm
-                          key={index}
-                          index={index}
-                          experienceformData={experienceformData}
-                          handleExperienceInputChange={handleExperienceInputChange}
-                          experienceErrors={experienceErrors}
-                          addNewExperienceForm={addNewExperienceForm}
-                          handleExperienceDelete={handleExperienceDelete}
-                          handleCountExperience={handleCountExperience}
-                          handleCheckboxChange={handleCheckboxChange}
-                      />
-                  ))
-              )
-          ) : (
-              <></>
+              ))
+            )
           )}
 
+          {/* Warning text for empty forms */}
           <div>
             {submitError && (
                 <span className=" ml-28 ">

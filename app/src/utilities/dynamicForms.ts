@@ -28,8 +28,8 @@ export default () => {
   } = useProfileValidation();
 
   //dynamic form states & localstorage details
-  const { educationformData, setEducationFormData } = useEducationFormData();
-  const { experienceformData, setExperienceFormData } = useExperienceFormData();
+  const { educationFormData: educationFormData, setEducationFormData } = useEducationFormData();
+  const { experienceFormData: experienceFormData, setExperienceFormData } = useExperienceFormData();
   const userInfo:any = getUserInfo();
 
   // assign userID to localstorage ID
@@ -99,12 +99,12 @@ export default () => {
     });
   };
 
-  
+
 
   // loops through current input fiels displayed on the UI,and assign them to not being null
   const dynamicInputsFilled = (dynamicForm: any) => {
     if (dynamicForm === "education") {
-      const EducationInputsFilled = educationformData.every(
+      const EducationInputsFilled = educationFormData.every(
         (item) =>
           item.startDate?.trim() !== "" &&
           item.endDate?.trim() !== "" &&
@@ -115,8 +115,8 @@ export default () => {
       return EducationInputsFilled;
     } 
     else {
-      console.log("experience filled", experienceformData)
-      const ExperienceInputsFilled = experienceformData.every(
+      console.log("experience filled", experienceFormData)
+      const ExperienceInputsFilled = experienceFormData.every(
         (item) =>
           item.company?.trim() !== "" &&
           item.jobTitle?.trim() !== "" &&
@@ -155,7 +155,7 @@ export default () => {
         return newState;
       });
       setEducationFormData([
-        ...educationformData,
+        ...educationFormData,
         {
           status: "",
           institution: "",
@@ -176,7 +176,7 @@ export default () => {
       await ProfileServices.deleteEducationForm(_id);
     }
 
-    const updatedEducationFormation = educationformData.filter(
+    const updatedEducationFormation = educationFormData.filter(
       (_, i) => i !== index
     );
     setEducationFormData(updatedEducationFormation);
@@ -208,7 +208,7 @@ export default () => {
         return newState;
       });
       setExperienceFormData([
-        ...experienceformData,
+        ...experienceFormData,
         {
           company: "",
           jobTitle: "",
@@ -241,7 +241,7 @@ export default () => {
       await ProfileServices.deleteExperienceForm(_id);
     }
 
-    const updatedExperienceFormation = experienceformData.filter(
+    const updatedExperienceFormation = experienceFormData.filter(
       (_, i) => i !== index
     );
     setExperienceFormData(updatedExperienceFormation);
@@ -263,10 +263,10 @@ export default () => {
   //Count characters written in professional description
   const handleCountExperience = (index: any) => {
     // if description is not existing then return nothing
-    if(experienceformData.length === 0 || !experienceformData[index].description) {
+    if(experienceFormData.length === 0 || !experienceFormData[index].description) {
       return 0;
     }
-    let text = experienceformData[index].description;
+    let text = experienceFormData[index].description;
     text = text.replace(/\s/g, "");
     return text.length;
   };
@@ -312,8 +312,8 @@ export default () => {
     handleEducationInputChange,
     fetchDynamicData,
     userID,
-    experienceformData,
-    educationformData,
+    experienceFormData: experienceFormData,
+    educationFormData: educationFormData,
     dynamicInputsFilled
     
   };

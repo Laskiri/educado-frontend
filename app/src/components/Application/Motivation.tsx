@@ -17,8 +17,8 @@ const Motivation: React.FC<MotivationProps> = ({
   setIsMotivationFilled
 }) => {
 
-  // Variable for toggling visibility of the field
-  const [toggleMotivation, setToggleMotivation] = useState(true);
+  // States for whether dynamic form is expanded or collapsed
+  const [isMotivationOpen, setIsMotivationOpen] = useState(true);
 
   //Variable for keeping track of the length of the motivation
   const [motivation, setMotivation] = useState('');
@@ -50,14 +50,14 @@ const Motivation: React.FC<MotivationProps> = ({
       <button
           type="button"
           className={`first_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
-              toggleMotivation
+              isMotivationOpen
                   ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                   : "rounded-lg bg-white text-neutral-700 text-grayDark"
           }`}
-          onClick={() => setToggleMotivation(!toggleMotivation)}
+          onClick={() => setIsMotivationOpen(!isMotivationOpen)}
       >
         <div className="flex items-start">
-          {toggleMotivation
+          {isMotivationOpen
               ? ( <Icon path={mdiChevronUp} size={1} className="text-white"/> )
               : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark"/> )
           }
@@ -65,7 +65,7 @@ const Motivation: React.FC<MotivationProps> = ({
         </div>
       </button>
 
-      {toggleMotivation && (
+      {isMotivationOpen && (
           <div className="relative border border-blueButton p-4 rounded-b-lg text-left bg-white z-50">
             <div className="flex flex-col">
 

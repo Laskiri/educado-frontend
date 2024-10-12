@@ -74,8 +74,8 @@ const Profile = () => {
     SubmitValidation,
     submitError,
     handleEducationInputChange,
-    experienceformData,
-    educationformData,
+    experienceFormData,
+    educationFormData,
     fetchDynamicData,
     handleCheckboxChange,
   } = dynamicForms();
@@ -129,7 +129,7 @@ const Profile = () => {
         }
         //Fields of academic experience will be looped through and updated using the relevant endpoints
         await Promise.all(
-          educationformData.map(async (item, index) => {
+          educationFormData.map(async (item, index) => {
             const data = {
               ...item,
               userID: userID,
@@ -144,7 +144,7 @@ const Profile = () => {
 
         //Fields of professional experience will be looped through and updated using the relevant endpoints
         await Promise.all(
-          experienceformData.map(async (item, index) => {
+          experienceFormData.map(async (item, index) => {
             const data = {
               ...item,
               userID: userID,
@@ -171,7 +171,7 @@ const Profile = () => {
 
   useEffect(() => {
     setHasSubmitted(false);
-  }, [educationformData, experienceformData, formData]);
+  }, [educationFormData, experienceFormData, formData]);
 
   //Drop down menues && lists
   const [toggleMenu1, setToggleMenu1] = useState(false);
@@ -264,23 +264,23 @@ const Profile = () => {
               {/* Academic experience form */}
               {/* Conditional rendering empty form when database is empty */}
               {toggleMenu2 ? (
-                educationformData.length === 0 ? (
+                educationFormData.length === 0 ? (
                   <AcademicExperienceForm
                     key={0}
                     index={0}
-                    educationformData={emptyAcademicObject}
+                    educationFormData={emptyAcademicObject}
                     handleEducationInputChange={handleEducationInputChange}
                     educationErrors={educationErrors}
                     addNewEducationForm={addNewEducationForm}
                     handleEducationDelete={handleEducationDelete}
                   />
                 ) : (
-                  educationformData.map((form, index) => (
+                  educationFormData.map((form, index) => (
                     // Retrieve child compononent
                     <AcademicExperienceForm
                       key={index}
                       index={index}
-                      educationformData={educationformData}
+                      educationFormData={educationFormData}
                       handleEducationInputChange={handleEducationInputChange}
                       educationErrors={educationErrors}
                       addNewEducationForm={addNewEducationForm}
@@ -322,11 +322,11 @@ const Profile = () => {
               {/* Professional experience form */}
               {/* Conditional rendering empty form when database is empty */}
               {toggleMenu3 ? (
-                experienceformData.length === 0 ? (
+                experienceFormData.length === 0 ? (
                   <ProfessionalExperienceForm
                     key={0}
                     index={0}
-                    experienceformData={emptyProfessionalObject}
+                    experienceFormData={emptyProfessionalObject}
                     handleExperienceInputChange={handleExperienceInputChange}
                     experienceErrors={experienceErrors}
                     addNewExperienceForm={addNewExperienceForm}
@@ -335,11 +335,11 @@ const Profile = () => {
                     handleCheckboxChange={handleCheckboxChange}
                   />
                 ) : (
-                  experienceformData.map((form, index) => (
+                  experienceFormData.map((form, index) => (
                     <ProfessionalExperienceForm
                       key={index}
                       index={index}
-                      experienceformData={experienceformData}
+                      experienceFormData={experienceFormData}
                       handleExperienceInputChange={handleExperienceInputChange}
                       experienceErrors={experienceErrors}
                       addNewExperienceForm={addNewExperienceForm}

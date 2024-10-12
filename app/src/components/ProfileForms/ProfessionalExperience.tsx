@@ -1,12 +1,12 @@
 //Imports
 import { Icon } from "@mdi/react";
-import { Fragment } from "react";
+import React, { Fragment } from "react";
 import {mdiAlertCircleOutline, mdiDelete} from "@mdi/js";
 
 //Exporting UI content&structure of
 export default function ProfessionalExperienceForm({
   index,
-  experienceformData,
+  experienceFormData,
   handleExperienceInputChange,
   experienceErrors,
   addNewExperienceForm,
@@ -15,8 +15,8 @@ export default function ProfessionalExperienceForm({
   handleCheckboxChange,
 }: {
   index: number;
-  experienceformData: { [key: string]: any }[];
-  handleExperienceInputChange: (value: any, index: number) => void;
+  experienceFormData: { [key: string]: any }[];
+  handleExperienceInputChange: (event: React.ChangeEvent<HTMLInputElement>, index: number) => void;
   experienceErrors: { [key: string]: any }[];
   addNewExperienceForm: (index: number) => void;
   handleExperienceDelete: (index: number, id: string) => void;
@@ -40,9 +40,9 @@ export default function ProfessionalExperienceForm({
         <div
           /* Styling based on conditions */
           className={`border border-[#166276] p-4 text-left bg-white shadow-xl ${
-            (experienceformData.length === 1 && index === 0) ||
-            (experienceformData.length > 1 &&
-              index === experienceformData.length - 1)
+            (experienceFormData.length === 1 && index === 0) ||
+            (experienceFormData.length > 1 &&
+              index === experienceFormData.length - 1)
               ? "rounded-b-lg"
               : ""
           }`}
@@ -63,7 +63,7 @@ export default function ProfessionalExperienceForm({
                 placeholder="Mobile experience new"
                 type="text"
                 name="company"
-                value={experienceformData[index]?.company || ""}
+                value={experienceFormData[index]?.company || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -81,7 +81,7 @@ export default function ProfessionalExperienceForm({
                 placeholder="Product designer"
                 type="text"
                 name="jobTitle"
-                value={experienceformData[index]?.jobTitle || ""}
+                value={experienceFormData[index]?.jobTitle || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -101,7 +101,7 @@ export default function ProfessionalExperienceForm({
                 placeholder="Mês/Ano"
                 type="text"
                 name="startDate"
-                value={experienceformData[index]?.startDate || ""}
+                value={experienceFormData[index]?.startDate || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -123,7 +123,7 @@ export default function ProfessionalExperienceForm({
                 placeholder="Mês/Ano"
                 type="text"
                 name="endDate"
-                value={experienceformData[index]?.endDate || ""}
+                value={experienceFormData[index]?.endDate || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -138,7 +138,7 @@ export default function ProfessionalExperienceForm({
             <input
               className="border-[#166276]"
               type="checkbox"
-              checked={experienceformData[index]?.checkBool || false}
+              checked={experienceFormData[index]?.checkBool || false}
               onChange={() => {
                 handleCheckboxChange(index);
               }}
@@ -160,7 +160,7 @@ export default function ProfessionalExperienceForm({
               placeholder="Escreva aqui as suas responsabilidadees"
               maxLength={400}
               name="description"
-              value={experienceformData[index]?.description || ""}
+              value={experienceFormData[index]?.description || ""}
               onChange={(value) => {
                 handleExperienceInputChange(value, index);
               }}
@@ -184,8 +184,8 @@ export default function ProfessionalExperienceForm({
                 onClick={() =>
                   handleExperienceDelete(
                     index,
-                    experienceformData[index]?._id
-                      ? experienceformData[index]?._id
+                    experienceFormData[index]?._id
+                      ? experienceFormData[index]?._id
                       : ""
                   )
                 }
@@ -197,13 +197,13 @@ export default function ProfessionalExperienceForm({
           {/* only display border on last form otherwise create distance */}
           <div
             className={
-              index === experienceformData.length - 1
+              index === experienceFormData.length - 1
                 ? "border-t border-[#A1ACB2] py-2 mt-4"
                 : "py-30 mt-5"
             }
           />
           {/* Btn is only visible on last created form*/}
-          {index === experienceformData.length - 1 ? (
+          {index === experienceFormData.length - 1 ? (
             <>
               <div className="flex items-center justify-center">
                 <button
