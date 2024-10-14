@@ -32,7 +32,7 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId }) => {
       <button 
         onClick={handleClick} 
         id="viewDetails" 
-        className="flex items-center justify-center p-4 bg-[#166276] rounded-full font-semibold text-base text-white hover:bg-[#145a63]"
+        className="flex items-center justify-center p-4 bg-[#166276] rounded-full font-semibold text-base text-white hover:bg-[#164E63]"
       >
         <svg className="shrink-0 size-3.5" width="15" height="15" viewBox="0 0 24 24" fill="white" stroke="currentColor" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
