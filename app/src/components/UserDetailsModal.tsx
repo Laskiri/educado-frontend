@@ -21,6 +21,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   if (!isOpen) return null;
 
   console.log(userDetails);
+  console.log('Application:', userDetails.application);
+  console.log('Motivation:', userDetails.application?.motivation);
+
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
