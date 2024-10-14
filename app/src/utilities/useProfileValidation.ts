@@ -27,31 +27,26 @@ export default ()=>{
         );
       };
 
-  // Handle validation based on form type (education/experience)
-  const handleValidation = (index: number, name: string, value: string, forForm: string) => {
+  // Validation of date input fields for education and experience forms
+  const validateDateInput = (index: number, name: 'startDate' | 'endDate', value: string, formType: 'education' | 'experience') => {
+    console.log("handleValidation called!");  // TODO: REMOVE AFTER DEBUGGING!
     const invalidDateFormatErrMsgStr = "Formato inválido! Utilize MM/AA.";
-
-    // Set isEmpty to true if value is empty
-    const isEmpty = value === "";
-
-    // Set isInvalidDate to true if isEmpty is false and dateValidation returns true
-    const isInvalidDate = !isEmpty && dateValidation(value);
+    const isInputFieldEmpty = value === "";
+    const isDateInvalid = !isInputFieldEmpty && dateValidation(value);
 
     // Determine which state to update based on form type
-    const setErrorState = forForm === 'education' ? setEducationErrorState : setExperienceErrorState;
-    const setErrors = forForm === 'education' ? setEducationErrors : setExperienceErrors;
+    const setErrorState = formType === 'education' ? setEducationErrorState : setExperienceErrorState;
+    const setErrors = formType === 'education' ? setEducationErrors : setExperienceErrors;
 
-    // Set error state (only if there is an error and not when cleared)
-    setErrorState(isInvalidDate);
+    // Set the error state to true if the date format is invalid, otherwise clear the error state
+    setErrorState(isDateInvalid);
 
-    // Update error messages based on the input field
+    // Update the error message for the specified input field
     setErrors((prevState) => {
-
-      // Shallow copy of prevState array (good practice to avoid mutation)
-      const newState = [...prevState] as { startDate: string; endDate: string }[];
+      const newState = [...prevState];
 
       // Clear error if date input field is empty or valid
-      newState[index][name as 'startDate' | 'endDate'] = isInvalidDate ? invalidDateFormatErrMsgStr : "";
+      newState[index][name] = isDateInvalid ? invalidDateFormatErrMsgStr : "";
 
       return newState;
     });
@@ -59,7 +54,7 @@ export default ()=>{
 
   // Return states and validation function
   return {
-      handleValidation,
+      validateDateInput: validateDateInput,
       experienceErrors, setExperienceErrors,
       educationErrorState, setEducationErrorState,
       educationErrors, setEducationErrors,

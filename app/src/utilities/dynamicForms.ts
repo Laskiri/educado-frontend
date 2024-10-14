@@ -16,7 +16,7 @@ import {
 export default () => {
   //validation
   const {
-    handleValidation,
+    validateDateInput,
     experienceErrors,
     setExperienceErrors,
     educationErrorState,
@@ -88,7 +88,7 @@ export default () => {
     }
 
     //Validation
-    handleValidation(index, name, value, "education");
+    validateDateInput(index, name, value, "education");
     setEducationFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {
@@ -111,11 +111,10 @@ export default () => {
           item.course?.trim() !== "" &&
           item.institution?.trim() !== ""
       );
-      console.log("inputsfilled educaion", EducationInputsFilled)
+      console.log("Education form filled: ", EducationInputsFilled, "\nData: ", educationFormData)
       return EducationInputsFilled;
     } 
     else {
-      console.log("experience filled", experienceFormData)
       const ExperienceInputsFilled = experienceFormData.every(
         (item) =>
           item.company?.trim() !== "" &&
@@ -124,6 +123,7 @@ export default () => {
           item.endDate?.trim() !== "" &&
           item.description?.trim() !== ""
       );
+      console.log("Experience form filled: ", ExperienceInputsFilled, "\nData: ", experienceFormData)
       return ExperienceInputsFilled;
     }
   };
@@ -276,7 +276,8 @@ export default () => {
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number
   ): void => {
-    let { name, value } = event.target;
+    // let { name, value } = event.target;
+    let { name, value } = event.target as { name: "startDate" | "endDate"; value: string };
     if ((name == "startDate" || name == "endDate") && value.length > 5) {
       return;
     }
@@ -284,7 +285,7 @@ export default () => {
 
       value = value.replace(/[^0-9/]/g, "");
     }
-    handleValidation(index, name, value, "experience");
+    validateDateInput(index, name, value, "experience");
     setExperienceFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {

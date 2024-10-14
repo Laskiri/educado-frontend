@@ -76,16 +76,30 @@ const Application = () => {
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-    AuthService.postNewApplication({
-      motivation: data.motivation, academicLevel: data.academicLevel, academicStatus: data.academicStatus,
-      major: data.major, institution: data.institution, educationStartDate: data.educationStartDate,
-      educationEndDate: data.educationEndDate, company: data.company, position: data.position,
-      workStartDate: data.workStartDate, workEndDate: data.workEndDate, workActivities: data.workActivities,
+    const applicationData = {
+      motivation: data.motivation,
+
+      academicLevel: data.academicLevel,
+      academicStatus: data.academicStatus,
+      major: data.major,
+      institution: data.institution,
+      educationStartDate: data.educationStartDate,
+      educationEndDate: data.educationEndDate,
+
+      company: data.company,
+      position: data.position,
+      workStartDate: data.workStartDate,
+      workEndDate: data.workEndDate,
+      workActivities: data.workActivities,
 
       baseUser: id
-    }).then((res) =>{
+    };
+
+    AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
+        // TODO: remove!
+        console.log(applicationData);
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);

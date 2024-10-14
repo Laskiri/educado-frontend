@@ -15,9 +15,17 @@ export default function ProfessionalExperienceForm({
   handleCheckboxChange,
 }: {
   index: number;
-  experienceFormData: { [key: string]: any }[];
-  handleExperienceInputChange: (event: React.ChangeEvent<HTMLInputElement>, index: number) => void;
-  experienceErrors: { [key: string]: any }[];
+  experienceFormData: Array<{
+    company?: string;
+    jobTitle?: string;
+    startDate?: string;
+    endDate?: string;
+    description?: string;
+    checkBool?: boolean;
+    _id?: string | number | null;
+  }>;
+  handleExperienceInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => void;
+  experienceErrors: { [key: string]: string }[];
   addNewExperienceForm: (index: number) => void;
   handleExperienceDelete: (index: number, id: string) => void;
   handleCountExperience: (index: number) => number;

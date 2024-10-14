@@ -13,9 +13,17 @@ export default function AcademicExperienceForm({
   handleEducationDelete,
 }: {
   index: number;
-  educationFormData: Record<string, any>;
-  handleEducationInputChange: (event: React.ChangeEvent<HTMLInputElement>, index: number) => void;
-  educationErrors: Record<string, any>;
+  educationFormData: Array<{
+    educationLevel?: string;
+    status?: string;
+    course?: string;
+    institution?: string;
+    startDate?: string;
+    endDate?: string;
+    _id?: string | number | null;
+  }>;
+  handleEducationInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
+  educationErrors: Record<number, { startDate?: string; endDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
 }) {
