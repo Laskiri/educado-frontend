@@ -119,7 +119,6 @@ const EducadoAdmin = () => {
                                 if (application.lastName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
                                 if (application.email.toLowerCase().includes(searchTerm.toLowerCase())) return application;
                             }).map((application: any, key: number) => {
-                                console.log(application.approved);
                                 return (
                                     <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
                                         <td>

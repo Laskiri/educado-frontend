@@ -21,7 +21,6 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
         console.error('No token found');
         return;
       }
-      console.log("Token:", token); // Log the token to verify it
       await AdminServices.deleteUser(applicationId, token);
       toast.success("User deleted successfully!");
       onDelete();
@@ -69,7 +68,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
 
       {/* Confirmation Modal */}
       {showModal && (
-        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} confirmBtnText='Deletar' title='Você tem certeza de que deseja excluir este usuário?' contentText=''/>
+        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?'/>
       )}
 
       
