@@ -8,20 +8,35 @@ interface RejectModalProps {
   onClose: () => void;
   userDetails: any;
   applicationId: string;
+  onHandleStatus: () => void;
 }
 
-const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails, applicationId }) => {
+const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails, applicationId, onHandleStatus }) => {
+  const [justification, setJustification] = useState('');
+  const [isInputValid, setIsInputValid] = useState(true);
+
   if (!isOpen) return null;
 
   const handleReject = async () => {
+    if (!justification.trim()) {
+      setIsInputValid(false);
+      return;
+    }
+
     try {
       console.log("Rejecting application for user ID:", applicationId);
       await AuthServices.RejectApplication(applicationId);
       onClose(); // Close the modal after rejection
+      onHandleStatus();
       toast.success("Application rejected!");
     } catch (error) {
       console.error("Failed to reject application:", error);
     }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setJustification(e.target.value);
+    setIsInputValid(true);
   };
 
   return (
@@ -53,7 +68,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
             <div className="flex flex-col bg-white p-4 rounded-l-lg mt-4 relative">
               <dt className="text-[#166276] text-base font-bold font-['Lato']">Nome</dt>
               <dd id="name" className="text-base font-['Montserrat'] text-gray-900 break-all">
-            {userDetails.firstName} {userDetails.lastName}
+                {userDetails.firstName} {userDetails.lastName}
               </dd>
               <style>{`
                 .relative::after {
@@ -65,21 +80,25 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
                 width: 1px;
                 background-color: #E7F3F6;
                 }
-            `}</style>
+              `}</style>
             </div>
             <div className="flex flex-col bg-white p-4 rounded-r-lg mt-4">
               <dt className="text-[#166276] text-base font-bold font-['Lato']">Email</dt>
               <dd id="email" className="text-base font-['Montserrat'] text-gray-900 break-all">
-            {userDetails.email}
+                {userDetails.email}
               </dd>
             </div>
           </div>
           <p className="mt-4">Justificativa</p>
           <input
             type="text"
-            className="mt-2 p-2 pl-4 rounded-lg w-full border-transparent"
-            placeholder="Justificativa da análise"/>
-            <p className="mt-4">Essa ação não pode ser desfeita.</p>
+            className={`mt-2 p-2 pl-4 rounded-lg w-full border ${isInputValid ? 'border-transparent' : 'border-red-500'}`}
+            placeholder="Justificativa da análise"
+            value={justification}
+            onChange={handleInputChange}
+          />
+          {!isInputValid && <p className="text-red-500 text-sm mt-1">Justificativa é obrigatória.</p>}
+          <p className="mt-4">Essa ação não pode ser desfeita.</p>
         </div>
         {/* Modal content ends */}
 
@@ -89,7 +108,11 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
             Voltar
           </button>
           <div className="flex space-x-4">
-            <button className="bg-[#FE4949] hover:bg-[#E44040] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32" onClick={handleReject}>
+            <button
+              className="bg-[#FE4949] hover:bg-[#E44040] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32"
+              onClick={handleReject}
+              disabled={!justification.trim()}
+            >
               Recusar
             </button>
           </div>

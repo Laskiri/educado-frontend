@@ -17,9 +17,9 @@ const EducadoAdmin = () => {
 
     if (!data) return <Loading/>
 
-    // Function to refresh the list after deletion
+    // Function to refresh the list after deletion or rejecting or approving an application
     const refreshUsers = () => {
-        mutate();  // This will refetch the data after deleting a user
+        mutate();
     };
 
     const formatDate = (dateString: string) => {
@@ -153,14 +153,14 @@ const EducadoAdmin = () => {
                                             <div className="flex items-center p-4">
                                                 {application.approved || application.rejected ? (
                                                 <>
-                                                    <ViewUserButton applicationId={application._id} />
+                                                    <ViewUserButton applicationId={application._id} onHandleStatus={refreshUsers} />
                                                     <div className="mx-2.5"></div>
                                                     <DeleteUserButton applicationId={application._id} onDelete={refreshUsers} />
                                                     <div className="-ml-2"></div>                                                 
                                                 </>
                                                 ) : (
                                                 <div className="ml-auto mr-4">
-                                                    <ViewUserButton applicationId={application._id} />
+                                                    <ViewUserButton applicationId={application._id} onHandleStatus={refreshUsers} />
                                                 </div>
                                                 )}
                                             </div>
