@@ -9,9 +9,10 @@ interface UserDetailsModalProps {
   userDetails: any; // Replace with the appropriate type
   token: string;
   applicationId: string;
+  onHandleStatus: () => void;
 }
 
-const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
@@ -182,8 +183,8 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
           </div>
         </div>
       )}
-      <RejectModal isOpen={isRejectModalOpen} onClose={closeRejectModal} userDetails={userDetails} applicationId={applicationId} />
-      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} userDetails={userDetails} applicationId={applicationId} />
+      <RejectModal isOpen={isRejectModalOpen} onClose={closeRejectModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
+      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
     </>
   );
 };
