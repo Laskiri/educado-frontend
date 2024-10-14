@@ -1,23 +1,26 @@
 import React, { useState } from 'react';
 import AuthServices from '../services/auth.services';
+import AdminServices from '../services/admin.services';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 interface ApproveModalProps {
   isOpen: boolean;
   onClose: () => void;
+  token: string
   userDetails: any;
   applicationId: string;
   onHandleStatus: () => void;
 }
 
-const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, userDetails, applicationId, onHandleStatus }) => {
+const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, token, userDetails, applicationId, onHandleStatus }) => {
   if (!isOpen) return null;
 
   const handleAccept = async () => {
     try {
       console.log("Approving application for user ID:", applicationId);
       await AuthServices.AcceptApplication(applicationId);
+      AdminServices.changeUserRole(applicationId, token, 'creator');
       onClose(); // Close the modal after rejection
       onHandleStatus();
       toast.success("Application accepted!");

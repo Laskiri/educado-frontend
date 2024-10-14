@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import AdminServices from '../services/admin.services';
 import RejectModal from './RejectModal';
 import ApproveModal from './ApproveModal';
 
@@ -20,6 +19,8 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
   if (!isOpen) return null;
+
+  console.log(userDetails);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -42,8 +43,6 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   };
 
   const handleApprove = () => {
-    AdminServices.changeUserRole(applicationId, token, 'creator');
-    console.log('Approved');
     setIsApproveModalOpen(true);
   };
 
@@ -116,7 +115,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               </button>
               {isDropdownOpen && (
                 <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">Motivation text goes here.</p>
+                  <p className="text-base font-['Montserrat'] text-gray-900">{userDetails.application?.motivation || "No motivation provided"}</p>
                 </div>
               )}
               <button
@@ -184,7 +183,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
         </div>
       )}
       <RejectModal isOpen={isRejectModalOpen} onClose={closeRejectModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
-      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
+      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} token={token} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
     </>
   );
 };
