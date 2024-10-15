@@ -16,7 +16,7 @@ import {
 export default () => {
   //validation
   const {
-    validateDateInput,
+    handleValidation,
     experienceErrors,
     setExperienceErrors,
     educationErrorState,
@@ -88,7 +88,7 @@ export default () => {
     }
 
     //Validation
-    validateDateInput(index, name, value, "education");
+    handleValidation(index, name, value, "education");
     setEducationFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {
@@ -285,7 +285,7 @@ export default () => {
 
       value = value.replace(/[^0-9/]/g, "");
     }
-    validateDateInput(index, name, value, "experience");
+    handleValidation(index, name, value, "experience");
     setExperienceFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {
