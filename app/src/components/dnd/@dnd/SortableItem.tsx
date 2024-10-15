@@ -11,6 +11,7 @@ import { CSS } from "@dnd-kit/utilities";
 // components
 import { SectionArrowIcon } from "../../SectionArrowIcon";
 import { ComponentList } from "../ComponentList";
+import { ToolTipIcon } from "../../ToolTip/ToolTipIcon";
 
 import { Component } from "../../../interfaces/SectionInfo";
 
@@ -48,6 +49,7 @@ export function SortableItem({
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
   const [title, setTitle] = useState<string>();
+  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [description, setDescription] = useState<string>();
   const [sectionData, setSectionData] = useState<any>();
   const [componentData, setComponentData] = useState<any>();
@@ -202,7 +204,16 @@ export function SortableItem({
             </div>
 
             <div className="pt-5">
-              <label htmlFor="title">Descrição </label>{" "}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
+              <ToolTipIcon
+                index={1}
+                toolTipIndex={toolTipIndex}
+                text={"Aqui você pode dar uma descrição para a sua seção."}
+                tooltipAmount={2}
+                callBack={setToolTipIndex}
+              />
+            </div>
               {/*description of section*/}
               <textarea
                 defaultValue={sectionData.description ?? ""}

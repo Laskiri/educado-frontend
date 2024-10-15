@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
 import GenericModalComponent from "./GenericModalComponent";
 
+import { ToolTipIcon } from "./ToolTip/ToolTipIcon";
 import Loading from "./general/Loading";
 import Layout from "./Layout";
 
@@ -40,6 +41,7 @@ export const SectionCreation = ({
     []
   );
   const [sections, setSections] = useState<any[]>([]);
+  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -177,6 +179,16 @@ export const SectionCreation = ({
           <h1 className="text-2xl text-left font-bold justify-between space-y-4">
             Seções do curso{" "}
           </h1>
+          {/** Tooltip for course sections header*/}
+        <ToolTipIcon
+          index={0}
+          toolTipIndex={toolTipIndex}
+          text={
+            "👩🏻‍🏫Aqui você pode criar novas seções com exercícios ou aulas!"
+          }
+          tooltipAmount={2}
+          callBack={setToolTipIndex}
+        />
         </div>
 
         <div className="flex w-full float-right space-y-4">
