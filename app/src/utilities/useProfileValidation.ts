@@ -29,21 +29,23 @@ export default ()=>{
 
       // Handling validation based on form type (education/experience)
     const handleValidation = (index: any, name: any, value: any, forForm :any) => {
-      // Set education error state and update error messages based on the input field
+        const invalidDateFormatErrMsgStr = "Formato inválido! Utilize MM/AAAA.";
+
+        // Set education error state and update error messages based on the input field
         if(forForm == 'education'){
           if (dateValidation(value)) {
             if (name === "startDate") {
               setEducationErrorState(true);
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = "Invalid Format";
+                newState[index].startDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             } else if (name === "endDate") {
               setEducationErrorState(true);
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = "Invalid Format";
+                newState[index].endDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             }
@@ -71,14 +73,14 @@ export default ()=>{
               setExperienceErrorState(true);
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = "Invalid Format";
+                newState[index].startDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             } else if (name === "endDate") {
               setExperienceErrorState(true);
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = "Invalid Format";
+                newState[index].endDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             }
