@@ -27,37 +27,86 @@ export default ()=>{
         );
       };
 
-  // Validation of date input fields for education and experience forms
-  const validateDateInput = (index: number, name: 'startDate' | 'endDate', value: string, formType: 'education' | 'experience') => {
-    console.log("handleValidation called!");  // TODO: REMOVE AFTER DEBUGGING!
-    const invalidDateFormatErrMsgStr = "Formato inválido! Utilize MM/AA.";
-    const isInputFieldEmpty = value === "";
-    const isDateInvalid = !isInputFieldEmpty && dateValidation(value);
-
-    // Determine which state to update based on form type
-    const setErrorState = formType === 'education' ? setEducationErrorState : setExperienceErrorState;
-    const setErrors = formType === 'education' ? setEducationErrors : setExperienceErrors;
-
-    // Set the error state to true if the date format is invalid, otherwise clear the error state
-    setErrorState(isDateInvalid);
-
-    // Update the error message for the specified input field
-    setErrors((prevState) => {
-      const newState = [...prevState];
-
-      // Clear error if date input field is empty or valid
-      newState[index][name] = isDateInvalid ? invalidDateFormatErrMsgStr : "";
-
-      return newState;
-    });
-  };
-
-  // Return states and validation function
-  return {
-      validateDateInput: validateDateInput,
-      experienceErrors, setExperienceErrors,
-      educationErrorState, setEducationErrorState,
-      educationErrors, setEducationErrors,
-      experienceErrorState, setExperienceErrorState
-  }
+      // Handling validation based on form type (education/experience)
+    const handleValidation = (index: any, name: any, value: any, forForm :any) => {
+      // Set education error state and update error messages based on the input field
+        if(forForm == 'education'){
+          if (dateValidation(value)) {
+            if (name === "startDate") {
+              setEducationErrorState(true);
+              setEducationErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].startDate = "Invalid Format";
+                return newState;
+              });
+            } else if (name === "endDate") {
+              setEducationErrorState(true);
+              setEducationErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].endDate = "Invalid Format";
+                return newState;
+              });
+            }
+          } else {
+            // Reset education error state and clear error messages based on the input field
+            setEducationErrorState(false);
+            if (name === "startDate") {
+              setEducationErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].startDate = "";
+                return newState;
+              });
+            } else if (name === "endDate") {
+              setEducationErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].endDate = "";
+                return newState;
+              });
+            }
+          }
+        }else{
+          // Set experience error state and update error messages based on the input field
+          if (dateValidation(value)) {
+            if (name === "startDate") {
+              setExperienceErrorState(true);
+              setExperienceErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].startDate = "Invalid Format";
+                return newState;
+              });
+            } else if (name === "endDate") {
+              setExperienceErrorState(true);
+              setExperienceErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].endDate = "Invalid Format";
+                return newState;
+              });
+            }
+          } else {
+            // Reset experience error state and clear error messages based on the input field
+            setExperienceErrorState(false);
+            if (name === "startDate") {
+              setExperienceErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].startDate = "";
+                return newState;
+              });
+            } else if (name === "endDate") {
+              setExperienceErrors((prevState) => {
+                let newState = [...prevState];
+                newState[index].endDate = "";
+                return newState;
+              });
+            }
+          }
+        }
+      };
+       // Returning states and validation function
+    return {
+        handleValidation,
+        experienceErrors, setExperienceErrors,
+        educationErrorState, setEducationErrorState,
+        educationErrors, setEducationErrors,
+        experienceErrorState, setExperienceErrorState
+    }
 }
