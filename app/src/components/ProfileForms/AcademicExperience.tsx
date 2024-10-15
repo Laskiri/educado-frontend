@@ -3,6 +3,9 @@ import { Icon } from "@mdi/react";
 import React, { Fragment } from "react";
 import { mdiDelete } from "@mdi/js";
 
+import { UseFormRegister } from 'react-hook-form';
+import { NewApplication } from "../../interfaces/Application";
+
 //Exporting UI content&structure of
 export default function AcademicExperienceForm({
   index,
@@ -11,6 +14,7 @@ export default function AcademicExperienceForm({
   educationErrors,
   addNewEducationForm,
   handleEducationDelete,
+  register,
 }: {
   index: number;
   educationFormData: Array<{
@@ -26,6 +30,9 @@ export default function AcademicExperienceForm({
   educationErrors: Record<number, { startDate?: string; endDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
+  // register: UseFormRegister<NewApplication>;
+  register: any;
+  errors: unknown;
 }) {
 
   function displayInvalidDateFormatErrMsg(errorMsg: string) {
@@ -66,6 +73,10 @@ export default function AcademicExperienceForm({
             {/* Drop down list for educationLevel */}
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`academicLevel-${index}`}
+              {...register(`academicLevel-${index}`, { required: true })}
+
               name="educationLevel"
               value={educationFormData[index]?.educationLevel || ""}
               onChange={(value) => {
@@ -87,6 +98,10 @@ export default function AcademicExperienceForm({
             </label>
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`academicStatus-${index}`}
+              {...register(`academicStatus-${index}`, { required: true })}
+
               name="status"
               value={educationFormData[index]?.status || ""}
               onChange={(value) => {
@@ -109,6 +124,10 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`major-${index}`}
+              {...register(`major-${index}`, { required: true })}
+
               placeholder="Curso"
               type="text"
               name="course"
@@ -127,6 +146,10 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`institution-${index}`}
+              {...register(`institution-${index}`, { required: true })}
+
               placeholder="Instituição"
               type="text"
               name="institution"
@@ -147,6 +170,10 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`educationStartDate-${index}`}
+              {...register(`educationStartDate-${index}`, { required: true })}
+
               placeholder="Mês/Ano"
               type="text"
               max={4}
@@ -170,6 +197,10 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
+
+              id={`educationEndDate-${index}`}
+              {...register(`educationEndDate-${index}`, { required: true })}
+
               placeholder="Mês/Ano"
               type="text"
               max={4}

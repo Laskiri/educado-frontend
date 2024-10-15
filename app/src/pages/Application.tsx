@@ -1,7 +1,7 @@
 // Hooks
 import { useNavigate, Link, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // Services
 import AuthService from "../services/auth.services"
@@ -19,11 +19,16 @@ import { mdiChevronDown, mdiChevronUp } from "@mdi/js";
 import dynamicForms from "../utilities/dynamicForms";
 import { tempObjects } from "../helpers/formStates";
 import MiniNavbar from "../components/navbar/MiniNavbar";
+import motivation from "../components/Application/Motivation";
 
 const Application = () => {
 
   // State for the motivation form field
   const [isMotivationFilled, setIsMotivationFilled] = useState(false);
+
+  // States for
+  const [areAllFormsFilled, setAreAllFormsFilled] = useState(false);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
 
   // State for the confirmation modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -64,9 +69,18 @@ const Application = () => {
     experienceFormData,
     educationFormData,
     handleCheckboxChange,
+    SubmitValidation,
+    dynamicInputsFilled,
+    educationErrorState,
+    experienceErrorState,
   } = dynamicForms();
 
   const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
+
+  // TODO: unnecessary?
+  useEffect(() => {
+    setHasSubmitted(false);
+  }, [educationFormData, experienceFormData, motivation]);
 
   /**
     * OnSubmit function for Application.
@@ -76,6 +90,13 @@ const Application = () => {
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
+    // TODO: Somehow we never get in here ;.(
+    console.log("I am here in onSubmit()!");
+
+    if (hasSubmitted || educationErrorState || experienceErrorState ||
+        !dynamicInputsFilled("education") || !dynamicInputsFilled("experience"))
+      return;
+
     const applicationData = {
       motivation: data.motivation,
 
@@ -97,13 +118,17 @@ const Application = () => {
 
     AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
+        setIsModalVisible(false);     // TODO: remove!
+        console.log(applicationData);   // TODO: remove!
         navigate("/login", { state: { applicationSubmitted: true } });
-        // TODO: remove!
-        console.log(applicationData);
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
-    });
+    }).finally(() => {
+      // TODO: maybe not necessary?
+      setAreAllFormsFilled(false);
+      setHasSubmitted(true);
+    })
   };
 
   return (
@@ -128,10 +153,7 @@ const Application = () => {
       </div>
 
       {/* Dynamic forms for motivation, academic and professional experience */}
-      <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="text-center py-8 px-10 w-full"
-      >
+      <form className="text-center py-8 px-10 w-full">
         <div className="inline-block">
 
           {/* Motivation form */}
@@ -179,6 +201,8 @@ const Application = () => {
                   educationErrors={educationErrors}
                   addNewEducationForm={addNewEducationForm}
                   handleEducationDelete={handleEducationDelete}
+                  register={register}
+                  errors={errors}
               />
             ) : (
               educationFormData.map((form, index) => (
@@ -190,6 +214,8 @@ const Application = () => {
                       educationErrors={educationErrors}
                       addNewEducationForm={addNewEducationForm}
                       handleEducationDelete={handleEducationDelete}
+                      register={register}
+                      errors={errors}
                   />
               ))
             )
@@ -237,6 +263,8 @@ const Application = () => {
                     handleExperienceDelete={handleExperienceDelete}
                     handleCountExperience={handleCountExperience}
                     handleCheckboxChange={handleCheckboxChange}
+                    register={register}
+                    errors={errors}
                 />
             ) : (
               experienceFormData.map((form, index) => (
@@ -250,6 +278,8 @@ const Application = () => {
                       handleExperienceDelete={handleExperienceDelete}
                       handleCountExperience={handleCountExperience}
                       handleCheckboxChange={handleCheckboxChange}
+                      register={register}
+                      errors={errors}
                   />
               ))
             )
@@ -274,15 +304,23 @@ const Application = () => {
 
             {/* Send for analysis */}
             <button type="button"
-                    onClick={openModal}
-                    className={`px-10 py-4 rounded-lg justify-center items-center gap-2.5 flex text-center text-lg font-bold ${
-                        // Opacity dimmed when button is disabled
-                        isMotivationFilled
-                            ? 'bg-primary hover:bg-cyan-900 text-white'
-                            : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'}`}
+              onClick={() => {
+                SubmitValidation();
 
-                    // Button is disabled if motivation form field is not filled out
-                    disabled={!isMotivationFilled}
+                if (!submitError && areAllFormsFilled) {
+                  console.log("submitError is false!");     // TODO: remove!
+                  openModal()
+                }
+              }}
+
+              className={`px-10 py-4 rounded-lg justify-center items-center gap-2.5 flex text-center text-lg font-bold ${
+                // Opacity dimmed when button is disabled
+                isMotivationFilled
+                    ? 'bg-primary hover:bg-cyan-900 text-white'
+                    : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'}`}
+
+              // Button is disabled if motivation form field is not filled out
+              disabled={!isMotivationFilled}
             >
               Enviar para análise
             </button>

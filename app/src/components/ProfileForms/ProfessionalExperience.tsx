@@ -3,6 +3,9 @@ import { Icon } from "@mdi/react";
 import React, { Fragment } from "react";
 import {mdiAlertCircleOutline, mdiDelete} from "@mdi/js";
 
+import { UseFormRegister } from 'react-hook-form';
+import { NewApplication } from "../../interfaces/Application";
+
 //Exporting UI content&structure of
 export default function ProfessionalExperienceForm({
   index,
@@ -13,6 +16,7 @@ export default function ProfessionalExperienceForm({
   handleExperienceDelete,
   handleCountExperience,
   handleCheckboxChange,
+  register,
 }: {
   index: number;
   experienceFormData: Array<{
@@ -30,6 +34,9 @@ export default function ProfessionalExperienceForm({
   handleExperienceDelete: (index: number, id: string) => void;
   handleCountExperience: (index: number) => number;
   handleCheckboxChange: (index: number) => void;
+  // register: UseFormRegister<NewApplication>;
+  register: any;
+  errors: unknown;
 }) {
 
   function displayInvalidDateFormatErrMsg(errorMsg: string) {
@@ -68,7 +75,11 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-                placeholder="Mobile experience new"
+
+                id="company"
+                {...register("company", { required: true })}
+
+                placeholder="Mobile experience new"     // TODO: fix
                 type="text"
                 name="company"
                 value={experienceFormData[index]?.company || ""}
@@ -86,7 +97,11 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-                placeholder="Product designer"
+
+                id="position"
+                {...register("position", { required: true })}
+
+                placeholder="Product designer"    // TODO: fix
                 type="text"
                 name="jobTitle"
                 value={experienceFormData[index]?.jobTitle || ""}
@@ -106,6 +121,10 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
+
+                id="workStartDate"
+                {...register("workStartDate", { required: true })}
+
                 placeholder="Mês/Ano"
                 type="text"
                 name="startDate"
@@ -128,6 +147,10 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
+
+                id="workEndDate"
+                {...register("workEndDate", { required: true })}
+
                 placeholder="Mês/Ano"
                 type="text"
                 name="endDate"
@@ -165,6 +188,10 @@ export default function ProfessionalExperienceForm({
             </label>
             <textarea
               className="h-[120px] bg-[#E4F2F5] rounded-lg border-none resize-none text-lg font-normal font-['Montserrat']"
+
+              id="workActivities"
+              {...register("workActivities", { required: true })}
+
               placeholder="Escreva aqui as suas responsabilidadees"
               maxLength={400}
               name="description"
