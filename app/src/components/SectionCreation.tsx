@@ -184,7 +184,7 @@ export const SectionCreation = ({
           index={0}
           toolTipIndex={toolTipIndex}
           text={
-            "👩🏻‍🏫Aqui você pode criar novas seções com exercícios ou aulas!"
+            "Aqui você pode criar novas seções com exercícios ou aulas!"
           }
           tooltipAmount={2}
           callBack={setToolTipIndex}
