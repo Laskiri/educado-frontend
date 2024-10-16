@@ -207,10 +207,10 @@ export function SortableItem({
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
               <ToolTipIcon
-                index={1}
+                index={0}
                 toolTipIndex={toolTipIndex}
                 text={"Aqui você pode dar uma descrição para a sua seção."}
-                tooltipAmount={2}
+                tooltipAmount={1}
                 callBack={setToolTipIndex}
               />
             </div>
