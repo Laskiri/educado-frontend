@@ -30,8 +30,7 @@ export default function AcademicExperienceForm({
   educationErrors: Record<number, { startDate?: string; endDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
-  // register: UseFormRegister<NewApplication>;
-  register: any;
+  register: any | UseFormRegister<NewApplication>;  // TODO: maybe remove '| UseFormRegister<NewApplication>'?
   errors: unknown;
 }) {
 
@@ -78,7 +77,8 @@ export default function AcademicExperienceForm({
               {...register(`academicLevel-${index}`, { required: true })}
 
               name="educationLevel"
-              value={educationFormData[index]?.educationLevel || ""}
+              defaultValue="Basic"    // TODO: this should work but somehow doesn't ;.(
+              value={educationFormData[index]?.educationLevel || ""}  // TODO: maybe "Basic" instead "" here?
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}

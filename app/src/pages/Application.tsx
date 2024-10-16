@@ -307,7 +307,7 @@ const Application = () => {
               onClick={() => {
                 SubmitValidation();
 
-                if (!submitError && areAllFormsFilled) {
+                if (!submitError) { // && areAllFormsFilled) {     // TODO: include when state is updated correctly
                   console.log("submitError is false!");     // TODO: remove!
                   openModal()
                 }
