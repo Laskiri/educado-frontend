@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import useSWR from "swr";
 import { Link, useLocation } from 'react-router-dom';
-import AuthServices from "../services/auth.services";
 import Loading from "../components/general/Loading";
 import Layout from "../components/Layout";
 import DeleteUserButton from "../components/DeleteUserButton";
 import ViewUserButton from "./ViewUserButton";
 import AdminToggleButton from "../components/AdminToggle";
+import AdminServices from "../services/admin.services";
 
 const EducadoAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedButton, setSelectedButton] = useState('users');
 
     const location = useLocation();
-    const { data, mutate } = useSWR('api/applications', AuthServices.GetCCApplications);
+    const { data, mutate } = useSWR('api/user-info', AdminServices.getUserApplications);
 
     if (!data) return <Loading/>
 

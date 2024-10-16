@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import RejectModal from './RejectModal';
 import ApproveModal from './ApproveModal';
+import AuthServices from '../services/auth.services';
+import useSWR from 'swr';
 
 interface UserDetailsModalProps {
   isOpen: boolean;
@@ -9,9 +11,10 @@ interface UserDetailsModalProps {
   token: string;
   applicationId: string;
   onHandleStatus: () => void;
+  userApplication: any; // Replace with the appropriate type
 }
 
-const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
@@ -19,11 +22,6 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
   if (!isOpen) return null;
-
-  console.log(userDetails);
-  console.log('Application:', userDetails.application);
-  console.log('Motivation:', userDetails.application?.motivation);
-
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -95,7 +93,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
                 <div className="flex flex-col">
                   <dt className="text-[#166276] text-base font-bold font-['Lato']">Status</dt>
                   <dd id="date" className="text-base font-['Montserrat'] text-gray-900 break-all">
-                    Aguardando analise
+                    {userDetails.approved ? "Aprovado" : userDetails.rejected ? "Recusado" : "Aguardando análise"}
                   </dd>
                 </div>
               </div>
@@ -118,7 +116,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               </button>
               {isDropdownOpen && (
                 <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">{userDetails.application?.motivation || "No motivation provided"}</p>
+                  <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.motivation !== undefined ? userApplication.application.motivation : "No motivation provided"}</p>
                 </div>
               )}
               <button
@@ -140,7 +138,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               </button>
               {isDropdownOpen2 && (
                 <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">Additional details go here...</p>
+                  <p className="text-base font-['Montserrat'] text-gray-900">{}</p>
                 </div>
               )}
               <button
@@ -162,7 +160,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               </button>
               {isDropdownOpen3 && (
                 <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">Additional details go here...</p>
+                  <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "No motivation provided"}</p>
                 </div>
               )}
             </div>

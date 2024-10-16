@@ -9,12 +9,20 @@ const deleteUser = async (id: string, token: string) => {
     return res.data;
 }
 
-const getUserDetails = async (id: string, token: string) => {
+const getSingleUserDetails = async (id: string, token: string) => {
     const res = await axios.get(
         `${BACKEND_URL}/api/users/${id}`, 
         { headers: { Authorization: `Bearer ${token}` } }
     );
     return res.data;
+}
+
+const getUserApplications = async (token: string) => {
+    const res = await axios.get(
+        `${BACKEND_URL}/api/user-info`, 
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res;
 }
 
 const changeUserRole = async (id: string, token: string, newRole: string) => {
@@ -28,7 +36,8 @@ const changeUserRole = async (id: string, token: string, newRole: string) => {
 
 const AdminServices = {
     deleteUser,
-    getUserDetails,
+    getSingleUserDetails,
+    getUserApplications,
     changeUserRole,
 }
 
