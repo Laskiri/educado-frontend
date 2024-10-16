@@ -36,32 +36,32 @@ export const ToolTipInfoBox = ({textContent,myIndex,maxIndex, callBack}:Inputs) 
 					<div className='flex-col w-1/2 space-x-48'>
 								
 						<div>{myIndex+1}/{maxIndex}</div> 
-						<label id={'tooltipFinish'} className='std-button btn shadow-none hover:text-white-400 underline' onClick={()=>{callBack(myIndex+1)}}>Feshar</label>  
+						<label id={'tooltipFinish'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 cursor-pointer underline' onClick={()=>{callBack(myIndex+1)}}>Feshar</label>  
 					</div>
 				:
 				// If it is the last page, show the "Voltar/Back" "Feshar/Finish" button
 				myIndex === maxIndex-1 ?
 					<div className='flex w-1/3 space-x-40'>
 
-						<label id={'tooltipBack'} className='std-button underline shadow-none hover:bg-transparent hover:text-white-400 bg-transparent' onClick={()=>{callBack(myIndex-1);}}>Voltar </label> 
+						<label id={'tooltipBack'} className='std-button underline shadow-none hover:bg-transparent hover:text-white-400 bg-transparent cursor-pointer' onClick={()=>{callBack(myIndex-1);}}>Voltar </label> 
 						<div>{myIndex+1}/{maxIndex}</div> 
-						<label id={'tooltipFinish'} className='std-button underline shadow-none hover:bg-transparent hover:text-white-400  bg-transparent' onClick={()=>{callBack(myIndex+1)}}>Feshar</label>  
+						<label id={'tooltipFinish'} className='std-button underline shadow-none hover:bg-transparent hover:text-white-400 bg-transparent cursor-pointer' onClick={()=>{callBack(myIndex+1)}}>Feshar</label>  
 					</div>
 				:
 				// If it is the first page, show the "Próximo/Next" button
 				myIndex === 0 ?
 					<div className='flex w-1/2 space-x-40'>
 						<p>{myIndex+1}/{maxIndex}</p> 
-						<label id={'tooltipNext'} className='std-button shadow-none hover:bg-transparent hover:text-white-400  underline'onClick={()=>{callBack(myIndex+1)}}>Próximo</label>
+						<label id={'tooltipNext'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 cursor-pointer underline'onClick={()=>{callBack(myIndex+1)}}>Próximo</label>
 					</div>
 				// If it is any other page, show the "Voltar/Back" "Próximo/Next" button
 				:
 					<div className='flex w-1/2 space-x-10'>
 					
 						<div className='flex w-1/3 space-x-48'>
-							<label id={'tooltipBack'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 underline hover:bg-transparent' onClick={()=>{callBack(myIndex-1)}}>Voltar </label> 
+							<label id={'tooltipBack'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 underline hover:bg-transparent cursor-pointer' onClick={()=>{callBack(myIndex-1)}}>Voltar </label> 
 							<div>{myIndex+1}/{maxIndex}</div>
-							<label id={'tooltipNext'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 underline hover:bg-transparent' onClick={()=>{callBack(myIndex+1)}}>Próximo</label> 
+							<label id={'tooltipNext'} className='std-button shadow-none hover:bg-transparent hover:text-white-400 underline hover:bg-transparent cursor-pointer' onClick={()=>{callBack(myIndex+1)}}>Próximo</label> 
 						</div>
 					</div>
 				}
