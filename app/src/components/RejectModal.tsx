@@ -25,7 +25,7 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
 
     try {
       console.log("Rejecting application for user ID:", applicationId);
-      await AuthServices.RejectApplication(applicationId);
+      await AuthServices.RejectApplication(applicationId, justification);
       onClose(); // Close the modal after rejection
       onHandleStatus();
       toast.success("Application rejected!");
@@ -111,7 +111,6 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
             <button
               className="bg-[#FE4949] hover:bg-[#E44040] text-white p-3 rounded-lg text-base font-base font-['Lato'] w-32"
               onClick={handleReject}
-              disabled={!justification.trim()}
             >
               Recusar
             </button>
