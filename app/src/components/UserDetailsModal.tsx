@@ -12,9 +12,10 @@ interface UserDetailsModalProps {
   applicationId: string;
   onHandleStatus: () => void;
   userApplication: any; // Replace with the appropriate type
+  contentCreator: any; // Replace with the appropriate type
 }
 
-const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication, contentCreator }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
@@ -92,8 +93,8 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
                 </div>
                 <div className="flex flex-col">
                   <dt className="text-[#166276] text-base font-bold font-['Lato']">Status</dt>
-                  <dd id="date" className="text-base font-['Montserrat'] text-gray-900 break-all">
-                    {userDetails.approved ? "Aprovado" : userDetails.rejected ? "Recusado" : "Aguardando análise"}
+                  <dd id="status" className="text-base font-['Montserrat'] text-gray-900 break-all">
+                  {contentCreator ? (contentCreator.approved ? ("Aprovado") : contentCreator.rejected ? ("Recusado") : "Aguardando análise") : null}
                   </dd>
                 </div>
               </div>
@@ -115,7 +116,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
                 <span className="ml-2">Motivações</span>
               </button>
               {isDropdownOpen && (
-                <div className="p-4 bg-white rounded-b-lg shadow">
+                <div className="p-4 bg-white rounded-b-lg shadow break-all">
                   <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.motivation !== undefined ? userApplication.application.motivation : "No motivation provided"}</p>
                 </div>
               )}
@@ -137,8 +138,20 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
                 <span className="ml-2">Experiências acadêmicas</span>
               </button>
               {isDropdownOpen2 && (
-                <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">{}</p>
+                <div className="p-4 bg-white rounded-b-lg shadow break-all">
+                  <p className="text-base font-['Montserrat'] text-gray-900">
+                    Academic level: {userApplication?.application?.academicLevel !== undefined ? userApplication.application.academicLevel : "No academic level provided"}
+                    <br />
+                    Academic status: {userApplication?.application?.academicStatus !== undefined ? userApplication.application.academicStatus : "No academic status provided"}
+                    <br />
+                    Major: {userApplication?.application?.major !== undefined ? userApplication.application.major : "No major provided"}
+                    <br />
+                    Institution: {userApplication?.application?.institution !== undefined ? userApplication.application.institution : "No institution provided"}
+                    <br />
+                    Education start date: {userApplication?.application?.educationStartDate !== undefined ? userApplication.application.educationStartDate : "No education start date provided"}
+                    <br />
+                    Education end date: {userApplication?.application?.educationEndDate !== undefined ? userApplication.application.educationEndDate : "No education end date provided"}
+                    </p>
                 </div>
               )}
               <button
@@ -159,8 +172,18 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
                 <span className="ml-2">Experiências profissionais</span>
               </button>
               {isDropdownOpen3 && (
-                <div className="p-4 bg-white rounded-b-lg shadow">
-                  <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "No motivation provided"}</p>
+                <div className="p-4 bg-white rounded-b-lg shadow break-all">
+                  <p className="text-base font-['Montserrat'] text-gray-900">
+                    Company: {userApplication?.application?.company !== undefined ? userApplication.application.company : "No company provided"}
+                    <br />
+                    Position: {userApplication?.application?.position !== undefined ? userApplication.application.position : "No position provided"}
+                    <br />
+                    Work activities: {userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "No work activities provided"}
+                    <br />
+                    Work start date: {userApplication?.application?.workStartDate !== undefined ? userApplication.application.workStartDate : "No work start date provided"}
+                    <br />
+                    Work end date: {userApplication?.application?.workEndDate !== undefined ? userApplication.application.workEndDate : "No work end date provided"}
+                    </p>
                 </div>
               )}
             </div>

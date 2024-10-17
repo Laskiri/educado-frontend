@@ -34,11 +34,21 @@ const changeUserRole = async (id: string, token: string, newRole: string) => {
     return res.data;
 }
 
+const getContentCreator = async (id: string, token: string) => {
+    const res = await axios.get(
+        `${BACKEND_URL}/api/user-info/${id}`, 
+        { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
+}
+
+
 const AdminServices = {
     deleteUser,
     getSingleUserDetails,
     getUserApplications,
     changeUserRole,
+    getContentCreator
 }
 
 export default AdminServices;
