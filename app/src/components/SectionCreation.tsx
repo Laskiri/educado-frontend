@@ -184,9 +184,9 @@ export const SectionCreation = ({
           index={0}
           toolTipIndex={toolTipIndex}
           text={
-            "Aqui você pode criar novas seções com exercícios ou aulas!"
+            "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
           }
-          tooltipAmount={1}
+          tooltipAmount={2}
           callBack={setToolTipIndex}
         />
         </div>
