@@ -90,44 +90,37 @@ const Application = () => {
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-    // TODO: Somehow we never get in here ;.(
-    console.log("I am here in onSubmit()!");
-
-    if (hasSubmitted || educationErrorState || experienceErrorState ||
+    /*if (hasSubmitted || educationErrorState || experienceErrorState ||
         !dynamicInputsFilled("education") || !dynamicInputsFilled("experience"))
-      return;
+      return;*/
 
     const applicationData = {
+      baseUser: id,
       motivation: data.motivation,
 
-      academicLevel: data.academicLevel,
-      academicStatus: data.academicStatus,
-      major: data.major,
-      institution: data.institution,
-      educationStartDate: data.educationStartDate,
-      educationEndDate: data.educationEndDate,
+      educationLevel: educationFormData.map((data) => data.educationLevel),
+      academicStatus: educationFormData.map((data) => data.status),
+      major: educationFormData.map((data) => data.course),
+      institution: educationFormData.map((data) => data.institution),
+      educationStartDate: educationFormData.map((data) => data.educationStartDate),
+      educationEndDate: educationFormData.map((data) => data.educationEndDate),
 
-      company: data.company,
-      position: data.position,
-      workStartDate: data.workStartDate,
-      workEndDate: data.workEndDate,
-      workActivities: data.workActivities,
-
-      baseUser: id
+      company: experienceFormData.map((data) => data.company),
+      position: experienceFormData.map((data) => data.jobTitle),
+      workStartDate: experienceFormData.map((data) => data.workStartDate),
+      workEndDate: experienceFormData.map((data) => data.workEndDate),
+      workActivities: experienceFormData.map((data) => data.description)
     };
+
+    console.log("[Pre post] applicationData: ", applicationData);
 
     AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
-        setIsModalVisible(false);     // TODO: remove!
-        console.log(applicationData);   // TODO: remove!
         navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
-    }).finally(() => {
-      // TODO: maybe not necessary?
-      setAreAllFormsFilled(false);
-      setHasSubmitted(true);
+      navigate("/login", { state: { applicationSubmitted: true } });  // TODO: remove!
     })
   };
 
@@ -304,7 +297,9 @@ const Application = () => {
 
             {/* Send for analysis */}
             <button type="button"
+              // onClick={handleSubmit(onSubmit)}
               onClick={() => {
+
                 SubmitValidation();
 
                 if (!submitError) { // && areAllFormsFilled) {     // TODO: include when state is updated correctly

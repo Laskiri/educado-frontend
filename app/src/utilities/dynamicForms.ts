@@ -46,8 +46,8 @@ export default () => {
         setEducationErrors((prevState) => {
           let newState = [...prevState];
           newState.push({
-            startDate: "",
-            endDate: "",
+            educationStartDate: "",
+            educationEndDate: "",
           });
           return newState;
         });
@@ -62,8 +62,8 @@ export default () => {
       setExperienceErrors((prevState) => {
         let newState = [...prevState];
         newState.push({
-          startDate: "",
-          endDate: "",
+          workStartDate: "",
+          workEndDate: "",
         });
         return newState;
       });
@@ -80,10 +80,10 @@ export default () => {
     index: number
   ) => {
     let { name, value } = event.target;
-    if ((name == "startDate" || name == "endDate") && value.length > 5) {
+    if ((name == "educationStartDate" || name == "educationEndDate") && value.length > 5) {
       return;
     }
-    if (name == "startDate" || name == "endDate") {
+    if (name == "educationStartDate" || name == "educationEndDate") {
       value = value.replace(/[^0-9/]/g, "");
     }
 
@@ -106,8 +106,8 @@ export default () => {
     if (dynamicForm === "education") {
       const EducationInputsFilled = educationFormData.every(
         (item) =>
-          item.startDate?.trim() !== "" &&
-          item.endDate?.trim() !== "" &&
+          item.educationStartDate?.trim() !== "" &&
+          item.educationEndDate?.trim() !== "" &&
           item.course?.trim() !== "" &&
           item.institution?.trim() !== ""
       );
@@ -119,8 +119,8 @@ export default () => {
         (item) =>
           item.company?.trim() !== "" &&
           item.jobTitle?.trim() !== "" &&
-          item.startDate?.trim() !== "" &&
-          item.endDate?.trim() !== "" &&
+          item.workStartDate?.trim() !== "" &&
+          item.workEndDate?.trim() !== "" &&
           item.description?.trim() !== ""
       );
       console.log("Experience form filled: ", ExperienceInputsFilled, "\nData: ", experienceFormData)
@@ -149,8 +149,8 @@ export default () => {
       setEducationErrors((prevState) => {
         let newState = [...prevState];
         newState.push({
-          startDate: "",
-          endDate: "",
+          educationStartDate: "",
+          educationEndDate: "",
         });
         return newState;
       });
@@ -161,8 +161,8 @@ export default () => {
           institution: "",
           course: "",
           educationLevel: "",
-          startDate: "",
-          endDate: "",
+          educationStartDate: "",
+          educationEndDate: "",
           _id: null,
         },
       ]);
@@ -183,8 +183,8 @@ export default () => {
 
     //input date Validation state
     if (
-      educationErrors[index].startDate != "" ||
-      educationErrors[index].endDate != ""
+      educationErrors[index].educationStartDate != "" ||
+      educationErrors[index].educationEndDate != ""
     ) {
       setEducationErrorState(false);
     }
@@ -202,8 +202,8 @@ export default () => {
       setExperienceErrors((prevState) => {
         let newState = [...prevState];
         newState.push({
-          startDate: "",
-          endDate: "",
+          workStartDate: "",
+          workEndDate: "",
         });
         return newState;
       });
@@ -212,8 +212,8 @@ export default () => {
         {
           company: "",
           jobTitle: "",
-          startDate: "",
-          endDate: "",
+          workStartDate: "",
+          workEndDate: "",
           checkBool: false,
           description: "",
           _id: null,
@@ -248,8 +248,8 @@ export default () => {
 
     // If deleted state has validation error then clear state
     if (
-      experienceErrors[index].startDate != "" ||
-      experienceErrors[index].endDate != ""
+      experienceErrors[index].workStartDate != "" ||
+      experienceErrors[index].workEndDate != ""
     ) {
       setExperienceErrorState(false);
     }
@@ -277,11 +277,11 @@ export default () => {
     index: number
   ): void => {
     // let { name, value } = event.target;
-    let { name, value } = event.target as { name: "startDate" | "endDate"; value: string };
-    if ((name == "startDate" || name == "endDate") && value.length > 5) {
+    let { name, value } = event.target as { name: "workStartDate" | "workEndDate"; value: string };
+    if ((name == "workStartDate" || name == "workEndDate") && value.length > 5) {
       return;
     }
-    if (name == "startDate" || name == "endDate") {
+    if (name == "workStartDate" || name == "workEndDate") {
 
       value = value.replace(/[^0-9/]/g, "");
     }

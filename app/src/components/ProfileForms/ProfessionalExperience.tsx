@@ -22,8 +22,8 @@ export default function ProfessionalExperienceForm({
   experienceFormData: Array<{
     company?: string;
     jobTitle?: string;
-    startDate?: string;
-    endDate?: string;
+    workStartDate?: string;
+    workEndDate?: string;
     description?: string;
     checkBool?: boolean;
     _id?: string | number | null;
@@ -34,8 +34,7 @@ export default function ProfessionalExperienceForm({
   handleExperienceDelete: (index: number, id: string) => void;
   handleCountExperience: (index: number) => number;
   handleCheckboxChange: (index: number) => void;
-  // register: UseFormRegister<NewApplication>;
-  register: any;
+  register: UseFormRegister<NewApplication>;
   errors: unknown;
 }) {
 
@@ -76,10 +75,10 @@ export default function ProfessionalExperienceForm({
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
 
-                id="company"
+                id={`company-${index}`}
                 {...register("company", { required: true })}
 
-                placeholder="Mobile experience new"     // TODO: fix
+                placeholder="Empresa"
                 type="text"
                 name="company"
                 value={experienceFormData[index]?.company || ""}
@@ -98,10 +97,10 @@ export default function ProfessionalExperienceForm({
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
 
-                id="position"
-                {...register("position", { required: true })}
+                id={`jobTitle-${index}`}
+                {...register("jobTitle", { required: true })}
 
-                placeholder="Product designer"    // TODO: fix
+                placeholder="Cargo"
                 type="text"
                 name="jobTitle"
                 value={experienceFormData[index]?.jobTitle || ""}
@@ -114,7 +113,7 @@ export default function ProfessionalExperienceForm({
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col ">
               <label htmlFor="firstName" className="font-['Montserrat']">
-                início:
+                Início:
                 <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
                   *
                 </span>
@@ -122,20 +121,21 @@ export default function ProfessionalExperienceForm({
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
 
-                id="workStartDate"
+                id={`workStartDate-${index}`}
                 {...register("workStartDate", { required: true })}
 
                 placeholder="Mês/Ano"
                 type="text"
-                name="startDate"
-                value={experienceFormData[index]?.startDate || ""}
+                maxLength={7}
+                name="workStartDate"
+                value={experienceFormData[index]?.workStartDate || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
               />
 
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceErrors[index].startDate)}
+              {displayInvalidDateFormatErrMsg(experienceErrors[index].workStartDate)}
 
             </div>
             <div className="flex flex-col ">
@@ -148,20 +148,21 @@ export default function ProfessionalExperienceForm({
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
 
-                id="workEndDate"
+                id={`workEndDate-${index}`}
                 {...register("workEndDate", { required: true })}
 
                 placeholder="Mês/Ano"
                 type="text"
-                name="endDate"
-                value={experienceFormData[index]?.endDate || ""}
+                maxLength={7}
+                name="workEndDate"
+                value={experienceFormData[index]?.workEndDate || ""}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
               />
 
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceErrors[index].endDate)}
+              {displayInvalidDateFormatErrMsg(experienceErrors[index].workEndDate)}
 
             </div>
           </div>
@@ -189,8 +190,8 @@ export default function ProfessionalExperienceForm({
             <textarea
               className="h-[120px] bg-[#E4F2F5] rounded-lg border-none resize-none text-lg font-normal font-['Montserrat']"
 
-              id="workActivities"
-              {...register("workActivities", { required: true })}
+              id={`description-${index}`}
+              {...register("description", { required: true })}
 
               placeholder="Escreva aqui as suas responsabilidadees"
               maxLength={400}
@@ -204,6 +205,7 @@ export default function ProfessionalExperienceForm({
               {handleCountExperience(index)}/400 caracteres
             </div>
           </div>
+
           {/* Delete button is displayed on all forms except the first one */}
           {index > 0 && (
             <div className="flex justify-end gap-1">
@@ -229,6 +231,7 @@ export default function ProfessionalExperienceForm({
               </button>
             </div>
           )}
+
           {/* only display border on last form otherwise create distance */}
           <div
             className={
@@ -237,6 +240,7 @@ export default function ProfessionalExperienceForm({
                 : "py-30 mt-5"
             }
           />
+
           {/* Btn is only visible on last created form*/}
           {index === experienceFormData.length - 1 ? (
             <>

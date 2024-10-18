@@ -22,15 +22,15 @@ export default function AcademicExperienceForm({
     status?: string;
     course?: string;
     institution?: string;
-    startDate?: string;
-    endDate?: string;
+    educationStartDate?: string;
+    educationEndDate?: string;
     _id?: string | number | null;
   }>;
   handleEducationInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
-  educationErrors: Record<number, { startDate?: string; endDate?: string; [key: string]: string | undefined }>;
+  educationErrors: Record<number, { educationStartDate?: string; educationEndDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
-  register: any | UseFormRegister<NewApplication>;  // TODO: maybe remove '| UseFormRegister<NewApplication>'?
+  register: UseFormRegister<NewApplication>;
   errors: unknown;
 }) {
 
@@ -69,25 +69,30 @@ export default function AcademicExperienceForm({
                 *
               </span>
             </label>
+
             {/* Drop down list for educationLevel */}
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
 
-              id={`academicLevel-${index}`}
-              {...register(`academicLevel-${index}`, { required: true })}
+              id={`educationLevel-${index}`}
+              {...register("educationLevel", { required: true })}
 
               name="educationLevel"
-              defaultValue="Basic"    // TODO: this should work but somehow doesn't ;.(
-              value={educationFormData[index]?.educationLevel || ""}  // TODO: maybe "Basic" instead "" here?
+              value={educationFormData[index]?.educationLevel || ""}
               onChange={(value) => {
+                if (value.target.value !== "")
+                  value.target.focus();
+
                 handleEducationInputChange(value, index);
               }}
             >
+              <option value="" disabled hidden>Formação</option>
               <option value="Basic">Básico</option>
               <option value="Medium">Médio</option>
               <option value="Superior">Superior</option>
             </select>
           </div>
+
           {/* Drop down list for status */}
           <div className="flex flex-col ">
             <label htmlFor="status" className="font-['Montserrat']">
@@ -97,17 +102,21 @@ export default function AcademicExperienceForm({
               </span>
             </label>
             <select
-              className="bg-[#E4F2F5] rounded-lg border-none"
+                className="bg-[#E4F2F5] rounded-lg border-none"
 
-              id={`academicStatus-${index}`}
-              {...register(`academicStatus-${index}`, { required: true })}
+                id={`status-${index}`}
+                {...register("status", {required: true})}
 
-              name="status"
-              value={educationFormData[index]?.status || ""}
-              onChange={(value) => {
-                handleEducationInputChange(value, index);
-              }}
+                name="status"
+                value={educationFormData[index]?.status || ""}
+                onChange={(value) => {
+                  if (value.target.value !== "")
+                    value.target.focus();
+
+                  handleEducationInputChange(value, index);
+                }}
             >
+              <option value="" disabled hidden>Status</option>
               <option value="Progressing">Em andamento</option>
               <option value="Done">Concluída</option>
               <option value="Not Done">Não finalizado</option>
@@ -125,8 +134,8 @@ export default function AcademicExperienceForm({
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
 
-              id={`major-${index}`}
-              {...register(`major-${index}`, { required: true })}
+              id={`course-${index}`}
+              {...register("course", { required: true })}
 
               placeholder="Curso"
               type="text"
@@ -148,7 +157,7 @@ export default function AcademicExperienceForm({
               className="bg-[#E4F2F5] rounded-lg border-none"
 
               id={`institution-${index}`}
-              {...register(`institution-${index}`, { required: true })}
+              {...register("institution", { required: true })}
 
               placeholder="Instituição"
               type="text"
@@ -163,7 +172,7 @@ export default function AcademicExperienceForm({
         <div className="grid grid-cols-2 gap-3">
           <div className="flex flex-col ">
             <label htmlFor="firstName" className="font-['Montserrat']">
-              início:
+              Início:
               <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
                 *
               </span>
@@ -172,20 +181,20 @@ export default function AcademicExperienceForm({
               className="bg-[#E4F2F5] rounded-lg border-none"
 
               id={`educationStartDate-${index}`}
-              {...register(`educationStartDate-${index}`, { required: true })}
+              {...register("educationStartDate", { required: true })}
 
               placeholder="Mês/Ano"
               type="text"
-              max={4}
-              name="startDate"
-              value={educationFormData[index]?.startDate || ""}
+              maxLength={7}
+              name="educationStartDate"
+              value={educationFormData[index]?.educationStartDate || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
             />
 
             {/* Display invalid date input error message */}
-            {displayInvalidDateFormatErrMsg(educationErrors[index].startDate)}
+            {displayInvalidDateFormatErrMsg(educationErrors[index].educationStartDate)}
 
           </div>
           <div className="flex flex-col ">
@@ -199,20 +208,20 @@ export default function AcademicExperienceForm({
               className="bg-[#E4F2F5] rounded-lg border-none"
 
               id={`educationEndDate-${index}`}
-              {...register(`educationEndDate-${index}`, { required: true })}
+              {...register("educationEndDate", { required: true })}
 
               placeholder="Mês/Ano"
               type="text"
-              max={4}
-              name="endDate"
-              value={educationFormData[index]?.endDate || ""}
+              maxLength={7}
+              name="educationEndDate"
+              value={educationFormData[index]?.educationEndDate || ""}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
             />
 
             {/* Display invalid date input error message */}
-            {displayInvalidDateFormatErrMsg(educationErrors[index].endDate)}
+            {displayInvalidDateFormatErrMsg(educationErrors[index].educationEndDate)}
 
           </div>
         </div>

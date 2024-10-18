@@ -24,8 +24,8 @@ export const useEducationFormData = () => {
       institution: "",
       course: "",
       educationLevel: "",
-      startDate: "",
-      endDate: "",
+      educationStartDate: "",
+      educationEndDate: "",
       _id: null,
     },
   ]);
@@ -39,8 +39,8 @@ export const useExperienceFormData = () => {
     {
       company: "",
       jobTitle: "",
-      startDate: "",
-      endDate: "",
+      workStartDate: "",
+      workEndDate: "",
       checkBool: false,
       description: "",
       _id: null,
@@ -55,8 +55,8 @@ export const useExperienceFormData = () => {
 export const useEducationErrors = () => {
 const [educationErrors, setEducationErrors] = useState([
   {
-    startDate: "",
-    endDate: "",
+    educationStartDate: "",
+    educationEndDate: "",
   },
 ]);
 
@@ -69,8 +69,8 @@ export const useExperienceErrors = () => {
 // Error states professionnal
 const [experienceErrors, setExperienceErrors] = useState([
   {
-    startDate: "",
-    endDate: "",
+    workStartDate: "",
+    workEndDate: "",
   },
 ]);
 const [experienceErrorState, setExperienceErrorState] = useState(false);
@@ -86,8 +86,8 @@ export const tempObjects = () => {
         institution: "",
         course: "",
         educationLevel: "",
-        startDate: "",
-        endDate: "",
+        educationStartDate: "",
+        educationEndDate: "",
         _id: null,
       },
     ];
@@ -97,8 +97,8 @@ export const tempObjects = () => {
       {
         company: "",
         jobTitle: "",
-        startDate: "",
-        endDate: "",
+        workStartDate: "",
+        workEndDate: "",
         checkBool: false,
         description: "",
         _id: null,
@@ -114,8 +114,8 @@ export const tempObjects = () => {
       {
         company: "",
         jobTitle: "",
-        startDate: "",
-        endDate: "",
+        workStartDate: "",
+        workEndDate: "",
         checkBool: false,
         description: "",
         _id: null,

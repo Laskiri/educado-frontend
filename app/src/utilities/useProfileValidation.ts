@@ -34,34 +34,34 @@ export default ()=>{
         // Set education error state and update error messages based on the input field
         if(forForm == 'education'){
           if (dateValidation(value)) {
-            if (name === "startDate") {
+            if (name === "educationStartDate") {
               setEducationErrorState(true);
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = invalidDateFormatErrMsgStr;
+                newState[index].educationStartDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
-            } else if (name === "endDate") {
+            } else if (name === "educationEndDate") {
               setEducationErrorState(true);
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = invalidDateFormatErrMsgStr;
+                newState[index].educationEndDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             }
           } else {
             // Reset education error state and clear error messages based on the input field
             setEducationErrorState(false);
-            if (name === "startDate") {
+            if (name === "educationStartDate") {
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = "";
+                newState[index].educationStartDate = "";
                 return newState;
               });
-            } else if (name === "endDate") {
+            } else if (name === "educationEndDate") {
               setEducationErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = "";
+                newState[index].educationEndDate = "";
                 return newState;
               });
             }
@@ -69,34 +69,34 @@ export default ()=>{
         }else{
           // Set experience error state and update error messages based on the input field
           if (dateValidation(value)) {
-            if (name === "startDate") {
+            if (name === "workStartDate") {
               setExperienceErrorState(true);
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = invalidDateFormatErrMsgStr;
+                newState[index].workStartDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
-            } else if (name === "endDate") {
+            } else if (name === "workEndDate") {
               setExperienceErrorState(true);
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = invalidDateFormatErrMsgStr;
+                newState[index].workEndDate = invalidDateFormatErrMsgStr;
                 return newState;
               });
             }
           } else {
             // Reset experience error state and clear error messages based on the input field
             setExperienceErrorState(false);
-            if (name === "startDate") {
+            if (name === "workStartDate") {
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].startDate = "";
+                newState[index].workStartDate = "";
                 return newState;
               });
-            } else if (name === "endDate") {
+            } else if (name === "workEndDate") {
               setExperienceErrors((prevState) => {
                 let newState = [...prevState];
-                newState[index].endDate = "";
+                newState[index].workEndDate = "";
                 return newState;
               });
             }

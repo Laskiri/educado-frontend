@@ -273,6 +273,8 @@ const Profile = () => {
                     educationErrors={educationErrors}
                     addNewEducationForm={addNewEducationForm}
                     handleEducationDelete={handleEducationDelete}
+                    register={register}
+                    errors={errors}
                   />
                 ) : (
                   educationFormData.map((form, index) => (
@@ -285,6 +287,8 @@ const Profile = () => {
                       educationErrors={educationErrors}
                       addNewEducationForm={addNewEducationForm}
                       handleEducationDelete={handleEducationDelete}
+                      register={register}
+                      errors={errors}
                     />
                   ))
                 )
@@ -333,6 +337,8 @@ const Profile = () => {
                     handleExperienceDelete={handleExperienceDelete}
                     handleCountExperience={handleCountExperience}
                     handleCheckboxChange={handleCheckboxChange}
+                    register={register}
+                    errors={errors}
                   />
                 ) : (
                   experienceFormData.map((form, index) => (
@@ -346,6 +352,8 @@ const Profile = () => {
                       handleExperienceDelete={handleExperienceDelete}
                       handleCountExperience={handleCountExperience}
                       handleCheckboxChange={handleCheckboxChange}
+                      register={register}
+                      errors={errors}
                     />
                   ))
                 )

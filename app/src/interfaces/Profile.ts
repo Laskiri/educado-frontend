@@ -23,21 +23,17 @@ export interface EducationFormData {
   institution: string;
   course: string;
   educationLevel: string;
-  startDate: string;
-  endDate: string;
+  educationStartDate: string;
+  educationEndDate: string;
   _id: string | null;
 }
 
 export interface ExperienceFormData {
   company: string;
   jobTitle: string;
-  startDate: string;
-  endDate: string;
+  workStartDate: string;
+  workEndDate: string;
   checkBool: boolean;
   description: string;
   _id: string | null;
 }
-
-
-
-
