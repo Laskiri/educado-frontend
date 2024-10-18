@@ -39,10 +39,16 @@ interface ApplicationInputs {
   token: null;
 }
 
-// Yup schema for fields
+// Yup schema for fields (new user registration form)
 const SignupSchema = Yup.object().shape({
-  firstName: Yup.string().required("Seu primeiro nome é obrigatório!"),
-  lastName: Yup.string().required("Seu sobrenome é obrigatório!"),
+  // Registers user first name and removes leading/trailing whitespaces
+  firstName: Yup.string().trim()
+    .required("Seu primeiro nome é obrigatório!"), /*Your first name is Required*/
+
+  // Registers user last name and removes leading/trailing whitespaces
+  lastName: Yup.string().trim()
+    .required("Seu sobrenome é obrigatório!"), /*Your last name is Required*/ 
+
   password: Yup.string()
     .min(8, "Muito curto!")
     .required("A senha não é longa o suficiente"),
@@ -60,6 +66,7 @@ const Signup = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState<ApplicationInputs | null>(null);
+  const [email, setEmail] = useState(""); // Replace with actual email logic
 
   // Navigation hook
   const navigate = useNavigate();
@@ -86,8 +93,10 @@ const Signup = () => {
    * @param {JSON} data Includes firstName, lastName, email, password fields.
    */
   const onSubmit = async (data: any) => {
+
     setFormData(data); // Store the form data in state
-    console.log(FormData);
+    setEmail(data.email);
+
     // Show the email verification modal
     await AuthServices.postUserSignup({
       firstName: data.firstName,
@@ -96,6 +105,7 @@ const Signup = () => {
       password: data.password,
       token: null,
     })
+    
       .then((res) => {
         if (
           res.status === 200 ||
@@ -456,14 +466,12 @@ const Signup = () => {
             </div>
             {isModalVisible && (
               <EmailVerificationModal
-                toggleModal={() => setIsModalVisible(false)}
-                setErrorMessage={(message: string, error?: string) =>
-                  setErrorMessage(message)
-                }
+                toggleModal={() => setIsModalVisible(!isModalVisible)}
+                setErrorMessage={(message: string, error?: string) => setErrorMessage(message)}
+                uemail={email}
               />
             )}
           </div>
-          {formData && <NavigationFooter codeVerified={false} token={""} />}
         </main>
       </FormDataContext.Provider>
     </ToggleModalContext.Provider>
