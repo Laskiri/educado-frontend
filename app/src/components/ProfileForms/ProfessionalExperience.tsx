@@ -74,14 +74,12 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-
                 id={`company-${index}`}
-                {...register("company", { required: true })}
-
                 placeholder="Empresa"
                 type="text"
                 name="company"
                 value={experienceFormData[index]?.company || ""}
+                required={true}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -96,14 +94,12 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-
                 id={`jobTitle-${index}`}
-                {...register("jobTitle", { required: true })}
-
                 placeholder="Cargo"
                 type="text"
                 name="jobTitle"
                 value={experienceFormData[index]?.jobTitle || ""}
+                required={true}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -120,15 +116,13 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-
                 id={`workStartDate-${index}`}
-                {...register("workStartDate", { required: true })}
-
                 placeholder="Mês/Ano"
                 type="text"
                 maxLength={7}
                 name="workStartDate"
                 value={experienceFormData[index]?.workStartDate || ""}
+                required={true}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -147,15 +141,13 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
-
                 id={`workEndDate-${index}`}
-                {...register("workEndDate", { required: true })}
-
                 placeholder="Mês/Ano"
                 type="text"
                 maxLength={7}
                 name="workEndDate"
                 value={experienceFormData[index]?.workEndDate || ""}
+                required={true}
                 onChange={(value) => {
                   handleExperienceInputChange(value, index);
                 }}
@@ -169,6 +161,8 @@ export default function ProfessionalExperienceForm({
           <div>
             <input
               className="border-[#166276]"
+              id={`checkBool-${index}`}
+              name="checkBool"
               type="checkbox"
               checked={experienceFormData[index]?.checkBool || false}
               onChange={() => {
@@ -189,14 +183,12 @@ export default function ProfessionalExperienceForm({
             </label>
             <textarea
               className="h-[120px] bg-[#E4F2F5] rounded-lg border-none resize-none text-lg font-normal font-['Montserrat']"
-
               id={`description-${index}`}
-              {...register("description", { required: true })}
-
               placeholder="Escreva aqui as suas responsabilidadees"
               maxLength={400}
               name="description"
               value={experienceFormData[index]?.description || ""}
+              required={true}
               onChange={(value) => {
                 handleExperienceInputChange(value, index);
               }}

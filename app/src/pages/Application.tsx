@@ -1,7 +1,7 @@
 // Hooks
 import { useNavigate, Link, useParams } from "react-router-dom"
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 // Services
 import AuthService from "../services/auth.services"
@@ -98,7 +98,7 @@ const Application = () => {
       baseUser: id,
       motivation: data.motivation,
 
-      educationLevel: educationFormData.map((data) => data.educationLevel),
+      academicLevel: educationFormData.map((data) => data.educationLevel),
       academicStatus: educationFormData.map((data) => data.status),
       major: educationFormData.map((data) => data.course),
       institution: educationFormData.map((data) => data.institution),
@@ -281,9 +281,9 @@ const Application = () => {
           {/* Warning text for empty forms */}
           <div>
             {submitError && (
-                <span className=" ml-28 ">
-                Alguns campos não estão preenchidos
-              </span>
+                <p className="flex items-center mt-1 ml-4 text-warning text-sm text-right" role="alert">
+                  Alguns campos não estão preenchidos!
+                </p>
             )}
           </div>
 
@@ -297,7 +297,6 @@ const Application = () => {
 
             {/* Send for analysis */}
             <button type="button"
-              // onClick={handleSubmit(onSubmit)}
               onClick={() => {
 
                 SubmitValidation();

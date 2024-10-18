@@ -73,16 +73,11 @@ export default function AcademicExperienceForm({
             {/* Drop down list for educationLevel */}
             <select
               className="bg-[#E4F2F5] rounded-lg border-none"
-
               id={`educationLevel-${index}`}
-              {...register("educationLevel", { required: true })}
-
               name="educationLevel"
               value={educationFormData[index]?.educationLevel || ""}
+              required={true}
               onChange={(value) => {
-                if (value.target.value !== "")
-                  value.target.focus();
-
                 handleEducationInputChange(value, index);
               }}
             >
@@ -103,16 +98,11 @@ export default function AcademicExperienceForm({
             </label>
             <select
                 className="bg-[#E4F2F5] rounded-lg border-none"
-
                 id={`status-${index}`}
-                {...register("status", {required: true})}
-
                 name="status"
                 value={educationFormData[index]?.status || ""}
+                required={true}
                 onChange={(value) => {
-                  if (value.target.value !== "")
-                    value.target.focus();
-
                   handleEducationInputChange(value, index);
                 }}
             >
@@ -133,14 +123,12 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
-
               id={`course-${index}`}
-              {...register("course", { required: true })}
-
               placeholder="Curso"
               type="text"
               name="course"
               value={educationFormData[index]?.course || ""}
+              required={true}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -155,14 +143,12 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
-
               id={`institution-${index}`}
-              {...register("institution", { required: true })}
-
               placeholder="Instituição"
               type="text"
               name="institution"
               value={educationFormData[index]?.institution || ""}
+              required={true}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -179,15 +165,13 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
-
               id={`educationStartDate-${index}`}
-              {...register("educationStartDate", { required: true })}
-
               placeholder="Mês/Ano"
               type="text"
               maxLength={7}
               name="educationStartDate"
               value={educationFormData[index]?.educationStartDate || ""}
+              required={true}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}
@@ -206,15 +190,13 @@ export default function AcademicExperienceForm({
             </label>
             <input
               className="bg-[#E4F2F5] rounded-lg border-none"
-
               id={`educationEndDate-${index}`}
-              {...register("educationEndDate", { required: true })}
-
               placeholder="Mês/Ano"
               type="text"
               maxLength={7}
               name="educationEndDate"
               value={educationFormData[index]?.educationEndDate || ""}
+              required={true}
               onChange={(value) => {
                 handleEducationInputChange(value, index);
               }}

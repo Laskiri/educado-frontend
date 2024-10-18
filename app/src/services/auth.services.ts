@@ -45,7 +45,7 @@ const postNewApplication = async (data: {
     baseUser: string | undefined;
     motivation: string;
 
-    educationLevel: string[];
+    academicLevel: string[];
     academicStatus: string[];
     major: string[];
     institution: string[];
