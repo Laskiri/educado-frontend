@@ -102,7 +102,7 @@ const EducadoAdmin = () => {
                         </div>
                     </form>
 
-                    <table className="min-w-full leading-normal">
+                    <table className="w-[96%] leading-normal mx-auto">
                         <thead>
                             <tr className="bg-white border-b-4 border-[#166276] text-[#166276] text-left text-base font-base font-['Lato']]">
                             <th scope="col" className="p-7" style={{ width: '10%' }}>Admin</th>
@@ -120,7 +120,7 @@ const EducadoAdmin = () => {
                                 if (application.email.toLowerCase().includes(searchTerm.toLowerCase())) return application;
                             }).map((application: any, key: number) => {
                                 return (
-                                    <tr key={key} className="px-5 py-5 border-b border-gray-200 bg-white text-base font-['Montserrat']">
+                                    <tr key={key} className="px-5 py-5 border-b border-gray-300 bg-white text-base font-['Montserrat']">
                                         <td>
                                             <AdminToggleButton applicationId={application._id} applicationApproved={application.approved}/>
                                         </td>
@@ -149,16 +149,16 @@ const EducadoAdmin = () => {
                                             </p>
                                         </td>
                                         <td>
-                                            <div className="flex items-center p-4">
+                                            <div className="flex items-center p-4"> {/* Change to p-3.5 if rows feel too spacious */}
                                                 {application.approved || application.rejected ? (
                                                 <>
                                                     <ViewUserButton applicationId={application._id} onHandleStatus={refreshUsers} />
                                                     <div className="mx-2.5"></div>
                                                     <DeleteUserButton applicationId={application._id} onDelete={refreshUsers} />
-                                                    <div className="-ml-2"></div>                                                 
+                                                    <div className="-ml-8"></div>                                                 
                                                 </>
                                                 ) : (
-                                                <div className="ml-auto mr-4">
+                                                <div className="ml-auto -mr-2">
                                                     <ViewUserButton applicationId={application._id} onHandleStatus={refreshUsers} />
                                                 </div>
                                                 )}
