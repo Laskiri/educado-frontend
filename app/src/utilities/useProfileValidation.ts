@@ -18,18 +18,19 @@ export default ()=>{
         let matchResult = value.match(regex);
         let count = matchResult ? matchResult.length : 0;
         return (
-          !value.includes("/") ||
-          count > 1 ||
-          !value.substring(0, 3).includes("/") ||
-          value.length != 5 ||
-          !month ||
-          value.substring(3, 5) == 0
+          !value.includes("/")
+            || count > 1
+            || !value.substring(0, 3).includes("/")
+            || value.length != 7    // Date must be 7 characters long (including '/' in MM/YYYY)
+            || !month
+            || value.substring(3, 7).length != 4    // Ensures that year is 4 digits
+            || value.substring(3, 7) == "0000"    // Avoids year = 0000
         );
       };
 
       // Handling validation based on form type (education/experience)
     const handleValidation = (index: any, name: any, value: any, forForm :any) => {
-        const invalidDateFormatErrMsgStr = "Formato inválido! Utilize MM/AAAA.";
+        const invalidDateFormatErrMsgStr = "Formato inválido! Utilize: MM/AAAA";
 
         // Set education error state and update error messages based on the input field
         if(forForm == 'education'){

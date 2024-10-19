@@ -80,7 +80,7 @@ export default () => {
     index: number
   ) => {
     let { name, value } = event.target;
-    if ((name == "educationStartDate" || name == "educationEndDate") && value.length > 5) {
+    if ((name == "educationStartDate" || name == "educationEndDate") && value.length > 7) {
       return;
     }
     if (name == "educationStartDate" || name == "educationEndDate") {
@@ -278,7 +278,7 @@ export default () => {
   ): void => {
     // let { name, value } = event.target;
     let { name, value } = event.target as { name: "workStartDate" | "workEndDate"; value: string };
-    if ((name == "workStartDate" || name == "workEndDate") && value.length > 5) {
+    if ((name == "workStartDate" || name == "workEndDate") && value.length > 7) {
       return;
     }
     if (name == "workStartDate" || name == "workEndDate") {

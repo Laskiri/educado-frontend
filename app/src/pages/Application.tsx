@@ -26,10 +26,6 @@ const Application = () => {
   // State for the motivation form field
   const [isMotivationFilled, setIsMotivationFilled] = useState(false);
 
-  // States for
-  const [areAllFormsFilled, setAreAllFormsFilled] = useState(false);
-  const [hasSubmitted, setHasSubmitted] = useState(false);
-
   // State for the confirmation modal visibility
   const [isModalVisible, setIsModalVisible] = useState(false);
 
@@ -76,11 +72,14 @@ const Application = () => {
   } = dynamicForms();
 
   const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
-
-  // TODO: unnecessary?
-  useEffect(() => {
-    setHasSubmitted(false);
-  }, [educationFormData, experienceFormData, motivation]);
+  
+  const areAllFormsFilledCorrect =
+      !submitError
+      && !educationErrorState
+      && !experienceErrorState
+      && isMotivationFilled
+      && dynamicInputsFilled("education")
+      && dynamicInputsFilled("experience");
 
   /**
     * OnSubmit function for Application.
@@ -90,10 +89,6 @@ const Application = () => {
     * @param {JSON} data Which includes the value of the various fields in the application
     */
   const onSubmit: SubmitHandler<NewApplication> = async (data) => {
-    /*if (hasSubmitted || educationErrorState || experienceErrorState ||
-        !dynamicInputsFilled("education") || !dynamicInputsFilled("experience"))
-      return;*/
-
     const applicationData = {
       baseUser: id,
       motivation: data.motivation,
@@ -114,14 +109,15 @@ const Application = () => {
 
     console.log("[Pre post] applicationData: ", applicationData);
 
-    AuthService.postNewApplication(applicationData).then((res) =>{
+    // TODO: uncomment when everything is working
+    /*AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
       navigate("/login", { state: { applicationSubmitted: true } });  // TODO: remove!
-    })
+    })*/
   };
 
   return (
@@ -301,20 +297,27 @@ const Application = () => {
 
                 SubmitValidation();
 
-                if (!submitError) { // && areAllFormsFilled) {     // TODO: include when state is updated correctly
-                  console.log("submitError is false!");     // TODO: remove!
-                  openModal()
-                }
+                console.log("submitError: ", submitError);
+                console.log("educationErrorState: ", educationErrorState);
+                console.log("experienceErrorState: ", experienceErrorState);
+                console.log("isMotivationFilled: ", isMotivationFilled);
+                console.log("dynamicInputsFilled(education): ", dynamicInputsFilled("education"));
+                console.log("dynamicInputsFilled(experience): ", dynamicInputsFilled("experience"));
+                console.log("isMotivationFilled: ", isMotivationFilled);
+
+                if (areAllFormsFilledCorrect)
+                  openModal();
               }}
 
               className={`px-10 py-4 rounded-lg justify-center items-center gap-2.5 flex text-center text-lg font-bold ${
                 // Opacity dimmed when button is disabled
-                isMotivationFilled
-                    ? 'bg-primary hover:bg-cyan-900 text-white'
-                    : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'}`}
+                  areAllFormsFilledCorrect
+                      ? 'bg-primary hover:bg-cyan-900 text-white'
+                      : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'
+              }`}
 
               // Button is disabled if motivation form field is not filled out
-              disabled={!isMotivationFilled}
+              disabled={!areAllFormsFilledCorrect}
             >
               Enviar para análise
             </button>
