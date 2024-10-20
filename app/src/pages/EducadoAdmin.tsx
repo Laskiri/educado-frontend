@@ -135,11 +135,12 @@ const EducadoAdmin = () => {
                     <table className="w-[96%] leading-normal mx-auto">
                         <thead>
                             <tr className="bg-white border-b-4 border-[#166276] text-[#166276] text-left text-base font-base font-['Lato']]">
-                            <th scope="col" className="p-7" style={{ width: '10%' }}>Admin</th>
+                            <th scope="col" className="p-7" style={{ width: '5%' }}>Admin</th>
                             <th scope="col" className="p-5" style={{ width: '20%' }}>Nome</th>
                             <th scope="col" className="p-5" style={{ width: '25%' }}>Email</th>
                             <th scope="col" className="p-5" style={{ width: '20%' }}>Status</th>
                             <th scope="col" className="p-5" style={{ width: '30%' }}>Enviado em</th>
+                            <th scope="col" className="p-5" style={{ width: '30%' }}></th>
                             </tr>
                         </thead>
                         <tbody>

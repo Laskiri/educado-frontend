@@ -31,7 +31,7 @@ export const Navbar = () => {
 return (
 <main>
     {/* Navigation Bar */}
-    <nav className="navbar fixed items-center justify-between py-3.5 px-6 bg-white shadow-md">
+    <nav className="relative navbar fixed items-center justify-between py-3.5 px-6 bg-white shadow-md">
 
         {/* Logos for navbar */}
         <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-8">
@@ -55,10 +55,10 @@ return (
                 </Link>
             </li>
         </ul>
-    </div>
+        </div>
 
         {/* Notification bell and User information */}
-        <div className="relative w-133px h-10 flex items-center gap-6 pr-12">
+        <div className="w-133px h-10 flex items-center gap-6 pr-12">
             <span className='hidden sm:block container overflow-hidden'>
                 <Icon
                 path={mdiBellOutline} size={1} color={'grayMedium'} />
@@ -72,8 +72,8 @@ return (
 
             {/* Dropdown for User Actions */}
             <button className="relative flex flex-col items-start gap-6">
-                <div className="dropdown dropdown-end bg-white">
-                    <label tabIndex={0} className="btn btn-ghost hover:bg-transparent ">
+                <div className="dropdown dropdown-end bg-white overflow-visible">
+                    <label tabIndex={0} className="btn btn-ghost hover:bg-transparent">
                         <div className="avatar placeholder">
                             <div className="bg-[#166276] text-white rounded-full hover:rounded w-11">
                                 <span className="text-md">
@@ -118,7 +118,7 @@ return (
         </div>
     </nav>
 {/* gap between navbar and other pages */}    
-<div className="h-20"/>
+<div className="h-0"/>
 </main>
     );
 };
