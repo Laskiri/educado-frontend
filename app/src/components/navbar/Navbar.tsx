@@ -122,6 +122,7 @@ export const Navbar = () => {
                 )}
               </div>
             )}
+            </div>
           </div>
 
           {/* User Info */}
@@ -169,7 +170,6 @@ export const Navbar = () => {
               </ul>
             </div>
           </div>
-        </div>
       </nav>
 
       {/* gap between navbar and other pages */}
