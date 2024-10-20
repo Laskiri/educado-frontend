@@ -10,6 +10,7 @@ export interface ContentCreatorApplication {
   email: string;
   password: string;
   role: string;
+  token: string | null;
 }
 
 
@@ -19,6 +20,10 @@ const postUserLogin = async (credentials: any) => {
 
 const postUserSignup = async(formData: ContentCreatorApplication) => {
   return await axios.post(`${BACKEND_URL}/api/auth/signup`, formData)
+}
+
+const postUserVerification = async(formData: ContentCreatorApplication) => {
+  return await axios.post(`${BACKEND_URL}/api/auth/verify-email`, formData)
 }
 
 const GetCCApplications = async () => {
@@ -54,6 +59,7 @@ const AuthServices = Object.freeze({
   RejectApplication,
   postNewApplication,
   addInstitution,
+  postUserVerification
 });
 
 export default AuthServices;
