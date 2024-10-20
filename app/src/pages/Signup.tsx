@@ -86,17 +86,12 @@ const Signup = () => {
   const [passwordMismatchErrorMessage, setPasswordMismatchErrorMessage] =
     useState("");
 
-  /*
-    * OnSubmit function for Signup.
-    * Takes the submitted data from the form and sends it to the backend through a service.
-    *
-    * @param {JSON} data Which includes the following fields:
-    * @param {String} data.name Name of the Content Creator
-    * @param {String} data.email Email of the Content Creator
-    * @param {String} data.password Password of the Content Creator (Will be encrypted)
-    * @param {String} data.role Role of the Content Creator
-    */
-
+  /**
+   * OnSubmit function for Signup.
+   * Takes the submitted data from the form and sends it to the backend through a service.
+   *
+   * @param {JSON} data Includes firstName, lastName, email, password fields.
+   */
   const onSubmit = async (data: any) => {
 
     setFormData(data); // Store the form data in state
@@ -109,22 +104,6 @@ const Signup = () => {
       email: data.email,
       password: data.password,
       role: 'user',
-    }).then((res) => {
-
-      //If they were automatically approved as part of an instutution, they will be navigated to the Login page
-      if(res.data.contentCreatorProfile.approved == true){
-        console.log(res)
-        navigate("/login")
-        setTimeout(() => {
-          toast.success(("Aprovado como parte de "+res.data.institution.institutionName), { hideProgressBar: true, 
-                  });
-          }, 1);
-      } else {
-      const id = res.data.contentCreatorProfile.baseUser;
-
-      //If they are a freelance content creator, they will be navigated to the application creation page
-      navigate(`/application/${id}`)
-      }
       token: null,
     })
     

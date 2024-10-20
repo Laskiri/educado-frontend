@@ -18,16 +18,16 @@ export const Navbar = () => {
   };
 
   // Fetch user info
-    const userInfo: any = getUserInfo();
+  const userInfo: any = getUserInfo();
 
-    let firstName;
-    userInfo.firstName ? firstName = userInfo.firstName : firstName = "Firstname";
-    
-    let lastName = "Lastname"
-    userInfo.lastName ? lastName = userInfo.lastName : lastName = "Lastname";
+  let firstName;
+  userInfo.firstName ? (firstName = userInfo.firstName) : (firstName = "Firstname");
 
-    let email = "email";
-    userInfo.email ? email = userInfo.email : email = "Email";
+  let lastName = "Lastname";
+  userInfo.lastName ? (lastName = userInfo.lastName) : (lastName = "Lastname");
+
+  let email = "email";
+  userInfo.email ? (email = userInfo.email) : (email = "Email");
 
   // Notification handlers
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
@@ -47,6 +47,7 @@ export const Navbar = () => {
             <img src="/educado.svg" alt="educado" className="h-6" />
           </Link>
         </div>
+
         {/* Navbar Links */}
         <div className="navbar-center hidden lg:flex">
           <ul className="menu menu-horizontal p-0">
@@ -62,12 +63,11 @@ export const Navbar = () => {
                 <span>Admin</span>
               </Link>
             </li>
-        </ul>
+          </ul>
         </div>
 
         {/* Notification Bell and User Info */}
         <div className="relative flex items-center gap-6 pr-12 z-50">
-
           {/* Notification Bell */}
           <div className="relative flex items-center gap-6">
             <button onClick={toggleDropdown} className="relative flex items-center">
@@ -78,46 +78,6 @@ export const Navbar = () => {
                 </span>
               )}
             </button>
-
-            <div className="flex flex-col items-start">
-                <span className="hidden sm:block container overflow-hidden text-grayMedium text-base font-bold font-['Montserrat']">{firstName+" "+lastName}</span>
-                <span className="hidden sm:block container overflow-hidden text-grayMedium text-sm font-normal font-['Montserrat']">{email}</span>
-            </div>
-
-            {/* Dropdown for User Actions */}
-            <button className="relative flex flex-col items-start gap-6">
-                <div className="dropdown dropdown-end bg-white overflow-visible">
-                    <label tabIndex={0} className="btn btn-ghost hover:bg-transparent">
-                        <div className="avatar placeholder">
-                            <div className="bg-[#166276] text-white rounded-full hover:rounded w-11">
-                                <span className="text-md">
-                                    {firstName.charAt(0)+lastName.charAt(0)}
-                                </span>
-                            </div>
-                        </div>
-                    </label>
-
-                    {/* Dropdown Content */}
-                    <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[245px] mt-2 bg-white rounded-lg shadow-md">
-
-                        {/* Edit Profile/settings */}
-                        <li className="w-full"> {/*class to make the list item fill the width */}
-                            <Link to={"/profile"} className="text-grayDark text-lg font-normal font-['Montserrat'] hover:bg-grayLight">
-                                <span><Icon path={mdiAccountCog} size={1} color="grayMedium" /></span>
-                                <span>Editar perfil</span>
-                            </Link>
-                        </li>
-                        <hr className="relative w-full h-[1px] border-grayLight mt-3 mb-3" />
-
-                        {/* My Certificates */}
-                        <li className="w-full"> {/*class to make the list item fill the width */}
-                            <Link to={"/certificates"} className="text-grayDark text-lg font-normal font-['Montserrat'] hover:bg-grayLight">
-                                <span><Icon path={mdiCertificate} size={1} color="grayMedium" /></span>
-                                <span>Meus certificados</span>
-                            </Link>
-                        </li>
-
-                        <hr className="relative w-full h-[1px] border-grayLight mt-3 mb-3" />
 
             {/* Notifications Dropdown */}
             {isDropdownOpen && (
@@ -147,7 +107,7 @@ export const Navbar = () => {
                     )}
                   </ul>
                 </div>
-                    
+
                 {notifications.length > 0 && (
                   <div className="w-full text-right border-t mt-2 p-2">
                     <button onClick={handleClearAll} className="text-sm text-red-600 hover:underline">
@@ -169,21 +129,17 @@ export const Navbar = () => {
             </span>
           </div>
 
-          
-
-         
           {/* User Actions Dropdown */}
           <div className="relative">
             <div className="dropdown dropdown-end">
               <label tabIndex={0} className="btn btn-ghost hover:bg-transparent">
                 <div className="avatar placeholder">
                   <div className="bg-[#166276] text-white rounded-full hover:rounded w-11">
-                    <span className="text-md">
-                      {`${firstName.charAt(0)}${lastName.charAt(0)}`}
-                    </span>
+                    <span className="text-md">{`${firstName.charAt(0)}${lastName.charAt(0)}`}</span>
                   </div>
                 </div>
               </label>
+
               <ul tabIndex={0} className="menu dropdown-content flex flex-col items-start p-2 absolute w-[245px] mt-2 bg-white rounded-lg shadow-md">
                 <li className="w-full">
                   <Link to="/profile" className="text-grayDark text-lg hover:bg-grayLight">
@@ -209,10 +165,9 @@ export const Navbar = () => {
             </div>
           </div>
         </div>
-    </nav>
-{/* gap between navbar and other pages */}    
-<div className="h-0"/>
-</main>
-    );
+      </nav>
+      {/* gap between navbar and other pages */}
+      <div className="h-0" />
+    </main>
+  );
 };
-
