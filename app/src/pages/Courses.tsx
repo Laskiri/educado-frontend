@@ -1,6 +1,7 @@
 // Hooks
 import useSWR from "swr";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { getUserToken } from "../helpers/userInfo";
 
 // Services
@@ -11,6 +12,9 @@ import Layout from "../components/Layout";
 import Loading from "../components/general/Loading";
 import { CourseListCard } from "../components/Courses/CourseListCard";
 import PersonalInsights from "../components/Courses/PersonalInsights";
+
+// toasts
+import { toast } from "react-toastify";
 
 // Images
 import noCoursesImage from "../assets/no-courses.png";
@@ -31,7 +35,7 @@ const Courses = () => {
 
   // TODO: Implement proper backend call once backend is ready
 
-  const CourseManager = () => {
+  const CourseManager = () => { 
     navigate("/courses/manager/0/0");
   };
 
