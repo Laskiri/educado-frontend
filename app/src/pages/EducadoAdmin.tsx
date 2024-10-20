@@ -7,17 +7,19 @@ import DeleteUserButton from "../components/DeleteUserButton";
 import ViewUserButton from "./ViewUserButton";
 import AdminToggleButton from "../components/AdminToggle";
 import AdminServices from "../services/admin.services";
+import { GoArrowLeft, GoArrowRight, GoChevronLeft, GoChevronRight } from 'react-icons/go';
 
 const EducadoAdmin = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedButton, setSelectedButton] = useState('users');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [rowsPerPage, setRowsPerPage] = useState(10);
 
     const location = useLocation();
     const { data, mutate } = useSWR('api/user-info', AdminServices.getUserApplications);
 
     if (!data) return <Loading/>
 
-    // Function to refresh the list after deletion or rejecting or approving an application
     const refreshUsers = () => {
         mutate();
     };
@@ -40,8 +42,40 @@ const EducadoAdmin = () => {
     const getStatusColor = (application: any) => {
         if (application.approved) return "green";
         if (application.rejected) return "red";
-        return "black"; // Default color for "Aguardando análise"
+        return "black";
     };
+
+    const handlePageChange = (newPage: number) => {
+        if (newPage > 0 && newPage <= totalPages) {
+            setCurrentPage(newPage);
+        }
+    };
+
+    const handleRowsPerPageChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setRowsPerPage(Number(event.target.value));
+        setCurrentPage(1);
+    };
+
+    const handleFirstPage = () => {
+        setCurrentPage(1);
+    };
+
+    const handleLastPage = () => {
+        setCurrentPage(totalPages);
+    };
+
+    const filteredData = data?.data.data.filter((application: any) => {
+        if (searchTerm === "") return application;
+        if (application.firstName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
+        if (application.lastName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
+        if (application.email.toLowerCase().includes(searchTerm.toLowerCase())) return application;
+    });
+
+    const paginatedData = filteredData.slice((currentPage - 1) * rowsPerPage, currentPage * rowsPerPage);
+    const totalPages = Math.ceil(filteredData.length / rowsPerPage);
+
+    const startItem = (currentPage - 1) * rowsPerPage + 1;
+    const endItem = Math.min(currentPage * rowsPerPage, filteredData.length);
 
     return (
         <Layout meta="Educado Admin">
@@ -72,10 +106,6 @@ const EducadoAdmin = () => {
                     <form className="flex flex-col md:flex-row w-3/4 md:w-full max-w-full md:space-x-4 space-y-3 md:space-y-0 justify-end p-6 -mt-4">
                         <select className="block bg-white min-w-[175px] flex-grow-0 border border-slate-300 rounded-md py-2 pr-3 shadow-sm focus:outline-none hover:bg-white focus:border-sky-500 focus:ring-1 sm:text-sm">
                             <option value="option1">Mais recentes</option>
-                            {/* 
-                            <option value="option2">Option 2</option>
-                            <option value="option3">Option 3</option> 
-                            */}
                         </select>
                         <div className="relative min-w-[225px] flex-grow-0">
                             <input
@@ -113,12 +143,7 @@ const EducadoAdmin = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {data?.data.data.filter((application: any) => {
-                                if (searchTerm === "") return application;
-                                if (application.firstName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
-                                if (application.lastName.toLowerCase().includes(searchTerm.toLowerCase())) return application;
-                                if (application.email.toLowerCase().includes(searchTerm.toLowerCase())) return application;
-                            }).map((application: any, key: number) => {
+                            {paginatedData.map((application: any, key: number) => {
                                 return (
                                     <tr key={key} className="px-5 py-5 border-b border-gray-300 bg-white text-base font-['Montserrat']">
                                         <td>
@@ -149,7 +174,7 @@ const EducadoAdmin = () => {
                                             </p>
                                         </td>
                                         <td>
-                                            <div className="flex items-center p-4"> {/* Change to p-3.5 if rows feel too spacious */}
+                                            <div className="flex items-center p-4">
                                                 {application.approved || application.rejected ? (
                                                 <>
                                                     <ViewUserButton applicationId={application._id} onHandleStatus={refreshUsers} />
@@ -170,21 +195,67 @@ const EducadoAdmin = () => {
                         </tbody>
                     </table>
 
-                    <div className="px-5 bg-white py-5 flex flex-col xs:flex-row items-center xs:justify-between">
+                    <div className="px-5 bg-white py-5 flex flex-row xs:flex-row items-center xs:justify-between justify-end">
                         <div className="flex items-center">
-                            <button type="button" className="w-full p-4 border text-base rounded-l-xl text-gray-600 bg-white hover:bg-gray-100">
-                                <svg width="9" fill="currentColor" height="8" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1427 301l-531 531 531 531q19 19 19 45t-19 45l-166 166q-19 19-45 19t-45-19l-742-742q-19-19-19-45t19-45l742-742q19-19 45-19t45 19l166 166q19 19 19 45t-19 45z"></path>
+                            <span className="text-gray-600">Rows per page:</span>
+                            <div className="relative">
+                                <select 
+                                    className="appearance-none bg-none border-none text-gray-600 focus:ring-0 cursor-pointer"
+                                    value={rowsPerPage}
+                                    onChange={handleRowsPerPageChange}
+                                >
+                                    <option value={10}>10</option>
+                                    <option value={20}>20</option>
+                                    <option value={30}>30</option>
+                                    <option value={50}>50</option>
+                                </select>
+                                <svg 
+                                    className="absolute right-6 top-1/2 transform -translate-y-1/2 h-4 w-3.5 text-gray-600 pointer-events-none"
+                                    xmlns="http://www.w3.org/2000/svg" 
+                                    fill="none" 
+                                    viewBox="0 0 24 24" 
+                                    stroke="currentColor"
+                                >
+                                    <path 
+                                        strokeLinecap="round" 
+                                        strokeLinejoin="round" 
+                                        strokeWidth="2" 
+                                        d="M19 9l-7 7-7-7" 
+                                    />
                                 </svg>
+                            </div>
+                        <span className="text-gray-600 mx-2 ml-8">
+                            {startItem} - {endItem} of {filteredData.length}
+                        </span>
+                        </div>
+                        <div className="flex items-center ml-8">
+                            <button 
+                                type="button" 
+                                className={`w-full p-3 text-base ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 bg-white hover:bg-gray-100 cursor-pointer'}`}
+                                onClick={handleFirstPage}
+                            >
+                                <GoArrowLeft />
                             </button>
-                            <button type="button" className="w-full px-4 py-2 border-t border-b text-base text-indigo-500 bg-white hover:bg-gray-100">1</button>
-                            <button type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">2</button>
-                            <button type="button" className="w-full px-4 py-2 border-t border-b text-base text-gray-600 bg-white hover:bg-gray-100">3</button>
-                            <button type="button" className="w-full px-4 py-2 border text-base text-gray-600 bg-white hover:bg-gray-100">4</button>
-                            <button type="button" className="w-full p-4 border-t border-b border-r text-base rounded-r-xl text-gray-600 bg-white hover:bg-gray-100">
-                                <svg width="9" fill="currentColor" height="8" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M1363 877l-742 742q-19 19-45 19t-45-19l-166-166q-19 19-19 45t19-45l531-531-531-531q-19-19-19-45t19-45l166-166q19-19 45-19t45 19l742 742q19 19 19 45t-19 45z"></path>
-                                </svg>
+                            <button 
+                                type="button" 
+                                className={`w-full p-3 text-base ${currentPage === 1 ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 bg-white hover:bg-gray-100 cursor-pointer'}`}
+                                onClick={() => handlePageChange(currentPage - 1)}
+                            >
+                                <GoChevronLeft />
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`w-full p-3 text-base ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 bg-white hover:bg-gray-100 cursor-pointer'}`}
+                                onClick={() => handlePageChange(currentPage + 1)}
+                            >
+                                <GoChevronRight />
+                            </button>
+                            <button 
+                                type="button" 
+                                className={`w-full p-3 text-base ${currentPage === totalPages ? 'text-gray-300 cursor-not-allowed' : 'text-gray-600 bg-white hover:bg-gray-100 cursor-pointer'}`}
+                                onClick={handleLastPage}
+                            >
+                                <GoArrowRight />
                             </button>
                         </div>
                     </div>
