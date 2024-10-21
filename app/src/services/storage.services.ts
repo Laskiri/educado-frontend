@@ -31,13 +31,10 @@ async function uploadFile({id, file, parentType: parentType}: FileProps) {
     if (!file || !id) {
         return;
     }
-    console.log("hallo");
     axios.postForm(`${BACKEND_URL}/api/bucket`, {
         fileName: id + "_"+ parentType,
         file: file
     });
-    console.log("hallo");
-
 }
 
 /**

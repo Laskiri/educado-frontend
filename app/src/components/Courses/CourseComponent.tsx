@@ -125,15 +125,12 @@ export const CourseComponent = ({
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
       //Upload image with the new id
-      console.log("id:");
-      console.log(id);
       StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
       setStatusSTR(changes.status);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
       toast.error(err as string);
-      console.log("id:");
 
     }
   };
@@ -169,10 +166,7 @@ export const CourseComponent = ({
   };
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    console.log("ID:");
-    console.log(id);
     StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
-    console.log(coverImg);
 
     const changes: Course = {
       title: data.title,
