@@ -124,19 +124,24 @@ export const CourseComponent = ({
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
+      //Upload image with the new id
+      StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
       setStatusSTR(changes.status);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
       toast.error(err as string);
+
     }
   };
 
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (data: Course) => {
     try {
-      await CourseServices.createCourse(data, token);
+      const newCourse = await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
+      //Upload image with the new id
+      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
     } catch (err) {
@@ -149,6 +154,8 @@ export const CourseComponent = ({
     try {
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
+      //Upload image with the new id
+      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
       setId(newCourse.data._id);
       setTickChange(1);
       navigate(`/courses/manager/${newCourse.data._id}/1`);
@@ -359,13 +366,13 @@ export const CourseComponent = ({
           </div> 
           
           <div>
-            {/*Cover image field is made but does not interact with the db*/}
+            {/*Cover image field*/}
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor="cover-image">Imagem de capa</label>{" "}
               {/** Cover image */}
             </div>
             <Dropzone inputType="image" callBack={setCoverImg} />{" "}
-            {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
+           
             {errors.description && (
               <span className="text-warning">Este campo é obrigatório</span>
             )}{" "}
