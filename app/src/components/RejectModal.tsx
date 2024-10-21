@@ -24,7 +24,6 @@ const RejectModal: React.FC<RejectModalProps> = ({ isOpen, onClose, userDetails,
     }
 
     try {
-      console.log("Rejecting application for user ID:", applicationId);
       await AuthServices.RejectApplication(applicationId, justification);
       onClose(); // Close the modal after rejection
       onHandleStatus();

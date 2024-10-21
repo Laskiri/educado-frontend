@@ -23,15 +23,12 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
         return;
       }
       const userDetails = await AdminServices.getSingleUserDetails(applicationId, token);
-      console.log("User Details: ", userDetails);
       setUserDetails(userDetails);
 
       const userApplication = await AuthServices.GetSingleCCApplication(applicationId);
-      console.log("User Application: ", userApplication);
       setUserApplication(userApplication.data);
 
       const contentCreator = await AdminServices.getContentCreator(applicationId, token);
-      console.log("Content Creator: ", contentCreator);
       setContentCreator(contentCreator);
 
       setIsModalOpen(true);

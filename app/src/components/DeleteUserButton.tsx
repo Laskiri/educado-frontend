@@ -15,7 +15,6 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
 
   const handleDelete = async () => {
     try {
-      console.log("Deleting user with ID:", applicationId);
       const token = getUserToken();
       if (!token) {
         console.error('No token found');

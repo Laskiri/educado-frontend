@@ -18,7 +18,6 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, token, use
 
   const handleAccept = async () => {
     try {
-      console.log("Approving application for user ID:", applicationId);
       await AuthServices.AcceptApplication(applicationId);
       AdminServices.changeUserRole(applicationId, token, 'creator');
       onClose(); // Close the modal after rejection
