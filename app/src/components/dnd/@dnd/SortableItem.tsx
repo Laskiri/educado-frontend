@@ -210,7 +210,7 @@ export function SortableItem({
                 index={1}
                 toolTipIndex={toolTipIndex}
                 text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!"}
-                tooltipAmount={2}
+                tooltipAmount={3}
                 callBack={setToolTipIndex}
               />
             </div>
@@ -308,7 +308,14 @@ export function SortableItem({
           <div className="flex flex-row-reverse">
             <label htmlFor="description">{componentData.length}/10 items</label>
             {/** PLACEHOLDER TEXT */}
-            </div>
+              <ToolTipIcon
+                  index={2}
+                  toolTipIndex={toolTipIndex}
+                  text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."}
+                  tooltipAmount={3}
+                  callBack={setToolTipIndex}
+                />
+          </div>
         </div>
       </div>
     </div>
