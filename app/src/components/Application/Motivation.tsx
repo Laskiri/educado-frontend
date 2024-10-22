@@ -46,7 +46,7 @@ const Motivation: React.FC<MotivationProps> = ({
   return (
     <div className="justify-center items-center font-['Montserrat']">
 
-      {/* Form expansion button  */}
+      {/* Collapsed form  */}
       <button
           type="button"
           className={`first_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
@@ -65,8 +65,9 @@ const Motivation: React.FC<MotivationProps> = ({
         </div>
       </button>
 
+      {/* Expanded form */}
       {isMotivationOpen && (
-          <div className="relative border border-blueButton p-4 rounded-b-lg text-left bg-white z-50">
+          <div className="border border-primary p-4 rounded-b-lg text-left bg-white z-50">
             <div className="flex flex-col">
 
               {/* We want to know more about you! Tell us about your reasons for joining Educado */}

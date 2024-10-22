@@ -48,21 +48,40 @@ const deleteExperienceForm = async (_id: any) => {
 }
 
 //---Update requests---//
-//Update personal form
+// Update personal form
 const putFormOne = async (formDataToSend: any) => {
   return await axios.put(
     `${BACKEND_URL}/api/profiles`,
     formDataToSend)
 }
 
-//Update academic form
-const putFormTwo = async (data: any) => {
+// Update academic form
+const putFormTwo = async (data: {
+    userID: string | undefined;
+    educationLevel: string[];
+    status: string[];
+    course: string[];
+    institution: string[];
+    startDate: string[];
+    endDate: string[];
+  }) => {
+
+
   return await axios.put(
     `${BACKEND_URL}/api/profiles/educations`, data)
-}
+};
 
-//Update professional form
-const putFormThree = async (data: any) => {
+// Update professional form
+const putFormThree = async (data: {
+    userID: string | undefined;
+    company: string[];
+    jobTitle: string[];
+    startDate: string[];
+    endDate: string[];
+    checkBool: boolean[];
+    description: string[];
+  }) => {
+
   return await axios.put(`${BACKEND_URL}/api/profiles/experiences`, data);
 };
 

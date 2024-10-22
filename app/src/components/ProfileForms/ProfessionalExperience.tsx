@@ -16,7 +16,6 @@ export default function ProfessionalExperienceForm({
   handleExperienceDelete,
   handleCountExperience,
   handleCheckboxChange,
-  register,
 }: {
   index: number;
   experienceFormData: Array<{
@@ -34,17 +33,19 @@ export default function ProfessionalExperienceForm({
   handleExperienceDelete: (index: number, id: string) => void;
   handleCountExperience: (index: number) => number;
   handleCheckboxChange: (index: number) => void;
-  register: UseFormRegister<NewApplication>;
+  register: UseFormRegister<NewApplication>;    // TODO: remove when everything works
   errors: unknown;
 }) {
 
-  function displayInvalidDateFormatErrMsg(errorMsg: string) {
-    if(errorMsg !== "") {
+  function displayInvalidDateFormatErrMsg(strValue: string, errorMsg: string) {
+    if(strValue !== "") {
       return (
           <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
             {errorMsg}
-          </p>);
+          </p>
+      );
     }
+    return null;
   }
 
   return (
@@ -53,7 +54,7 @@ export default function ProfessionalExperienceForm({
         {" "}
         <div
           /* Styling based on conditions */
-          className={`border border-[#166276] p-4 text-left bg-white shadow-xl ${
+          className={`border border-primary p-4 text-left bg-white shadow-xl ${
             (experienceFormData.length === 1 && index === 0) ||
             (experienceFormData.length > 1 &&
               index === experienceFormData.length - 1)
@@ -129,7 +130,7 @@ export default function ProfessionalExperienceForm({
               />
 
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceErrors[index].workStartDate)}
+              {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workStartDate, experienceErrors[index].workStartDate)}
 
             </div>
             <div className="flex flex-col ">
@@ -154,7 +155,7 @@ export default function ProfessionalExperienceForm({
               />
 
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceErrors[index].workEndDate)}
+              {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workEndDate, experienceErrors[index].workEndDate)}
 
             </div>
           </div>

@@ -19,10 +19,10 @@ export interface FormData {
   }
 
 export interface EducationFormData {
-  status: string;
-  institution: string;
-  course: string;
   educationLevel: string;
+  status: string;
+  course: string;
+  institution: string;
   educationStartDate: string;
   educationEndDate: string;
   _id: string | null;

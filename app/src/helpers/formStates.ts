@@ -20,10 +20,10 @@ export const useFormData = () => {
 export const useEducationFormData = () => {
   const [educationFormData, setEducationFormData] = useState<EducationFormData[]>([
     {
-      status: "",
-      institution: "",
-      course: "",
       educationLevel: "",
+      status: "",
+      course: "",
+      institution: "",
       educationStartDate: "",
       educationEndDate: "",
       _id: null,
@@ -82,10 +82,10 @@ export const tempObjects = () => {
     // Create empty object for professional experience
     const emptyAcademicObject = [
       {
-        status: "",
-        institution: "",
-        course: "",
         educationLevel: "",
+        status: "",
+        course: "",
+        institution: "",
         educationStartDate: "",
         educationEndDate: "",
         _id: null,

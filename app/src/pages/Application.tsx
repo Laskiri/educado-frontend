@@ -22,35 +22,7 @@ import MiniNavbar from "../components/navbar/MiniNavbar";
 import motivation from "../components/Application/Motivation";
 
 const Application = () => {
-
-  // State for the motivation form field
-  const [isMotivationFilled, setIsMotivationFilled] = useState(false);
-
-  // State for the confirmation modal visibility
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
-  // States for whether dynamic forms are expanded or collapsed
-  const [isAcademicExperienceOpen, setIsAcademicExperienceOpen] = useState(false);
-  const [isProfessionalExperienceOpen, setIsProfessionalExperienceOpen] = useState(false);
-
-  // Functions to open and close the confirmation modal
-  const openModal = () => {
-      setIsModalVisible(true);
-  }
-
-  const closeModal = () => {
-      setIsModalVisible(false);
-  }
-
-  // Get id from URL
-  const { id } = useParams();
-  
-  const navigate = useNavigate(); 
-
-  // Function for deciding the different values in the form
-  const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
-
-  // Destructuring of functions and states from dynamicForms and tempObjects
+  // Destructuring of functions and states from dynamicForms
   const {
     experienceErrors,
     educationErrors,
@@ -71,15 +43,34 @@ const Application = () => {
     experienceErrorState,
   } = dynamicForms();
 
+  // More destructuring
+  const { register, handleSubmit, formState: { errors } } = useForm<NewApplication>();
   const { emptyAcademicObject, emptyProfessionalObject } = tempObjects();
-  
-  const areAllFormsFilledCorrect =
-      !submitError
-      && !educationErrorState
-      && !experienceErrorState
-      && isMotivationFilled
-      && dynamicInputsFilled("education")
-      && dynamicInputsFilled("experience");
+  const { id } = useParams();   // Get id from URL
+  const navigate = useNavigate();
+
+  // States
+  const [isMotivationFilled, setIsMotivationFilled] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isAcademicExperienceOpen, setIsAcademicExperienceOpen] = useState(false);
+  const [isProfessionalExperienceOpen, setIsProfessionalExperienceOpen] = useState(false);
+  const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
+
+  // Validate if all forms are filled correctly
+  useEffect(() => {
+    setAreAllFormsFilledCorrect(
+      !submitError &&
+      !educationErrorState &&
+      !experienceErrorState &&
+      isMotivationFilled &&
+      dynamicInputsFilled("education") &&
+      dynamicInputsFilled("experience")
+    );
+  }, [submitError, educationErrorState, experienceErrorState, isMotivationFilled, dynamicInputsFilled]);
+
+  // Functions to open and close the confirmation modal
+  const openModal = () => { setIsModalVisible(true); }
+  const closeModal = () => { setIsModalVisible(false); }
 
   /**
     * OnSubmit function for Application.
@@ -107,17 +98,16 @@ const Application = () => {
       workActivities: experienceFormData.map((data) => data.description)
     };
 
-    console.log("[Pre post] applicationData: ", applicationData);
+    console.log("Application data: ", applicationData);   // TODO: remove when everything works
 
-    // TODO: uncomment when everything is working
-    /*AuthService.postNewApplication(applicationData).then((res) =>{
+    AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
-      navigate("/login", { state: { applicationSubmitted: true } });  // TODO: remove!
-    })*/
+      navigate("/login", { state: { applicationSubmitted: true } });
+    })
   };
 
   return (
@@ -215,7 +205,7 @@ const Application = () => {
             <div className="py-3"></div>
           </div>
 
-          {/* Professional experience form */}
+          {/* Professional experience */}
 
           {/* Form button */}
           <div className="professional-experience-form">
@@ -274,29 +264,27 @@ const Application = () => {
             )
           )}
 
-          {/* Warning text for empty forms */}
-          <div>
-            {submitError && (
-                <p className="flex items-center mt-1 ml-4 text-warning text-sm text-right" role="alert">
-                  Alguns campos não estão preenchidos!
-                </p>
-            )}
-          </div>
-
           {/* Bottom page buttons */}
           <div className="w-[1000px] h-[52px] justify-between items-center inline-flex gap-4 mt-16">
 
             {/* Back to login */}
-            <Link to="/login" className="text-grayDark underline">
+            <Link to="/login" className="text-grayDark underline text-lg">
               Voltar para login
             </Link>
+
+            {/* Warning text for empty/incorrect forms */}
+            {!areAllFormsFilledCorrect && (
+                <p className="flex items-center mt-1 ml-4 text-warning text-sm text-right" role="alert">
+                  Alguns campos não estão preenchidos corretamente!
+                </p>
+            )}
 
             {/* Send for analysis */}
             <button type="button"
               onClick={() => {
-
                 SubmitValidation();
 
+                // TODO: remove when everything works
                 console.log("submitError: ", submitError);
                 console.log("educationErrorState: ", educationErrorState);
                 console.log("experienceErrorState: ", experienceErrorState);
@@ -316,7 +304,7 @@ const Application = () => {
                       : 'bg-primary text-gray-200 cursor-not-allowed opacity-60'
               }`}
 
-              // Button is disabled if motivation form field is not filled out
+              // Button is disabled if form fields are not filled out correctly
               disabled={!areAllFormsFilledCorrect}
             >
               Enviar para análise

@@ -12,7 +12,6 @@ import {
   useExperienceFormData,
 } from "../helpers/formStates";
 
-
 export default () => {
   //validation
   const {
@@ -41,7 +40,16 @@ export default () => {
   const fetchDynamicData = async () => {
     try {
       const educationResponse = await ProfileServices.getUserFormTwo(userID);
-      setEducationFormData(educationResponse.data);
+
+      // Map backend variables to corresponding frontend variables
+      const transformedEducationData = educationResponse.data.map((item: any) => ({
+        ...item,
+        educationStartDate: item.startDate,
+        educationEndDate: item.endDate,
+      }));
+
+      setEducationFormData(transformedEducationData);
+
       for (let item in educationResponse.data) {
         setEducationErrors((prevState) => {
           let newState = [...prevState];
@@ -52,24 +60,35 @@ export default () => {
           return newState;
         });
       }
-    } catch (error: any) {   
+    } catch (error: any) {
+      console.error(error);
     }
 
     try {
-    const experienceResponse = await ProfileServices.getUserFormThree(userID);
-    setExperienceFormData(experienceResponse.data);
-    for (let item in experienceResponse.data) {
-      setExperienceErrors((prevState) => {
-        let newState = [...prevState];
-        newState.push({
-          workStartDate: "",
-          workEndDate: "",
+      const experienceResponse = await ProfileServices.getUserFormThree(userID);
+
+      // Map backend variables to corresponding frontend variables
+      const transformedWorkData = experienceResponse.data.map((item: any) => ({
+        ...item,
+        workStartDate: item.startDate,
+        workEndDate: item.endDate,
+      }));
+
+      setExperienceFormData(transformedWorkData);
+
+      for (let item in experienceResponse.data) {
+        setExperienceErrors((prevState) => {
+          let newState = [...prevState];
+          newState.push({
+            workStartDate: "",
+            workEndDate: "",
+          });
+          return newState;
         });
-        return newState;
-      });
+      }
+    } catch (error: any) {
+      console.error(error);
     }
-  } catch (error: any) {   
-  }
   };
 
   //Handles for dynamic form of Education experience (input, create, delete)
@@ -103,27 +122,29 @@ export default () => {
 
   // loops through current input fiels displayed on the UI,and assign them to not being null
   const dynamicInputsFilled = (dynamicForm: any) => {
+    //const educationLevel = item.educationLevel ? String(item.educationLevel).trim() : '';
+
     if (dynamicForm === "education") {
-      const EducationInputsFilled = educationFormData.every(
-        (item) =>
-          item.educationStartDate?.trim() !== "" &&
-          item.educationEndDate?.trim() !== "" &&
-          item.course?.trim() !== "" &&
-          item.institution?.trim() !== ""
+      const EducationInputsFilled = educationFormData.every((item) =>
+          item.educationLevel && String(item.educationLevel).trim() !== "" &&
+          item.status && String(item.status).trim() !== "" &&
+          item.course && String(item.course).trim() !== "" &&
+          item.institution && String(item.institution).trim() !== "" &&
+          item.educationStartDate && String(item.educationStartDate).trim() !== "" &&
+          item.educationEndDate && String(item.educationEndDate).trim() !== ""
       );
-      console.log("Education form filled: ", EducationInputsFilled, "\nData: ", educationFormData)
+      console.log("Education form filled: ", EducationInputsFilled)
       return EducationInputsFilled;
     } 
     else {
-      const ExperienceInputsFilled = experienceFormData.every(
-        (item) =>
-          item.company?.trim() !== "" &&
-          item.jobTitle?.trim() !== "" &&
-          item.workStartDate?.trim() !== "" &&
-          item.workEndDate?.trim() !== "" &&
-          item.description?.trim() !== ""
+      const ExperienceInputsFilled = experienceFormData.every((item) =>
+          item.company && String(item.company).trim() !== "" &&
+          item.jobTitle && String(item.jobTitle).trim() !== "" &&
+          item.workStartDate && String(item.workStartDate).trim() !== "" &&
+          item.workEndDate && String(item.workEndDate).trim() !== "" &&
+          item.description && String(item.description).trim() !== ""
       );
-      console.log("Experience form filled: ", ExperienceInputsFilled, "\nData: ", experienceFormData)
+      console.log("Experience form filled: ", ExperienceInputsFilled)
       return ExperienceInputsFilled;
     }
   };
@@ -154,6 +175,7 @@ export default () => {
         });
         return newState;
       });
+
       setEducationFormData([
         ...educationFormData,
         {
@@ -207,6 +229,7 @@ export default () => {
         });
         return newState;
       });
+
       setExperienceFormData([
         ...experienceFormData,
         {
@@ -263,7 +286,7 @@ export default () => {
   //Count characters written in professional description
   const handleCountExperience = (index: any) => {
     // if description is not existing then return nothing
-    if(experienceFormData.length === 0 || !experienceFormData[index].description) {
+    if(experienceFormData.length === 0 || typeof experienceFormData[index].description !== "string") {
       return 0;
     }
     let text = experienceFormData[index].description;
@@ -316,6 +339,5 @@ export default () => {
     experienceFormData: experienceFormData,
     educationFormData: educationFormData,
     dynamicInputsFilled
-    
   };
 };

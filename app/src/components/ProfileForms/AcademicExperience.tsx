@@ -14,7 +14,6 @@ export default function AcademicExperienceForm({
   educationErrors,
   addNewEducationForm,
   handleEducationDelete,
-  register,
 }: {
   index: number;
   educationFormData: Array<{
@@ -30,12 +29,12 @@ export default function AcademicExperienceForm({
   educationErrors: Record<number, { educationStartDate?: string; educationEndDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
-  register: UseFormRegister<NewApplication>;
+  register: UseFormRegister<NewApplication>;    // TODO: remove when everything works
   errors: unknown;
 }) {
 
-  function displayInvalidDateFormatErrMsg(errorMsg: string) {
-    if(errorMsg !== "") {
+  function displayInvalidDateFormatErrMsg(strValue: string, errorMsg: string) {
+    if(strValue !== "") {
       return (
           <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
             {errorMsg}
@@ -49,7 +48,7 @@ export default function AcademicExperienceForm({
     <Fragment>
       <div
         /* Styling based on conditions */
-        className={`border border-[#166276] p-4 text-left bg-white shadow-xl ${
+        className={`border border-primary p-4 text-left bg-white shadow-xl ${
           (educationFormData?.length === 1 && index === 0) ||
           (educationFormData?.length > 1 &&
             index === educationFormData?.length - 1)
@@ -178,7 +177,7 @@ export default function AcademicExperienceForm({
             />
 
             {/* Display invalid date input error message */}
-            {displayInvalidDateFormatErrMsg(educationErrors[index].educationStartDate)}
+            {displayInvalidDateFormatErrMsg(educationFormData[index]?.educationStartDate, educationErrors[index].educationStartDate)}
 
           </div>
           <div className="flex flex-col ">
@@ -203,7 +202,7 @@ export default function AcademicExperienceForm({
             />
 
             {/* Display invalid date input error message */}
-            {displayInvalidDateFormatErrMsg(educationErrors[index].educationEndDate)}
+            {displayInvalidDateFormatErrMsg(educationFormData[index]?.educationEndDate, educationErrors[index].educationEndDate)}
 
           </div>
         </div>
