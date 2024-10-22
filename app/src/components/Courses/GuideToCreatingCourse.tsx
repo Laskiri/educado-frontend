@@ -9,13 +9,12 @@ import {
 const CourseGuideButton = () => {
   const [showTutorial, setShowTutorial] = useState(false);
 
-  const handleShowTutorial = () => setShowTutorial(true);
-  const handleCloseTutorial = () => setShowTutorial(false);
+  const toggleTutorial = () => setShowTutorial(!showTutorial);
 
   return (
     <>
       <button
-        onClick={handleShowTutorial}
+        onClick={toggleTutorial}
         className="std-button flex modal-button space-x-2"
       >
         <QuestionMarkCircleIcon className="w-8 h-8" />
@@ -25,7 +24,7 @@ const CourseGuideButton = () => {
       {showTutorial && (
         <div
           className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50"
-          onClick={handleCloseTutorial}
+          onClick={toggleTutorial}
         >
           <div
             className="relative bg-white p-6 rounded-lg shadow-lg w-full max-w-xl max-h-[90vh] overflow-y-auto"
@@ -33,7 +32,7 @@ const CourseGuideButton = () => {
           >
             <button
               className="absolute top-2 right-5 text-gray-500 hover:text-gray-700 text-3xl"
-              onClick={handleCloseTutorial}
+              onClick={toggleTutorial}
               aria-label="Close tutorial"
             >
               &times;
