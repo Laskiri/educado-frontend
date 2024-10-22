@@ -95,19 +95,20 @@ const Application = () => {
       position: experienceFormData.map((data) => data.jobTitle),
       workStartDate: experienceFormData.map((data) => data.workStartDate),
       workEndDate: experienceFormData.map((data) => data.workEndDate),
+      isCurrentJob: experienceFormData.map((data) => data.isCurrentJob),
       workActivities: experienceFormData.map((data) => data.description)
     };
 
     console.log("Application data: ", applicationData);   // TODO: remove when everything works
 
-    AuthService.postNewApplication(applicationData).then((res) =>{
+    /*AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
       navigate("/login", { state: { applicationSubmitted: true } });
-    })
+    })*/
   };
 
   return (

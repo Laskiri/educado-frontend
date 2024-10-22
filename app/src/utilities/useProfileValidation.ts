@@ -9,107 +9,57 @@ export default ()=>{
   const {educationErrors, setEducationErrors, educationErrorState, setEducationErrorState } = useEducationErrors();
   const {experienceErrors, setExperienceErrors, experienceErrorState, setExperienceErrorState} = useExperienceErrors();
 
-      // validating date format & creating integer limits on the date format
-      const dateValidation = (value: any) => {
-        let month =
-          parseInt(value.substring(0, 2)) >= 1 &&
-          parseInt(value.substring(0, 2)) <= 12;
-        const regex = new RegExp("/", "g");
-        let matchResult = value.match(regex);
-        let count = matchResult ? matchResult.length : 0;
-        return (
-          !value.includes("/")
-            || count > 1
-            || !value.substring(0, 3).includes("/")
-            || value.length != 7    // Date must be 7 characters long (including '/' in MM/YYYY)
-            || !month
-            || value.substring(3, 7).length != 4    // Ensures that year is 4 digits
-            || value.substring(3, 7) == "0000"    // Avoids year = 0000
-        );
-      };
+  // Ensure a correct MM/YYYY format
+  const dateValidation = (value: string): boolean => {
+    const [month, year] = value.split("/");
+    return (
+      /^\d{2}\/\d{4}$/.test(value) &&    // Regex pattern: MM/YYYY
+      parseInt(month) >= 1 &&
+      parseInt(month) <= 12 &&
+      year !== "0000"
+    );
+  };
 
-      // Handling validation based on form type (education/experience)
-    const handleValidation = (index: any, name: any, value: any, forForm :any) => {
-        const invalidDateFormatErrMsgStr = "Formato inválido! Utilize: MM/AAAA";
+  // Validation of input fields on education/experience forms and updating of error states accordingly
+  const handleValidation = (index: number, name: string, value: string, formType: 'education' | 'experience', isCurrentJob: boolean) => {
+    const invalidDateFormatErrMsgStr = "Formato inválido! Utilize: MM/AAAA";
+    const isInputFieldEmpty = value === "";
+    const ignoreDescription = name === "description";
+    const ignoreEmptyWorkEndDate = name === "workEndDate" && isCurrentJob;
+    const isDateValid = dateValidation(value);
+    console.log("ignoreEmptyWorkEndDate: " + ignoreEmptyWorkEndDate);
+    console.log("isDateValid: " + isDateValid);
+    console.log("isInputFieldEmpty: " + isInputFieldEmpty);
+    console.log("ignoreDescription: " + ignoreDescription);
 
-        // Set education error state and update error messages based on the input field
-        if(forForm == 'education'){
-          if (dateValidation(value)) {
-            if (name === "educationStartDate") {
-              setEducationErrorState(true);
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].educationStartDate = invalidDateFormatErrMsgStr;
-                return newState;
-              });
-            } else if (name === "educationEndDate") {
-              setEducationErrorState(true);
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].educationEndDate = invalidDateFormatErrMsgStr;
-                return newState;
-              });
-            }
-          } else {
-            // Reset education error state and clear error messages based on the input field
-            setEducationErrorState(false);
-            if (name === "educationStartDate") {
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].educationStartDate = "";
-                return newState;
-              });
-            } else if (name === "educationEndDate") {
-              setEducationErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].educationEndDate = "";
-                return newState;
-              });
-            }
-          }
-        }else{
-          // Set experience error state and update error messages based on the input field
-          if (dateValidation(value)) {
-            if (name === "workStartDate") {
-              setExperienceErrorState(true);
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].workStartDate = invalidDateFormatErrMsgStr;
-                return newState;
-              });
-            } else if (name === "workEndDate") {
-              setExperienceErrorState(true);
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].workEndDate = invalidDateFormatErrMsgStr;
-                return newState;
-              });
-            }
-          } else {
-            // Reset experience error state and clear error messages based on the input field
-            setExperienceErrorState(false);
-            if (name === "workStartDate") {
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].workStartDate = "";
-                return newState;
-              });
-            } else if (name === "workEndDate") {
-              setExperienceErrors((prevState) => {
-                let newState = [...prevState];
-                newState[index].workEndDate = "";
-                return newState;
-              });
-            }
-          }
-        }
-      };
-       // Returning states and validation function
-    return {
-        handleValidation,
-        experienceErrors, setExperienceErrors,
-        educationErrorState, setEducationErrorState,
-        educationErrors, setEducationErrors,
-        experienceErrorState, setExperienceErrorState
-    }
+    // Determine which state to update based on form type
+    const setErrorState = formType === 'education' ? setEducationErrorState : setExperienceErrorState;
+    const setErrors = formType === 'education' ? setEducationErrors : setExperienceErrors;
+
+    // Set the error state to true if the date format is invalid or the input field is empty,
+    // but ignore if the input field is the description or the workEndDate is empty and isCurrentJob is true
+    if (ignoreDescription || ignoreEmptyWorkEndDate)
+      setErrorState(false);
+    else
+      setErrorState(isInputFieldEmpty || !isDateValid);
+
+    // Update the error message for the specified input field
+    setErrors((prevState) => {
+      const newState = [...prevState];
+
+      // Clear error if date input field is empty or valid
+      newState[index][name] = (!isDateValid || isInputFieldEmpty) ? invalidDateFormatErrMsgStr : "";
+
+      return newState;
+    });
+  };
+
+  // Return states and validation function
+  return {
+      handleValidation,
+      experienceErrors, setExperienceErrors,
+      educationErrorState, setEducationErrorState,
+      educationErrors, setEducationErrors,
+      experienceErrorState, setExperienceErrorState
+  }
 }

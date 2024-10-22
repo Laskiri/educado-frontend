@@ -78,7 +78,7 @@ const putFormThree = async (data: {
     jobTitle: string[];
     startDate: string[];
     endDate: string[];
-    checkBool: boolean[];
+    isCurrentJob: boolean[];
     description: string[];
   }) => {
 

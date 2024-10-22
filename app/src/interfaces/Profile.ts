@@ -33,7 +33,7 @@ export interface ExperienceFormData {
   jobTitle: string;
   workStartDate: string;
   workEndDate: string;
-  checkBool: boolean;
+  isCurrentJob: boolean;
   description: string;
   _id: string | null;
 }

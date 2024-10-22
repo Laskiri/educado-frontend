@@ -56,6 +56,7 @@ const postNewApplication = async (data: {
     position: string[]
     workStartDate: string[];
     workEndDate: string[];
+    isCurrentJob: boolean[];
     workActivities: string[];
   }) => {
 

@@ -24,10 +24,12 @@ export default function ProfessionalExperienceForm({
     workStartDate?: string;
     workEndDate?: string;
     description?: string;
-    checkBool?: boolean;
+    isCurrentJob?: boolean;
     _id?: string | number | null;
   }>;
-  handleExperienceInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) => void;
+  handleExperienceInputChange: (event: {
+    target: { name: string; value: string }
+  }, index: number, isCurrentJob: boolean | undefined) => void;
   experienceErrors: { [key: string]: string }[];
   addNewExperienceForm: (index: number) => void;
   handleExperienceDelete: (index: number, id: string) => void;
@@ -82,10 +84,11 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.company || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index);
+                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
                 }}
               ></input>
             </div>
+
             <div className="flex flex-col ">
               <label htmlFor="status" className="font-['Montserrat']">
                 Cargo
@@ -102,12 +105,15 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.jobTitle || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index);
+                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
                 }}
               />
             </div>
           </div>
+
           <div className="grid grid-cols-2 gap-3">
+
+            {/* Work start date */}
             <div className="flex flex-col ">
               <label htmlFor="firstName" className="font-['Montserrat']">
                 Início:
@@ -125,14 +131,15 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.workStartDate || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index);
+                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
                 }}
               />
 
               {/* Display invalid date input error message */}
               {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workStartDate, experienceErrors[index].workStartDate)}
-
             </div>
+
+            {/* Work end date */}
             <div className="flex flex-col ">
               <label htmlFor="email" className="font-['Montserrat']">
                 Fim
@@ -141,37 +148,45 @@ export default function ProfessionalExperienceForm({
                 </span>
               </label>
               <input
-                className="bg-[#E4F2F5] rounded-lg border-none"
+                className={`bg-[#E4F2F5] rounded-lg border-none ${
+                  experienceFormData[index]?.isCurrentJob ? 'opacity-60 cursor-not-allowed' : ''}`}
                 id={`workEndDate-${index}`}
                 placeholder="Mês/Ano"
                 type="text"
                 maxLength={7}
                 name="workEndDate"
                 value={experienceFormData[index]?.workEndDate || ""}
-                required={true}
+                // required={true}
+                //required={!experienceFormData[index]?.isCurrentJob}
+                disabled={experienceFormData[index]?.isCurrentJob || false}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index);
+                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
                 }}
               />
 
               {/* Display invalid date input error message */}
               {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workEndDate, experienceErrors[index].workEndDate)}
-
             </div>
           </div>
-          <div>
+
+          {/* Current job checkmark box */}
+          <div className="flex items-center gap-2 p-2">
             <input
-              className="border-[#166276]"
-              id={`checkBool-${index}`}
-              name="checkBool"
+              className="border-primary rounded-[2px]"
+              id={`isCurrentJob-${index}`}
+              name="isCurrentJob"
               type="checkbox"
-              checked={experienceFormData[index]?.checkBool || false}
+              checked={experienceFormData[index]?.isCurrentJob ?? false}
               onChange={() => {
                 handleCheckboxChange(index);
+                // TODO: the ! in front of the last argument doesn't make any sense, but was the only way to parse the correct boolean value
+                handleExperienceInputChange({ target: { name: 'workEndDate', value: ''} }, index, !experienceFormData[index]?.isCurrentJob);
               }}
             />
-            <label className="p-2 font-['Montserrat']">Meu emprego atual</label>
+            <label>Meu emprego atual</label>
           </div>
+
+          {/* Work Description */}
           <div className="flex flex-col py-3 ">
             <label
               htmlFor="activatityDescription"
@@ -188,14 +203,14 @@ export default function ProfessionalExperienceForm({
               placeholder="Escreva aqui as suas responsabilidadees"
               maxLength={400}
               name="description"
-              value={experienceFormData[index]?.description || ""}
+              value={experienceFormData[index]?.description ?? ""}
               required={true}
               onChange={(value) => {
-                handleExperienceInputChange(value, index);
+                handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
               }}
             />{" "}
             <div className="text-right text-sm text-gray-400">
-              {handleCountExperience(index)}/400 caracteres
+              {handleCountExperience(index) ?? 0}/400 caracteres
             </div>
           </div>
 

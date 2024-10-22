@@ -237,7 +237,7 @@ export default () => {
           jobTitle: "",
           workStartDate: "",
           workEndDate: "",
-          checkBool: false,
+          isCurrentJob: false,
           description: "",
           _id: null,
         },
@@ -245,13 +245,14 @@ export default () => {
     }
   };
 
-  //checkbox
+  // isCurrentJob checkbox handler
   const handleCheckboxChange = (index: number): void => {
     setExperienceFormData((prevState) => {
       let newState = [...prevState];
       newState[index] = {
         ...newState[index],
-        checkBool: !newState[index].checkBool,
+        isCurrentJob: !newState[index].isCurrentJob,
+        // workEndDate: newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
       };
       return newState;
     });
@@ -297,18 +298,17 @@ export default () => {
   //handle for dynamic personal experiience form
   const handleExperienceInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    index: number,
+    isCurrentJob: boolean
   ): void => {
-    // let { name, value } = event.target;
     let { name, value } = event.target as { name: "workStartDate" | "workEndDate"; value: string };
     if ((name == "workStartDate" || name == "workEndDate") && value.length > 7) {
       return;
     }
     if (name == "workStartDate" || name == "workEndDate") {
-
       value = value.replace(/[^0-9/]/g, "");
     }
-    handleValidation(index, name, value, "experience");
+    handleValidation(index, name, value, "experience", isCurrentJob);
     setExperienceFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {
