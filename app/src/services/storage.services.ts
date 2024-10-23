@@ -27,7 +27,6 @@ type FileProps = {
 */
 async function uploadFile({id, file, parentType: parentType}: FileProps) {
 
-
     if (!file || !id) {
         return;
     }

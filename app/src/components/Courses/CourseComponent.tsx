@@ -13,7 +13,7 @@ import categories from "../../helpers/courseCategories";
 import { BACKEND_URL } from "../../helpers/environment";
 
 // Components
-import { Dropzone } from "../Dropzone/Dropzone";
+import { Dropzone, dropzoneInstance } from "../Dropzone/Dropzone";
 import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
 import NotFound from "../../pages/NotFound";
 import Loading from "../general/Loading";
@@ -42,7 +42,6 @@ interface CourseComponentProps {
  * @returns HTML Element
  */
 export const CourseComponent = ({ token, id, setTickChange, setId, courseData, updateHighestTick, updateLocalData }: CourseComponentProps) => {
-  const [coverImg, setCoverImg] = useState<File | null>();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -130,12 +129,16 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     setShowDialog(true);
   };
 
+  const handleFileUpload = (id : string | undefined) => {
+    const file = dropzoneInstance.getFile();
+    StorageService.uploadFile({ id: id, file: file, parentType: "c" });
+  };
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
-      //Upload image with the new id
-      StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
+      //Upload image with the old id
+      handleFileUpload(id);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -150,7 +153,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       const newCourse = await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
       //Upload image with the new id
-      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
+      handleFileUpload(newCourse.data._id);
+
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
     } catch (err) {
@@ -164,7 +168,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
       //Upload image with the new id
-      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
+      handleFileUpload(newCourse.data._id);
+
       setId(newCourse.data._id);
       setTickChange(1);
       updateHighestTick(1);
@@ -176,9 +181,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   };
 
 
- const handleFileUpload = () => {
-  StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
-};
+
   //Used to prepare the course changes before sending it to the backend
   const prepareCourseChanges = (data: Course): Course => {
     return {
@@ -195,7 +198,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
 
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    handleFileUpload();
     const changes = prepareCourseChanges(data);
     if (isLeaving) {
       
@@ -367,10 +369,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
-            <Dropzone inputType='image' callBack={(file: File) => {
-              setCoverImg(file);
-              handleFieldChange('coverImg', file ? file.name : '');
-            }}/>
+            <Dropzone inputType='image'/>
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
           <div className="text-right">
