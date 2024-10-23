@@ -207,10 +207,10 @@ export function SortableItem({
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
               <ToolTipIcon
-                index={1}
+                index={0}
                 toolTipIndex={toolTipIndex}
                 text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!"}
-                tooltipAmount={3}
+                tooltipAmount={2}
                 callBack={setToolTipIndex}
               />
             </div>
@@ -305,17 +305,23 @@ export function SortableItem({
             {/** Create new Exercise */}
           </div>
           {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-          <div className="flex flex-row-reverse">
-            <label htmlFor="description">{componentData.length}/10 items</label>
+          <div className="relative pt-2">
+          <div className="absolute bottom-16 left-20 -translate-x-full pb-2">
+            <label htmlFor="description " className="text-black">
+              {componentData.length}/10 items
+            </label>
             {/** PLACEHOLDER TEXT */}
-              <ToolTipIcon
-                  index={2}
-                  toolTipIndex={toolTipIndex}
-                  text={"📚Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."}
-                  tooltipAmount={3}
-                  callBack={setToolTipIndex}
-                />
+            <ToolTipIcon
+              index={1}
+              toolTipIndex={toolTipIndex}
+              text={
+                "📚 Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."
+              }
+              tooltipAmount={2}
+              callBack={setToolTipIndex}
+            />
           </div>
+        </div>
         </div>
       </div>
     </div>
