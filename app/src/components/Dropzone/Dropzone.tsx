@@ -85,6 +85,10 @@ export const Dropzone: FC<DropzoneProps> = ({ inputType }) => {
                     
                 </div>
             </div>
+            <div className="text-right">
+                <label htmlFor="">o arquivo deve conter no máximo 500Mb</label>
+          </div>
         </div>
+        
     )
 }

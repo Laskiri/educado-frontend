@@ -372,9 +372,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <Dropzone inputType='image'/>
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
-          <div className="text-right">
-            <label htmlFor="">o arquivo deve conter no máximo 10Mb</label>
-          </div>
         </div>
         {/*Create and cancel buttons*/}
         <div className="modal-action pb-10">
