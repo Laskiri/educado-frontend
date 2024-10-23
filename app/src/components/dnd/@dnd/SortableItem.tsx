@@ -187,7 +187,6 @@ export function SortableItem({
 
         <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
           <form onSubmit={handleSectionUpdate(onSubmit)}>
-            <div>{sid}</div> {/* Debug*/}
             <div className="pt-5">
               <label htmlFor="title">Nome </label> {/*Title of section*/}
               <input
