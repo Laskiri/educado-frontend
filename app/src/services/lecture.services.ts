@@ -23,7 +23,7 @@ export interface LectureInterface {
 */
 
 const addLecture = async ({title, description, contentType, content}: LectureInterface ,token: string, sid: string) => {
-  const result = await axios.put(
+  return await axios.put(
     `${BACKEND_URL}/api/lectures/${sid}`,
     {
       title: title,
@@ -35,9 +35,8 @@ const addLecture = async ({title, description, contentType, content}: LectureInt
     { headers: { Authorization: `Bearer ${token}` } }
   )
 
-  console.log(result);
-  console.log("result:");
-  return result;
+  
+  
 };
 
 
