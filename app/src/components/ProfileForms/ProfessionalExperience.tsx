@@ -1,12 +1,12 @@
-//Imports
+// Imports
 import { Icon } from "@mdi/react";
-import React, { Fragment } from "react";
-import {mdiAlertCircleOutline, mdiDelete} from "@mdi/js";
+import React, { Fragment, useEffect } from "react";
+import { mdiAlertCircleOutline, mdiDelete } from "@mdi/js";
 
-import { UseFormRegister } from 'react-hook-form';
+import { UseFormRegister } from "react-hook-form";
 import { NewApplication } from "../../interfaces/Application";
 
-//Exporting UI content&structure of
+// Exporting UI content & structure
 export default function ProfessionalExperienceForm({
   index,
   experienceFormData,
@@ -27,28 +27,46 @@ export default function ProfessionalExperienceForm({
     isCurrentJob?: boolean;
     _id?: string | number | null;
   }>;
-  handleExperienceInputChange: (event: {
-    target: { name: string; value: string }
-  }, index: number, isCurrentJob: boolean | undefined) => void;
+  handleExperienceInputChange: (
+    event: { target: { name: string; value: string } },
+    index: number,
+    isCurrentJob: boolean | undefined
+  ) => void;
   experienceErrors: { [key: string]: string }[];
   addNewExperienceForm: (index: number) => void;
   handleExperienceDelete: (index: number, id: string) => void;
   handleCountExperience: (index: number) => number;
   handleCheckboxChange: (index: number) => void;
-  register: UseFormRegister<NewApplication>;    // TODO: remove when everything works
+  register: UseFormRegister<NewApplication>; // TODO: remove when everything works
   errors: unknown;
 }) {
-
-  function displayInvalidDateFormatErrMsg(strValue: string, errorMsg: string) {
-    if(strValue !== "") {
+  function displayInvalidDateFormatErrMsg(
+    strValue: string,
+    errorMsg: string
+  ) {
+    if (strValue !== "") {
       return (
-          <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
-            {errorMsg}
-          </p>
+        <p
+          className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']"
+          role="alert"
+        >
+          {errorMsg}
+        </p>
       );
     }
     return null;
   }
+
+  // Clear workEndDate on initial load if isCurrentJob is true
+  useEffect(() => {
+    if (experienceFormData[index]?.isCurrentJob) {
+      handleExperienceInputChange(
+        { target: { name: "workEndDate", value: "" } },
+        index,
+        true
+      );
+    }
+  }, []);
 
   return (
     <Fragment>
@@ -65,7 +83,7 @@ export default function ProfessionalExperienceForm({
           }`}
         >
           <label className="text-[#A1ACB2] font-['Montserrat']">
-            Experiências profisisonais {index + 1}
+            Experiências profissionais {index + 1}
           </label>{" "}
           <div className="grid grid-cols-2 gap-3">
             <div className="flex flex-col ">
@@ -84,7 +102,11 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.company || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                  handleExperienceInputChange(
+                    value,
+                    index,
+                    experienceFormData[index]?.isCurrentJob
+                  );
                 }}
               ></input>
             </div>
@@ -105,14 +127,17 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.jobTitle || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                  handleExperienceInputChange(
+                    value,
+                    index,
+                    experienceFormData[index]?.isCurrentJob
+                  );
                 }}
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-3">
-
             {/* Work start date */}
             <div className="flex flex-col ">
               <label htmlFor="firstName" className="font-['Montserrat']">
@@ -131,16 +156,23 @@ export default function ProfessionalExperienceForm({
                 value={experienceFormData[index]?.workStartDate || ""}
                 required={true}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                  handleExperienceInputChange(
+                    value,
+                    index,
+                    experienceFormData[index]?.isCurrentJob
+                  );
                 }}
               />
 
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workStartDate, experienceErrors[index].workStartDate)}
+              {displayInvalidDateFormatErrMsg(
+                experienceFormData[index]?.workStartDate,
+                experienceErrors[index].workStartDate
+              )}
             </div>
 
             {/* Work end date */}
-            <div className="flex flex-col ">
+            <div className="flex flex-col">
               <label htmlFor="email" className="font-['Montserrat']">
                 Fim
                 <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
@@ -149,27 +181,37 @@ export default function ProfessionalExperienceForm({
               </label>
               <input
                 className={`bg-[#E4F2F5] rounded-lg border-none ${
-                  experienceFormData[index]?.isCurrentJob ? 'opacity-60 cursor-not-allowed' : ''}`}
+                  experienceFormData[index]?.isCurrentJob
+                    ? "opacity-60 cursor-not-allowed"
+                    : ""
+                }`}
                 id={`workEndDate-${index}`}
                 placeholder="Mês/Ano"
                 type="text"
                 maxLength={7}
                 name="workEndDate"
-                value={experienceFormData[index]?.workEndDate || ""}
-                // required={true}
-                //required={!experienceFormData[index]?.isCurrentJob}
+                value={
+                  experienceFormData[index]?.isCurrentJob
+                    ? ""
+                    : experienceFormData[index]?.workEndDate || ""
+                }
                 disabled={experienceFormData[index]?.isCurrentJob || false}
                 onChange={(value) => {
-                  handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                  handleExperienceInputChange(
+                    value,
+                    index,
+                    experienceFormData[index]?.isCurrentJob
+                  );
                 }}
               />
-
               {/* Display invalid date input error message */}
-              {displayInvalidDateFormatErrMsg(experienceFormData[index]?.workEndDate, experienceErrors[index].workEndDate)}
+              {displayInvalidDateFormatErrMsg(
+                experienceFormData[index]?.workEndDate,
+                experienceErrors[index].workEndDate
+              )}
             </div>
           </div>
 
-          {/* Current job checkmark box */}
           <div className="flex items-center gap-2 p-2">
             <input
               className="border-primary rounded-[2px]"
@@ -178,9 +220,18 @@ export default function ProfessionalExperienceForm({
               type="checkbox"
               checked={experienceFormData[index]?.isCurrentJob ?? false}
               onChange={() => {
+                const newIsCurrentJob = !experienceFormData[index]
+                  ?.isCurrentJob;
+
+                // Handle checkbox change
                 handleCheckboxChange(index);
-                // TODO: the ! in front of the last argument doesn't make any sense, but was the only way to parse the correct boolean value
-                handleExperienceInputChange({ target: { name: 'workEndDate', value: ''} }, index, !experienceFormData[index]?.isCurrentJob);
+
+                // Clear workEndDate every time the checkbox is toggled
+                handleExperienceInputChange(
+                  { target: { name: "workEndDate", value: "" } },
+                  index,
+                  newIsCurrentJob
+                );
               }}
             />
             <label>Meu emprego atual</label>
@@ -200,13 +251,17 @@ export default function ProfessionalExperienceForm({
             <textarea
               className="h-[120px] bg-[#E4F2F5] rounded-lg border-none resize-none text-lg font-normal font-['Montserrat']"
               id={`description-${index}`}
-              placeholder="Escreva aqui as suas responsabilidadees"
+              placeholder="Escreva aqui as suas responsabilidades"
               maxLength={400}
               name="description"
               value={experienceFormData[index]?.description ?? ""}
               required={true}
               onChange={(value) => {
-                handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                handleExperienceInputChange(
+                  value,
+                  index,
+                  experienceFormData[index]?.isCurrentJob
+                );
               }}
             />{" "}
             <div className="text-right text-sm text-gray-400">
