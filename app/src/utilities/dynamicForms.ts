@@ -36,58 +36,43 @@ export default () => {
   userInfo.id ? id = userInfo.id : id = "id";
   const [userID] = useState(id);
 
-  // fetch data
+  // Fetch data for academic and professional experience forms
   const fetchDynamicData = async () => {
     try {
-      const educationResponse = await ProfileServices.getUserFormTwo(userID);
+      const [educationResponse, workResponse] = await Promise.all([
+        ProfileServices.getUserFormTwo(userID),
+        ProfileServices.getUserFormThree(userID),
+      ]);
 
-      // Map backend variables to corresponding frontend variables
+      // Print out the _id for both education and work forms
+      console.log("Education form _id: ", educationResponse.data.map((item: any) => item._id));
+      console.log("Work form _id: ", workResponse.data.map((item: any) => item._id));
+      
+      // Map backend variables to corresponding frontend variables  
       const transformedEducationData = educationResponse.data.map((item: any) => ({
         ...item,
         educationStartDate: item.startDate,
         educationEndDate: item.endDate,
+        _id: item._id   // Ensure _id is included. MAYBE REDUNDANT?
       }));
-
-      setEducationFormData(transformedEducationData);
-
-      for (let item in educationResponse.data) {
-        setEducationErrors((prevState) => {
-          let newState = [...prevState];
-          newState.push({
-            educationStartDate: "",
-            educationEndDate: "",
-          });
-          return newState;
-        });
-      }
-    } catch (error: any) {
-      console.error(error);
-    }
-
-    try {
-      const experienceResponse = await ProfileServices.getUserFormThree(userID);
-
+  
       // Map backend variables to corresponding frontend variables
-      const transformedWorkData = experienceResponse.data.map((item: any) => ({
+      const transformedWorkData = workResponse.data.map((item: any) => ({
         ...item,
         workStartDate: item.startDate,
         workEndDate: item.endDate,
+        isCurrentJob: item.isCurrentJob,   // Ensure this is correctly set. MAYBE REDUNDANT?
+        _id: item._id                     // Ensure _id is included. MAYBE REDUNDANT?
       }));
-
+  
+      setEducationFormData(transformedEducationData);
       setExperienceFormData(transformedWorkData);
-
-      for (let item in experienceResponse.data) {
-        setExperienceErrors((prevState) => {
-          let newState = [...prevState];
-          newState.push({
-            workStartDate: "",
-            workEndDate: "",
-          });
-          return newState;
-        });
-      }
-    } catch (error: any) {
-      console.error(error);
+  
+      setEducationErrors(transformedEducationData.map(() => ({ educationStartDate: "", educationEndDate: "" })));
+      setExperienceErrors(transformedWorkData.map(() => ({ workStartDate: "", workEndDate: "" }))); // TODO: take care of isCurrentJob = true
+    } 
+    catch (error: any) {
+      console.error("Error fetching dynamic data: ", error);
     }
   };
 
@@ -141,7 +126,7 @@ export default () => {
           item.company && String(item.company).trim() !== "" &&
           item.jobTitle && String(item.jobTitle).trim() !== "" &&
           item.workStartDate && String(item.workStartDate).trim() !== "" &&
-          item.workEndDate && String(item.workEndDate).trim() !== "" &&
+          (item.workEndDate && String(item.workEndDate).trim() !== "" || item.isCurrentJob) && // If isCurrentJob is true, workEndDate can be empty
           item.description && String(item.description).trim() !== ""
       );
       console.log("Experience form filled: ", ExperienceInputsFilled)
@@ -252,7 +237,6 @@ export default () => {
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
-        // workEndDate: newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
       };
       return newState;
     });

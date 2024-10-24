@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FormData, EducationFormData, ExperienceFormData } from "../interfaces/Profile";
+import { bool } from "yup";
 
 
 
@@ -20,13 +21,13 @@ export const useFormData = () => {
 export const useEducationFormData = () => {
   const [educationFormData, setEducationFormData] = useState<EducationFormData[]>([
     {
+      _id: null,
       educationLevel: "",
       status: "",
       course: "",
       institution: "",
       educationStartDate: "",
-      educationEndDate: "",
-      _id: null,
+      educationEndDate: ""
     },
   ]);
 
@@ -37,13 +38,13 @@ export const useEducationFormData = () => {
 export const useExperienceFormData = () => {
   const [experienceFormData, setExperienceFormData] = useState<ExperienceFormData[]>([
     {
+      _id: null,
       company: "",
       jobTitle: "",
       workStartDate: "",
       workEndDate: "",
       isCurrentJob: false,
-      description: "",
-      _id: null,
+      description: ""
     },
   ]);
 
@@ -82,26 +83,26 @@ export const tempObjects = () => {
     // Create empty object for professional experience
     const emptyAcademicObject = [
       {
+        _id: null,
         educationLevel: "",
         status: "",
         course: "",
         institution: "",
         educationStartDate: "",
-        educationEndDate: "",
-        _id: null,
+        educationEndDate: ""
       },
     ];
   
     // Create empty object for professional experience
     const emptyProfessionalObject = [
       {
+        _id: null,
         company: "",
         jobTitle: "",
         workStartDate: "",
         workEndDate: "",
         isCurrentJob: false,
-        description: "",
-        _id: null,
+        description: ""
       },
     ];
 
@@ -112,13 +113,13 @@ export const tempObjects = () => {
     // Create empty object for professional experience
     const [tempProfessionalObject, setTempProfessionalObject] = useState<ExperienceFormData[]>([
       {
+        _id: null,
         company: "",
         jobTitle: "",
         workStartDate: "",
         workEndDate: "",
         isCurrentJob: false,
-        description: "",
-        _id: null,
+        description: ""
       },
     ]);
   

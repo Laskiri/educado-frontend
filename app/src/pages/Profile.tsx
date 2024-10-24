@@ -124,22 +124,23 @@ const Profile = () => {
 
     const educationData = {
       userID: userID,
-      educationLevel: educationFormData.map((data) => data.educationLevel),
-      status: educationFormData.map((data) => data.status),
-      course: educationFormData.map((data) => data.course),
-      institution: educationFormData.map((data) => data.institution),
-      startDate: educationFormData.map((data) => data.educationStartDate),
-      endDate: educationFormData.map((data) => data.educationEndDate),
+      educationLevel: educationFormData.map((data) => data.educationLevel).flat(),
+      status: educationFormData.map((data) => data.status).flat(),
+      course: educationFormData.map((data) => data.course).flat(),
+      institution: educationFormData.map((data) => data.institution).flat(),
+      startDate: educationFormData.map((data) => data.educationStartDate).flat(),
+      endDate: educationFormData.map((data) => data.educationEndDate).flat(),
     };
 
     const workData = {
       userID: userID,
-      company: experienceFormData.map((data) => data.company),
-      jobTitle: experienceFormData.map((data) => data.jobTitle),
-      startDate: experienceFormData.map((data) => data.workStartDate),
-      endDate: experienceFormData.map((data) => data.workEndDate),
-      description: experienceFormData.map((data) => data.description),
-    };
+      company: experienceFormData.map((data) => data.company).flat(),
+      jobTitle: experienceFormData.map((data) => data.jobTitle).flat(),
+      startDate: experienceFormData.map((data) => data.workStartDate).flat(),
+      endDate: experienceFormData.map((data) => data.workEndDate).flat(),
+      isCurrentJob: experienceFormData.map((data) => data.isCurrentJob).flat(),
+      description: experienceFormData.map((data) => data.description).flat(),
+    };    
 
     // TODO: remove when everything is working
     console.log("educationData: ", educationData);
@@ -170,7 +171,7 @@ const Profile = () => {
 
         if (userID) {
           fetchStaticData();
-          fetchDynamicData();
+          // fetchDynamicData();
         }
 
         console.log("Success! Updated info: ", response);   // TODO: remove when everything is working
@@ -178,6 +179,9 @@ const Profile = () => {
     }
     catch(error) {
       console.error("Error updating profile: " + error);
+      if (error.response) {
+        console.error("Response error code: ", error.response.status);
+      }
     }
     finally {
       setAreAllFormsFilledCorrect(false);

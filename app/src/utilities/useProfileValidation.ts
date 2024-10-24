@@ -2,10 +2,15 @@
 import { useState } from "react";
 import { useEducationErrors, useExperienceErrors } from "../helpers/formStates";
 
-//Validation for month and day input
+/**
+ * Custom hook for validating education and experience forms on /profile and /application endpoints.
+ * Ensures that date inputs follow correct format, and updates error states accordingly.
+ *
+ * @returns {Object} - An object containing the validation handler and error states for education and experience forms.
+ */
 export default ()=>{
 
-  //import education & experience date errors states
+  // Import education & experience date error states
   const {educationErrors, setEducationErrors, educationErrorState, setEducationErrorState } = useEducationErrors();
   const {experienceErrors, setExperienceErrors, experienceErrorState, setExperienceErrorState} = useExperienceErrors();
 
@@ -27,6 +32,8 @@ export default ()=>{
     const ignoreDescription = name === "description";
     const ignoreEmptyWorkEndDate = name === "workEndDate" && isCurrentJob;
     const isDateValid = dateValidation(value);
+    
+    // TODO: remove when everything works
     console.log("ignoreEmptyWorkEndDate: " + ignoreEmptyWorkEndDate);
     console.log("isDateValid: " + isDateValid);
     console.log("isInputFieldEmpty: " + isInputFieldEmpty);

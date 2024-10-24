@@ -101,14 +101,14 @@ const Application = () => {
 
     console.log("Application data: ", applicationData);   // TODO: remove when everything works
 
-    /*AuthService.postNewApplication(applicationData).then((res) =>{
+    AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
       }
     }).catch((error) => {
       console.error("Error submitting application:", error);
       navigate("/login", { state: { applicationSubmitted: true } });
-    })*/
+    })
   };
 
   return (
