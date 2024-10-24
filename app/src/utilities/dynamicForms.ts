@@ -230,6 +230,7 @@ export default () => {
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
+        workEndDate: !newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
       };
       return newState;
     });
