@@ -32,12 +32,6 @@ export default ()=>{
     const ignoreDescription = name === "description";
     const ignoreEmptyWorkEndDate = name === "workEndDate" && isCurrentJob;
     const isDateValid = dateValidation(value);
-    
-    // TODO: remove when everything works
-    console.log("ignoreEmptyWorkEndDate: " + ignoreEmptyWorkEndDate);
-    console.log("isDateValid: " + isDateValid);
-    console.log("isInputFieldEmpty: " + isInputFieldEmpty);
-    console.log("ignoreDescription: " + ignoreDescription);
 
     // Determine which state to update based on form type
     const setErrorState = formType === 'education' ? setEducationErrorState : setExperienceErrorState;

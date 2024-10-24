@@ -43,17 +43,12 @@ export default () => {
         ProfileServices.getUserFormTwo(userID),
         ProfileServices.getUserFormThree(userID),
       ]);
-
-      // Print out the _id for both education and work forms
-      console.log("Education form _id: ", educationResponse.data.map((item: any) => item._id));
-      console.log("Work form _id: ", workResponse.data.map((item: any) => item._id));
-      
+     
       // Map backend variables to corresponding frontend variables  
       const transformedEducationData = educationResponse.data.map((item: any) => ({
         ...item,
         educationStartDate: item.startDate,
         educationEndDate: item.endDate,
-        _id: item._id   // Ensure _id is included. MAYBE REDUNDANT?
       }));
   
       // Map backend variables to corresponding frontend variables
@@ -61,8 +56,6 @@ export default () => {
         ...item,
         workStartDate: item.startDate,
         workEndDate: item.endDate,
-        isCurrentJob: item.isCurrentJob,   // Ensure this is correctly set. MAYBE REDUNDANT?
-        _id: item._id                     // Ensure _id is included. MAYBE REDUNDANT?
       }));
   
       setEducationFormData(transformedEducationData);

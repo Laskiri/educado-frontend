@@ -107,12 +107,6 @@ const Profile = () => {
   // Form submit, sends data to backend upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
 
-    // TODO: remove when everything is working
-    console.log("handleUpdateSubmit invoked!");
-    console.log("educationFormData: ", educationFormData);
-    console.log("experienceFormData: ", experienceFormData);
-
-    // Fields of personal information will be updated using - through a put request
     const personalData = {
       userID: userID,
       userName: formData.UserName,
@@ -142,46 +136,34 @@ const Profile = () => {
       description: experienceFormData.map((data) => data.description).flat(),
     };    
 
-    // TODO: remove when everything is working
-    console.log("educationData: ", educationData);
-    console.log("workData: ", workData);
 
     try {
       const response = await ProfileServices.putFormOne(personalData);
 
       if (response.status === 200) {
-
-        // Fields of academic experience will be looped through and updated using the relevant endpoints
+        // Delete existing education data on the backend before sending new updated data
         await Promise.all(educationFormData.map(async (item, index) => {
-          await ProfileServices.putFormTwo(educationData);
-
           if (item._id)
-              await ProfileServices.deleteEducationForm(item._id);
-          })
-        );
+            await ProfileServices.deleteEducationForm(item._id);
+        }));
 
-        // Fields of professional experience will be looped through and updated using the relevant endpoints
+        // Send the updated educationData to the backend
+        await ProfileServices.putFormTwo(educationData);
+
+        // Delete existing work data on the backend before sending new updated data
         await Promise.all(experienceFormData.map(async (item, index) => {
-          await ProfileServices.putFormThree(workData);
-
           if (item._id)
             await ProfileServices.deleteExperienceForm(item._id);
-          })
-        );
-
-        if (userID) {
-          fetchStaticData();
-          // fetchDynamicData();
-        }
-
-        console.log("Success! Updated info: ", response);   // TODO: remove when everything is working
+        }));
+        
+        // Send the updated workData to the backend
+        await ProfileServices.putFormThree(workData);
       }
     }
     catch(error) {
       console.error("Error updating profile: " + error);
-      if (error.response) {
+      if (error.response) 
         console.error("Response error code: ", error.response.status);
-      }
     }
     finally {
       setAreAllFormsFilledCorrect(false);
