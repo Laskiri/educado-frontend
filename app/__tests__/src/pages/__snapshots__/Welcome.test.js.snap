@@ -29,7 +29,6 @@ exports[`Welcome Component renders without errors 1`] = `
             className="w-[24.43px] h-6"
             src="/logo.svg"
           />
-           
           <img
             alt="educado"
             className="h-6"

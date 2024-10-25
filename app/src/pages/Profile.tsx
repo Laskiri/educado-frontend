@@ -158,12 +158,17 @@ const Profile = () => {
         
         // Send the updated workData to the backend
         await ProfileServices.putFormThree(workData);
+
+        // TODO: display a success message to the user instead, or something
+        // Update page with the new data
+        /* if (userID) {
+          fetchStaticData();
+          fetchDynamicData();
+        } */
       }
     }
     catch(error) {
       console.error("Error updating profile: " + error);
-      if (error.response) 
-        console.error("Response error code: ", error.response.status);
     }
     finally {
       setAreAllFormsFilledCorrect(false);

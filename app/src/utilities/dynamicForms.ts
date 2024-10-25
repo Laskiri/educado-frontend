@@ -57,12 +57,12 @@ export default () => {
         workStartDate: item.startDate,
         workEndDate: item.endDate,
       }));
-  
+
       setEducationFormData(transformedEducationData);
-      setExperienceFormData(transformedWorkData);
-  
+      setExperienceFormData(transformedWorkData); 
+
       setEducationErrors(transformedEducationData.map(() => ({ educationStartDate: "", educationEndDate: "" })));
-      setExperienceErrors(transformedWorkData.map(() => ({ workStartDate: "", workEndDate: "" }))); // TODO: take care of isCurrentJob = true
+      setExperienceErrors(transformedWorkData.map(() => ({ workStartDate: "", workEndDate: "" })));
     } 
     catch (error: any) {
       console.error("Error fetching dynamic data: ", error);
@@ -230,7 +230,7 @@ export default () => {
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
-        workEndDate: !newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
+        // workEndDate: !newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
       };
       return newState;
     });

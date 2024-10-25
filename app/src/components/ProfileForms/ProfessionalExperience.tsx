@@ -1,6 +1,6 @@
 // Imports
 import { Icon } from "@mdi/react";
-import React, { Fragment, useEffect } from "react";
+import React, { Fragment } from "react";
 import { mdiAlertCircleOutline, mdiDelete } from "@mdi/js";
 
 // Export UI content and structure
@@ -51,17 +51,6 @@ export default function ProfessionalExperienceForm({
     return null;
   }
 
-  // Clear workEndDate on initial load if isCurrentJob is true
-  useEffect(() => {
-    if (experienceFormData[index]?.isCurrentJob) {
-      handleExperienceInputChange(
-        { target: { name: "workEndDate", value: "" } },
-        index,
-        true
-      );
-    }
-  }, []);
-
   return (
     <Fragment>
       <div key={index}>
@@ -90,6 +79,7 @@ export default function ProfessionalExperienceForm({
                   *
                 </span>
               </label>
+              
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
                 id={`company-${index}`}
@@ -112,6 +102,7 @@ export default function ProfessionalExperienceForm({
                   *
                 </span>
               </label>
+              
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
                 id={`jobTitle-${index}`}
@@ -137,6 +128,7 @@ export default function ProfessionalExperienceForm({
                   *
                 </span>
               </label>
+              
               <input
                 className="bg-[#E4F2F5] rounded-lg border-none"
                 id={`workStartDate-${index}`}
@@ -164,6 +156,7 @@ export default function ProfessionalExperienceForm({
                   *
                 </span>
               </label>
+              
               <input
                 className={`bg-[#E4F2F5] rounded-lg border-none ${
                   experienceFormData[index]?.isCurrentJob ? 'opacity-60 cursor-not-allowed' : ''}`}
@@ -188,27 +181,31 @@ export default function ProfessionalExperienceForm({
             </div>
           </div>
 
-          {/* Current job checkmark box */}
+          {/* Current job checkbox */}
           <div className="flex items-center gap-2 p-2">
             <input
-              className="border-primary rounded-[2px]"
+              className="border-primary rounded-[2px] cursor-pointer"
               id={`isCurrentJob-${index}`}
               name="isCurrentJob"
               type="checkbox"
-              checked={experienceFormData[index]?.isCurrentJob ?? false}
+              
+              // TODO: this works but is ugly. Some shit needs to be refactored somewhere else first...
+              checked={experienceFormData[index].isCurrentJob[index]}
               onChange={() => {
                 handleCheckboxChange(index);
                 
                 // Clear workEndDate every time the checkbox is toggled
-                // The negation of last argument doesn't make any sense, but it works...
                 handleExperienceInputChange({ target: { name: "workEndDate", value: "" } }, index, !experienceFormData[index]?.isCurrentJob);
               }}
             />
-            <label>Meu emprego atual</label>
+
+            <label className="cursor-pointer" htmlFor={`isCurrentJob-${index}`}>
+              Meu emprego atual
+            </label>
           </div>
 
           {/* Work Description */}
-          <div className="flex flex-col py-3 ">
+          <div className="flex flex-col py-3">
             <label
               htmlFor="activatityDescription"
               className="font-['Montserrat']"
@@ -218,6 +215,7 @@ export default function ProfessionalExperienceForm({
                 *
               </span>
             </label>
+
             <textarea
               className="h-[120px] bg-[#E4F2F5] rounded-lg border-none resize-none text-lg font-normal font-['Montserrat']"
               id={`description-${index}`}
@@ -230,8 +228,9 @@ export default function ProfessionalExperienceForm({
                 handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
               }}
             />{" "}
-            <div className="text-right text-sm text-gray-400">
-              {handleCountExperience(index) ?? 0}/400 caracteres
+
+            <div className="text-right text-sm text-grayDark">
+              {handleCountExperience(index) ?? 0} / 400 caracteres
             </div>
           </div>
 
@@ -241,19 +240,14 @@ export default function ProfessionalExperienceForm({
               <Icon
                 path={mdiDelete}
                 size={0.8}
-                color="#CF6679"
-                className="mt-3.5"
+                className="mt-3.5 text-warning"
               />
+              
               <button
                 type="button"
-                className="underline text-[#CF6679] py-3"
+                className="text-warning font-bold py-3"
                 onClick={() =>
-                  handleExperienceDelete(
-                    index,
-                    experienceFormData[index]?._id
-                      ? experienceFormData[index]?._id
-                      : ""
-                  )
+                  handleExperienceDelete(index, experienceFormData[index]?._id?.toString() || "")
                 }
               >
                 Remover formação
@@ -261,31 +255,29 @@ export default function ProfessionalExperienceForm({
             </div>
           )}
 
-          {/* only display border on last form otherwise create distance */}
+          {/* Form separation border line */}
+          {/* Only visible on last form, otherwise create distance */}
           <div
-            className={
-              index === experienceFormData.length - 1
-                ? "border-t border-[#A1ACB2] py-2 mt-4"
+            className={index === experienceFormData.length - 1
+                ? "border-t border-grayMedium py-2 mt-4"
                 : "py-30 mt-5"
             }
           />
 
-          {/* Btn is only visible on last created form*/}
-          {index === experienceFormData.length - 1 ? (
-            <>
-              <div className="flex items-center justify-center">
-                <button
-                  type="button"
-                  className="third_form_add w-full px-4 py-2 rounded-lg border-dotted border-2 border-[#A1ACB2]"
-                  onClick={() => {
-                    addNewExperienceForm(index);
-                  }}
-                >
-                  Adicionar outra experiência
-                </button>
-              </div>
-            </>
-          ) : null}
+          {/* Add another form button */}
+          {/* Only visible on last created form */}
+          {/* TODO: make invisible when form is not filled out corretly */}
+          {index === experienceFormData.length - 1 && (
+            <div className="flex items-center justify-center">
+              <button
+                type="button"
+                className="third_form_add w-full px-4 py-2 rounded-lg border-dotted border-2 border-grayMedium"
+                onClick={() => addNewExperienceForm(index)}
+              >
+                Adicionar outra experiência
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </Fragment>
