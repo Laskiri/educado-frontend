@@ -46,6 +46,7 @@ export const CourseComponent = ({
   setTickChange,
   setId,
 }: CourseComponentProps) => {
+  const [coverImg, setCoverImg] = useState<File | null>();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -141,7 +142,7 @@ export const CourseComponent = ({
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (data: Course) => {
     try {
-      const newCourse = await CourseServices.createCourse(data, token);
+      await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -184,7 +185,6 @@ export const CourseComponent = ({
       estimatedHours: data.estimatedHours,
       coverImg: id + "_" + "c",
     };
-  }
 
     // 3 submit cases
     // existing draft course, save --> Update course details and go back to course list : should trigger popup
