@@ -7,7 +7,6 @@ import { NewApplication } from "../../interfaces/Application";
 interface MotivationProps {
   // Type definitions for props
   register: UseFormRegister<NewApplication>;
-  errors: unknown;
   setIsMotivationFilled: (filled: boolean) => void;
 }
 
@@ -76,7 +75,7 @@ const Motivation: React.FC<MotivationProps> = ({
               </label>
 
               <textarea
-                  className="bg-sky-50 rounded-lg border-none"
+                  className="bg-secondary rounded-lg border-none"
                   placeholder="Escreva aqui porque você quer fazer parte de projeto"
                   maxLength={maxLength}
                   value={motivation}
@@ -85,8 +84,8 @@ const Motivation: React.FC<MotivationProps> = ({
               />
 
               {/* Display current length of input text and maximum allowed characters */}
-              <div className="text-right text-gray-500 text-sm font-normal">
-                {motivation.length}/{maxLength} caracteres
+              <div className="text-right text-sm text-grayDark mt-2">
+                {motivation.length} / {maxLength} caracteres
               </div>
             </div>
           </div>

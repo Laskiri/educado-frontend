@@ -99,8 +99,6 @@ const Application = () => {
       workActivities: experienceFormData.map((data) => data.description)
     };
 
-    console.log("Application data: ", applicationData);   // TODO: remove when everything works
-
     AuthService.postNewApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
@@ -112,7 +110,7 @@ const Application = () => {
   };
 
   return (
-    <main className="flex-grow overflow-x-hidden bg-[#E4F2F5] h-screen font-['Montserrat']">
+    <main className="flex-grow overflow-x-hidden bg-secondary h-screen font-['Montserrat']">
 
       {/* Mini navbar */}
       <MiniNavbar />
@@ -174,28 +172,28 @@ const Application = () => {
           {isAcademicExperienceOpen && (
             educationFormData.length === 0 ? (
               <AcademicExperienceForm
-                  key={0}
-                  index={0}
-                  educationFormData={emptyAcademicObject}
-                  handleEducationInputChange={handleEducationInputChange}
-                  educationErrors={educationErrors}
-                  addNewEducationForm={addNewEducationForm}
-                  handleEducationDelete={handleEducationDelete}
-                  register={register}
-                  errors={errors}
+                key={0}
+                index={0}
+                educationFormData={emptyAcademicObject}
+                handleEducationInputChange={handleEducationInputChange}
+                educationErrors={educationErrors}
+                addNewEducationForm={addNewEducationForm}
+                handleEducationDelete={handleEducationDelete}
+                register={register}
+                errors={errors}
               />
             ) : (
               educationFormData.map((form, index) => (
                   <AcademicExperienceForm
-                      key={index}
-                      index={index}
-                      educationFormData={educationFormData}
-                      handleEducationInputChange={handleEducationInputChange}
-                      educationErrors={educationErrors}
-                      addNewEducationForm={addNewEducationForm}
-                      handleEducationDelete={handleEducationDelete}
-                      register={register}
-                      errors={errors}
+                    key={index}
+                    index={index}
+                    educationFormData={educationFormData}
+                    handleEducationInputChange={handleEducationInputChange}
+                    educationErrors={educationErrors}
+                    addNewEducationForm={addNewEducationForm}
+                    handleEducationDelete={handleEducationDelete}
+                    register={register}
+                    errors={errors}
                   />
               ))
             )
@@ -284,15 +282,6 @@ const Application = () => {
             <button type="button"
               onClick={() => {
                 SubmitValidation();
-
-                // TODO: remove when everything works
-                console.log("submitError: ", submitError);
-                console.log("educationErrorState: ", educationErrorState);
-                console.log("experienceErrorState: ", experienceErrorState);
-                console.log("isMotivationFilled: ", isMotivationFilled);
-                console.log("dynamicInputsFilled(education): ", dynamicInputsFilled("education"));
-                console.log("dynamicInputsFilled(experience): ", dynamicInputsFilled("experience"));
-                console.log("isMotivationFilled: ", isMotivationFilled);
 
                 if (areAllFormsFilledCorrect)
                   openModal();

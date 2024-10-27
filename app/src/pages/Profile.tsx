@@ -227,7 +227,7 @@ const Profile = () => {
 
   return (
     <Layout meta="Profile">
-      <main className="flex-grow overflow-x-hidden bg-[#E4F2F5] h-screen font-['Montserrat']">
+      <main className="flex-grow overflow-x-hidden bg-secondary h-screen font-['Montserrat']">
 
         {/* Dynamic forms */}
         <form className="text-center py-8 px-10 w-full">
@@ -244,7 +244,7 @@ const Profile = () => {
                 type="button"
                 className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                   isPersonalInfoOpen
-                    ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-white"
+                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                     : "rounded-lg bg-white text-neutral-700 text-grayDark"
                 }`}
                 onClick={() => setIsPersonalInfoOpen(!isPersonalInfoOpen)}
@@ -277,7 +277,7 @@ const Profile = () => {
                 type="button"
                 className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                   isAcademicExperienceOpen
-                    ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-white"
+                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                     : "rounded-lg bg-white text-neutral-700 text-grayDark"
                 }`}
                 onClick={() => setIsAcademicExperienceOpen(!isAcademicExperienceOpen)}
@@ -334,7 +334,7 @@ const Profile = () => {
                 type="button"
                 className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                   isProfessionalExperienceOpen
-                    ? "rounded-tl-lg rounded-tr-lg bg-[#166276] text-white"
+                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
                     : "rounded-lg bg-white text-neutral-700 text-grayDark"
                 }`}
                 onClick={() => setIsProfessionalExperienceOpen(!isProfessionalExperienceOpen)}
@@ -363,11 +363,10 @@ const Profile = () => {
                   handleCountExperience={handleCountExperience}
                   handleCheckboxChange={handleCheckboxChange}
                   register={register}
-                  errors={errors}
-                />
-              ) : (
-                experienceFormData.map((form, index) => (
-                  <ProfessionalExperienceForm
+                  />
+                ) : (
+                  experienceFormData.map((form, index) => (
+                    <ProfessionalExperienceForm
                     key={index}
                     index={index}
                     experienceFormData={experienceFormData}
@@ -417,7 +416,6 @@ const Profile = () => {
                     SubmitValidation();
 
                     if (areAllFormsFilledCorrect) {
-                      console.log("areAllFormsFilledCorrect: ", areAllFormsFilledCorrect);  // TODO: remove when everything is working
                       handleSubmit(handleUpdateSubmit)();
                     }
                   }}

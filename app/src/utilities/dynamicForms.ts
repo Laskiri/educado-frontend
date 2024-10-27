@@ -100,7 +100,6 @@ export default () => {
 
   // loops through current input fiels displayed on the UI,and assign them to not being null
   const dynamicInputsFilled = (dynamicForm: any) => {
-    //const educationLevel = item.educationLevel ? String(item.educationLevel).trim() : '';
 
     if (dynamicForm === "education") {
       const EducationInputsFilled = educationFormData.every((item) =>
@@ -111,7 +110,7 @@ export default () => {
           item.educationStartDate && String(item.educationStartDate).trim() !== "" &&
           item.educationEndDate && String(item.educationEndDate).trim() !== ""
       );
-      console.log("Education form filled: ", EducationInputsFilled)
+      console.log("Education form is filled: ", EducationInputsFilled)
       return EducationInputsFilled;
     } 
     else {
@@ -122,7 +121,7 @@ export default () => {
           (item.workEndDate && String(item.workEndDate).trim() !== "" || item.isCurrentJob) && // If isCurrentJob is true, workEndDate can be empty
           item.description && String(item.description).trim() !== ""
       );
-      console.log("Experience form filled: ", ExperienceInputsFilled)
+      console.log("Experience form is filled: ", ExperienceInputsFilled)
       return ExperienceInputsFilled;
     }
   };
@@ -230,7 +229,6 @@ export default () => {
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
-        // workEndDate: !newState[index].isCurrentJob ? "" : newState[index].workEndDate // Clear workEndDate if isCurrentJob is true
       };
       return newState;
     });

@@ -1,10 +1,7 @@
 //Imports
 import { Icon } from "@mdi/react";
 import React, { Fragment } from "react";
-import { mdiDelete } from "@mdi/js";
-
-import { UseFormRegister } from 'react-hook-form';
-import { NewApplication } from "../../interfaces/Application";
+import { mdiDelete, mdiPlus } from "@mdi/js";
 
 //Exporting UI content&structure of
 export default function AcademicExperienceForm({
@@ -29,14 +26,13 @@ export default function AcademicExperienceForm({
   educationErrors: Record<number, { educationStartDate?: string; educationEndDate?: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
-  register: UseFormRegister<NewApplication>;    // TODO: remove when everything works
   errors: unknown;
 }) {
 
   function displayInvalidDateFormatErrMsg(strValue: string, errorMsg: string) {
     if(strValue !== "") {
       return (
-          <p className="flex items-center mt-1 ml-4 text-warning text-sm font-['Montserrat']" role="alert">
+          <p className="flex items-center mt-1 ml-3 text-warning text-sm" role="alert">
             {errorMsg}
           </p>
       );
@@ -44,34 +40,43 @@ export default function AcademicExperienceForm({
     return null;
   }
 
+  function displayLabelAndAsterisk(labelName: string){
+    return (
+      <label>
+        {labelName}
+        <span className="p-2 text-warning text-sm">
+          *
+        </span>
+      </label>
+    );
+  }
+
   return (
     <Fragment>
-      <div
-        /* Styling based on conditions */
-        className={`border border-primary p-4 text-left bg-white shadow-xl ${
+      <div key={index}
+        /* Apply rounded bottom corners if this is the only form or the last in the bottom */
+        className={`border border-primary p-4 text-left bg-white shadow-xl font-['Montserrat'] ${
           (educationFormData?.length === 1 && index === 0) ||
-          (educationFormData?.length > 1 &&
-            index === educationFormData?.length - 1)
+          (educationFormData?.length > 1 && index === educationFormData?.length - 1)
             ? "rounded-b-lg"
             : ""
         }`}
       >
-        {/* only display border on last form otherwise create distance */}
-        <label className="text-[#A1ACB2] font-['Montserrat']">
+        {/* Form number */}
+        <label className="text-grayMedium font-bold">
           Experiências acadêmicas {index + 1}
-        </label>{" "}
-        <div className="grid grid-cols-2 gap-3">
-          <div className="flex flex-col ">
-            <label htmlFor="Formacao" className="font-['Montserrat']">
-              Formação:
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+        </label>
 
-            {/* Drop down list for educationLevel */}
+        {/* Education level and status div */}
+        <div className="grid grid-cols-2 gap-3 mb-4 mt-4">
+          
+          {/* Education level */}
+          <div className="flex flex-col ">
+            {displayLabelAndAsterisk("Formação")}
+
+            {/* Drop-down */}
             <select
-              className="bg-[#E4F2F5] rounded-lg border-none"
+              className="bg-secondary rounded-lg border-none"
               id={`educationLevel-${index}`}
               name="educationLevel"
               value={educationFormData[index]?.educationLevel || ""}
@@ -87,16 +92,13 @@ export default function AcademicExperienceForm({
             </select>
           </div>
 
-          {/* Drop down list for status */}
+          {/* Status */}
           <div className="flex flex-col ">
-            <label htmlFor="status" className="font-['Montserrat']">
-              Status
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+            {displayLabelAndAsterisk("Status")}
+
+            {/* Drop-down */}
             <select
-                className="bg-[#E4F2F5] rounded-lg border-none"
+                className="bg-secondary rounded-lg border-none"
                 id={`status-${index}`}
                 name="status"
                 value={educationFormData[index]?.status || ""}
@@ -112,16 +114,16 @@ export default function AcademicExperienceForm({
             </select>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+
+        {/* Course and institution div */}
+        <div className="grid grid-cols-2 gap-3 mb-4">
+          
+          {/* Course */}
           <div className="flex flex-col ">
-            <label htmlFor="firstName" className="font-['Montserrat']">
-              Curso:
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+            {displayLabelAndAsterisk("Curso")}
+
             <input
-              className="bg-[#E4F2F5] rounded-lg border-none"
+              className="bg-secondary rounded-lg border-none"
               id={`course-${index}`}
               placeholder="Curso"
               type="text"
@@ -133,15 +135,13 @@ export default function AcademicExperienceForm({
               }}
             />
           </div>
+          
+          {/* Institution */}
           <div className="flex flex-col ">
-            <label htmlFor="email" className="font-['Montserrat']">
-              Instituição
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+            {displayLabelAndAsterisk("Instituição")}
+
             <input
-              className="bg-[#E4F2F5] rounded-lg border-none"
+              className="bg-secondary rounded-lg border-none"
               id={`institution-${index}`}
               placeholder="Instituição"
               type="text"
@@ -154,16 +154,16 @@ export default function AcademicExperienceForm({
             />
           </div>
         </div>
+
+        {/* Education start and end date div */}
         <div className="grid grid-cols-2 gap-3">
+
+          {/* Education start date */}
           <div className="flex flex-col ">
-            <label htmlFor="firstName" className="font-['Montserrat']">
-              Início:
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+            {displayLabelAndAsterisk("Início")}
+
             <input
-              className="bg-[#E4F2F5] rounded-lg border-none"
+              className="bg-secondary rounded-lg border-none"
               id={`educationStartDate-${index}`}
               placeholder="Mês/Ano"
               type="text"
@@ -180,15 +180,13 @@ export default function AcademicExperienceForm({
             {displayInvalidDateFormatErrMsg(educationFormData[index]?.educationStartDate, educationErrors[index].educationStartDate)}
 
           </div>
+
+          {/* Education end date */}
           <div className="flex flex-col ">
-            <label htmlFor="endDate" className="font-['Montserrat']">
-              Fim
-              <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
-                *
-              </span>
-            </label>
+            {displayLabelAndAsterisk("Fim")}
+
             <input
-              className="bg-[#E4F2F5] rounded-lg border-none"
+              className="bg-secondary rounded-lg border-none"
               id={`educationEndDate-${index}`}
               placeholder="Mês/Ano"
               type="text"
@@ -206,55 +204,64 @@ export default function AcademicExperienceForm({
 
           </div>
         </div>
-        {/* Delete button is displayed on all forms except the first one */}
+
+        {/* Delete form button */}
+        {/* Displayed on all forms except the first one */}
         {index > 0 && (
           <div className="flex justify-end gap-1">
+            
+            {/* Trash can icon */}
             <Icon
               path={mdiDelete}
               size={0.8}
-              color="#CF6679"
-              className="mt-3.5"
+              className="mt-3.5 text-warning"
             />
+
             <button
               type="button"
-              className=" text-[#CF6679] py-3"
-              onClick={() => {
-                handleEducationDelete(
-                  index,
-                  educationFormData[index]?._id
-                    ? educationFormData[index]?._id
-                    : null
-                );
-              }}
+              className="text-warning font-bold py-3"
+              onClick={() =>
+                handleEducationDelete(index, educationFormData[index]?._id?.toString() || "")
+              }
             >
               Remover formação
             </button>
           </div>
         )}
-        {/* only display border on last form otherwise create distance */}
+
+
+        {/* Form separation border line */}
+        {/* Only visible on last form, otherwise create distance */}
         <div
           className={
             index === educationFormData?.length - 1
-              ? "border-t border-[#A1ACB2] py-2 mt-4"
+              ? "border-t border-grayMedium py-2 mt-4"
               : "py-30 mt-5"
           }
         />
-        {/* Btn is only visible on last created form*/}
-        {index === educationFormData?.length - 1 ? (
-          <>
+
+        {/* Add another form button */}
+        {/* Only visible on last created form */}
+        {index === educationFormData?.length - 1 && (
             <div className="flex items-center justify-center">
               <button
                 type="button"
-                className="education_add_button w-full px-4 py-2 rounded-lg border-dotted border-2 border-[#A1ACB2]"
+                className="education_add_button w-full px-4 py-2 rounded-lg border-dashed border-2 border-grayMedium text-grayDark flex items-center justify-center gap-2"
                 onClick={() => {
                   addNewEducationForm(index);
                 }}
               >
+
+              {/* + icon in front of button text */}
+              <Icon
+                path={mdiPlus}
+                size={0.9}
+                className="text-grayMedium"
+              />  
                 Adicionar outra experiência
               </button>
             </div>
-          </>
-        ) : null}
+        )}
       </div>
     </Fragment>
   );
