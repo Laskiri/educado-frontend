@@ -21,8 +21,7 @@ module.exports = {
         disabled: "#E4F2F5",
         star: "#F1CC4F",
         guideYellow: '#FFF3D6',
-        warningOrange:'#FA9F47',
-        toggleChecked: '#8AB0BA',
+        warningOrange:'#FA9F47',        
       },
       display: ["group-hover"],
       keyframes: {
