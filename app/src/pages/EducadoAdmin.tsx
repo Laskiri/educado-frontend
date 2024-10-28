@@ -77,6 +77,8 @@ const EducadoAdmin = () => {
     const startItem = (currentPage - 1) * rowsPerPage + 1;
     const endItem = Math.min(currentPage * rowsPerPage, filteredData.length);
 
+    
+
     return (
         <Layout meta="Educado Admin">
             <div className="w-full flex flex-row space-x-2 px-12 py-10">

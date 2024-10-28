@@ -58,10 +58,12 @@ export const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link to="/educado-admin/applications" className="flex items-center text-lg font-['Montserrat']">
-                <Icon path={mdiAccount} size={1} color="grayMedium" />
-                <span>Admin</span>
-              </Link>
+              {userInfo.role === "admin" && (
+                <Link to="/educado-admin/applications" className="flex items-center text-lg font-['Montserrat']">
+                  <Icon path={mdiAccount} size={1} color="grayMedium" />
+                  <span>Admin</span>
+                </Link>
+              )}
             </li>
           </ul>
         </div>
