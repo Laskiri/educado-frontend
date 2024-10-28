@@ -140,17 +140,17 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               {isDropdownOpen2 && (
                 <div className="p-4 bg-white rounded-b-lg shadow break-all">
                   <p className="text-base font-['Montserrat'] text-gray-900">
-                    Academic level: {userApplication?.application?.academicLevel !== undefined ? userApplication.application.academicLevel : "No academic level provided"}
+                    Academic level: {userApplication?.application?.academicLevel !== undefined ? userApplication.application.academicLevel : "Not provided"}
                     <br />
-                    Academic status: {userApplication?.application?.academicStatus !== undefined ? userApplication.application.academicStatus : "No academic status provided"}
+                    Academic status: {userApplication?.application?.academicStatus !== undefined ? userApplication.application.academicStatus : "Not provided"}
                     <br />
-                    Major: {userApplication?.application?.major !== undefined ? userApplication.application.major : "No major provided"}
+                    Major: {userApplication?.application?.major !== undefined ? userApplication.application.major : "Not provided"}
                     <br />
-                    Institution: {userApplication?.application?.institution !== undefined ? userApplication.application.institution : "No institution provided"}
+                    Institution: {userApplication?.application?.institution !== undefined ? userApplication.application.institution : "Not provided"}
                     <br />
-                    Education start date: {userApplication?.application?.educationStartDate !== undefined ? userApplication.application.educationStartDate : "No education start date provided"}
+                    Education start date: {userApplication?.application?.educationStartDate !== undefined ? userApplication.application.educationStartDate : "Not provided"}
                     <br />
-                    Education end date: {userApplication?.application?.educationEndDate !== undefined ? userApplication.application.educationEndDate : "No education end date provided"}
+                    Education end date: {userApplication?.application?.educationEndDate !== undefined ? userApplication.application.educationEndDate : "Not provided"}
                     </p>
                 </div>
               )}
@@ -174,15 +174,15 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
               {isDropdownOpen3 && (
                 <div className="p-4 bg-white rounded-b-lg shadow break-all">
                   <p className="text-base font-['Montserrat'] text-gray-900">
-                    Company: {userApplication?.application?.company !== undefined ? userApplication.application.company : "No company provided"}
+                    Company: {userApplication?.application?.company !== undefined ? userApplication.application.company : "Not provided"}
                     <br />
-                    Position: {userApplication?.application?.position !== undefined ? userApplication.application.position : "No position provided"}
+                    Position: {userApplication?.application?.position !== undefined ? userApplication.application.position : "Not provided"}
                     <br />
-                    Work activities: {userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "No work activities provided"}
+                    Work activities: {userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "Not provided"}
                     <br />
-                    Work start date: {userApplication?.application?.workStartDate !== undefined ? userApplication.application.workStartDate : "No work start date provided"}
+                    Work start date: {userApplication?.application?.workStartDate !== undefined ? userApplication.application.workStartDate : "Not provided"}
                     <br />
-                    Work end date: {userApplication?.application?.workEndDate !== undefined ? userApplication.application.workEndDate : "No work end date provided"}
+                    Work end date: {userApplication?.application?.workEndDate !== undefined ? userApplication.application.workEndDate : "Not provided"}
                     </p>
                 </div>
               )}
