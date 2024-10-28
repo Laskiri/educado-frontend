@@ -159,20 +159,13 @@ const Profile = () => {
         // Send the updated workData to the backend
         await ProfileServices.putFormThree(workData);
 
-        // TODO: display a success message to the user instead, or something
-        // Update page with the new data
-        /* if (userID) {
-          fetchStaticData();
-          fetchDynamicData();
-        } */
+        // Disable submit button after successful submission
+        setAreAllFormsFilledCorrect(false);
+        setHasSubmitted(true);
       }
     }
     catch(error) {
       console.error("Error updating profile: " + error);
-    }
-    finally {
-      setAreAllFormsFilledCorrect(false);
-      setHasSubmitted(true);
     }
   };
 
@@ -271,18 +264,24 @@ const Profile = () => {
               handleInputChange={handleInputChange}
             />
 
-            {/* Academic experience */}
+            {/* Academic experience form */}
+
+            {/* Form button */}
             <div className="academic-experience-form">
               <button
                 type="button"
+                
+                // Open/closed form styling
                 className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                   isAcademicExperienceOpen
-                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
-                    : "rounded-lg bg-white text-neutral-700 text-grayDark"
+                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"   // When open: rounded top corners, primary background, white text
+                    : "rounded-lg bg-white text-neutral-700 text-grayDark"  // When closed: rounded corners, white background, gray text
                 }`}
                 onClick={() => setIsAcademicExperienceOpen(!isAcademicExperienceOpen)}
               >
                 <div className="flex items-start">
+                  
+                  {/* Render chevron up/down icon white/gray  */}
                   {isAcademicExperienceOpen
                       ? ( <Icon path={mdiChevronUp} size={1} className="text-white" /> )
                       : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark" /> )
@@ -332,10 +331,12 @@ const Profile = () => {
             <div className="professional-experience-form">
               <button
                 type="button"
+                
+                // Open/closed form styling
                 className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                   isProfessionalExperienceOpen
-                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
-                    : "rounded-lg bg-white text-neutral-700 text-grayDark"
+                    ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"   // When open: rounded top corners, primary background, white text
+                    : "rounded-lg bg-white text-neutral-700 text-grayDark"  // When closed: rounded corners, white background, gray text
                 }`}
                 onClick={() => setIsProfessionalExperienceOpen(!isProfessionalExperienceOpen)}
               >

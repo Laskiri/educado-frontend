@@ -148,17 +148,20 @@ const Application = () => {
 
           {/* Form button */}
           <div className="academic-experience-form">
-            {/* White and gray background, text and chevron icon when form closed; primary and white when open */}
             <button
                 type="button"
+                
+                // Open/closed form styling
                 className={`second_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                     isAcademicExperienceOpen
-                        ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
-                        : "rounded-lg bg-white text-neutral-700 text-grayDark"
+                        ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"   // When open: rounded top corners, primary background, white text
+                        : "rounded-lg bg-white text-neutral-700 text-grayDark"  // When closed: rounded corners, white background, gray text
                 }`}
                 onClick={() => setIsAcademicExperienceOpen(!isAcademicExperienceOpen)}
             >
               <div className="flex items-start">
+                
+                {/* Render chevron up/down icon white/gray  */}
                 {isAcademicExperienceOpen
                     ? ( <Icon path={mdiChevronUp} size={1} className="text-white"/> )
                     : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark"/> )
@@ -208,13 +211,14 @@ const Application = () => {
 
           {/* Form button */}
           <div className="professional-experience-form">
-            {/* White and gray background, text and chevron icon when form closed; primary and white when open */}
             <button
                 type="button"
+                
+                // Open/closed form styling
                 className={`third_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
                     isProfessionalExperienceOpen
-                        ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
-                        : "rounded-lg bg-white text-neutral-700 text-grayDark"
+                        ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"   // When open: rounded top corners, primary background, white text
+                        : "rounded-lg bg-white text-neutral-700 text-grayDark"  // When closed: rounded corners, white background, gray text
                 }`}
                 onClick={() => setIsProfessionalExperienceOpen(!isProfessionalExperienceOpen)}
             >

@@ -275,7 +275,7 @@ export default () => {
   const handleExperienceInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
     index: number,
-    isCurrentJob: boolean
+    isCurrentJob: boolean = false   // Optional parameter with default value
   ): void => {
     let { name, value } = event.target as { name: "workStartDate" | "workEndDate"; value: string };
     if ((name == "workStartDate" || name == "workEndDate") && value.length > 7) {

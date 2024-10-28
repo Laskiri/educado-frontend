@@ -94,7 +94,7 @@ export default function ProfessionalExperienceForm({
               value={experienceFormData[index]?.company || ""}
               required={true}
               onChange={(value) => {
-                handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                handleExperienceInputChange(value, index);
               }}
             />
           </div>
@@ -112,7 +112,7 @@ export default function ProfessionalExperienceForm({
               value={experienceFormData[index]?.jobTitle || ""}
               required={true}
               onChange={(value) => {
-                handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                handleExperienceInputChange(value, index);
               }}
             />
           </div>
@@ -135,7 +135,7 @@ export default function ProfessionalExperienceForm({
               value={experienceFormData[index]?.workStartDate || ""}
               required={true}
               onChange={(value) => {
-                handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+                handleExperienceInputChange(value, index);
               }}
             />
 
@@ -210,7 +210,7 @@ export default function ProfessionalExperienceForm({
             value={experienceFormData[index]?.description ?? ""}
             required={true}
             onChange={(value) => {
-              handleExperienceInputChange(value, index, experienceFormData[index]?.isCurrentJob);
+              handleExperienceInputChange(value, index);
             }}
           />
 
