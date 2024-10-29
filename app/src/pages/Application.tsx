@@ -136,7 +136,7 @@ const Application = () => {
 
           {/* Motivation form */}
           <div className="motivation-form">
-            <Motivation register={register} errors={errors} setIsMotivationFilled={setIsMotivationFilled}/>
+            <Motivation register={register} setIsMotivationFilled={setIsMotivationFilled}/>
           </div>
 
           {/* Space between forms */}
@@ -182,7 +182,6 @@ const Application = () => {
                 educationErrors={educationErrors}
                 addNewEducationForm={addNewEducationForm}
                 handleEducationDelete={handleEducationDelete}
-                register={register}
                 errors={errors}
               />
             ) : (
@@ -195,7 +194,6 @@ const Application = () => {
                     educationErrors={educationErrors}
                     addNewEducationForm={addNewEducationForm}
                     handleEducationDelete={handleEducationDelete}
-                    register={register}
                     errors={errors}
                   />
               ))
@@ -245,7 +243,6 @@ const Application = () => {
                     handleExperienceDelete={handleExperienceDelete}
                     handleCountExperience={handleCountExperience}
                     handleCheckboxChange={handleCheckboxChange}
-                    register={register}
                     errors={errors}
                 />
             ) : (
@@ -260,7 +257,6 @@ const Application = () => {
                       handleExperienceDelete={handleExperienceDelete}
                       handleCountExperience={handleCountExperience}
                       handleCheckboxChange={handleCheckboxChange}
-                      register={register}
                       errors={errors}
                   />
               ))

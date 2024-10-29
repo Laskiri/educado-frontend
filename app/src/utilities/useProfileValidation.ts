@@ -10,7 +10,7 @@ import { useEducationErrors, useExperienceErrors } from "../helpers/formStates";
  */
 export default ()=>{
 
-  // Import education & experience date error states
+  // Education and experience error states
   const {educationErrors, setEducationErrors, educationErrorState, setEducationErrorState } = useEducationErrors();
   const {experienceErrors, setExperienceErrors, experienceErrorState, setExperienceErrorState} = useExperienceErrors();
 
@@ -26,7 +26,7 @@ export default ()=>{
   };
 
   // Validation of input fields on education/experience forms and updating of error states accordingly
-  const handleValidation = (index: number, name: string, value: string, formType: 'education' | 'experience', isCurrentJob: boolean) => {
+  const handleValidation = (index: number, name: string, value: string, formType: 'education' | 'experience', isCurrentJob: boolean = false) => {
     const invalidDateFormatErrMsgStr = "Formato inválido! Utilize: MM/AAAA";
     const isInputFieldEmpty = value === "";
     const ignoreDescription = name === "description";
@@ -45,7 +45,7 @@ export default ()=>{
       setErrorState(isInputFieldEmpty || !isDateValid);
 
     // Update the error message for the specified input field
-    setErrors((prevState) => {
+    setErrors((prevState: any)  => {
       const newState = [...prevState];
 
       // Clear error if date input field is empty or valid

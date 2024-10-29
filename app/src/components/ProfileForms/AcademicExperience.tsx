@@ -1,9 +1,7 @@
-//Imports
 import { Icon } from "@mdi/react";
 import React, { Fragment } from "react";
 import { mdiDelete, mdiPlus } from "@mdi/js";
 
-//Exporting UI content&structure of
 export default function AcademicExperienceForm({
   index,
   educationFormData,
@@ -14,16 +12,16 @@ export default function AcademicExperienceForm({
 }: {
   index: number;
   educationFormData: Array<{
-    educationLevel?: string;
-    status?: string;
-    course?: string;
-    institution?: string;
-    educationStartDate?: string;
-    educationEndDate?: string;
-    _id?: string | number | null;
+    educationLevel: string;
+    status: string;
+    course: string;
+    institution: string;
+    educationStartDate: string;
+    educationEndDate: string;
+    _id: string | number | null;
   }>;
   handleEducationInputChange: (event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>, index: number) => void;
-  educationErrors: Record<number, { educationStartDate?: string; educationEndDate?: string; [key: string]: string | undefined }>;
+  educationErrors: Record<number, { educationStartDate: string; educationEndDate: string; [key: string]: string | undefined }>;
   addNewEducationForm: (index: number) => void;
   handleEducationDelete: (index: number, id: string | null) => void;
   errors: unknown;

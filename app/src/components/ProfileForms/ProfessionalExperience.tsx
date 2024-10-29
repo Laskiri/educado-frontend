@@ -16,19 +16,20 @@ export default function ProfessionalExperienceForm({
 }: {
   index: number;
   experienceFormData: Array<{
-    company?: string;
-    jobTitle?: string;
-    workStartDate?: string;
-    workEndDate?: string;
-    description?: string;
-    isCurrentJob?: boolean;
-    _id?: string | number | null;
+    company: string;
+    jobTitle: string;
+    workStartDate: string;
+    workEndDate: string;
+    description: string;
+    isCurrentJob: boolean;
+    _id: string | number | null;
   }>;
+
   handleExperienceInputChange: (
-    event: { target: { name: string; value: string } },
-    index: number,
-    isCurrentJob: boolean | undefined
-  ) => void;
+    event: React.ChangeEvent<HTMLInputElement>, 
+    index: number, 
+    isCurrentJob?: boolean) => void;
+
   experienceErrors: { [key: string]: string }[];
   addNewExperienceForm: (index: number) => void;
   handleExperienceDelete: (index: number, id: string) => void;
