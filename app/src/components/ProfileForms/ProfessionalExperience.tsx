@@ -26,7 +26,7 @@ export default function ProfessionalExperienceForm({
   }>;
 
   handleExperienceInputChange: (
-    event: React.ChangeEvent<HTMLInputElement>, 
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, 
     index: number, 
     isCurrentJob?: boolean) => void;
 
@@ -188,7 +188,12 @@ export default function ProfessionalExperienceForm({
                 handleCheckboxChange(index);
                 
                 // Clear workEndDate every time the checkbox is toggled
-                handleExperienceInputChange({ target: { name: "workEndDate", value: "" } }, index, !experienceFormData[index]?.isCurrentJob);
+                handleExperienceInputChange({ 
+                  target: { name: "workEndDate", value: "" }} as React.ChangeEvent<HTMLInputElement>, 
+                  index, 
+                  !experienceFormData[index]?.isCurrentJob
+                );
+
               }}
             />
 
