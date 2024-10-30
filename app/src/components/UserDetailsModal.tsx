@@ -7,12 +7,12 @@ import useSWR from 'swr';
 interface UserDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
-  userDetails: any; // Replace with the appropriate type
+  userDetails: any;
   token: string;
   applicationId: string;
   onHandleStatus: () => void;
-  userApplication: any; // Replace with the appropriate type
-  contentCreator: any; // Replace with the appropriate type
+  userApplication: any;
+  contentCreator: any;
 }
 
 const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication, contentCreator }) => {
