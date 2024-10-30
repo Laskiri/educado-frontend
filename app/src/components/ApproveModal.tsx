@@ -22,7 +22,7 @@ const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, token, use
       AdminServices.changeUserRole(applicationId, token, 'creator');
       onClose(); // Close the modal after rejection
       onHandleStatus();
-      toast.success("Application accepted!");
+      toast.success("Application approved!");
     } catch (error) {
       console.error("Failed to reject application:", error);
     }

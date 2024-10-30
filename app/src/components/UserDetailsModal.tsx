@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import RejectModal from './RejectModal';
 import ApproveModal from './ApproveModal';
-import AuthServices from '../services/auth.services';
-import useSWR from 'swr';
 
 interface UserDetailsModalProps {
   isOpen: boolean;
