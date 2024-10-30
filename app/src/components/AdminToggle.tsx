@@ -15,7 +15,7 @@ const AdminToggleButton: React.FC<AdminToggleButtonProps> = ({ applicationId, ap
     const token = getUserToken();
       if (!token) {
         console.error('No token found');
-        return;
+        return null;
       }
 
     // Fetch the user's current role when the component mounts
