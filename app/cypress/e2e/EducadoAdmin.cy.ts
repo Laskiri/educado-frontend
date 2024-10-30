@@ -37,7 +37,7 @@ describe('Admin page', () => {
 
 	it('shows empty field when there are no applications', () => {
 
-		cy.intercept('GET', `${BACKEND_URL}/api/applications`, {
+		cy.intercept('GET', `${BACKEND_URL}/api/user-info`, {
 			body: {
 				status: 200,
 				data: [],
@@ -54,10 +54,10 @@ describe('Admin page', () => {
 
 	it('shows a list of applicants', () => {
 
-		cy.intercept('GET', `${BACKEND_URL}/api/applications`, {
+		cy.intercept('GET', `${BACKEND_URL}/api/user-info`, {
 			body: {
 				status: 200,
-				data: [{ firstName: "John", lastName: "Doe", email: "mail@gmail.com" }],
+				data: [{ firstName: "John", lastName: "Doe", email: "mail@gmail.com", role: "creator", approved: "true", rejected: "false" }],
 				success: true,
 			},
 		});
@@ -70,11 +70,10 @@ describe('Admin page', () => {
 	});
 	it('filters list of applicant based on search term', () => {
 
-		cy.intercept('GET', `${BACKEND_URL}/api/applications`, {
+		cy.intercept('GET', `${BACKEND_URL}/api/user-info`, {
 			body: {
 				status: 200,
-				data: [{ firstName: "John", lastName: "Doe", email: "mail@gmail.com" },
-				{ firstName: "Jane", lastName: "Doe", email: "mailmail@gmail.com" }],
+				data: [{ firstName: "John", lastName: "Doe", email: "mail@gmail.com", role: "creator", approved: "true", rejected: "false" }],
 				success: true,
 			},
 		});
