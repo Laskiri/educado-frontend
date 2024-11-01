@@ -25,7 +25,7 @@ interface GenericModalProps {
  * Used to either display important information or prompt user for confirmation.
  * If text for confirmation button is not defined, only cancel button will be displayed (and centered).
  *
- * @returns HTML Element
+ * @returns JSX.Element
  */
 const GenericModalComponent: React.FC<GenericModalProps> = ({
     // Destructuring of props and initialization of default values

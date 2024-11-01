@@ -12,7 +12,6 @@ import {
   useExperienceFormData,
 } from "../helpers/formStates";
 
-
 export default () => {
   //validation
   const {
@@ -28,8 +27,8 @@ export default () => {
   } = useProfileValidation();
 
   //dynamic form states & localstorage details
-  const { educationformData, setEducationFormData } = useEducationFormData();
-  const { experienceformData, setExperienceFormData } = useExperienceFormData();
+  const { educationFormData: educationFormData, setEducationFormData } = useEducationFormData();
+  const { experienceFormData: experienceFormData, setExperienceFormData } = useExperienceFormData();
   const userInfo:any = getUserInfo();
 
   // assign userID to localstorage ID
@@ -37,39 +36,37 @@ export default () => {
   userInfo.id ? id = userInfo.id : id = "id";
   const [userID] = useState(id);
 
-  // fetch data
+  // Fetch data for academic and professional experience forms
   const fetchDynamicData = async () => {
     try {
-      const educationResponse = await ProfileServices.getUserFormTwo(userID);
-      setEducationFormData(educationResponse.data);
-      for (let item in educationResponse.data) {
-        setEducationErrors((prevState) => {
-          let newState = [...prevState];
-          newState.push({
-            startDate: "",
-            endDate: "",
-          });
-          return newState;
-        });
-      }
-    } catch (error: any) {   
-    }
+      const [educationResponse, workResponse] = await Promise.all([
+        ProfileServices.getUserFormTwo(userID),
+        ProfileServices.getUserFormThree(userID),
+      ]);
+     
+      // Map backend variables to corresponding frontend variables  
+      const transformedEducationData = educationResponse.data.map((item: any) => ({
+        ...item,
+        educationStartDate: item.startDate,
+        educationEndDate: item.endDate,
+      }));
+  
+      // Map backend variables to corresponding frontend variables
+      const transformedWorkData = workResponse.data.map((item: any) => ({
+        ...item,
+        workStartDate: item.startDate,
+        workEndDate: item.endDate,
+      }));
 
-    try {
-    const experienceResponse = await ProfileServices.getUserFormThree(userID);
-    setExperienceFormData(experienceResponse.data);
-    for (let item in experienceResponse.data) {
-      setExperienceErrors((prevState) => {
-        let newState = [...prevState];
-        newState.push({
-          startDate: "",
-          endDate: "",
-        });
-        return newState;
-      });
+      setEducationFormData(transformedEducationData);
+      setExperienceFormData(transformedWorkData); 
+
+      setEducationErrors(transformedEducationData.map(() => ({ educationStartDate: "", educationEndDate: "" })));
+      setExperienceErrors(transformedWorkData.map(() => ({ workStartDate: "", workEndDate: "" })));
+    } 
+    catch (error: any) {
+      console.error("Error fetching dynamic data: ", error);
     }
-  } catch (error: any) {   
-  }
   };
 
   //Handles for dynamic form of Education experience (input, create, delete)
@@ -80,10 +77,10 @@ export default () => {
     index: number
   ) => {
     let { name, value } = event.target;
-    if ((name == "startDate" || name == "endDate") && value.length > 5) {
+    if ((name == "educationStartDate" || name == "educationEndDate") && value.length > 7) {
       return;
     }
-    if (name == "startDate" || name == "endDate") {
+    if (name == "educationStartDate" || name == "educationEndDate") {
       value = value.replace(/[^0-9/]/g, "");
     }
 
@@ -99,31 +96,32 @@ export default () => {
     });
   };
 
-  
+
 
   // loops through current input fiels displayed on the UI,and assign them to not being null
   const dynamicInputsFilled = (dynamicForm: any) => {
+
     if (dynamicForm === "education") {
-      const EducationInputsFilled = educationformData.every(
-        (item) =>
-          item.startDate?.trim() !== "" &&
-          item.endDate?.trim() !== "" &&
-          item.course?.trim() !== "" &&
-          item.institution?.trim() !== ""
+      const EducationInputsFilled = educationFormData.every((item) =>
+          item.educationLevel && String(item.educationLevel).trim() !== "" &&
+          item.status && String(item.status).trim() !== "" &&
+          item.course && String(item.course).trim() !== "" &&
+          item.institution && String(item.institution).trim() !== "" &&
+          item.educationStartDate && String(item.educationStartDate).trim() !== "" &&
+          item.educationEndDate && String(item.educationEndDate).trim() !== ""
       );
-      console.log("inputsfilled educaion", EducationInputsFilled)
+      console.log("Education form is filled: ", EducationInputsFilled)
       return EducationInputsFilled;
     } 
     else {
-      console.log("experience filled", experienceformData)
-      const ExperienceInputsFilled = experienceformData.every(
-        (item) =>
-          item.company?.trim() !== "" &&
-          item.jobTitle?.trim() !== "" &&
-          item.startDate?.trim() !== "" &&
-          item.endDate?.trim() !== "" &&
-          item.description?.trim() !== ""
+      const ExperienceInputsFilled = experienceFormData.every((item) =>
+          item.company && String(item.company).trim() !== "" &&
+          item.jobTitle && String(item.jobTitle).trim() !== "" &&
+          item.workStartDate && String(item.workStartDate).trim() !== "" &&
+          (item.workEndDate && String(item.workEndDate).trim() !== "" || item.isCurrentJob) && // If isCurrentJob is true, workEndDate can be empty
+          item.description && String(item.description).trim() !== ""
       );
+      console.log("Experience form is filled: ", ExperienceInputsFilled)
       return ExperienceInputsFilled;
     }
   };
@@ -149,20 +147,21 @@ export default () => {
       setEducationErrors((prevState) => {
         let newState = [...prevState];
         newState.push({
-          startDate: "",
-          endDate: "",
+          educationStartDate: "",
+          educationEndDate: "",
         });
         return newState;
       });
+
       setEducationFormData([
-        ...educationformData,
+        ...educationFormData,
         {
           status: "",
           institution: "",
           course: "",
           educationLevel: "",
-          startDate: "",
-          endDate: "",
+          educationStartDate: "",
+          educationEndDate: "",
           _id: null,
         },
       ]);
@@ -176,15 +175,15 @@ export default () => {
       await ProfileServices.deleteEducationForm(_id);
     }
 
-    const updatedEducationFormation = educationformData.filter(
+    const updatedEducationFormation = educationFormData.filter(
       (_, i) => i !== index
     );
     setEducationFormData(updatedEducationFormation);
 
     //input date Validation state
     if (
-      educationErrors[index].startDate != "" ||
-      educationErrors[index].endDate != ""
+      educationErrors[index].educationStartDate != "" ||
+      educationErrors[index].educationEndDate != ""
     ) {
       setEducationErrorState(false);
     }
@@ -202,19 +201,20 @@ export default () => {
       setExperienceErrors((prevState) => {
         let newState = [...prevState];
         newState.push({
-          startDate: "",
-          endDate: "",
+          workStartDate: "",
+          workEndDate: "",
         });
         return newState;
       });
+
       setExperienceFormData([
-        ...experienceformData,
+        ...experienceFormData,
         {
           company: "",
           jobTitle: "",
-          startDate: "",
-          endDate: "",
-          checkBool: false,
+          workStartDate: "",
+          workEndDate: "",
+          isCurrentJob: false,
           description: "",
           _id: null,
         },
@@ -222,13 +222,13 @@ export default () => {
     }
   };
 
-  //checkbox
+  // isCurrentJob checkbox handler
   const handleCheckboxChange = (index: number): void => {
     setExperienceFormData((prevState) => {
       let newState = [...prevState];
       newState[index] = {
         ...newState[index],
-        checkBool: !newState[index].checkBool,
+        isCurrentJob: !newState[index].isCurrentJob,
       };
       return newState;
     });
@@ -241,15 +241,15 @@ export default () => {
       await ProfileServices.deleteExperienceForm(_id);
     }
 
-    const updatedExperienceFormation = experienceformData.filter(
+    const updatedExperienceFormation = experienceFormData.filter(
       (_, i) => i !== index
     );
     setExperienceFormData(updatedExperienceFormation);
 
     // If deleted state has validation error then clear state
     if (
-      experienceErrors[index].startDate != "" ||
-      experienceErrors[index].endDate != ""
+      experienceErrors[index].workStartDate != "" ||
+      experienceErrors[index].workEndDate != ""
     ) {
       setExperienceErrorState(false);
     }
@@ -263,10 +263,10 @@ export default () => {
   //Count characters written in professional description
   const handleCountExperience = (index: any) => {
     // if description is not existing then return nothing
-    if(experienceformData.length === 0 || !experienceformData[index].description) {
+    if(experienceFormData.length === 0 || typeof experienceFormData[index].description !== "string") {
       return 0;
     }
-    let text = experienceformData[index].description;
+    let text = experienceFormData[index].description;
     text = text.replace(/\s/g, "");
     return text.length;
   };
@@ -274,17 +274,17 @@ export default () => {
   //handle for dynamic personal experiience form
   const handleExperienceInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-    index: number
+    index: number,
+    isCurrentJob: boolean = false   // Optional parameter with default value
   ): void => {
-    let { name, value } = event.target;
-    if ((name == "startDate" || name == "endDate") && value.length > 5) {
+    let { name, value } = event.target as { name: "workStartDate" | "workEndDate"; value: string };
+    if ((name == "workStartDate" || name == "workEndDate") && value.length > 7) {
       return;
     }
-    if (name == "startDate" || name == "endDate") {
-
+    if (name == "workStartDate" || name == "workEndDate") {
       value = value.replace(/[^0-9/]/g, "");
     }
-    handleValidation(index, name, value, "experience");
+    handleValidation(index, name, value, "experience", isCurrentJob);
     setExperienceFormData((prevState) => {
       const newState = [...prevState];
       newState[index] = {
@@ -312,9 +312,8 @@ export default () => {
     handleEducationInputChange,
     fetchDynamicData,
     userID,
-    experienceformData,
-    educationformData,
+    experienceFormData: experienceFormData,
+    educationFormData: educationFormData,
     dynamicInputsFilled
-    
   };
 };

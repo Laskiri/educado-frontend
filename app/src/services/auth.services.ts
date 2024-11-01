@@ -41,7 +41,25 @@ const RejectApplication = async (id: string, reason: string): Promise<unknown> =
   return await axios.put(`${BACKEND_URL}/api/applications/${id}/reject`, { reason });
 };
 
-const postNewApplication = async (data: NewApplication) => {
+const postNewApplication = async (data: {
+    baseUser: string | undefined;
+    motivation: string;
+
+    academicLevel: string[];
+    academicStatus: string[];
+    major: string[];
+    institution: string[];
+    educationStartDate: string[];
+    educationEndDate: string[];
+
+    company: string[];
+    position: string[]
+    workStartDate: string[];
+    workEndDate: string[];
+    isCurrentJob: boolean[];
+    workActivities: string[];
+  }) => {
+
   return await axios.post(`${BACKEND_URL}/api/applications/newapplication`, data);
 };
 
