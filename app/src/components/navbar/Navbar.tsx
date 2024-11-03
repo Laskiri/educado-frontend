@@ -1,10 +1,10 @@
 import {Icon} from '@mdi/react';
 import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
 import { Link } from 'react-router-dom'
-import useAuthStore from '../contexts/useAuthStore'
-import { getUserInfo } from '../helpers/userInfo';
+import useAuthStore from '../../contexts/useAuthStore'
+import { getUserInfo } from '../../helpers/userInfo';
 import { useEffect, useState } from 'react';
-import { useNotifications } from './notification/NotificationContext';
+import { useNotifications } from '../notification/NotificationContext';
 
 export const Navbar = () => {
   const { clearToken } = useAuthStore((state) => state);
