@@ -31,6 +31,7 @@ export const Navbar = () => {
 
   // Notification handlers
   const toggleDropdown = () => setIsDropdownOpen((prev) => !prev);
+
   const handleDeleteNotification = (id: number) => {
     setNotifications((prev) => prev.filter((notification) => notification.id !== id));
   };
@@ -58,6 +59,7 @@ export const Navbar = () => {
               </Link>
             </li>
             <li>
+
               {userInfo.role === "admin" && (
                 <Link to="/educado-admin/applications" className="flex items-center text-lg font-['Montserrat']">
                   <Icon path={mdiAccount} size={1} color="grayMedium" />
@@ -70,6 +72,7 @@ export const Navbar = () => {
 
         {/* Notification Bell and User Info */}
         <div className="relative flex items-center gap-6 pr-12 z-50">
+
           {/* Notification Bell */}
           <div className="relative flex items-center gap-6">
             <button onClick={toggleDropdown} className="relative flex items-center">
@@ -168,6 +171,7 @@ export const Navbar = () => {
           </div>
         </div>
       </nav>
+
       {/* gap between navbar and other pages */}
       <div className="h-0" />
     </main>

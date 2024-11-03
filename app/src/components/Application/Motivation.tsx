@@ -7,7 +7,6 @@ import { NewApplication } from "../../interfaces/Application";
 interface MotivationProps {
   // Type definitions for props
   register: UseFormRegister<NewApplication>;
-  errors: unknown;
   setIsMotivationFilled: (filled: boolean) => void;
 }
 
@@ -17,8 +16,8 @@ const Motivation: React.FC<MotivationProps> = ({
   setIsMotivationFilled
 }) => {
 
-  // Variable for toggling visibility of the field
-  const [toggleMotivation, setToggleMotivation] = useState(true);
+  // States for whether dynamic form is expanded or collapsed
+  const [isMotivationOpen, setIsMotivationOpen] = useState(true);
 
   //Variable for keeping track of the length of the motivation
   const [motivation, setMotivation] = useState('');
@@ -43,45 +42,56 @@ const Motivation: React.FC<MotivationProps> = ({
      // Skip applying the effect if the state of the motivation form hasn't changed
   }, [motivation]);
 
+  return (
+    <div className="justify-center items-center font-['Montserrat']">
 
-return (
-<div className="w-[65%] justify-center items-center">
-  {/* Motivation field */}
-    <button type="button" className="relative text-left flex-auto w-[100%] h-[3.3rem] rounded-tl-lg rounded-tr-lg bg-cyan-800 text-white font-bold font-['Montserrat'] pl-6 z-50"
-    onClick={() => setToggleMotivation(!toggleMotivation)}>
-      <div className="flex items-start">
-        {toggleMotivation ? (
-          <Icon path={mdiChevronUp} size={1} color="white" />
-        ) : (
-          <Icon path={mdiChevronDown} size={1} color="white" />
-        )}
-        Motivações
-      </div>
-    </button>
-
-    {toggleMotivation && (
-      <div className="relative border border-blueButton p-4 rounded-b-lg text-left bg-white z-50">
-      <div className="flex flex-col">
-        <label htmlFor="motivation">
-          Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
-          {/* We want to know more about you! Tell us about your reasons for joining Educado */}
-        </label>
-        <textarea
-          className="bg-sky-50 rounded-lg border-none"
-          placeholder="Escreva aqui porque você quer fazer parte de projeto"
-          maxLength={maxLength}
-          value={motivation}
-          {...register("motivation", { required: true })}
-          onChange={handleMotivationChange}
-        />
-        <div className="text-right text-gray-500 text-sm font-normal font-['Montserrat']">
-        {motivation.length}/{maxLength} caracteres
+      {/* Collapsed form  */}
+      <button
+          type="button"
+          className={`first_form_open w-[1000px] h-[72px] p-6 shadow-xl flex-col justify-start items-start gap-20 inline-flex font-bold pl-6 ${
+              isMotivationOpen
+                  ? "rounded-tl-lg rounded-tr-lg bg-primary text-white"
+                  : "rounded-lg bg-white text-neutral-700 text-grayDark"
+          }`}
+          onClick={() => setIsMotivationOpen(!isMotivationOpen)}
+      >
+        <div className="flex items-start">
+          {isMotivationOpen
+              ? ( <Icon path={mdiChevronUp} size={1} className="text-white"/> )
+              : ( <Icon path={mdiChevronDown} size={1} className="text-grayDark"/> )
+          }
+          Motivações
         </div>
-      </div>
+      </button>
+
+      {/* Expanded form */}
+      {isMotivationOpen && (
+          <div className="border border-primary p-4 rounded-b-lg text-left bg-white z-50">
+            <div className="flex flex-col">
+
+              {/* We want to know more about you! Tell us about your reasons for joining Educado */}
+              <label htmlFor="motivation">
+                Queremos saber mais sobre você! Nos conte suas motivações para fazer parte do Educado
+              </label>
+
+              <textarea
+                  className="bg-secondary rounded-lg border-none"
+                  placeholder="Escreva aqui porque você quer fazer parte de projeto"
+                  maxLength={maxLength}
+                  value={motivation}
+                  {...register("motivation", {required: true})}
+                  onChange={handleMotivationChange}
+              />
+
+              {/* Display current length of input text and maximum allowed characters */}
+              <div className="text-right text-sm text-grayDark mt-2">
+                {motivation.length} / {maxLength} caracteres
+              </div>
+            </div>
+          </div>
+      )}
     </div>
-    )}
-  </div>
-  );
-};
+  )
+}
 
 export default Motivation;

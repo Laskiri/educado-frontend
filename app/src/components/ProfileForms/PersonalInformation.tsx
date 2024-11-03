@@ -25,7 +25,7 @@ export default function PersonalInformationForm({
   register: any;
   handleInputChange: any;
 }) {
-  console.log("error", errors.UserName);
+
   //State for pop up modals
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isSecondModalOpen, setIsSecondModalOpen] = useState(false);

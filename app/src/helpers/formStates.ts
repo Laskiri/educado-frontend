@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FormData, EducationFormData, ExperienceFormData } from "../interfaces/Profile";
+import { bool } from "yup";
 
 
 
@@ -18,36 +19,36 @@ export const useFormData = () => {
 
 // dynamic form states - academic
 export const useEducationFormData = () => {
-  const [educationformData, setEducationFormData] = useState<EducationFormData[]>([
+  const [educationFormData, setEducationFormData] = useState<EducationFormData[]>([
     {
-      status: "",
-      institution: "",
-      course: "",
-      educationLevel: "",
-      startDate: "",
-      endDate: "",
       _id: null,
+      educationLevel: "",
+      status: "",
+      course: "",
+      institution: "",
+      educationStartDate: "",
+      educationEndDate: ""
     },
   ]);
 
-  return { educationformData, setEducationFormData };
+  return { educationFormData: educationFormData, setEducationFormData };
 };
 
 // dynamic form states - professional
 export const useExperienceFormData = () => {
-  const [experienceformData, setExperienceFormData] = useState<ExperienceFormData[]>([
+  const [experienceFormData, setExperienceFormData] = useState<ExperienceFormData[]>([
     {
+      _id: null,
       company: "",
       jobTitle: "",
-      startDate: "",
-      endDate: "",
-      checkBool: false,
-      description: "",
-      _id: null,
+      workStartDate: "",
+      workEndDate: "",
+      isCurrentJob: false,
+      description: ""
     },
   ]);
 
-  return { experienceformData, setExperienceFormData };
+  return { experienceFormData: experienceFormData, setExperienceFormData };
 };
 
 
@@ -55,8 +56,8 @@ export const useExperienceFormData = () => {
 export const useEducationErrors = () => {
 const [educationErrors, setEducationErrors] = useState([
   {
-    startDate: "",
-    endDate: "",
+    educationStartDate: "",
+    educationEndDate: "",
   },
 ]);
 
@@ -69,8 +70,8 @@ export const useExperienceErrors = () => {
 // Error states professionnal
 const [experienceErrors, setExperienceErrors] = useState([
   {
-    startDate: "",
-    endDate: "",
+    workStartDate: "",
+    workEndDate: "",
   },
 ]);
 const [experienceErrorState, setExperienceErrorState] = useState(false);
@@ -82,26 +83,26 @@ export const tempObjects = () => {
     // Create empty object for professional experience
     const emptyAcademicObject = [
       {
-        status: "",
-        institution: "",
-        course: "",
-        educationLevel: "",
-        startDate: "",
-        endDate: "",
         _id: null,
+        educationLevel: "",
+        status: "",
+        course: "",
+        institution: "",
+        educationStartDate: "",
+        educationEndDate: ""
       },
     ];
   
     // Create empty object for professional experience
     const emptyProfessionalObject = [
       {
+        _id: null,
         company: "",
         jobTitle: "",
-        startDate: "",
-        endDate: "",
-        checkBool: false,
-        description: "",
-        _id: null,
+        workStartDate: "",
+        workEndDate: "",
+        isCurrentJob: false,
+        description: ""
       },
     ];
 
@@ -112,13 +113,13 @@ export const tempObjects = () => {
     // Create empty object for professional experience
     const [tempProfessionalObject, setTempProfessionalObject] = useState<ExperienceFormData[]>([
       {
+        _id: null,
         company: "",
         jobTitle: "",
-        startDate: "",
-        endDate: "",
-        checkBool: false,
-        description: "",
-        _id: null,
+        workStartDate: "",
+        workEndDate: "",
+        isCurrentJob: false,
+        description: ""
       },
     ]);
   
