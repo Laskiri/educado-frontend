@@ -39,7 +39,7 @@ const AcceptApplication = async (id: string): Promise<unknown> => {
 };
 
 const RejectApplication = async (id: string, rejectionReason: string): Promise<unknown> => {
-  return await axios.put(`${BACKEND_URL}/api/applications/${id}/reject`, { rejectionReason });
+  return await axios.put(`${BACKEND_URL}/api/applications/${id}reject`, { rejectionReason });
 };
 
 const postNewApplication = async (data: {
