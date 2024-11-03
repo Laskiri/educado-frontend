@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom"
-import { AdminProtectedRoute, ProtectedRoute, NonProtectedRoute } from "./services/auth.guard";
+import ProtectedRoute from "./services/auth.guard";
+import { NonProtectedRoute } from "./services/auth.guard";
 
 // Non-auth pages
 import Login from "./pages/Login";
@@ -83,7 +84,7 @@ function App() {
     },
     {
       path: "/educado-admin/applications",
-      element: <AdminProtectedRoute requiredRole="admin"><EducadoAdmin /></AdminProtectedRoute>
+      element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>
     },
     {
       path: "/educado-admin/applications/:id",

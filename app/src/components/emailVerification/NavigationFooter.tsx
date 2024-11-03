@@ -31,8 +31,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
       lastName: formData.lastName,
       email: formData.email,
       password: formData.password,
-      token: token,
-      role: formData.role
+      token: token
     })
   };
 
@@ -59,8 +58,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
       lastName: formData.lastName,
       email: formData.email,
       password: formData.password,
-      token: token,
-      role: formData.role
+      token: token
     })
       .then(() => {
         AuthServices.postUserLogin({
