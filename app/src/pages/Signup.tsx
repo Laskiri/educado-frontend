@@ -28,6 +28,7 @@ import { LoginResponseError } from "../interfaces/LoginResponseError";
 // services
 import AuthServices from "../services/auth.services";
 import { NonProtectedRoute } from "../services/auth.guard";
+import MiniNavbar from "../components/navbar/MiniNavbar";
 
 // Form input interface
 interface ApplicationInputs {
@@ -103,6 +104,7 @@ const Signup = () => {
       lastName: data.lastName,
       email: data.email,
       password: data.password,
+      role: 'user',
       token: null,
     })
     
@@ -210,24 +212,8 @@ const Signup = () => {
       value={() => setIsModalVisible(!isModalVisible)}>
       <FormDataContext.Provider value={formData}>
         <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%">
-          {/* Navbar */}
-          <nav
-            className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10"
-            style={{
-              background: "var(--secondary, #F1F9FB)",
-              boxShadow: "0px 4px 4px 0px rgba(35, 100, 130, 0.25)",
-            }}>
-            <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
-              <div className="navbar-start">
-                <Link
-                  to="/"
-                  className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-                  <img src="/logo.svg" alt="logo" className="w-[24.43px] h-6" />{" "}
-                  <img src="/educado.svg" alt="educado" className="h-6" />
-                </Link>
-              </div>
-            </div>
-          </nav>
+          {/* Mini navbar */}
+          <MiniNavbar />
 
           {/* Container for the entire page */}
           <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-full h-screen">
