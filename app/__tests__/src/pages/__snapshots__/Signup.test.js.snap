@@ -207,6 +207,7 @@ exports[`Signup Component can render signup page without errors 1`] = `
         </h1>
         <form
           className="stretch flex flex-col"
+          noValidate={true}
           onSubmit={[Function]}
         >
           <div
