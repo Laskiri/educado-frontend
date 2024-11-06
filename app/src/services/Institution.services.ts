@@ -1,12 +1,6 @@
 import axios from "axios";
 import { BACKEND_URL } from "../helpers/environment";
-
-export interface Institution {
-  _id?: string;
-  institutionName: string;
-  domain: string;
-  secondaryDomain: string;
-}
+import { Institution } from "../interfaces/Institution";
 
 const getInstitutions = async (token: string) => {
   return await axios.get<Institution[]>(`${BACKEND_URL}/api/institutions`, {
@@ -15,7 +9,7 @@ const getInstitutions = async (token: string) => {
 };
 
 const getSingleInstitution = async (id: string, token: string) => {
-  return await axios.get(`${BACKEND_URL}/api/institutions/${id}`, {
+  return await axios.get<Institution>(`${BACKEND_URL}/api/institutions/${id}`, {
     headers: { Authorization: `Bearer ${token}` },
   });
 };

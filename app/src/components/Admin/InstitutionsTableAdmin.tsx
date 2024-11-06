@@ -1,9 +1,6 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import useSWR from "swr";
-import {
-  Institution,
-  institutionService,
-} from "../../services/Institution.services";
+import { institutionService } from "../../services/Institution.services";
 import Loading from "../general/Loading";
 import {
   GoArrowLeft,
@@ -18,6 +15,7 @@ import { getUserToken } from "../../helpers/userInfo";
 import { toast } from "react-toastify";
 import { IconContext } from "react-icons/lib";
 import { useNotifications } from "../notification/NotificationContext";
+import { Institution } from "../../interfaces/Institution";
 
 export const InstitutionsTableAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
