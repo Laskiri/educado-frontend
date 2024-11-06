@@ -146,7 +146,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className="collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
+      <div className="overflow-visible collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
         <input
           type="checkbox"
           className="peer w-4/5 h-full"
@@ -187,7 +187,7 @@ export function SortableItem({
           </div>
         </div>
 
-        <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
+        <div className="overflow-visible collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
           <form onSubmit={handleSectionUpdate(onSubmit)}>
             <div className="pt-5">
               <label htmlFor="title">Nome </label> {/*Title of section*/}
@@ -304,24 +304,25 @@ export function SortableItem({
             />{" "}
             {/** Create new Exercise */}
           </div>
+
           {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-          <div className="relative pt-2">
-          <div className="absolute bottom-16 left-20 -translate-x-full pb-2">
-            <label htmlFor="description " className="text-black">
-              {componentData.length}/10 items
-            </label>
-            {/** PLACEHOLDER TEXT */}
-            <ToolTipIcon
-              index={1}
-              toolTipIndex={toolTipIndex}
-              text={
-                "📚 Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."
-              }
-              tooltipAmount={2}
-              callBack={setToolTipIndex}
-            />
-          </div>
-        </div>
+         
+            <div className="self-center flex flex-row-reverse">
+              <label htmlFor="description " className="text-black">
+                {componentData.length}/10 items
+              </label>
+              {/** PLACEHOLDER TEXT */}
+              <ToolTipIcon
+                index={1}
+                toolTipIndex={toolTipIndex}
+                text={
+                  "📚 Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."
+                }
+                tooltipAmount={2}
+                callBack={setToolTipIndex}
+              />
+            </div>
+          
         </div>
       </div>
     </div>
