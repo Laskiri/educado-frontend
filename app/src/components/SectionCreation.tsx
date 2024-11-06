@@ -181,6 +181,7 @@ export const SectionCreation = ({
           </h1>
           {/** Tooltip for course sections header*/}
         <ToolTipIcon
+        alignLeftTop={false}
           index={0}
           toolTipIndex={toolTipIndex}
           text={

@@ -207,6 +207,7 @@ export function SortableItem({
             <div style={{ display: 'flex', alignItems: 'center' }}>
               <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
               <ToolTipIcon
+                alignLeftTop={false}
                 index={0}
                 toolTipIndex={toolTipIndex}
                 text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!"}
@@ -307,12 +308,13 @@ export function SortableItem({
 
           {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
          
-            <div className="self-center flex flex-row-reverse">
+            <div className="flex flex-row-reverse">
               <label htmlFor="description " className="text-black">
                 {componentData.length}/10 items
               </label>
               {/** PLACEHOLDER TEXT */}
               <ToolTipIcon
+                alignLeftTop={true}
                 index={1}
                 toolTipIndex={toolTipIndex}
                 text={

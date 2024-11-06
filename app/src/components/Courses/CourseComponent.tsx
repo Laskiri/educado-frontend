@@ -241,6 +241,7 @@ export const CourseComponent = ({
         </h1>
         {/** Tooltip for course header*/}
         <ToolTipIcon
+        alignLeftTop={false}
           index={0}
           toolTipIndex={toolTipIndex}
           text={
@@ -329,6 +330,7 @@ export const CourseComponent = ({
               </label>{" "}
               {/** Description */}
               <ToolTipIcon
+              alignLeftTop={false}
                 index={1}
                 toolTipIndex={toolTipIndex}
                 text={
