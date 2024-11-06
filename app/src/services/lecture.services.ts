@@ -9,7 +9,7 @@ export interface LectureInterface {
   description: string,
   contentType: string,
   content: string,
-}
+};
 
 
 /**
@@ -49,12 +49,14 @@ const updateLecture = async (props: any, token: string, lid: string ) => {
   if (lid == undefined){
     throw("Error: updateLecture input id is undefined")
   }
+
+
   const response = await axios.patch(
     `${BACKEND_URL}/api/lectures/${lid}`,
     props,
     { headers: { Authorization: `Bearer ${token}` } }
   );
-  return response.data
+  return response.data;
 };
 
 /**
@@ -68,7 +70,7 @@ const getLectureDetail = (url: string, token: string) => {
   return axios.get(url, 
   { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.data)
-}
+};
 
 /**
  * Delete a lecture
@@ -85,7 +87,7 @@ const deleteLecture = async (lid: string | undefined, token: string) => {
       `${BACKEND_URL}/api/lectures/${lid}`,
       { headers: { Authorization: `Bearer ${token}` } }
   );
-}
+};
 
 const LectureService = Object.freeze({ addLecture, updateLecture, getLectureDetail, deleteLecture });
 

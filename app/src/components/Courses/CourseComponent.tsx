@@ -25,6 +25,7 @@ import GenericModalComponent from "../GenericModalComponent";
 import { Course } from "../../interfaces/Course";
 import { add } from "cypress/types/lodash";
 import CourseGuideButton from "./GuideToCreatingCourse";
+import StorageServices from "../../services/storage.services";
 
 interface CourseComponentProps {
   token: string;
@@ -46,7 +47,6 @@ export const CourseComponent = ({
   setTickChange,
   setId,
 }: CourseComponentProps) => {
-  const [coverImg, setCoverImg] = useState<File | null>();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -59,6 +59,9 @@ export const CourseComponent = ({
 
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
+
+  const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
+  const [courseImg, setCourseImg] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
@@ -122,11 +125,35 @@ export const CourseComponent = ({
     setShowDialog(true);
   };
 
+  useEffect(() => {
+    const fetchPreview = async () => {
+      const fileSrc = await getPreviewCourseImg();
+      if (fileSrc && fileSrc !== previewCourseImg) {
+        setPreviewCourseImg(fileSrc);
+      }
+    };
+    fetchPreview();
+  }, [existingCourse, id]);
+
+  const getPreviewCourseImg = async () => {
+    if (existingCourse) {
+      const courseImgId = id + "_c"; // Ensure `id` and `existingCourse` are defined
+      const fileSrc = await StorageServices.getMedia(courseImgId);
+      return fileSrc;
+    }
+    return null;
+  };
+
+  const handleFileUpload = (id : string | undefined) => {
+    const file = courseImg;
+    StorageService.uploadFile({ id: id, file: file, parentType: "c" });
+  };
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
-      setStatusSTR(changes.status);
+      //Upload image with the old id
+      handleFileUpload(id);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -137,8 +164,11 @@ export const CourseComponent = ({
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (data: Course) => {
     try {
-      await CourseServices.createCourse(data, token);
+      const newCourse = await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
+      //Upload image with the new id
+      handleFileUpload(newCourse.data._id);
+
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
     } catch (err) {
@@ -151,6 +181,9 @@ export const CourseComponent = ({
     try {
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
+      //Upload image with the new id
+      handleFileUpload(newCourse.data._id);
+
       setId(newCourse.data._id);
       setTickChange(1);
       navigate(`/courses/manager/${newCourse.data._id}/1`);
@@ -160,10 +193,11 @@ export const CourseComponent = ({
     }
   };
 
-  const onSubmit: SubmitHandler<Course> = (data) => {
-    StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
 
-    const changes: Course = {
+
+  //Used to prepare the course changes before sending it to the backend
+  const prepareCourseChanges = (data: Course): Course => {
+    return {
       title: data.title,
       description: data.description,
       category: data.category,
@@ -173,6 +207,7 @@ export const CourseComponent = ({
       estimatedHours: data.estimatedHours,
       coverImg: id + "_" + "c",
     };
+  }
 
     // 3 submit cases
     // existing draft course, save --> Update course details and go back to course list : should trigger popup
@@ -180,6 +215,8 @@ export const CourseComponent = ({
     // new draft course, add sections --> Create course and go to section creation
     // published course, add sections --> Navigate to section creation
 
+  const onSubmit: SubmitHandler<Course> = (data) => {
+    const changes = prepareCourseChanges(data);
     if (isLeaving) {
       // left button pressed
       // StorageService.deleteFile(id, token);
@@ -361,20 +398,13 @@ export const CourseComponent = ({
           </div>
 
           <div>
-            {/*Cover image field is made but does not interact with the db*/}
+            {/*Cover image field*/}
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor="cover-image">Imagem de capa</label>{" "}
               {/** Cover image */}
             </div>
-            <Dropzone inputType="image" callBack={setCoverImg} />{" "}
-            {/** FIX: Doesn't have the functionality to upload coverimage to Buckets yet!*/}
-            {errors.description && (
-              <span className="text-warning">Este campo é obrigatório</span>
-            )}{" "}
-            {/** This field is required */}
-          </div>
-          <div className="text-right">
-            <label htmlFor="">o arquivo deve conter no máximo 10Mb</label>
+            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
+            {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>
         {/*Create and cancel buttons*/}
