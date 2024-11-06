@@ -179,20 +179,20 @@ export const SectionCreation = ({
       <div className="">
         <div className="flex w-full items-center justify-between my-4">
           <div className="flex">
-          <h1 className="text-2xl font-bold">Seções do curso </h1>
-          {/** Tooltip for course sections header*/}
-        <ToolTipIcon
-        alignLeftTop={false}
-          index={0}
-          toolTipIndex={toolTipIndex}
-          text={
-            "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
-          }
-          tooltipAmount={1}
-          callBack={setToolTipIndex}
-        />
-        </div>
-        <CourseGuideButton />
+            <h1 className="text-2xl font-bold">Seções do curso </h1>
+            {/** Tooltip for course sections header*/}
+            <ToolTipIcon
+            alignLeftTop={false}
+              index={0}
+              toolTipIndex={toolTipIndex}
+              text={
+                "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
+              }
+              tooltipAmount={1}
+              callBack={setToolTipIndex}
+            />
+          </div>
+          <CourseGuideButton />
         </div>
 
         <div className="flex w-full float-right space-y-4">
