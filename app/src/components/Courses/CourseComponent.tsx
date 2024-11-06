@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
 // Services
 import CourseServices from "../../services/course.services";
-import StorageService from "../../services/storage.services";
+import StorageServices from "../../services/storage.services";
 
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
@@ -158,7 +158,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
 
   const handleFileUpload = (id : string | undefined) => {
     const file = courseImg;
-    StorageService.uploadFile({ id: id, file: file, parentType: "c" });
+    StorageServices.uploadFile({ id: id, file: file, parentType: "c" });
   };
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
