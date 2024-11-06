@@ -14,7 +14,7 @@ import categories from "../../helpers/courseCategories";
 import { BACKEND_URL } from "../../helpers/environment";
 
 // Components
-import { Dropzone, dropzoneInstance } from "../Dropzone/Dropzone";
+import { Dropzone } from "../Dropzone/Dropzone";
 import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
 import NotFound from "../../pages/NotFound";
 import Loading from "../general/Loading";
