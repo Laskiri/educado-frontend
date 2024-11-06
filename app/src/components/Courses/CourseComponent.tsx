@@ -10,19 +10,16 @@ import StorageServices from "../../services/storage.services";
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
-import { BACKEND_URL } from "../../helpers/environment";
 
 // Components
 import { Dropzone } from "../Dropzone/Dropzone";
 import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
-import NotFound from "../../pages/NotFound";
 import Loading from "../general/Loading";
 import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
 
 // Interface
 import { Course } from "../../interfaces/Course";
-import { add } from "cypress/types/lodash";
 import CourseGuideButton from "./GuideToCreatingCourse";
 
 interface CourseComponentProps {
