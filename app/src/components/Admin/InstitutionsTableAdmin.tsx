@@ -82,7 +82,11 @@ export const InstitutionsTableAdmin = () => {
     setCurrentPage(totalPages);
   };
 
-  const columnNames = ["Instituições", "Domínio", "Domínio secundário"];
+  const columnNames = [
+    { name: "Instituições", width: "basis-1/4" },
+    { name: "Domínio", width: "basis-1/4" },
+    { name: "Domínio secundário", width: "basis-1/4" },
+  ];
 
   const UpdateButton = ({ institution }: { institution: Institution }) => {
     const [showModal, setShowModal] = useState(false);
@@ -150,53 +154,59 @@ export const InstitutionsTableAdmin = () => {
             title="Update Instituições"
             contentText=""
             children={
-              <form className="form-control" onSubmit={handleSumbit}>
-                <label>
-                  <span>Institution name</span>
-                </label>
+              <form
+                className="form-control flex flex-col space-y-4"
+                onSubmit={handleSumbit}
+              >
+                <div className="flex flex-col space-y-2">
+                  <label>
+                    <span>Nome da Instituição</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="institution-name"
+                    required
+                    placeholder="Instituição"
+                    value={nameInput}
+                    onChange={(e) => setNameInput(e.target.value)}
+                    className="input"
+                  />
+
+                  <label>
+                    <span>Domínio</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="domain"
+                    required
+                    pattern="@([\w\-]+\.)+[\w\-]{2,4}"
+                    title="@domain.com"
+                    placeholder="@domain.com"
+                    value={domainInput}
+                    onChange={(e) => setDomainInput(e.target.value)}
+                    className="input"
+                  />
+
+                  <label>
+                    <span>Segundo Domínio</span>
+                  </label>
+                  <input
+                    type="text"
+                    name="secondary-domain"
+                    placeholder="@domain.com (opcional)"
+                    title="@domain.com"
+                    pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
+                    value={secondaryDomainInput}
+                    onChange={(e) => setSecondaryDomainInput(e.target.value)}
+                    className="input"
+                  />
+                </div>
 
                 <input
-                  type="text"
-                  name="institution-name"
-                  required
-                  placeholder="Institution Name"
-                  value={nameInput}
-                  onChange={(e) => setNameInput(e.target.value)}
-                  className="input"
+                  type="submit"
+                  value="submit"
+                  className="btn bg-[#166276] border-[#166276]"
                 />
-
-                <label>
-                  <span>Domain</span>
-                </label>
-
-                <input
-                  type="text"
-                  name="domain"
-                  required
-                  pattern="@([\w\-]+\.)+[\w\-]{2,4}"
-                  title="@domain.com"
-                  placeholder="@institutiondomain.com"
-                  value={domainInput}
-                  onChange={(e) => setDomainInput(e.target.value)}
-                  className="input"
-                />
-
-                <label>
-                  <span>Secondary domain</span>
-                </label>
-
-                <input
-                  type="text"
-                  name="secondary-domain"
-                  placeholder="@2domain.com"
-                  title="@domain.com"
-                  pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
-                  value={secondaryDomainInput}
-                  onChange={(e) => setSecondaryDomainInput(e.target.value)}
-                  className="input"
-                />
-
-                <input type="submit" value="submit" className="btn" />
               </form>
             }
           />
@@ -245,7 +255,7 @@ export const InstitutionsTableAdmin = () => {
   };
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="container flex flex-col overflow-hidden gap-6">
       <form className="flex justify-end space-x-2">
         <select className="select select-bordered">
           <option value="most-recent">Mais recentes</option>
@@ -272,20 +282,20 @@ export const InstitutionsTableAdmin = () => {
             {columnNames.map((columnName, key) => (
               <th
                 scope="col"
-                className="text-sm bg-transparent"
-                key={`${columnName}-${key}`}
+                className={`text-sm bg-transparent ${columnName.width}`}
+                key={`${columnName.name}-${key}`}
               >
-                {columnName}
+                {columnName.name}
               </th>
             ))}
             {/* ACTION BUTTONS */}
-            <th scope="col" className="bg-transparent" />
+            <th scope="col" className="bg-transparent basis-1/6" />
           </tr>
         </thead>
         <tbody>
           {paginatedData.map((institution, key: number) => {
             return (
-              <tr key={key}>
+              <tr key={key} className="border-b-2">
                 <td>
                   <p>{institution.institutionName}</p>
                 </td>
@@ -309,7 +319,7 @@ export const InstitutionsTableAdmin = () => {
         </tbody>
       </table>
 
-      <div className="flex flex-row justify-end">
+      <div className="flex flex-row space-x-8 justify-end">
         <div className="flex items-center">
           <span className="text-gray-600">Rows per page:</span>
           <div>
@@ -328,51 +338,54 @@ export const InstitutionsTableAdmin = () => {
             {startItem} - {endItem} of {filteredData.length}
           </span>
         </div>
-        <div className="flex items-center ml-8">
-          <button
-            type="button"
-            className={`w-full p-3 text-base ${
-              currentPage === 1
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-600 bg-white hover:bg-gray-100 cursor-pointer"
-            }`}
-            onClick={handleFirstPage}
-          >
-            <GoArrowLeft />
-          </button>
-          <button
-            type="button"
-            className={`w-full p-3 text-base ${
-              currentPage === 1
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-600 bg-white hover:bg-gray-100 cursor-pointer"
-            }`}
-            onClick={() => handlePageChange(currentPage - 1)}
-          >
-            <GoChevronLeft />
-          </button>
-          <button
-            type="button"
-            className={`w-full p-3 text-base ${
-              currentPage === totalPages
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-600 bg-white hover:bg-gray-100 cursor-pointer"
-            }`}
-            onClick={() => handlePageChange(currentPage + 1)}
-          >
-            <GoChevronRight />
-          </button>
-          <button
-            type="button"
-            className={`w-full p-3 text-base ${
-              currentPage === totalPages
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-gray-600 bg-white hover:bg-gray-100 cursor-pointer"
-            }`}
-            onClick={handleLastPage}
-          >
-            <GoArrowRight />
-          </button>
+        <div className="flex items-center space-x-4">
+          <IconContext.Provider value={{ size: "20" }}>
+            <button
+              type="button"
+              disabled={currentPage === 1}
+              className={`${
+                currentPage === 1
+                  ? "text-gray-300 cursor-not-allowed"
+                  : "text-gray-600 hover:bg-gray-100 cursor-pointer"
+              }`}
+              onClick={handleFirstPage}
+            >
+              <GoArrowLeft />
+            </button>
+            <button
+              type="button"
+              className={`${
+                currentPage === 1
+                  ? "text-gray-300 cursor-not-allowed"
+                  : "text-gray-600 hover:bg-gray-100 cursor-pointer"
+              }`}
+              onClick={() => handlePageChange(currentPage - 1)}
+            >
+              <GoChevronLeft />
+            </button>
+            <button
+              type="button"
+              className={`${
+                currentPage === totalPages
+                  ? "text-gray-300 cursor-not-allowed"
+                  : "text-gray-600 hover:bg-gray-100 cursor-pointer"
+              }`}
+              onClick={() => handlePageChange(currentPage + 1)}
+            >
+              <GoChevronRight />
+            </button>
+            <button
+              type="button"
+              className={`${
+                currentPage === totalPages
+                  ? "text-gray-300 cursor-not-allowed"
+                  : "text-gray-600 hover:bg-gray-100 cursor-pointer"
+              }`}
+              onClick={handleLastPage}
+            >
+              <GoArrowRight />
+            </button>
+          </IconContext.Provider>
         </div>
       </div>
     </div>
