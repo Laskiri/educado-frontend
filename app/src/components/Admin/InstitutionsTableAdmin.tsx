@@ -17,11 +17,14 @@ import GenericModalComponent from "../GenericModalComponent";
 import { getUserToken } from "../../helpers/userInfo";
 import { toast } from "react-toastify";
 import { IconContext } from "react-icons/lib";
+import { useNotifications } from "../notification/NotificationContext";
 
 export const InstitutionsTableAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { addNotification } = useNotifications();
 
   const userToken = getUserToken();
   const { data: institutionsResponse, mutate } = useSWR(
@@ -111,8 +114,10 @@ export const InstitutionsTableAdmin = () => {
               secondaryDomain: secondaryDomainInput,
             }
           );
+
           mutate();
           setShowModal(false);
+          addNotification("Instituição atualizada com sucesso !");
         }
       } catch (err) {
         toast.error(String(err));
@@ -210,6 +215,7 @@ export const InstitutionsTableAdmin = () => {
           getUserToken()
         );
         mutate();
+        addNotification("Instituição deletada com sucesso !");
       } catch (err) {
         toast.error(err as string);
         console.error(err);
