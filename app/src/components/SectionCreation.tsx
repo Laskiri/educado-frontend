@@ -19,8 +19,8 @@ import Loading from "./general/Loading";
 import Layout from "./Layout";
 
 // Notification
-import { useNotifications } from './notification/NotificationContext';
-
+import { useNotifications } from "./notification/NotificationContext";
+import CourseGuideButton from "./Courses/GuideToCreatingCourse";
 
 interface Inputs {
   id: string;
@@ -68,14 +68,18 @@ export const SectionCreation = ({
   //   );
   // }
 
-  // Notification 
+  // Notification
   const { addNotification } = useNotifications();
 
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
   }
 
-  const handleDialogEvent = (dialogText: string, onConfirm: () => void, dialogTitle: string) => {
+  const handleDialogEvent = (
+    dialogText: string,
+    onConfirm: () => void,
+    dialogTitle: string
+  ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
     
@@ -92,7 +96,7 @@ export const SectionCreation = ({
     try {
       await updateCourseSections();
       navigate("/courses");
-      addNotification("Seções salvas com sucesso!")
+      addNotification("Seções salvas com sucesso!");
     } catch (err) {
       console.error(err);
     }
@@ -104,10 +108,10 @@ export const SectionCreation = ({
       if (status !== "published") {
         await CourseServices.updateCourseStatus(id, "published", token);
         navigate("/courses");
-        addNotification("Curso publicado com sucesso!")
+        addNotification("Curso publicado com sucesso!");
       } else {
         navigate("/courses");
-        addNotification("Seções salvas com sucesso!")
+        addNotification("Seções salvas com sucesso!");
       }
     } catch (err) {
       console.error(err);
@@ -165,27 +169,24 @@ export const SectionCreation = ({
 
   return (
     <div>
-      
-        <GenericModalComponent
-          title={dialogTitle}
-          contentText={dialogMessage}
-          cancelBtnText={cancelBtnText}
-          confirmBtnText={confirmBtnText}
-          isVisible={showDialog}
-          onConfirm={async () => {
-            await dialogConfirm();
-          }}
-          onClose={() => {
-            setShowDialog(false);
-          }} // Do nothing
-        />
-      
+      <GenericModalComponent
+        title={dialogTitle}
+        contentText={dialogMessage}
+        cancelBtnText={cancelBtnText}
+        confirmBtnText={confirmBtnText}
+        isVisible={showDialog}
+        onConfirm={async () => {
+          await dialogConfirm();
+        }}
+        onClose={() => {
+          setShowDialog(false);
+        }} // Do nothing
+      />
 
       <div className="">
-        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
-          <h1 className="text-2xl text-left font-bold justify-between space-y-4">
-            Seções do curso{" "}
-          </h1>
+        <div className="flex w-full items-center justify-between my-4">
+          <h1 className="text-2xl font-bold">Seções do curso </h1>
+          <CourseGuideButton />
         </div>
 
         <div className="flex w-full float-right space-y-4">
@@ -224,7 +225,8 @@ export const SectionCreation = ({
                 onClick={() => {
                   handleDialogEvent(
                     "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-                    handleDraftConfirm, "Salvar como rascunho"
+                    handleDraftConfirm,
+                    "Salvar como rascunho"
                   );
                 }}
                 className="whitespace-nowrap hover:cursor-pointer underline"
