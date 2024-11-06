@@ -9,7 +9,7 @@ export interface LectureInterface {
   description: string,
   contentType: string,
   content: string,
-}
+};
 
 
 /**
@@ -70,7 +70,7 @@ const getLectureDetail = (url: string, token: string) => {
   return axios.get(url, 
   { headers: { Authorization: `Bearer ${token}` } })
       .then(res => res.data)
-}
+};
 
 /**
  * Delete a lecture
@@ -87,7 +87,7 @@ const deleteLecture = async (lid: string | undefined, token: string) => {
       `${BACKEND_URL}/api/lectures/${lid}`,
       { headers: { Authorization: `Bearer ${token}` } }
   );
-}
+};
 
 const LectureService = Object.freeze({ addLecture, updateLecture, getLectureDetail, deleteLecture });
 

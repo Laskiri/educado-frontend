@@ -25,6 +25,7 @@ import GenericModalComponent from "../GenericModalComponent";
 import { Course } from "../../interfaces/Course";
 import { add } from "cypress/types/lodash";
 import CourseGuideButton from "./GuideToCreatingCourse";
+import StorageServices from "../../services/storage.services";
 
 interface CourseComponentProps {
   token: string;
@@ -46,7 +47,6 @@ export const CourseComponent = ({
   setTickChange,
   setId,
 }: CourseComponentProps) => {
-  const [coverImg, setCoverImg] = useState<File | null>();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -59,6 +59,9 @@ export const CourseComponent = ({
 
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
+
+  const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
+  const [courseImg, setCourseImg] = useState<File | null>(null);
   const {
     register,
     handleSubmit,
@@ -122,8 +125,27 @@ export const CourseComponent = ({
     setShowDialog(true);
   };
 
+  useEffect(() => {
+    const fetchPreview = async () => {
+      const fileSrc = await getPreviewCourseImg();
+      if (fileSrc && fileSrc !== previewCourseImg) {
+        setPreviewCourseImg(fileSrc);
+      }
+    };
+    fetchPreview();
+  }, [existingCourse, id]);
+
+  const getPreviewCourseImg = async () => {
+    if (existingCourse) {
+      const courseImgId = id + "_c"; // Ensure `id` and `existingCourse` are defined
+      const fileSrc = await StorageServices.getMedia(courseImgId);
+      return fileSrc;
+    }
+    return null;
+  };
+
   const handleFileUpload = (id : string | undefined) => {
-    const file = dropzoneInstance.getFile();
+    const file = courseImg;
     StorageService.uploadFile({ id: id, file: file, parentType: "c" });
   };
   // Updates existing draft of course and navigates to course list
@@ -142,7 +164,7 @@ export const CourseComponent = ({
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (data: Course) => {
     try {
-      await CourseServices.createCourse(data, token);
+      const newCourse = await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -185,6 +207,7 @@ export const CourseComponent = ({
       estimatedHours: data.estimatedHours,
       coverImg: id + "_" + "c",
     };
+  }
 
     // 3 submit cases
     // existing draft course, save --> Update course details and go back to course list : should trigger popup
@@ -375,12 +398,12 @@ export const CourseComponent = ({
           </div>
 
           <div>
-            {/*Cover image field is made but does not interact with the db*/}
+            {/*Cover image field*/}
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor="cover-image">Imagem de capa</label>{" "}
               {/** Cover image */}
             </div>
-            <Dropzone inputType='image'/>
+            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>

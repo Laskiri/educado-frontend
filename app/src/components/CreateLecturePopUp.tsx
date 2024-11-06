@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Dropzone, dropzoneInstance } from "./Dropzone/Dropzone"; // Used image or video upload NOT IMPLEMENTED YET
+import { Dropzone } from "./Dropzone/Dropzone";
 import { toast } from "react-toastify";
 
 // Contexts
@@ -57,6 +57,8 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [editorValue, setEditorValue] = useState<string>('');
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
 
 
   const { addNotification } = useNotifications();
@@ -86,11 +88,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
       savedSID
     )
       .then((res) => {
-        const uploadedFile = dropzoneInstance.getFile();
-        if (uploadedFile !== null) {
+        if (lectureVideo !== null) {
           StorageServices.uploadFile({
             id: res.data.compId,
-            file: uploadedFile,
+            file: lectureVideo,
             parentType: "l",
           });
         }
@@ -221,7 +222,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                   {/*Input file*/}
                   
                   
-                  <Dropzone inputType="video"  />
+                  <Dropzone inputType="video" id="0" onFileChange={setLectureVideo}/>
                 </>
               ) : contentType === "text" ? (
                 <>
