@@ -12,7 +12,9 @@ import categories from "../../helpers/courseCategories";
 import statuses from "../../helpers/courseStatuses";
 
 // Images
-import imageNotFoundImage from '../../assets/image-not-found.png'
+import imageNotFoundImage from '../../assets/image-not-found.png';
+import { useEffect, useState } from "react";
+import StorageServices from "../../services/storage.services";
 
 /**
  * Displays a course in a card format
@@ -21,7 +23,29 @@ import imageNotFoundImage from '../../assets/image-not-found.png'
  * @returns HTML Element
  */
 export const CourseListCard = ({ course }: { course: Course }) => {
+  const [imageSrc, setImageSrc] = useState<string>('');
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const maxTitleLength = 20;
+  //Only load the picture, when the picture is loaded
+  useEffect(() => {
+    const fetchImage = async () => {
+      try {
+        if(course.coverImg == "" || course.coverImg == undefined) {
+          throw new Error("coverImg is empty or undefined");
+        }
+        const fileSrc = await StorageServices.getMedia(course.coverImg);
+
+        setImageSrc(fileSrc);
+
+      } catch (error) {
+        setImageSrc(imageNotFoundImage);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchImage();
+  }, [course.coverImg, course.title]);
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
       <label
@@ -39,15 +63,14 @@ export const CourseListCard = ({ course }: { course: Course }) => {
         </div>
 
         {/* Card image */}
-        <img
-          src={course.coverImg ?? imageNotFoundImage}
-          alt="Course cover image"
-          onError={({ currentTarget }) => {
-            currentTarget.onerror = null; // prevents looping
-            currentTarget.src = imageNotFoundImage;
-          }}
-          className="h-40 w-full object-cover bg-white border-b"
-        />
+        {isLoading ? (
+          <div className="h-40 w-full bg-gray-200 animate-pulse" />
+        ) : (
+          <img
+            src={imageSrc}
+            className="h-40 w-full object-cover bg-white border-b"
+          />
+        )};
 
         {/* Card content */}
         <div className="bg-white w-full">

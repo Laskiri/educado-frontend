@@ -4,6 +4,7 @@ import AdminServices from '../services/admin.services';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GenericModalComponent from './GenericModalComponent';
+import { useNotifications } from './notification/NotificationContext';
 
 interface DeleteUserButtonProps {
   applicationId: string;
@@ -11,6 +12,7 @@ interface DeleteUserButtonProps {
 }
 
 const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDelete }) => {
+  const { addNotification } = useNotifications();
   const [showModal, setShowModal] = useState(false);
 
   const handleDelete = async () => {
@@ -21,7 +23,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
         return;
       }
       await AdminServices.deleteUser(applicationId, token);
-      toast.success("User deleted successfully!");
+      addNotification('Usuário deletado com sucesso');
       onDelete();
       setShowModal(false); // Close the modal after deletion
     } catch (error) {

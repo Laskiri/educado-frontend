@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 
+import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
 import { SectionList } from "./dnd/SectionList";
 
@@ -26,6 +27,7 @@ interface Inputs {
   id: string;
   token: string;
   setTickChange: Function;
+  courseData: Course;
 }
 
 // Create section
@@ -33,6 +35,7 @@ export const SectionCreation = ({
   id: propId,
   token,
   setTickChange,
+  courseData,
 }: Inputs) => {
   const { id: urlId } = useParams<{ id: string }>();
   const id = propId === "0" ? urlId : propId;
@@ -81,7 +84,13 @@ export const SectionCreation = ({
   ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
-    setDialogConfirm(() => onConfirm);
+    
+    function confirmFunction() {
+      onConfirm();
+      CourseServices.updateCourseDetail(courseData, id, token);
+    }
+
+    setDialogConfirm(() => confirmFunction);
     setShowDialog(true);
   };
 
