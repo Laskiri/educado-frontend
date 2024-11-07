@@ -290,7 +290,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         <div className="flex items-center gap-2">
           <h1 className="text-2xl font-bold"> Informações gerais </h1>
           <ToolTipIcon
-            index={0}
+          alignLeftTop={false}
+          index={0}
             toolTipIndex={toolTipIndex}
             text={
               "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
@@ -367,7 +368,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
           <div className="flex flex-col space-y-2 ">
             <div className="flex items-center space-x-2"> {/* Container for label and icon */}
               <label className='text-left' htmlFor='description'>Descrição <span className="text-red-500">*</span> </label> {/** Description */} 
-              <ToolTipIcon index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
+              <ToolTipIcon alignLeftTop={false} index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
             defaultValue={data ? data.description : ""}
