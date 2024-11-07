@@ -70,7 +70,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             src={imageSrc}
             className="h-40 w-full object-cover bg-white border-b"
           />
-        )};
+        )}
 
         {/* Card content */}
         <div className="bg-white w-full">
