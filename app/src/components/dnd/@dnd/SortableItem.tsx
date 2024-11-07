@@ -11,6 +11,7 @@ import { CSS } from "@dnd-kit/utilities";
 // components
 import { SectionArrowIcon } from "../../SectionArrowIcon";
 import { ComponentList } from "../ComponentList";
+import { ToolTipIcon } from "../../ToolTip/ToolTipIcon";
 
 import { Component } from "../../../interfaces/SectionInfo";
 
@@ -48,6 +49,7 @@ export function SortableItem({
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
   const [title, setTitle] = useState<string>();
+  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [description, setDescription] = useState<string>();
   const [sectionData, setSectionData] = useState<any>();
   const [componentData, setComponentData] = useState<any>();
@@ -144,7 +146,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className="collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
+      <div className="overflow-visible collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
         <input
           type="checkbox"
           className="peer w-4/5 h-full"
@@ -185,7 +187,7 @@ export function SortableItem({
           </div>
         </div>
 
-        <div className="collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
+        <div className="overflow-visible collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
           <form onSubmit={handleSectionUpdate(onSubmit)}>
             <div className="pt-5">
               <label htmlFor="title">Nome </label> {/*Title of section*/}
@@ -202,7 +204,17 @@ export function SortableItem({
             </div>
 
             <div className="pt-5">
-              <label htmlFor="title">Descrição </label>{" "}
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+              <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
+              <ToolTipIcon
+                alignLeftTop={false}
+                index={0}
+                toolTipIndex={toolTipIndex}
+                text={"😊Lembre-se que precisamos manter os alunos engajados! Quanto mais simples, objetivo e lúdico, melhor!"}
+                tooltipAmount={2}
+                callBack={setToolTipIndex}
+              />
+            </div>
               {/*description of section*/}
               <textarea
                 defaultValue={sectionData.description ?? ""}
@@ -295,10 +307,24 @@ export function SortableItem({
           </div>
 
           {/** PLACEHOLDER FOR NUMBER OF ITEMS IN SECTION*/}
-          <div className="flex flex-row-reverse">
-            <label htmlFor="description">{componentData.length}/10 items</label>
-            {/** PLACEHOLDER TEXT */}
-          </div>
+         
+            <div className="flex flex-row-reverse">
+              <label htmlFor="description " className="text-black">
+                {componentData.length}/10 items
+              </label>
+              {/** PLACEHOLDER TEXT */}
+              <ToolTipIcon
+                alignLeftTop={true}
+                index={1}
+                toolTipIndex={toolTipIndex}
+                text={
+                  "📚 Em cada seção você pode adicionar até 10 itens, entre aulas e exercícios."
+                }
+                tooltipAmount={2}
+                callBack={setToolTipIndex}
+              />
+            </div>
+          
         </div>
       </div>
     </div>
