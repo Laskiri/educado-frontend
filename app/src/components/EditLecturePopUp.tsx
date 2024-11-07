@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Dropzone } from "./Dropzone/Dropzone"; // Used image or video upload NOT IMPLEMENTED YET
+import { Dropzone } from "./Dropzone/Dropzone";
 import { toast } from "react-toastify";
 import RichTextEditor from "./RichTextEditor";
 
@@ -58,9 +58,29 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
 
   const toggler = (value: string) => {
     setContentType(value);
+  };
+
+  useEffect(() => {
+    const fetchPreview = async () => {
+      const fileSrc = await getPreviewVideo();
+
+      if (fileSrc) {
+        setPreviewFile(fileSrc);
+      }
+    };
+    fetchPreview();
+  }, [data._id]);
+
+  const getPreviewVideo = async () => {
+    const videoId = data._id + "_l"; // Assuming `data` is available here
+    const fileSrc = await StorageServices.getMedia(videoId);
+    const videoSrc = `data:video/mp4;base64,${fileSrc.split(',')[1]}`; //Quickfix - backend has to be adjusted to do this correctly, lasse don't @ me
+    return videoSrc;
   };
 
   /**
@@ -81,10 +101,10 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
       data._id
     )
       .then((res) => {
-        if (typeof lectureContent !== "string" && lectureContent !== null) {
+        if (lectureVideo !== null) {
           StorageServices.uploadFile({
             id: res._id,
-            file: lectureContent,
+            file: lectureVideo,
             parentType: "l",
           });
         }
@@ -118,10 +138,6 @@ const handleEditorChange = (value: string) => {
   setValue('content', value); // Manually set form value
   data.content = value;
 };
-
-useEffect(() => {
-  register('content', { required: true }); // Manually register the field with validation
-}, [register]);
 
   return (
     <>
@@ -230,10 +246,7 @@ useEffect(() => {
                     Arquivo de entrada: vídeo ou imagem
                   </label>{" "}
                   {/*Input file*/}
-                  <Dropzone
-                    inputType="video"
-                    callBack={returnFunction}
-                  ></Dropzone>
+                  <Dropzone inputType="video" id={data._id} previewFile={previewFile} onFileChange={setLectureVideo}></Dropzone>
                 </>
               ) : (data?.contentType === "text" && contentType === "") ||
                 contentType === "text" ? (

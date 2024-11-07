@@ -28,6 +28,7 @@ import { LoginResponseError } from "../interfaces/LoginResponseError";
 // services
 import AuthServices from "../services/auth.services";
 import { NonProtectedRoute } from "../services/auth.guard";
+import MiniNavbar from "../components/navbar/MiniNavbar";
 
 // Form input interface
 interface ApplicationInputs {
@@ -56,7 +57,7 @@ const SignupSchema = Yup.object().shape({
     [Yup.ref("password"), null],
     "As senhas não coincidem"
   ),
-  email: Yup.string().email("Formato de email inválido").required("Required"),
+  email: Yup.string().matches(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i, 'Seu email não está correto').required("O email é obrigatório"),
 });
 
 const Signup = () => {
@@ -81,6 +82,7 @@ const Signup = () => {
   });
 
   const [emailExistsError, setEmailExistError] = useState(null);
+  const [emailNotValid, setEmailNotValid] = useState(false);
   const [emailExistsErrorMessage, setErrorExistMessage] = useState("");
   const [passwordMismatchError, setPasswordMismatchError] = useState(null);
   const [passwordMismatchErrorMessage, setPasswordMismatchErrorMessage] =
@@ -103,6 +105,7 @@ const Signup = () => {
       lastName: data.lastName,
       email: data.email,
       password: data.password,
+      role: 'user',
       token: null,
     })
     
@@ -125,13 +128,13 @@ const Signup = () => {
         } else {
           switch (err.response.data.error.code) {
             case "E0201": // Email already exists
-              setEmailExistError(err);
-              setErrorExistMessage(
-                "Já existe um usuário com o email fornecido"
-              );
-              setPasswordMismatchError(null);
-              setPasswordMismatchErrorMessage("");
-              break;
+            setEmailExistError(err);
+            setErrorExistMessage(
+              "Já existe um usuário com o email fornecido"
+            );
+            setPasswordMismatchError(null);
+            setPasswordMismatchErrorMessage("");
+            break;
             case "E0105": // Password mismatch
               setPasswordMismatchError(err);
               setPasswordMismatchErrorMessage("As senhas não combinam");
@@ -210,24 +213,8 @@ const Signup = () => {
       value={() => setIsModalVisible(!isModalVisible)}>
       <FormDataContext.Provider value={formData}>
         <main className="bg-gradient-to-br from-[#C9E5EC] 0% to-[#FFF] 100%">
-          {/* Navbar */}
-          <nav
-            className="flex fixed w-full items-center justify-between bg-secondary box-shadow-md bg-fixed top-0 left-0 right-0 z-10"
-            style={{
-              background: "var(--secondary, #F1F9FB)",
-              boxShadow: "0px 4px 4px 0px rgba(35, 100, 130, 0.25)",
-            }}>
-            <div className="w-[165.25px] h-6 justify-start items-center gap-[7.52px] flex py-6 px-12">
-              <div className="navbar-start">
-                <Link
-                  to="/"
-                  className="w-[165.25px] h-6 justify-start items-center gap-[6px] inline-flex space-x-1 normal-case text-xl">
-                  <img src="/logo.svg" alt="logo" className="w-[24.43px] h-6" />{" "}
-                  <img src="/educado.svg" alt="educado" className="h-6" />
-                </Link>
-              </div>
-            </div>
-          </nav>
+          {/* Mini navbar */}
+          <MiniNavbar />
 
           {/* Container for the entire page */}
           <div className="grid grid-cols-1 md:grid-cols-2 m-auto w-full h-screen">
@@ -266,7 +253,8 @@ const Signup = () => {
 
                 <form
                   onSubmit={handleSubmit(onSubmit)}
-                  className="stretch flex flex-col">
+                  className="stretch flex flex-col"
+                  noValidate>
                   <div className="flex">
                     <div className="relative flex-1">
                       <label
@@ -308,7 +296,7 @@ const Signup = () => {
                   <div className="relative">
                     <label
                       className="flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "
-                      htmlFor="email-field">
+                      htmlFor="email-field">  
                       Email
                     </label>
                     <input
@@ -321,22 +309,25 @@ const Signup = () => {
                         required: "introduza o seu e-mail.",
                       })}
                     />
+                    {errors.email && 
+                     <div
+                     className="flex items-center font-normal font-['Montserrat']"
+                     role="alert">
+                     <p className="mt-1 ml-1 text-red-500 text-sm">
+                      {errors.email.message}
+                     </p>
+                   </div>
+                    }
                     {emailExistsError && (
                       <div
                         className="flex items-center font-normal font-['Montserrat']"
                         role="alert">
-                        <Icon
-                          path={mdiAlertCircleOutline}
-                          size={0.6}
-                          color="red"
-                        />
                         <p className="mt-1 ml-1 text-red-500 text-sm">
                           {emailExistsErrorMessage}
                         </p>
                       </div>
                     )}
                   </div>
-
                   <div className="relative">
                     <label
                       className="flex flex-start text-[#383838] text-sm font-normal gap-1 font-['Montserrat'] mt-5 after:content-['*'] after:ml-0.5 after:text-red-500 "
@@ -424,6 +415,15 @@ const Signup = () => {
                       />
                     </button>
                   </div>
+                  {errors.confirmPassword && 
+                     <div
+                     className="flex items-center font-normal font-['Montserrat']"
+                     role="alert">
+                     <p className="mt-1 ml-1 text-red-500 text-sm">
+                      {errors.confirmPassword.message}
+                     </p>
+                   </div>
+                    }
                   {passwordMismatchError && (
                     <div
                       className="flex items-center font-normal font-['Montserrat']"

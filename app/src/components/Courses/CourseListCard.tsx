@@ -13,10 +13,9 @@ import statuses from "../../helpers/courseStatuses";
 
 // Images
 import imageNotFoundImage from '../../assets/image-not-found.png';
-
-
 import { useEffect, useState } from "react";
 import StorageServices from "../../services/storage.services";
+
 /**
  * Displays a course in a card format
  * 
@@ -26,9 +25,7 @@ import StorageServices from "../../services/storage.services";
 export const CourseListCard = ({ course }: { course: Course }) => {
   const [imageSrc, setImageSrc] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  
   const maxTitleLength = 20;
-  
   //Only load the picture, when the picture is loaded
   useEffect(() => {
     const fetchImage = async () => {
@@ -39,7 +36,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
         const fileSrc = await StorageServices.getMedia(course.coverImg);
 
         setImageSrc(fileSrc);
-        
+
       } catch (error) {
         setImageSrc(imageNotFoundImage);
       } finally {
@@ -49,10 +46,6 @@ export const CourseListCard = ({ course }: { course: Course }) => {
 
     fetchImage();
   }, [course.coverImg, course.title]);
-
-  
-  
-
   return (
     <div className="overflow-hidden shadow rounded h-full w-full cursor-pointer m-auto hover:shadow-lg duration-200">
       <label
@@ -71,14 +64,13 @@ export const CourseListCard = ({ course }: { course: Course }) => {
 
         {/* Card image */}
         {isLoading ? (
-        <div className="h-40 w-full bg-gray-200 animate-pulse" />
-      ) : (
-        <img
-          src={imageSrc}
-          alt="Course cover image"
-          className="h-40 w-full object-cover bg-white border-b"
-        />
-      )}
+          <div className="h-40 w-full bg-gray-200 animate-pulse" />
+        ) : (
+          <img
+            src={imageSrc}
+            className="h-40 w-full object-cover bg-white border-b"
+          />
+        )};
 
         {/* Card content */}
         <div className="bg-white w-full">

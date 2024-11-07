@@ -5,24 +5,22 @@ import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
 // Services
 import CourseServices from "../../services/course.services";
-import StorageService from "../../services/storage.services";
+import StorageServices from "../../services/storage.services";
 
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
-import { BACKEND_URL } from "../../helpers/environment";
 
 // Components
 import { Dropzone } from "../Dropzone/Dropzone";
 import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
-import NotFound from "../../pages/NotFound";
 import Loading from "../general/Loading";
 import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
 
 // Interface
 import { Course } from "../../interfaces/Course";
-import { set } from "cypress/types/lodash";
+import CourseGuideButton from "./GuideToCreatingCourse";
 
 interface CourseComponentProps {
   token: string;
@@ -41,8 +39,8 @@ interface CourseComponentProps {
  * @param id The course id
  * @returns HTML Element
  */
+
 export const CourseComponent = ({ token, id, setTickChange, setId, courseData, updateHighestTick, updateLocalData }: CourseComponentProps) => {
-  const [coverImg, setCoverImg] = useState<File | null>();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -55,6 +53,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
 
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
+
+  const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
+  const [courseImg, setCourseImg] = useState<File | null>(null);
   const [data, setData] = useState<Course>();
   const {
     register,
@@ -62,9 +63,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     formState: { errors },
   } = useForm<Course>();
 
-  // Notification 
+  // Notification
   const { addNotification } = useNotifications();
-
 
   const existingCourse = id != "0";
 
@@ -123,19 +123,46 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     updateLocalData(formatCourse(updatedData));
   };
 
-  const handleDialogEvent = (message: string, onConfirm: () => void, dialogTitle: string) => {
+  const handleDialogEvent = (
+    message: string,
+    onConfirm: () => void,
+    dialogTitle: string
+  ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(message);
     setDialogConfirm(() => onConfirm);
     setShowDialog(true);
   };
 
+  useEffect(() => {
+    const fetchPreview = async () => {
+      const fileSrc = await getPreviewCourseImg();
+      if (fileSrc && fileSrc !== previewCourseImg) {
+        setPreviewCourseImg(fileSrc);
+      }
+    };
+    fetchPreview();
+  }, [existingCourse, id]);
+
+  const getPreviewCourseImg = async () => {
+    if (existingCourse) {
+      const courseImgId = id + "_c"; // Ensure `id` and `existingCourse` are defined
+      const fileSrc = await StorageServices.getMedia(courseImgId);
+      return fileSrc;
+    }
+    return null;
+  };
+
+  const handleFileUpload = (id : string | undefined) => {
+    const file = courseImg;
+    StorageServices.uploadFile({ id: id, file: file, parentType: "c" });
+  };
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
-      //Upload image with the new id
-      StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
+      //Upload image with the old id
+      handleFileUpload(id);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -150,7 +177,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       const newCourse = await CourseServices.createCourse(data, token);
       console.log("creating new draft", data);
       //Upload image with the new id
-      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
+      handleFileUpload(newCourse.data._id);
+
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
     } catch (err) {
@@ -164,7 +192,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
       //Upload image with the new id
-      StorageService.uploadFile({ id: newCourse.data._id, file: coverImg, parentType: "c" });
+      handleFileUpload(newCourse.data._id);
+
       setId(newCourse.data._id);
       setTickChange(1);
       updateHighestTick(1);
@@ -176,9 +205,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   };
 
 
- const handleFileUpload = () => {
-  StorageService.uploadFile({ id: id, file: coverImg, parentType: "c" });
-};
+
   //Used to prepare the course changes before sending it to the backend
   const prepareCourseChanges = (data: Course): Course => {
     return {
@@ -189,13 +216,12 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       status: statusSTR,
       creator: getUserInfo().id,
       estimatedHours: data.estimatedHours,
-      coverImg: id + "_" + "c"
+      coverImg: id + "_" + "c",
     };
-  };
+  }
 
 
   const onSubmit: SubmitHandler<Course> = (data) => {
-    handleFileUpload();
     const changes = prepareCourseChanges(data);
     if (isLeaving) {
       
@@ -208,12 +234,14 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       if (existingCourse && statusSTR === "draft") {
         handleDialogEvent(
           "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-          handleSaveExistingDraft.bind(this, changes), "Salvar como rascunho "
+          handleSaveExistingDraft.bind(this, changes),
+          "Salvar como rascunho "
         );
       } else if (!existingCourse && statusSTR === "draft") {
         handleDialogEvent(
           "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-          handleCreateNewDraft.bind(this, changes), "Salvar como rascunho "
+          handleCreateNewDraft.bind(this, changes),
+          "Salvar como rascunho "
         );
       }
       setIsLeaving(false);
@@ -246,33 +274,32 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   return (
     <div>
       <GenericModalComponent
-          title={dialogTitle}
-          contentText={dialogMessage}
-          cancelBtnText={cancelBtnText}
-          confirmBtnText={confirmBtnText}
-          isVisible={showDialog}
-          onConfirm={async () => {
-            await dialogConfirm();
-          }}
-          onClose={() => {
-            setShowDialog(false);
-          }} // Do nothing
-        />
-      <div className="w-full flex flex-row py-5">
-        <h1 className="text-2xl text-left font-bold justify-between space-y-4">
-          {" "}
-          Informações gerais{" "}
-        </h1>
-        {/** Tooltip for course header*/}
-        <ToolTipIcon
-          index={0}
-          toolTipIndex={toolTipIndex}
-          text={
-            "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
-          }
-          tooltipAmount={2}
-          callBack={setToolTipIndex}
-        />
+        title={dialogTitle}
+        contentText={dialogMessage}
+        cancelBtnText={cancelBtnText}
+        confirmBtnText={confirmBtnText}
+        isVisible={showDialog}
+        onConfirm={async () => {
+          await dialogConfirm();
+        }}
+        onClose={() => {
+          setShowDialog(false);
+        }} // Do nothing
+      />
+      <div className="w-full flex flex-row items-center justify-between py-5">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold"> Informações gerais </h1>
+          <ToolTipIcon
+            index={0}
+            toolTipIndex={toolTipIndex}
+            text={
+              "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
+            }
+            tooltipAmount={2}
+            callBack={setToolTipIndex}
+          />
+        </div>
+        <CourseGuideButton />
       </div>
 
       {/*Field to input the title of the new course*/}
@@ -359,22 +386,15 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <div className="text-right">
               <label htmlFor="">{charCount}/400</label>
             </div>
+          </div>
 
-          </div> 
-          
           <div>
             {/*Cover image field*/}
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
-            <Dropzone inputType='image' callBack={(file: File) => {
-              setCoverImg(file);
-              handleFieldChange('coverImg', file ? file.name : '');
-            }}/>
+            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
-          </div>
-          <div className="text-right">
-            <label htmlFor="">o arquivo deve conter no máximo 10Mb</label>
           </div>
         </div>
         {/*Create and cancel buttons*/}

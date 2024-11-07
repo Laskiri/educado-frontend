@@ -127,7 +127,6 @@ const CourseServices = Object.freeze({
   updateCourseDetail,
   updateCourseStatus,
   updateCourseSectionOrder,
-  /*updateCoverImage,*/
   deleteCourse
 });
 

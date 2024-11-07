@@ -1,14 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Dropzone } from "./Dropzone/Dropzone"; // Used image or video upload NOT IMPLEMENTED YET
+import { Dropzone } from "./Dropzone/Dropzone";
 import { toast } from "react-toastify";
 
 // Contexts
 // import useAuthStore from '../../contexts/useAuthStore';
 // Hooks
 import { getUserToken } from "../helpers/userInfo";
-import { useNotifications } from "./notification/NotificationContext";
 
+import { useNotifications } from "./notification/NotificationContext";
 // Services
 import StorageServices from "../services/storage.services";
 import LectureService from "../services/lecture.services";
@@ -16,7 +16,6 @@ import LectureService from "../services/lecture.services";
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
 import RichTextEditor from "./RichTextEditor";
-
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
@@ -41,7 +40,6 @@ interface Props {
  * @returns HTML Element
  */
 export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
-  const [lectureContent, setLectureContent] = useState(null);
   //TODO: When tokens are done, Remove dummy token and uncomment useToken
   const token = getUserToken();
 
@@ -58,6 +56,11 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
 
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [editorValue, setEditorValue] = useState<string>('');
+  const [previewFile, setPreviewFile] = useState<string | null>(null);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+
+
   const { addNotification } = useNotifications();
 
   const toggler = (value: string) => {
@@ -70,9 +73,12 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
    * @param {Inputs} data The data from each field in the form put into an object
    */
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
+    
+    
     setIsSubmitting(true);
     LectureService.addLecture(
       {
+        
         title: newData.title,
         description: newData.description,
         contentType: newData.contentType,
@@ -82,10 +88,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
       savedSID
     )
       .then((res) => {
-        if (typeof lectureContent != "string") {
+        if (lectureVideo !== null) {
           StorageServices.uploadFile({
-            id: res.data._id,
-            file: lectureContent,
+            id: res.data.compId,
+            file: lectureVideo,
             parentType: "l",
           });
         }
@@ -107,12 +113,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
       setContentType("");
   }
 
+  
+  
 
-  function returnFunction(lectureContent: any) {
-    setLectureContent(lectureContent);
-  }
 
-  const [editorValue, setEditorValue] = useState<string>('');
 
   const handleEditorChange = (value: string) => {
     setEditorValue(value); // Update local state
@@ -120,10 +124,6 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   };
   
 
-  // Ensure that React Hook Form is aware of the content field (for initial empty value or validation)
-  useEffect(() => {
-    register("content", { required: true }); // Manually register the field with validation
-  }, [register]);
 
   return (
     <>
@@ -169,6 +169,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                 <span className="text-warning">Este campo é obrigatório</span>
               )}
             </div>
+            
             <label htmlFor="content-type">Tipo de conteúdo</label>{" "}
             {/*Content type*/}
             <div className="flex flex-row space-x-8">
@@ -210,6 +211,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                 <span className="text-warning">Este campo é obrigatório</span>
               )}
             </div>
+            
             {/*One day this will be file*/}
             <div className="flex flex-col space-y-2 text-left">
               {contentType === "video" ? (
@@ -218,10 +220,9 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
                     Arquivo de entrada: vídeo ou imagem
                   </label>{" "}
                   {/*Input file*/}
-                  <Dropzone
-                    inputType="video"
-                    callBack={returnFunction}
-                  ></Dropzone>
+                  
+                  
+                  <Dropzone inputType="video" id="0" onFileChange={setLectureVideo}/>
                 </>
               ) : contentType === "text" ? (
                 <>
@@ -242,7 +243,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             />
           </form>
         </div>
-      </div> 
+      </div>
     </>
   );
 };

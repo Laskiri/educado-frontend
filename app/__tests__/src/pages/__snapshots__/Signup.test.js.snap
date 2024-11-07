@@ -29,7 +29,6 @@ exports[`Signup Component can render signup page without errors 1`] = `
             className="w-[24.43px] h-6"
             src="/logo.svg"
           />
-           
           <img
             alt="educado"
             className="h-6"
@@ -208,6 +207,7 @@ exports[`Signup Component can render signup page without errors 1`] = `
         </h1>
         <form
           className="stretch flex flex-col"
+          noValidate={true}
           onSubmit={[Function]}
         >
           <div
