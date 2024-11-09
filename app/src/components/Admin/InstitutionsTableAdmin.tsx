@@ -192,7 +192,7 @@ export const InstitutionsTableAdmin = () => {
                     type="text"
                     name="secondary-domain"
                     placeholder="@domain.com (opcional)"
-                    title="@domain.com"
+                    title="@domain.com (opcional)"
                     pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
                     value={secondaryDomainInput}
                     onChange={(e) => setSecondaryDomainInput(e.target.value)}
@@ -306,8 +306,12 @@ export const InstitutionsTableAdmin = () => {
                 <td>
                   <div className="flex justify-end space-x-2">
                     <IconContext.Provider value={{ size: "20" }}>
-                      <UpdateButton institution={institution} />
-                      <DeleteButton institutionId={institution._id!} />
+                      <div>
+                        <UpdateButton institution={institution} />
+                      </div>
+                      <div>
+                        <DeleteButton institutionId={institution._id!} />
+                      </div>
                     </IconContext.Provider>
                   </div>
                 </td>
