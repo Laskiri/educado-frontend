@@ -39,13 +39,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-  const [isApproved, setIsApproved] = useState(contentCreator?.approved);
-  const [isRejected, setIsRejected] = useState(contentCreator?.rejected);
 
-  useEffect(() => {
-    setIsApproved(contentCreator?.approved);
-    setIsRejected(contentCreator?.rejected);
-  }, [contentCreator]);
 
   if (!isOpen) return null;
 

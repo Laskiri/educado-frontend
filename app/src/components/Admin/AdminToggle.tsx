@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useEffect, useState } from 'react';
 import AdminServices from '../../services/admin.services';
 import { getUserToken } from '../../helpers/userInfo';

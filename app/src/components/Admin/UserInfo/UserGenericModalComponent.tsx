@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
 import AuthServices from '../../../services/auth.services';
 import AdminServices from '../../../services/admin.services';
@@ -24,6 +25,7 @@ interface GenericModalComponentUserProps {
   onHandleStatus: () => void;
   userDetails: any;
   isReject: boolean;
+  Loading: boolean;
 }
 
 const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
@@ -32,12 +34,12 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
   title,
   contentText,
   confirmBtnText,
-  onConfirm,
   applicationId,
   token,
   onHandleStatus,
   userDetails,
   isReject,
+  
 }) => {
   const [justification, setJustification] = useState('');
   const [isInputValid, setIsInputValid] = useState(true);

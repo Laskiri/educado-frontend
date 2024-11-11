@@ -2,6 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import useSWR from "swr";
 import { institutionService } from "../../services/Institution.services";
 import Loading from "../general/Loading";
+import AuthServices from '../../services/auth.services';
 import {
   GoArrowLeft,
   GoArrowRight,
@@ -9,13 +10,144 @@ import {
   GoChevronRight,
 } from "react-icons/go";
 import { MdDelete, MdCreate, MdSearch } from "react-icons/md";
-import { Link } from "react-router-dom";
-import GenericModalComponent from "../GenericModalComponent";
+import { useNavigate } from 'react-router-dom';
+import { useForm, SubmitHandler } from "react-hook-form";
 import { getUserToken } from "../../helpers/userInfo";
 import { toast } from "react-toastify";
 import { IconContext } from "react-icons/lib";
 import { useNotifications } from "../notification/NotificationContext";
 import { Institution } from "../../interfaces/Institution";
+import GenericModalComponent from "../GenericModalComponent";
+
+// Interface
+export type NewInstitution = {
+  institutionName: string,
+  domain: string,
+  secondaryDomain: string,
+};
+
+const AddInstitutionButton = () => {
+  const [showModal, setShowModal] = useState(false);
+  const { addNotification } = useNotifications();
+  const navigate = useNavigate();
+
+  // Use-form setup
+  const { register, handleSubmit } = useForm<NewInstitution>();
+
+  // Function to execute upon accepting an application
+  const onSubmit: SubmitHandler<NewInstitution> = async (data) => {
+    AuthServices.addInstitution({
+      domain: data.domain,
+      institutionName: data.institutionName,
+      secondaryDomain: data.secondaryDomain,
+    })
+      .then((res) => {
+        console.log(res);
+        setShowModal(false);
+        navigate("/educado-admin/applications");
+        setTimeout(() => {
+          addNotification("Adicionado " + res.data.institution.institutionName + " como nova instituição");
+        }, 1);
+      })
+      .catch((res) => {
+        console.log(res);
+        const errorCause = res.response.data.errorCause;
+
+        switch (res.response.data.error.code) {
+          case "E1201":
+            toast.error("Não foi possível carregar a Instituição", { hideProgressBar: true });
+            break;
+          case "E1202":
+            toast.error(errorCause + " já é uma instituição registrada", { hideProgressBar: true });
+            break;
+          case "E1203":
+            toast.error(errorCause + " já está registrado em outra instituição", { hideProgressBar: true });
+            break;
+          case "E1204":
+            toast.error(errorCause + " já está registrado em outra instituição", { hideProgressBar: true });
+            break;
+        }
+      });
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <button
+        className="btn text-base bg-[#166276]"
+        onClick={(e) => {
+          e.preventDefault();
+          setShowModal(true);
+        }}
+      >
+        Adicionar
+      </button>
+
+      {showModal && (
+        <GenericModalComponent
+          onConfirm={() => null}
+          onClose={handleClose}
+          isVisible={showModal}
+          title="Adicionar Instituição"
+          contentText=""
+          children={
+            <form
+              className="form-control flex flex-col space-y-4"
+              onSubmit={handleSubmit(onSubmit)}
+            >
+              <div className="flex flex-col space-y-2">
+                <label>
+                  <span>Nome da Instituição</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Instituição"
+                  {...register("institutionName", { required: true })}
+                  className="input"
+                />
+
+                <label>
+                  <span>Domínio</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}"
+                  title="@domain.com"
+                  placeholder="@domain.com"
+                  {...register("domain", { required: true })}
+                  className="input"
+                />
+
+                <label>
+                  <span>Segundo Domínio</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="@domain.com (opcional)"
+                  title="@domain.com"
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
+                  {...register("secondaryDomain")}
+                  className="input"
+                />
+              </div>
+
+              <input
+                type="submit"
+                value="Adicionar"
+                className="btn bg-[#166276] border-[#166276]"
+              />
+            </form>
+          }
+        />
+      )}
+    </>
+  );
+};
 
 export const InstitutionsTableAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -253,8 +385,8 @@ export const InstitutionsTableAdmin = () => {
   };
 
   return (
-    <div className="container flex flex-col overflow-hidden gap-6">
-      <form className="flex justify-end space-x-2">
+    <div className="container mx-auto flex flex-col overflow-hidden gap-6">
+      <div className="flex flex-wrap justify-end gap-2">
         <select className="select select-bordered">
           <option value="most-recent">Mais recentes</option>
         </select>
@@ -269,10 +401,8 @@ export const InstitutionsTableAdmin = () => {
             <MdSearch className="-ml-6" />
           </div>
         </div>
-        <Link to={"/educado-admin/new-institution"}>
-          <button className="btn text-base bg-[#166276]">Adicionar</button>
-        </Link>
-      </form>
+        <AddInstitutionButton />
+      </div>
 
       <table className="table w-full">
         <thead>

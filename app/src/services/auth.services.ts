@@ -1,8 +1,7 @@
 import axios from "axios";
 import {BACKEND_URL} from "../helpers/environment"
+import { NewInstitution } from "../components/Admin/InstitutionsTableAdmin";
 
-import { NewApplication } from "../interfaces/Application"
-import { NewInstitution } from "../pages/NewInstitution"
 
 export interface ContentCreatorApplication {
   firstName: string;
@@ -14,7 +13,12 @@ export interface ContentCreatorApplication {
 }
 
 
-const postUserLogin = async (credentials: any) => {
+interface UserCredentials {
+  email: string;
+  password: string;
+}
+
+const postUserLogin = async (credentials: UserCredentials) => {
   return await axios.post(`${BACKEND_URL}/api/auth/login`, credentials);
 };
 

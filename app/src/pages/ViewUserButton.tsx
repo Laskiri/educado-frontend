@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
 import AdminServices from '../services/admin.services';
 import UserDetailsModal from '../components/Admin/UserInfo/DetailsModalUser';

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { ReactNode } from "react";
 import "./styles/GenericModalComponent.css";
 
