@@ -79,6 +79,7 @@ const AddInstitutionButton = () => {
   return (
     <>
       <button
+      id="newInstitutionButton"
       className="btn text-base bg-[#166276]"
       onClick={(e) => {
         e.preventDefault();
@@ -114,6 +115,7 @@ const AddInstitutionButton = () => {
                 placeholder="Instituição"
                 {...register("institutionName", { required: true })}
                 className="input"
+                id="institution"
               />
 
               <label>
@@ -127,6 +129,7 @@ const AddInstitutionButton = () => {
                 placeholder="@domain.com"
                 {...register("domain", { required: true })}
                 className="input"
+                id="domain"
               />
 
               <label>
@@ -139,6 +142,7 @@ const AddInstitutionButton = () => {
                 pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
                 {...register("secondaryDomain")}
                 className="input"
+                id="secondary-domain"
               />
               </div>
 
@@ -146,6 +150,7 @@ const AddInstitutionButton = () => {
               type="submit"
               disabled={isLoading}
               className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer btn bg-[#166276] border-[#166276]"
+              id="submit"
               >
               {isLoading ? (
                 <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>

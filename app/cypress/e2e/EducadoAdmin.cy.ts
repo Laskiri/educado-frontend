@@ -23,7 +23,7 @@ describe('Admin page', () => {
 			body: [
 			],
 		})
-		cy.visit('http://localhost:3000/login')
+		cy.visit('http://localhost:5173/login')
 		cy.get('#email-field').type('test@email.com')
 		cy.get('#password-field').type('password')
 		cy.get('#submit-login-button').click()
@@ -45,7 +45,7 @@ describe('Admin page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado-admin/applications')
+		cy.visit('http://localhost:5173/educado-admin/applications')
 
 		cy.contains("John").should('not.exist')
 		cy.contains("Doe").should('not.exist')
@@ -62,7 +62,7 @@ describe('Admin page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado-admin/applications')
+		cy.visit('http://localhost:5173/educado-admin/applications')
 
 		cy.contains("John").should('exist')
 		cy.contains("Doe").should('exist')
@@ -78,7 +78,7 @@ describe('Admin page', () => {
 			},
 		});
 
-		cy.visit('http://localhost:3000/educado-admin/applications')
+		cy.visit('http://localhost:5173/educado-admin/applications')
 		cy.get('#search-term').type('John')
 		cy.contains('Jane').should('not.exist')
 	});

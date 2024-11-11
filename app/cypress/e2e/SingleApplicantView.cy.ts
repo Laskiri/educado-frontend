@@ -22,7 +22,7 @@ describe('Application overview page', () => {
 			body: [	
 			],
 		})
-		cy.visit('http://localhost:3000/login')
+		cy.visit('http://localhost:5173/login')
 		cy.get('#email-field').type('test@email.com')
 		cy.get('#password-field').type('password')
 		cy.get('#submit-login-button').click()
@@ -47,7 +47,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
+		cy.visit(`http://localhost:5173/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {
@@ -68,7 +68,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
+		cy.visit(`http://localhost:5173/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {
@@ -93,7 +93,7 @@ describe('Application overview page', () => {
 			},
 		})
 
-		cy.visit(`http://localhost:3000/educado-admin/applications/${id}`)
+		cy.visit(`http://localhost:5173/educado-admin/applications/${id}`)
 		
         cy.intercept('GET', `${BACKEND_URL}/api/applications/${id}`, {
 			body: {

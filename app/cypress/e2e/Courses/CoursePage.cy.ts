@@ -20,7 +20,7 @@ describe('Tooltip on Course Page', () => {
       },
     });
 
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:5173/login')
     cy.get('#email-field').type('test@email.com')
     cy.get('#password-field').type('password')
     cy.get('#submit-login-button').click()
@@ -52,7 +52,7 @@ describe('Tooltip on Course Page', () => {
     });
 
     cy.restoreLocalStorage();
-    cy.visit(`http://localhost:3000/courses/manager/1/0`)
+    cy.visit(`http://localhost:5173/courses/manager/1/0`)
   });
 
 
@@ -105,7 +105,7 @@ describe('Create Course', () => {
       },
     });
 
-    cy.visit('http://localhost:3000/login')
+    cy.visit('http://localhost:5173/login')
     cy.get('#email-field').type('test@email.com')
     cy.get('#password-field').type('password')
     cy.get('#submit-login-button').click()
@@ -123,7 +123,7 @@ describe('Create Course', () => {
     });
 
     cy.restoreLocalStorage();
-    cy.visit(`http://localhost:3000/courses/manager/0/0`)
+    cy.visit(`http://localhost:5173/courses/manager/0/0`)
   });
 
   it('Create Course', () => {
