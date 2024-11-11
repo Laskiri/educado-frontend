@@ -1,4 +1,6 @@
 // hooks/useApi.js
+// eslint-disable @typescript-eslint/no-explicit-any
+
 import { useState } from 'react';
 import { useEffect } from 'react';
 export const useApi = (apiFunc) => {
