@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import RejectModal from './RejectModal';
-import ApproveModal from './ApproveModal';
+import GenericModalComponentUser from './UserGenericModalComponent';
 
 interface UserDetailsModalProps {
   isOpen: boolean;
@@ -11,9 +10,10 @@ interface UserDetailsModalProps {
   onHandleStatus: () => void;
   userApplication: any;
   contentCreator: any;
+  Loading: boolean;
 }
 
-const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication, contentCreator }) => {
+const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, userDetails, token, applicationId, onHandleStatus, userApplication, contentCreator, Loading }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(true);
   const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
   const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
@@ -204,8 +204,34 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
           </div>
         </div>
       )}
-      <RejectModal isOpen={isRejectModalOpen} onClose={closeRejectModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
-      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} token={token} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
+      <GenericModalComponentUser
+        isOpen={isRejectModalOpen}
+        onClose={closeRejectModal}
+        title="Recusar criador de conteúdo"
+        contentText={`Você está recusando o perfil de criador de conteúdo do seguinte usuário: ${userDetails.firstName} ${userDetails.lastName}`}
+        confirmBtnText="Recusar"
+        onConfirm={handleReject}
+        applicationId={applicationId}
+        token={token}
+        onHandleStatus={onHandleStatus}
+        userDetails={userDetails}
+        isReject={true}
+        Loading={Loading}
+      />
+      <GenericModalComponentUser
+        isOpen={isApproveModalOpen}
+        onClose={closeApproveModal}
+        title="Aprovar criador de conteúdo"
+        contentText={`Você está aprovando o perfil de criador de conteúdo do seguinte usuário: ${userDetails.firstName} ${userDetails.lastName}`}
+        confirmBtnText="Aprovar"
+        onConfirm={handleApprove}
+        applicationId={applicationId}
+        token={token}
+        onHandleStatus={onHandleStatus}
+        userDetails={userDetails}
+        isReject={false}
+        Loading={Loading}
+      />
     </>
   );
 };
