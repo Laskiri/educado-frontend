@@ -20,6 +20,7 @@ import dynamicForms from "../utilities/dynamicForms";
 import { tempObjects } from "../helpers/formStates";
 import MiniNavbar from "../components/navbar/MiniNavbar";
 import motivation from "../components/Application/Motivation";
+import { useApi } from "../hooks/useAPI";
 
 const Application = () => {
   // Destructuring of functions and states from dynamicForms
@@ -68,6 +69,9 @@ const Application = () => {
     );
   }, [submitError, educationErrorState, experienceErrorState, isMotivationFilled, dynamicInputsFilled]);
 
+  //callback 
+  const {call: sendApplication, isLoading: submitLoading } = useApi(AuthService.postNewApplication); 
+
   // Functions to open and close the confirmation modal
   const openModal = () => { setIsModalVisible(true); }
   const closeModal = () => { setIsModalVisible(false); }
@@ -99,7 +103,7 @@ const Application = () => {
       workActivities: experienceFormData.map((data) => data.description)
     };
 
-    AuthService.postNewApplication(applicationData).then((res) =>{
+    sendApplication(applicationData).then((res) =>{
       if(res.status == 201){
         navigate("/login", { state: { applicationSubmitted: true } });
       }
@@ -295,8 +299,10 @@ const Application = () => {
               }`}
 
               // Button is disabled if form fields are not filled out correctly
-              disabled={!areAllFormsFilledCorrect}
-            >
+              disabled={submitLoading}
+            > {submitLoading? (
+              <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+              ) : null}
               Enviar para análise
             </button>
           </div>
