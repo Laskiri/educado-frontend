@@ -449,7 +449,7 @@ const Signup = () => {
                     type="submit"
                     id="submit-signup-button"
                     className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-                    disabled={sumbitLoading}>
+                    disabled={!sumbitLoading}>
                     {sumbitLoading? (
                     <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
                     ) : null}

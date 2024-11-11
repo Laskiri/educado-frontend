@@ -287,10 +287,10 @@ const Login = () => {
           
       { /*Enter button*/ }
         <button type="submit" id="submit-login-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-          disabled={submitLoading}>
+          disabled={!submitLoading}>
           {submitLoading ? (
             <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
-          ) : null}
+          ) : false}
             Entrar {/*Enter*/}
           </button>
 
