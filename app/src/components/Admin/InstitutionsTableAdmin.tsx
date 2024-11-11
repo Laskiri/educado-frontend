@@ -19,6 +19,7 @@ import { useNotifications } from "../notification/NotificationContext";
 import { Institution } from "../../interfaces/Institution";
 import GenericModalComponent from "../GenericModalComponent";
 
+import { useApi } from "../../hooks/useAPI";
 // Interface
 export type NewInstitution = {
   institutionName: string,
@@ -30,13 +31,14 @@ const AddInstitutionButton = () => {
   const [showModal, setShowModal] = useState(false);
   const { addNotification } = useNotifications();
   const navigate = useNavigate();
-
+  const { call: addInstitution, isLoading, error } = useApi(AuthServices.addInstitution);
+ 
   // Use-form setup
   const { register, handleSubmit } = useForm<NewInstitution>();
 
   // Function to execute upon accepting an application
   const onSubmit: SubmitHandler<NewInstitution> = async (data) => {
-    AuthServices.addInstitution({
+    await addInstitution({
       domain: data.domain,
       institutionName: data.institutionName,
       secondaryDomain: data.secondaryDomain,
@@ -77,13 +79,17 @@ const AddInstitutionButton = () => {
   return (
     <>
       <button
-        className="btn text-base bg-[#166276]"
-        onClick={(e) => {
-          e.preventDefault();
-          setShowModal(true);
-        }}
+      className="btn text-base bg-[#166276]"
+      onClick={(e) => {
+        e.preventDefault();
+        setShowModal(true);
+      }}
+      disabled={isLoading}
       >
-        Adicionar
+      {isLoading ? (
+        <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+      ) : null}
+      Adicionar
       </button>
 
       {showModal && (
@@ -99,48 +105,53 @@ const AddInstitutionButton = () => {
               onSubmit={handleSubmit(onSubmit)}
             >
               <div className="flex flex-col space-y-2">
-                <label>
-                  <span>Nome da Instituição</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  placeholder="Instituição"
-                  {...register("institutionName", { required: true })}
-                  className="input"
-                />
+              <label>
+                <span>Nome da Instituição</span>
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="Instituição"
+                {...register("institutionName", { required: true })}
+                className="input"
+              />
 
-                <label>
-                  <span>Domínio</span>
-                </label>
-                <input
-                  type="text"
-                  required
-                  pattern="@([\w\-]+\.)+[\w\-]{2,4}"
-                  title="@domain.com"
-                  placeholder="@domain.com"
-                  {...register("domain", { required: true })}
-                  className="input"
-                />
+              <label>
+                <span>Domínio</span>
+              </label>
+              <input
+                type="text"
+                required
+                pattern="@([\w\-]+\.)+[\w\-]{2,4}"
+                title="@domain.com"
+                placeholder="@domain.com"
+                {...register("domain", { required: true })}
+                className="input"
+              />
 
-                <label>
-                  <span>Segundo Domínio</span>
-                </label>
-                <input
-                  type="text"
-                  placeholder="@domain.com (opcional)"
-                  title="@domain.com"
-                  pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
-                  {...register("secondaryDomain")}
-                  className="input"
-                />
+              <label>
+                <span>Segundo Domínio</span>
+              </label>
+              <input
+                type="text"
+                placeholder="@domain.com (opcional)"
+                title="@domain.com"
+                pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
+                {...register("secondaryDomain")}
+                className="input"
+              />
               </div>
 
-              <input
-                type="submit"
-                value="Adicionar"
-                className="btn bg-[#166276] border-[#166276]"
-              />
+              <button
+              type="submit"
+              disabled={isLoading}
+              className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer btn bg-[#166276] border-[#166276]"
+              >
+              {isLoading ? (
+                <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+              ) : null}
+              Adicionar
+              </button>
             </form>
           }
         />
@@ -227,6 +238,9 @@ export const InstitutionsTableAdmin = () => {
       institution.secondaryDomain
     );
 
+    const { call: updateInstitution, isLoading, error } = useApi(institutionService.updateInstitution);
+
+
     useEffect(() => {
       setNameInput(institution.institutionName);
       setDomainInput(institution.domain);
@@ -239,7 +253,7 @@ export const InstitutionsTableAdmin = () => {
         e.target.reportValidity();
         if (!e.target.checkValidity()) e.target.reportValidity();
         else {
-          await institutionService.updateInstitution(
+          await updateInstitution(
             institution._id!,
             getUserToken(),
             {
@@ -284,60 +298,65 @@ export const InstitutionsTableAdmin = () => {
             title="Update Instituições"
             contentText=""
             children={
-              <form
+                <form
                 className="form-control flex flex-col space-y-4"
                 onSubmit={handleSumbit}
-              >
+                >
                 <div className="flex flex-col space-y-2">
                   <label>
-                    <span>Nome da Instituição</span>
+                  <span>Nome da Instituição</span>
                   </label>
                   <input
-                    type="text"
-                    name="institution-name"
-                    required
-                    placeholder="Instituição"
-                    value={nameInput}
-                    onChange={(e) => setNameInput(e.target.value)}
-                    className="input"
+                  type="text"
+                  name="institution-name"
+                  required
+                  placeholder="Instituição"
+                  value={nameInput}
+                  onChange={(e) => setNameInput(e.target.value)}
+                  className="input"
                   />
 
                   <label>
-                    <span>Domínio</span>
+                  <span>Domínio</span>
                   </label>
                   <input
-                    type="text"
-                    name="domain"
-                    required
-                    pattern="@([\w\-]+\.)+[\w\-]{2,4}"
-                    title="@domain.com"
-                    placeholder="@domain.com"
-                    value={domainInput}
-                    onChange={(e) => setDomainInput(e.target.value)}
-                    className="input"
+                  type="text"
+                  name="domain"
+                  required
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}"
+                  title="@domain.com"
+                  placeholder="@domain.com"
+                  value={domainInput}
+                  onChange={(e) => setDomainInput(e.target.value)}
+                  className="input"
                   />
 
                   <label>
-                    <span>Segundo Domínio</span>
+                  <span>Segundo Domínio</span>
                   </label>
                   <input
-                    type="text"
-                    name="secondary-domain"
-                    placeholder="@domain.com (opcional)"
-                    title="@domain.com"
-                    pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
-                    value={secondaryDomainInput}
-                    onChange={(e) => setSecondaryDomainInput(e.target.value)}
-                    className="input"
+                  type="text"
+                  name="secondary-domain"
+                  placeholder="@domain.com (opcional)"
+                  title="@domain.com"
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
+                  value={secondaryDomainInput}
+                  onChange={(e) => setSecondaryDomainInput(e.target.value)}
+                  className="input"
                   />
                 </div>
 
-                <input
-                  type="submit"
-                  value="submit"
-                  className="btn bg-[#166276] border-[#166276]"
-                />
-              </form>
+                <button
+            type="submit"
+            disabled={isLoading}
+            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer btn bg-[#166276] border-[#166276]"
+          >
+            {isLoading ? (
+            <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+            ) : null}
+            Atualizar
+          </button>
+                </form>
             }
           />
         )}
@@ -347,10 +366,11 @@ export const InstitutionsTableAdmin = () => {
 
   const DeleteButton = ({ institutionId }: { institutionId: string }) => {
     const [showModal, setShowModal] = useState(false);
+    const { call: deleteInstitution, isLoading, error } = useApi(institutionService.deleteInstitution);
 
     const handleConfirm = async () => {
       try {
-        await institutionService.deleteInstitution(
+        await deleteInstitution(
           institutionId,
           getUserToken()
         );
@@ -376,8 +396,10 @@ export const InstitutionsTableAdmin = () => {
             onClose={() => setShowModal(false)}
             isVisible={showModal}
             confirmBtnText="Deletar"
+            Loading={isLoading}
             title="Deletando usuário"
             contentText="Você tem certeza de que deseja excluir este Instituições?"
+            width={"600px"}
           />
         )}
       </>
@@ -387,7 +409,7 @@ export const InstitutionsTableAdmin = () => {
   return (
     <div className="container mx-auto flex flex-col overflow-hidden gap-6">
       <div className="flex flex-wrap justify-end gap-2">
-        <select className="select select-bordered">
+      <select className="select select-bordered">
           <option value="most-recent">Mais recentes</option>
         </select>
         <div className="flex flex-row">
@@ -434,7 +456,7 @@ export const InstitutionsTableAdmin = () => {
                   <p>{institution.secondaryDomain}</p>
                 </td>
                 <td>
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex flex-wrap justify-end gap-2">
                     <IconContext.Provider value={{ size: "20" }}>
                       <UpdateButton institution={institution} />
                       <DeleteButton institutionId={institution._id!} />
