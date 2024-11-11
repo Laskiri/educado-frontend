@@ -5,6 +5,7 @@ import { BACKEND_URL } from "../helpers/environment";
 const deleteAccount = async () => {
 
     const baseUser = localStorage.getItem("id");
+    const token = localStorage.getItem("token");
     console.log("baseUser: " + baseUser);
 
     
@@ -14,7 +15,9 @@ const deleteAccount = async () => {
 
     try {
       const res = await axios.delete(
-          `${BACKEND_URL}/api/users/${baseUser}`);
+          `${BACKEND_URL}/api/users/${baseUser}`,
+            { headers: { Authorization: `Bearer ${token}` } }
+        );
 
         console.log("TRY");
 
