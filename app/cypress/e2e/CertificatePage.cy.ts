@@ -24,7 +24,7 @@ describe('Certificate overview page', () => {
 			body: [	
 			],
 		})
-		cy.visit('http://localhost:5173/login')
+		cy.visit('http://localhost:3000/login')
 		cy.get('#email-field').type('test@email.com')
 		cy.get('#password-field').type('password')
 		cy.get('#submit-login-button').click()
@@ -45,7 +45,7 @@ describe('Certificate overview page', () => {
 			},
 		})
 
-		cy.visit('http://localhost:5173/certificates')
+		cy.visit('http://localhost:3000/certificates')
 		cy.get('#no-certificates-message').should('exist')
 	})
 
@@ -77,7 +77,7 @@ describe('Certificate overview page', () => {
 				],
 		})
 
-		cy.visit('http://localhost:5173/certificates')
+		cy.visit('http://localhost:3000/certificates')
 		cy.get('#certificate-list').should('exist')
 		cy.get('#card-0-title').should('have.text', 'Test Course')
 	});
@@ -115,7 +115,7 @@ describe('Certificate overview page', () => {
 		
 		})
 
-		cy.visit('http://localhost:5173/certificates')
+		cy.visit('http://localhost:3000/certificates')
 		cy.window().then((win) => {
 			cy.stub(win, 'open').as('windowOpen')
 		});

@@ -23,7 +23,7 @@ describe("Application overview page", () => {
       body: [],
     });
 
-    cy.visit("http://localhost:5173/login");
+    cy.visit("http://localhost:3000/login");
     cy.get("#email-field").type("test@email.com");
     cy.get("#password-field").type("password");
     cy.get("#submit-login-button").click();
@@ -80,7 +80,7 @@ describe("Application overview page", () => {
     }).as("createInstitution");
 
     // Visit the main admin page
-    cy.visit("http://localhost:5173/educado-admin");
+    cy.visit("http://localhost:3000/educado-admin");
 
     // Click on Institutions button and wait for the page to load
     cy.get("#InstitutionsButton").click();

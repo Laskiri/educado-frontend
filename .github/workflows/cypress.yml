@@ -21,7 +21,7 @@ jobs:
           # https://docs.cypress.io/guides/continuous-integration/introduction#Boot-your-server
           start: npm run cypress-server
           working-directory: ./app
-          wait-on: 'http://localhost:5173' # Waits for above
+          wait-on: 'http://localhost:3000' # Waits for above
           env: BACKEND_URL=http://localhost:8888 # Sets environment variables for tests
           # Records to Cypress Cloud 
           # https://docs.cypress.io/guides/cloud/projects#Set-up-a-project-to-record
