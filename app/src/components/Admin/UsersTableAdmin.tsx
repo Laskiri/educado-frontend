@@ -3,7 +3,7 @@ import useSWR from "swr";
 import Loading from "../general/Loading";
 import DeleteUserButton from "../DeleteUserButton";
 import ViewUserButton from "../../pages/ViewUserButton";
-import AdminToggleButton from "../AdminToggle";
+import AdminToggleButton from "./AdminToggle";
 import AdminServices from "../../services/admin.services";
 import { getUserToken } from "../../helpers/userInfo";
 import {
