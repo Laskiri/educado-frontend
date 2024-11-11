@@ -188,7 +188,7 @@ export const SectionCreation = ({
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
-        isLoading={submitLoading}
+        Loading={submitLoading}
       />
 
       <div className="">

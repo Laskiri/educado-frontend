@@ -86,7 +86,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
           {confirmBtnText !== "" && (
             <button
               type="submit"
-              className="btn bg-[#166276] hover:bg-[#164E63] text-white" // Update this line to use primary color button
+              className="btn bg-[#166276] hover:bg-[#164E63] text-white"
               onClick={onConfirm}
               disabled={isConfirmDisabled || Loading}
             >
