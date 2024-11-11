@@ -40,6 +40,22 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
     }
   };
 
+  const refreshUserDetails = async () => {
+    try {
+      const token = getUserToken();
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+      const { userDetails, userApplication, contentCreator } = await fetchUserDetails(applicationId, token);
+      setUserDetails(userDetails);
+      setUserApplication(userApplication);
+      setContentCreator(contentCreator);
+    } catch (error) {
+      console.error("Failed to refresh user details:", error);
+    }
+  };
+
   return (
     <>
       <button 
@@ -60,7 +76,10 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
         contentCreator={contentCreator} 
         token={getUserToken()} 
         applicationId={applicationId} 
-        onHandleStatus={onHandleStatus} 
+        onHandleStatus={() => {
+          onHandleStatus();
+          refreshUserDetails();
+        }} 
         Loading={isLoading} 
       />
     </>

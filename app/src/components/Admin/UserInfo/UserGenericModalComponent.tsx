@@ -4,7 +4,14 @@ import AdminServices from '../../../services/admin.services';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import GenericModalComponent from '../../GenericModalComponent';
+/*
+This code bassicly extends the GenericModalCompoent
+Where we re use the GenericMopdalComponent, but with the help of the, we add
+some additional fields to the modal, like the name and email of the user.
 
+!!!! Please DONT try to merge the UserGenericModalComponent with the GenericModalComponent!!!!!
+
+*/
 interface GenericModalComponentUserProps {
   isOpen: boolean;
   onClose: () => void;

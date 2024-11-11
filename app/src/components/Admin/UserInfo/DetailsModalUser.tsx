@@ -1,7 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import GenericModalComponentUser from './UserGenericModalComponent';
 import GenericModalComponent from '../../GenericModalComponent';
+/*
 
+This component is used to display the user details modal in the admin dashboard.
+It displays the user's name, email, status, motivations, 
+academic experiences and professional experiences.
+It also allows the admin to approve or reject the user's application.
+
+The Informations are being parsed to the UserGenericModalComponent and GenericModalComponent
+
+*/
 interface UserDetailsModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -58,8 +67,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
 
   const closeRejectModal = () => {
     setIsRejectModalOpen(false);
-    setIsRejected(true);
-    setIsApproved(false);
+    onHandleStatus();
   };
 
   const handleApprove = () => {
@@ -68,8 +76,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
 
   const closeApproveModal = () => {
     setIsApproveModalOpen(false);
-    setIsApproved(true);
-    setIsRejected(false);
+    onHandleStatus();
   };
 
   return (
@@ -201,15 +208,15 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           <div className="flex space-x-4">
             <button
               onClick={handleReject}
-              className={`p-3 rounded-lg text-base font-base font-['Lato'] w-32 ${isRejected ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#FE4949] hover:bg-[#E44040] text-white'}`}
-              disabled={isRejected}
+              className={`p-3 rounded-lg text-base font-base font-['Lato'] w-32 ${contentCreator?.rejected ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#FE4949] hover:bg-[#E44040] text-white'}`}
+              disabled={contentCreator?.rejected}
             >
               Recusar
             </button>
             <button
               onClick={handleApprove}
-              className={`p-3 rounded-lg text-base font-base font-['Lato'] w-32 ${isApproved ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#49A04A] hover:bg-[#418A42] text-white'}`}
-              disabled={isApproved}
+              className={`p-3 rounded-lg text-base font-base font-['Lato'] w-32 ${contentCreator?.approved ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#49A04A] hover:bg-[#418A42] text-white'}`}
+              disabled={contentCreator?.approved}
             >
               Aprovar
             </button>
