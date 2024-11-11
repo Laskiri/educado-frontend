@@ -214,9 +214,9 @@ export const SectionCreation = ({
           <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
         </div>
 
-        <div class="flex w-full float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
           {/** Course Sections area  */}
-          <div class="flex w-full flex-col space-y-2 ">
+          <div className="flex w-full flex-col space-y-2 ">
             <SectionList
               sections={sections}
               setSections={setSections}

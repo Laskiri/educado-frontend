@@ -16,6 +16,7 @@ export interface ContentCreatorApplication {
 interface UserCredentials {
   email: string;
   password: string;
+  isContentCreator: boolean;
 }
 
 const postUserLogin = async (credentials: UserCredentials) => {

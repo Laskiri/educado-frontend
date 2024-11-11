@@ -265,7 +265,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         setTickChange(1);
         navigate(`/courses/manager/${id}/1`);
       }
-    };
+    }
   };
 
   
