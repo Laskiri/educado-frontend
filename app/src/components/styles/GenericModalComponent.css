@@ -67,3 +67,15 @@
     text-decoration: underline;
     text-underline-offset: 8px
 }
+
+.adaptive-modal {
+  max-width: 90%;
+  width: auto;
+  min-width: 300px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.transition-max-height {
+  transition: max-height 0.5s ease-in-out;
+}

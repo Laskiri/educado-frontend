@@ -21,6 +21,8 @@ interface GenericModalProps {
   };
   children?: ReactNode | ReactNode[];
   Loading?: boolean;
+  className?: string; // Add this line to accept className prop
+  width?: string; // Add this line to accept width prop
 }
 
 /**
@@ -42,12 +44,14 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
   isConfirmDisabled = false,
   children,
   Loading = false,
+  className, // Add this line to accept className prop
+  width, // Add this line to accept width prop
 }) => {
   if (!isVisible) return null;
 
   return (
     <div className="modal-overlay">
-      <div className="modal-content">
+      <div className={`modal-content ${className}`} style={{ width: width || '500px' }}> {/* Update this line to use width prop */}
         {/* Title */}
         <div className="modal-title">
           {title !== null ? <h2>{title}</h2> : null}
