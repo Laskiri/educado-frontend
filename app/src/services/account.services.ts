@@ -3,19 +3,26 @@ import axios from "axios";
 import { BACKEND_URL } from "../helpers/environment";
 
 const deleteAccount = async () => {
-    const creatorId = localStorage.getItem("id");
 
-    if(creatorId == null) {
-        throw new Error("No creatorId found in localStorage");
+    const baseUser = localStorage.getItem("id");
+    console.log("baseUser: " + baseUser);
+
+    
+    if(baseUser == null) {
+        throw new Error("No account found in localStorage");
     }
 
     try {
       const res = await axios.delete(
-          `${BACKEND_URL}/api/creators/${creatorId}`);
+          `${BACKEND_URL}/api/users/${baseUser}`);
+
+        console.log("TRY");
 
       return res.data;
 
     } catch (error: any) {
+        
+        console.log("CATCH!");
         if (error.response?.data != null) {
             throw error.response.data;
         } else {

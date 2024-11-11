@@ -207,14 +207,13 @@ const Profile = () => {
 
   // Handle account deletion
   const deleteAccount = async () => {
-    // TODO: implement correctly at some point
-    /*await AccountServices.deleteAccount();
+    await AccountServices.deleteAccount();
 
-    localStorage.removeItem("token");
+    /* localStorage.removeItem("token");
     localStorage.removeItem("id");
     localStorage.removeItem("userInfo");
 
-    navigate('/welcome');*/
+    navigate('/welcome'); */
     closeAccountDeletionModal();
   }
 
