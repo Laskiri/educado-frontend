@@ -8,6 +8,7 @@ import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/j
 import Carousel from '../components/archive/Carousel';
 import { ToastContainer } from 'react-toastify';
 import { useFecth } from '../hooks/useFetch';
+import { useApi } from '../hooks/useAPI';
 // Interfaces
 import { LoginResponseError } from "../interfaces/LoginResponseError"
 
@@ -52,7 +53,9 @@ const Login = () => {
       }, 5000);
     };
 
-  
+  //Callback 
+  const { call: login, isLoading: submitLoading,} = useApi(AuthServices.postUserLogin);
+
   //Variable determining the error message for both fields.
     const [emailError, setEmailError] = useState(null);
     const [emailErrorMessage,  setEmailErrorMessage] = useState('');
@@ -74,7 +77,7 @@ const Login = () => {
     * @param {String} data.password Password of the Content Creator (Will be encrypted)
     */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      AuthServices.postUserLogin({
+      await login({
           isContentCreator: true,
           email: data.email,
           password: data.password,})
@@ -285,7 +288,10 @@ const Login = () => {
           
       { /*Enter button*/ }
         <button type="submit" id="submit-login-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-          disabled>
+          disabled={submitLoading}>
+          {submitLoading ? (
+            <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+          ) : null}
             Entrar {/*Enter*/}
           </button>
 

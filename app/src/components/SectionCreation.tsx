@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useApi } from '../hooks/useAPI';
 
 import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
@@ -73,6 +74,10 @@ export const SectionCreation = ({
   // Notification
   const { addNotification } = useNotifications();
 
+
+  //Callbacks
+  const { call: updateCourseDetail, isLoading: submitLoading, error } = useApi(CourseServices.updateCourseDetail);
+
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
   }
@@ -85,9 +90,9 @@ export const SectionCreation = ({
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
     
-    function confirmFunction() {
+    async function confirmFunction() {
       onConfirm();
-      CourseServices.updateCourseDetail(courseData, id, token);
+     await updateCourseDetail(courseData, id, token);
     }
 
     setDialogConfirm(() => confirmFunction);
@@ -106,7 +111,7 @@ export const SectionCreation = ({
 
   const handlePublishConfirm = async () => {
     try {
-      updateCourseSections();
+      await updateCourseSections();
       if (status !== "published") {
         await CourseServices.updateCourseStatus(id, "published", token);
         navigate("/courses");
@@ -183,6 +188,7 @@ export const SectionCreation = ({
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
+        isLoading={submitLoading}
       />
 
       <div className="">
@@ -208,9 +214,9 @@ export const SectionCreation = ({
           <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
         </div>
 
-        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
+        <div class="flex w-full float-right items-center justify-left space-y-4 my-4">
           {/** Course Sections area  */}
-          <div className="flex w-full flex-col space-y-2 ">
+          <div class="flex w-full flex-col space-y-2 ">
             <SectionList
               sections={sections}
               setSections={setSections}
