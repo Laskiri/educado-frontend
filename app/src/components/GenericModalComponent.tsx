@@ -20,7 +20,7 @@ interface GenericModalProps {
     confirmButton?: React.CSSProperties;
   };
   children?: ReactNode | ReactNode[];
-  isLoading?: boolean;
+  Loading?: boolean;
 }
 
 /**
@@ -41,7 +41,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
   onConfirm,
   isConfirmDisabled = false,
   children,
-  isLoading = false,
+  Loading = false,
 }) => {
   if (!isVisible) return null;
 
@@ -83,9 +83,9 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
               type="submit"
               className="btn"
               onClick={onConfirm}
-              disabled={isConfirmDisabled || isLoading}
+              disabled={isConfirmDisabled || Loading}
             >
-              {isLoading ? (
+              {Loading ? (
                 <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
               ) : null}
               {confirmBtnText}
