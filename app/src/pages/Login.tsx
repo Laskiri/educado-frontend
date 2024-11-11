@@ -7,7 +7,6 @@ import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
 import { ToastContainer } from 'react-toastify';
-import { useFecth } from '../hooks/useFetch';
 import { useApi } from '../hooks/useAPI';
 // Interfaces
 import { LoginResponseError } from "../interfaces/LoginResponseError"
