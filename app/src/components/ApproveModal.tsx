@@ -9,17 +9,17 @@ interface ApproveModalProps {
   onClose: () => void;
   token: string
   userDetails: any;
-  applicationId: string;
+  userId: string;
   onHandleStatus: () => void;
 }
 
-const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, token, userDetails, applicationId, onHandleStatus }) => {
+const ApproveModal: React.FC<ApproveModalProps> = ({ isOpen, onClose, token, userDetails, userId, onHandleStatus }) => {
   if (!isOpen) return null;
 
   const handleAccept = async () => {
     try {
-      await AuthServices.AcceptApplication(applicationId);    // <- applicationId is actually baseUser!
-      AdminServices.changeUserRole(applicationId, token, 'creator');
+      await AuthServices.AcceptApplication(userId);
+      AdminServices.changeUserRole(userId, token, 'creator');
       onClose(); // Close the modal after rejection
       onHandleStatus();
       toast.success("Application approved!");
