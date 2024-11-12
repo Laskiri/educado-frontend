@@ -17,6 +17,7 @@ import Layout from "../Layout";
 
 // Notification
 import { useNotifications } from "../notification/NotificationContext";
+import PhoneCourseSession from "./PhoneCourseSession";
 
 interface Inputs {
   id: string;
@@ -182,7 +183,7 @@ export const CoursePreview = ({
                 <div>Left</div>
             </PhonePreview>
             <PhonePreview title="Seções do curso" >
-                <div>Right</div>
+                <PhoneCourseSession />
             </PhonePreview>
           </div>
         </div>
