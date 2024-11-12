@@ -40,6 +40,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
+  useEffect(() => {
+    console.log('userApplication:', userApplication);
+  }, [userApplication]);
 
   if (!isOpen) return null;
 
@@ -87,127 +90,125 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
         Loading={Loading}
         width="900px"
       >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-l-lg mt-4 relative">
-            <dt className="text-[#166276] text-base font-bold font-['Lato']">Nome</dt>
-            <dd id="name" className="text-base font-['Montserrat'] text-gray-900 break-all">
-              {userDetails.firstName} {userDetails.lastName}
-            </dd>
+        <div className="overflow-y-auto max-h-[600px]">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-l-lg mt-4 relative">
+              <dt className="text-[#166276] text-base font-bold font-['Lato']">Nome</dt>
+              <dd id="name" className="text-base font-['Montserrat'] text-gray-900 break-all">
+                {userDetails.firstName} {userDetails.lastName}
+              </dd>
+            </div>
+            <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-r-lg mt-4">
+              <dt className="text-[#166276] text-base font-bold font-['Lato']">Email</dt>
+              <dd id="email" className="text-base font-['Montserrat'] text-gray-900 break-all">
+                {userDetails.email}
+              </dd>
+            </div>
+            <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-r-lg mt-4">
+              <dt className="text-[#166276] text-base font-bold font-['Lato']">Status</dt>
+              <dd id="status" className="text-base font-['Montserrat'] text-gray-900 break-all">
+                {contentCreator ? (contentCreator.approved ? "Aprovado" : contentCreator.rejected ? "Recusado" : "Aguardando análise") : null}
+              </dd>
+            </div>
           </div>
-          <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-r-lg mt-4">
-            <dt className="text-[#166276] text-base font-bold font-['Lato']">Email</dt>
-            <dd id="email" className="text-base font-['Montserrat'] text-gray-900 break-all">
-              {userDetails.email}
-            </dd>
-          </div>
-          <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-r-lg mt-4">
-            <dt className="text-[#166276] text-base font-bold font-['Lato']">Status</dt>
-            <dd id="status" className="text-base font-['Montserrat'] text-gray-900 break-all">
-              {contentCreator ? (contentCreator.approved ? "Aprovado" : contentCreator.rejected ? "Recusado" : "Aguardando análise") : null}
-            </dd>
-          </div>
-        </div>
-        <button
-          onClick={toggleDropdown}
-          className={`mt-4 bg-[#166276] text-white py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center ${
-            isDropdownOpen ? 'rounded-b-none' : ''
-          }`}
-        >
-          <svg
-            className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+          <button
+            onClick={toggleDropdown}
+            className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
+              isDropdownOpen ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+            }`}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-          <span className="ml-2">Motivações</span>
-        </button>
-        <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen ? 'max-h-screen' : 'max-h-0'}`}>
-          <div className="p-4 bg-white rounded-b-lg shadow break-all">
-            <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.motivation !== undefined ? userApplication.application.motivation : "No motivation provided"}</p>
+            <svg
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            <span className="ml-2">Motivações</span>
+          </button>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen ? 'max-h-screen' : 'max-h-0'}`}>
+            <div className="p-4 bg-white rounded-b-lg shadow break-all">
+              <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.motivation !== undefined ? userApplication.application.motivation : "No motivation provided"}</p>
+            </div>
           </div>
-        </div>
-        <button
-          onClick={toggleDropdown2}
-          className={`mt-4 bg-[#166276] text-white py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center ${
-            isDropdownOpen2 ? 'rounded-b-none' : ''
-          }`}
-        >
-          <svg
-            className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen2 ? 'rotate-180' : 'rotate-0'}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+          <button
+            onClick={toggleDropdown2}
+            className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
+              isDropdownOpen2 ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+            }`}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-          <span className="ml-2">Experiências acadêmicas</span>
-        </button>
-        <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen2 ? 'max-h-screen' : 'max-h-0'}`}>
-          <div className="p-4 bg-white rounded-b-lg shadow break-all">
-            {userApplication?.application?.academicExperiences?.length > 0 ? (
-              userApplication.application.academicExperiences.map((experience, index) => (
-                <div key={index} className="mb-4">
+            <svg
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen2 ? 'rotate-180' : 'rotate-0'}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            <span className="ml-2">Experiências acadêmicas</span>
+          </button>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen2 ? 'max-h-screen' : 'max-h-0'}`}>
+            {userApplication?.application?.academicLevel?.length > 0 ? (
+              userApplication.application.academicLevel.map((_, index) => (
+                <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
                   <p className="text-base font-['Montserrat'] text-gray-900">
-                    Academic level: {experience.academicLevel || "Not provided"}
+                    Academic level: {userApplication.application.academicLevel[index] || "Not provided"}
                     <br />
-                    Academic status: {experience.academicStatus || "Not provided"}
+                    Academic status: {userApplication.application.academicStatus[index] || "Not provided"}
                     <br />
-                    Major: {experience.major || "Not provided"}
+                    Major: {userApplication.application.major[index] || "Not provided"}
                     <br />
-                    Institution: {experience.institution || "Not provided"}
+                    Institution: {userApplication.application.institution[index] || "Not provided"}
                     <br />
-                    Education start date: {experience.educationStartDate || "Not provided"}
+                    Education start date: {userApplication.application.educationStartDate[index] || "Not provided"}
                     <br />
-                    Education end date: {experience.educationEndDate || "Not provided"}
+                    Education end date: {userApplication.application.educationEndDate[index] || "Not provided"}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-base font-['Montserrat'] text-gray-900">No academic experiences provided</p>
+              <p className="p-4 bg-white rounded-b-lg shadow break-all mt-2 text-base font-['Montserrat'] text-gray-900">No academic experiences provided</p>
             )}
           </div>
-        </div>
-        <button
-          onClick={toggleDropdown3}
-          className={`mt-4 bg-[#166276] text-white py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center ${
-            isDropdownOpen3 ? 'rounded-b-none' : ''
-          }`}
-        >
-          <svg
-            className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen3 ? 'rotate-180' : 'rotate-0'}`}
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+          <button
+            onClick={toggleDropdown3}
+            className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
+              isDropdownOpen3 ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+            }`}
           >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
-          </svg>
-          <span className="ml-2">Experiências profissionais</span>
-        </button>
-        <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen3 ? 'max-h-screen' : 'max-h-0'}`}>
-          <div className="p-4 bg-white rounded-b-lg shadow break-all">
-            {userApplication?.application?.professionalExperiences?.length > 0 ? (
-              userApplication.application.professionalExperiences.map((experience, index) => (
-                <div key={index} className="mb-4">
+            <svg
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen3 ? 'rotate-180' : 'rotate-0'}`}
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"></path>
+            </svg>
+            <span className="ml-2">Experiências profissionais</span>
+          </button>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen3 ? 'max-h-screen' : 'max-h-0'}`}>
+            {userApplication?.application?.company?.length > 0 ? (
+              userApplication.application.company.map((_, index) => (
+                <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
                   <p className="text-base font-['Montserrat'] text-gray-900">
-                    Company: {experience.company || "Not provided"}
+                    Company: {userApplication.application.company[index] || "Not provided"}
                     <br />
-                    Position: {experience.position || "Not provided"}
+                    Position: {userApplication.application.position[index] || "Not provided"}
                     <br />
-                    Work activities: {experience.workActivities || "Not provided"}
+                    Work activities: {userApplication.application.workActivities[index] || "Not provided"}
                     <br />
-                    Work start date: {experience.workStartDate || "Not provided"}
+                    Work start date: {userApplication.application.workStartDate[index] || "Not provided"}
                     <br />
-                    Work end date: {experience.workEndDate || "Not provided"}
+                    Work end date: {userApplication.application.workEndDate[index] || "Not provided"}
                   </p>
                 </div>
               ))
             ) : (
-              <p className="text-base font-['Montserrat'] text-gray-900">No professional experiences provided</p>
+              <p className="p-4 bg-white rounded-b-lg shadow break-all mt-2 text-base font-['Montserrat'] text-gray-900">No professional experiences provided</p>
             )}
           </div>
         </div>
