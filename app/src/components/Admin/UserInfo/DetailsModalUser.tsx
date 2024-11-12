@@ -62,18 +62,40 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
     setIsRejectModalOpen(true);
   };
 
-  const closeRejectModal = () => {
-    setIsRejectModalOpen(false);
-    onHandleStatus();
-  };
-
   const handleApprove = () => {
     setIsApproveModalOpen(true);
   };
 
-  const closeApproveModal = () => {
+  const closeModal = () => {
+    setIsRejectModalOpen(false);
     setIsApproveModalOpen(false);
     onHandleStatus();
+  };
+
+  const renderModal = () => {
+    const modalProps = {
+      isOpen: isRejectModalOpen || isApproveModalOpen,
+      onClose: closeModal,
+      title: isRejectModalOpen ? 'Rejeitar aplicação' : 'Aprovar aplicação',
+      contentText: isRejectModalOpen ? 'Justifique a rejeição da aplicação' : '',
+      confirmBtnText: isRejectModalOpen ? 'Rejeitar' : 'Aprovar',
+      onConfirm: closeModal,
+      userId: applicationId,
+      token: token,
+      onHandleStatus: onHandleStatus,
+      userDetails: userDetails,
+      isReject: isRejectModalOpen,
+      Loading: Loading,
+    };
+
+    if (isRejectModalOpen || isApproveModalOpen) {
+      return (
+        <GenericModalComponentUser
+          {...modalProps}
+        />
+      );
+    }
+    return null;
   };
 
   return (
@@ -234,34 +256,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           </div>
         </div>
       </GenericModalComponent>
-      <GenericModalComponentUser
-        isOpen={isRejectModalOpen}
-        onClose={closeRejectModal}
-        title="Recusar criador de conteúdo"
-        contentText={`Você está recusando o perfil de criador de conteúdo do seguinte usuário: ${userDetails.firstName} ${userDetails.lastName}`}
-        confirmBtnText="Recusar"
-        onConfirm={handleReject}
-        userId={applicationId}
-        token={token}
-        onHandleStatus={onHandleStatus}
-        userDetails={userDetails}
-        isReject={true}
-        Loading={Loading}
-      />
-      <GenericModalComponentUser
-        isOpen={isApproveModalOpen}
-        onClose={closeApproveModal}
-        title="Aprovar criador de conteúdo"
-        contentText={`Você está aprovando o perfil de criador de conteúdo do seguinte usuário: ${userDetails.firstName} ${userDetails.lastName}`}
-        confirmBtnText="Aprovar"
-        onConfirm={handleApprove}
-        userId={applicationId}
-        token={token}
-        onHandleStatus={onHandleStatus}
-        userDetails={userDetails}
-        isReject={false}
-        Loading={Loading}
-      />
+      {renderModal()}
     </>
   );
 };
