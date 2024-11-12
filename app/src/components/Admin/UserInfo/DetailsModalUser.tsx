@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import GenericModalComponentUser from './UserGenericModalComponent';
+import GenericModalComponentUser from './UserGenericContainerComponent';
 import GenericModalComponent from '../../GenericModalComponent';
 /*
 
@@ -8,7 +8,7 @@ It displays the user's name, email, status, motivations,
 academic experiences and professional experiences.
 It also allows the admin to approve or reject the user's application.
 
-The Informations are being parsed to the UserGenericModalComponent and GenericModalComponent
+The Informations are being parsed to the UserGenericContainerComponent and GenericModalComponent
 
 */
 interface UserDetailsModalProps {

@@ -10,10 +10,10 @@ This code bassicly extends the GenericModalCompoent
 Where we re use the GenericMopdalComponent, but with the help of the, we add
 some additional fields to the modal, like the name and email of the user.
 
-!!!! Please DONT try to merge the UserGenericModalComponent with the GenericModalComponent!!!!!
+!!!! Please DONT try to merge the UserGenericContainerComponent with the GenericModalComponent!!!!!
 
 */
-interface GenericModalComponentUserProps {
+interface UserGenericContainerComponentProps {
   isOpen: boolean;
   onClose: () => void;
   title: string;
@@ -28,7 +28,7 @@ interface GenericModalComponentUserProps {
   Loading: boolean;
 }
 
-const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
+const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps> = ({
   isOpen,
   onClose,
   title,
@@ -41,14 +41,14 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
   isReject,
   
 }) => {
-  const [justification, setJustification] = useState('');
+  const [reason, setReason] = useState('');
   const [isInputValid, setIsInputValid] = useState(true);
   const [Loading, setLoading] = useState(false);
 
   if (!isOpen) return null;
 
   const handleAction = async () => {
-    if (isReject && !justification.trim()) {
+    if (isReject && !reason.trim()) {
       setIsInputValid(false);
       return;
     }
@@ -57,7 +57,7 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
 
     try {
       if (isReject) {
-        await AuthServices.RejectApplication(userId, justification);
+        await AuthServices.RejectApplication(userId, reason);
         toast.success("Application rejected!");
       } else {
         await AuthServices.AcceptApplication(userId);
@@ -119,9 +119,9 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
             type="text"
             className={`mt-2 p-2 pl-4 rounded-lg w-full border ${isInputValid ? 'border-transparent' : 'border-red-500'}`}
             placeholder="Justificativa da análise"
-            value={justification}
+            value={reason}
             onChange={(e) => {
-              setJustification(e.target.value);
+              setReason(e.target.value);
               setIsInputValid(true);
             }}
           />
@@ -133,4 +133,4 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
   );
 };
 
-export default GenericModalComponentUser;
+export default UserGenericContainerComponent;

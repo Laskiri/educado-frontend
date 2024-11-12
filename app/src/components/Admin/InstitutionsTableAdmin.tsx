@@ -38,23 +38,20 @@ const AddInstitutionButton = () => {
 
   // Function to execute upon accepting an application
   const onSubmit: SubmitHandler<NewInstitution> = async (data) => {
-    await addInstitution({
+    try{
+     const res = await addInstitution({
       domain: data.domain,
       institutionName: data.institutionName,
       secondaryDomain: data.secondaryDomain,
-    })
-      .then((res) => {
+    });
         console.log(res);
         setShowModal(false);
         navigate("/educado-admin/applications");
-        setTimeout(() => {
-          addNotification("Adicionado " + res.data.institution.institutionName + " como nova instituição");
-        }, 1);
-      })
-      .catch((res) => {
+        addNotification("Adicionado " + res.data.institution.institutionName + " como nova instituição");
+      } catch (res) {
         console.log(res);
         const errorCause = res.response.data.errorCause;
-
+  
         switch (res.response.data.error.code) {
           case "E1201":
             toast.error("Não foi possível carregar a Instituição", { hideProgressBar: true });
@@ -68,8 +65,8 @@ const AddInstitutionButton = () => {
           case "E1204":
             toast.error(errorCause + " já está registrado em outra instituição", { hideProgressBar: true });
             break;
-        }
-      });
+      }
+    }
   };
 
   const handleClose = () => {
