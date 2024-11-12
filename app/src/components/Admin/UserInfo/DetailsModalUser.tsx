@@ -34,9 +34,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   contentCreator,
   Loading,
 }) => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(true);
-  const [isDropdownOpen2, setIsDropdownOpen2] = useState(false);
-  const [isDropdownOpen3, setIsDropdownOpen3] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState([true, false, false]);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
@@ -46,16 +44,12 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
 
   if (!isOpen) return null;
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
-
-  const toggleDropdown2 = () => {
-    setIsDropdownOpen2(!isDropdownOpen2);
-  };
-
-  const toggleDropdown3 = () => {
-    setIsDropdownOpen3(!isDropdownOpen3);
+  const toggleDropdown = (index: number) => {
+    setIsDropdownOpen(prevState => {
+      const newState = [...prevState];
+      newState[index] = !newState[index];
+      return newState;
+    });
   };
 
   const handleReject = () => {
@@ -134,13 +128,13 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </div>
           </div>
           <button
-            onClick={toggleDropdown}
+            onClick={() => toggleDropdown(0)}
             className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
-              isDropdownOpen ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+              isDropdownOpen[0] ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
             }`}
           >
             <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen ? 'rotate-180' : 'rotate-0'}`}
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen[0] ? 'rotate-180' : 'rotate-0'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -150,19 +144,19 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </svg>
             <span className="ml-2">Motivações</span>
           </button>
-          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen ? 'max-h-screen' : 'max-h-0'}`}>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen[0] ? 'max-h-screen' : 'max-h-0'}`}>
             <div className="p-4 bg-white rounded-b-lg shadow break-all">
               <p className="text-base font-['Montserrat'] text-gray-900">{userApplication?.application?.motivation !== undefined ? userApplication.application.motivation : "No motivation provided"}</p>
             </div>
           </div>
           <button
-            onClick={toggleDropdown2}
+            onClick={() => toggleDropdown(1)}
             className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
-              isDropdownOpen2 ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+              isDropdownOpen[1] ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
             }`}
           >
             <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen2 ? 'rotate-180' : 'rotate-0'}`}
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen[1] ? 'rotate-180' : 'rotate-0'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -172,7 +166,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </svg>
             <span className="ml-2">Experiências acadêmicas</span>
           </button>
-          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen2 ? 'max-h-screen' : 'max-h-0'}`}>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen[1] ? 'max-h-screen' : 'max-h-0'}`}>
             {userApplication?.application?.academicLevel?.length > 0 ? (
               userApplication.application.academicLevel.map((_, index) => (
                 <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
@@ -196,13 +190,13 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             )}
           </div>
           <button
-            onClick={toggleDropdown3}
+            onClick={() => toggleDropdown(2)}
             className={`mt-4 py-4 px-2 rounded-lg text-base font-base font-['Lato'] w-full flex items-center transition-colors duration-300 ${
-              isDropdownOpen3 ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
+              isDropdownOpen[2] ? 'rounded-tl-lg rounded-tr-lg bg-primary text-white' : 'rounded-lg bg-white text-neutral-700 text-grayDark'
             }`}
           >
             <svg
-              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen3 ? 'rotate-180' : 'rotate-0'}`}
+              className={`w-4 h-4 ml-2 transform transition-transform ${isDropdownOpen[2] ? 'rotate-180' : 'rotate-0'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -212,7 +206,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
             </svg>
             <span className="ml-2">Experiências profissionais</span>
           </button>
-          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen3 ? 'max-h-screen' : 'max-h-0'}`}>
+          <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen[2] ? 'max-h-screen' : 'max-h-0'}`}>
             {userApplication?.application?.company?.length > 0 ? (
               userApplication.application.company.map((_, index) => (
                 <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
@@ -236,7 +230,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
         </div>
         <div className="flex justify-between mt-4">
           <button onClick={onClose} className="text-[#166276] rounded text-base font-base font-['Lato'] underline underline-offset-4">
-            Cancelar
+            Fechar
           </button>
           <div className="flex space-x-4">
             <button
