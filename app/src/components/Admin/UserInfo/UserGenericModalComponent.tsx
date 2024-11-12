@@ -20,7 +20,7 @@ interface GenericModalComponentUserProps {
   contentText: string;
   confirmBtnText: string;
   onConfirm: () => void;
-  applicationId: string;
+  userId: string;
   token: string;
   onHandleStatus: () => void;
   userDetails: any;
@@ -34,7 +34,7 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
   title,
   contentText,
   confirmBtnText,
-  applicationId,
+  userId,
   token,
   onHandleStatus,
   userDetails,
@@ -57,11 +57,11 @@ const GenericModalComponentUser: React.FC<GenericModalComponentUserProps> = ({
 
     try {
       if (isReject) {
-        await AuthServices.RejectApplication(applicationId, justification);
+        await AuthServices.RejectApplication(userId, justification);
         toast.success("Application rejected!");
       } else {
-        await AuthServices.AcceptApplication(applicationId);
-        await AdminServices.changeUserRole(applicationId, token, 'creator');
+        await AuthServices.AcceptApplication(userId);
+        await AdminServices.changeUserRole(userId, token, 'creator');
         toast.success("Application approved!");
       }
       onClose();
