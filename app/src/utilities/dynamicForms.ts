@@ -36,27 +36,36 @@ export default () => {
   userInfo.id ? id = userInfo.id : id = "id";
   const [userID] = useState(id);
 
+  // Get default values for empty forms
+  const { emptyAcademicObject: emptyEducationForm, emptyProfessionalObject: emptyWorkForm } = tempObjects();
+
   // Fetch data for academic and professional experience forms
   const fetchDynamicData = async () => {
     try {
-      const [educationResponse, workResponse] = await Promise.all([
+      const [educationFormResponse, workFormResponse] = await Promise.all([
         ProfileServices.getUserFormTwo(userID),
         ProfileServices.getUserFormThree(userID),
       ]);
      
       // Map backend variables to corresponding frontend variables  
-      const transformedEducationData = educationResponse.data.map((item: any) => ({
-        ...item,
-        educationStartDate: item.startDate,
-        educationEndDate: item.endDate,
-      }));
-  
+      const transformedEducationData = educationFormResponse.data.length > 0
+        ? educationFormResponse.data.map((item: any) => ({
+            ...item,
+            educationStartDate: item.startDate,
+            educationEndDate: item.endDate,
+          }))
+          // Set empty data if forms don't exist in database
+        : emptyEducationForm;
+    
       // Map backend variables to corresponding frontend variables
-      const transformedWorkData = workResponse.data.map((item: any) => ({
-        ...item,
-        workStartDate: item.startDate,
-        workEndDate: item.endDate,
-      }));
+      const transformedWorkData = workFormResponse.data.length > 0
+        ? workFormResponse.data.map((item: any) => ({
+            ...item,
+            workStartDate: item.startDate,
+            workEndDate: item.endDate,
+          }))
+          // Set empty data if forms don't exist in database
+        : emptyWorkForm;
 
       setEducationFormData(transformedEducationData);
       setExperienceFormData(transformedWorkData); 
@@ -66,6 +75,13 @@ export default () => {
     } 
     catch (error: any) {
       console.error("Error fetching dynamic data: ", error);
+      
+      // Handling error in e.g., database access (to avoid crashing page when forms are then expanded) 
+      setEducationFormData(emptyEducationForm);
+      setExperienceFormData(emptyWorkForm); 
+
+      setEducationErrors(emptyEducationForm.map(() => ({ educationStartDate: "", educationEndDate: "" })));
+      setExperienceErrors(emptyWorkForm.map(() => ({ workStartDate: "", workEndDate: "" })));
     }
   };
 
