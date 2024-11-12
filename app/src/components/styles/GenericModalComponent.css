@@ -28,7 +28,7 @@
     align-items: center;
     width: 100%;
     font-weight: bold;
-    @apply text-2xl    /* 24px */
+    @apply text-2xl;    /* 24px */
 }
 
 /* Window close button (X) */
@@ -66,6 +66,23 @@
     cursor: pointer;
     text-decoration: underline;
     text-underline-offset: 8px
+}
+
+.confirm-button {
+    @apply bg-primary !important;
+    @apply text-white;
+    @apply shadow-md;
+    font-weight: bold;
+    width: 176px;
+    height: 54px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.confirm-button:hover {
+    @apply bg-cyan-900 !important;
 }
 
 .adaptive-modal {

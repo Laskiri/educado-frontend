@@ -48,11 +48,14 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
   className, // Add this line to accept className prop
   width, // Add this line to accept width prop
 }) => {
-  if (!isVisible) return null;
+  
+  if (!isVisible) 
+    return null;
 
   return (
     <div className="modal-overlay">
       <div className={`modal-content ${className}`} style={{ width: width || '500px' }}> {/* Update this line to use width prop */}
+        
         {/* Title */}
         <div className="modal-title">
           {title !== null ? <h2>{title}</h2> : null}
@@ -71,11 +74,8 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
 
         {/* Action buttons */}
         {/* Only the cancel button is rendered (and centered), if text for confirmation button isn't defined */}
-        <div
-          className={`action-buttons ${
-            confirmBtnText === "" ? "justify-center" : "justify-between"
-          }`}
-        >
+        <div className={`action-buttons ${confirmBtnText === "" ? "justify-center" : "justify-between"}`}>
+          
           {/* Cancel */}
           <button type="button" className="cancel-button" onClick={onClose}>
             {cancelBtnText}
@@ -86,13 +86,13 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
           {confirmBtnText !== "" && (
             <button
               type="submit"
-              className="btn bg-[#166276] hover:bg-[#164E63] text-white"
+              className="confirm-button"
               onClick={onConfirm}
               disabled={isConfirmDisabled || Loading}
             >
-              {Loading ? (
-                <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
-              ) : null}
+              {Loading 
+                ? (<span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>) 
+                : null}
               {confirmBtnText}
             </button>
           )}
