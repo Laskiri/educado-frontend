@@ -40,6 +40,9 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
 
+  useEffect(() => {
+    console.log('userApplication:', userApplication);
+  }, [userApplication]);
 
   if (!isOpen) return null;
 
@@ -85,7 +88,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
         onConfirm={() => {}}
         isConfirmDisabled={false}
         Loading={Loading}
-        width="auto"
+        width="900px"
       >
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex flex-col items-center bg-white p-2 md:p-4 rounded-l-lg mt-4 relative">
@@ -147,21 +150,27 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           <span className="ml-2">Experiências acadêmicas</span>
         </button>
         <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen2 ? 'max-h-screen' : 'max-h-0'}`}>
-          <div className="p-4 bg-white rounded-b-lg shadow break-all">
-            <p className="text-base font-['Montserrat'] text-gray-900">
-              Academic level: {userApplication?.application?.academicLevel !== undefined ? userApplication.application.academicLevel : "Not provided"}
-              <br />
-              Academic status: {userApplication?.application?.academicStatus !== undefined ? userApplication.application.academicStatus : "Not provided"}
-              <br />
-              Major: {userApplication?.application?.major !== undefined ? userApplication.application.major : "Not provided"}
-              <br />
-              Institution: {userApplication?.application?.institution !== undefined ? userApplication.application.institution : "Not provided"}
-              <br />
-              Education start date: {userApplication?.application?.educationStartDate !== undefined ? userApplication.application.educationStartDate : "Not provided"}
-              <br />
-              Education end date: {userApplication?.application?.educationEndDate !== undefined ? userApplication.application.educationEndDate : "Not provided"}
-            </p>
-          </div>
+          {userApplication?.application?.academicLevel?.length > 0 ? (
+            userApplication.application.academicLevel.map((_, index) => (
+              <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
+                <p className="text-base font-['Montserrat'] text-gray-900">
+                  Academic level: {userApplication.application.academicLevel[index] || "Not provided"}
+                  <br />
+                  Academic status: {userApplication.application.academicStatus[index] || "Not provided"}
+                  <br />
+                  Major: {userApplication.application.major[index] || "Not provided"}
+                  <br />
+                  Institution: {userApplication.application.institution[index] || "Not provided"}
+                  <br />
+                  Education start date: {userApplication.application.educationStartDate[index] || "Not provided"}
+                  <br />
+                  Education end date: {userApplication.application.educationEndDate[index] || "Not provided"}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="p-4 bg-white rounded-b-lg shadow break-all mt-2 text-base font-['Montserrat'] text-gray-900">No academic experiences provided</p>
+          )}
         </div>
         <button
           onClick={toggleDropdown3}
@@ -181,19 +190,25 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
           <span className="ml-2">Experiências profissionais</span>
         </button>
         <div className={`overflow-hidden transition-max-height duration-500 ease-in-out ${isDropdownOpen3 ? 'max-h-screen' : 'max-h-0'}`}>
-          <div className="p-4 bg-white rounded-b-lg shadow break-all">
-            <p className="text-base font-['Montserrat'] text-gray-900">
-              Company: {userApplication?.application?.company !== undefined ? userApplication.application.company : "Not provided"}
-              <br />
-              Position: {userApplication?.application?.position !== undefined ? userApplication.application.position : "Not provided"}
-              <br />
-              Work activities: {userApplication?.application?.workActivities !== undefined ? userApplication.application.workActivities : "Not provided"}
-              <br />
-              Work start date: {userApplication?.application?.workStartDate !== undefined ? userApplication.application.workStartDate : "Not provided"}
-              <br />
-              Work end date: {userApplication?.application?.workEndDate !== undefined ? userApplication.application.workEndDate : "Not provided"}
-            </p>
-          </div>
+          {userApplication?.application?.company?.length > 0 ? (
+            userApplication.application.company.map((_, index) => (
+              <div key={index} className="p-4 bg-white rounded-b-lg shadow break-all mt-2">
+                <p className="text-base font-['Montserrat'] text-gray-900">
+                  Company: {userApplication.application.company[index] || "Not provided"}
+                  <br />
+                  Position: {userApplication.application.position[index] || "Not provided"}
+                  <br />
+                  Work activities: {userApplication.application.workActivities[index] || "Not provided"}
+                  <br />
+                  Work start date: {userApplication.application.workStartDate[index] || "Not provided"}
+                  <br />
+                  Work end date: {userApplication.application.workEndDate[index] || "Not provided"}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="p-4 bg-white rounded-b-lg shadow break-all mt-2 text-base font-['Montserrat'] text-gray-900">No professional experiences provided</p>
+          )}
         </div>
         <div className="flex justify-between mt-4">
           <button onClick={onClose} className="text-[#166276] rounded text-base font-base font-['Lato'] underline underline-offset-4">
