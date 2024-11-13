@@ -18,6 +18,7 @@ import Layout from "../Layout";
 // Notification
 import { useNotifications } from "../notification/NotificationContext";
 import PhoneCourseSession from "./PhoneCourseSession";
+import ExploreCardPreview from "./ExploreCardPreview";
 
 interface Inputs {
   id: string;
@@ -180,7 +181,7 @@ export const CoursePreview = ({
           {/** Course Sections area  */}
           <div className="flex w-full flex-row justify-around gap-x-8 max-w-5xl">
             <PhonePreview title="Informações do curso" >
-                <div>Left</div>
+                <ExploreCardPreview course={courseData} />
             </PhonePreview>
             <PhonePreview title="Seções do curso" >
                 <PhoneCourseSession />
