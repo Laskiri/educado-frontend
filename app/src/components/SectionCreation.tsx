@@ -2,24 +2,17 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-
 import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
 import { SectionList } from "./dnd/SectionList";
-
 import { BACKEND_URL } from "../helpers/environment";
-
 import CourseServices from "../services/course.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
-/* import Popup from "./Popup/Popup"; */
 import GenericModalComponent from "./GenericModalComponent";
-
 import { ToolTipIcon } from "./ToolTip/ToolTipIcon";
 import Loading from "./general/Loading";
 import Layout from "./Layout";
-
-// Notification
 import { useNotifications } from "./notification/NotificationContext";
 import CourseGuideButton from "./Courses/GuideToCreatingCourse";
 
@@ -84,7 +77,7 @@ export const SectionCreation = ({
   ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
-    
+
     function confirmFunction() {
       onConfirm();
       CourseServices.updateCourseDetail(courseData, id, token);
@@ -101,6 +94,20 @@ export const SectionCreation = ({
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
       console.error(err);
+    }
+  };
+
+  const isCoursePublished = async () => {
+    try {
+      updateCourseSections();
+      const courseDetails = await CourseServices.getCourseDetail(status, token);
+      if (courseDetails.status === "published") {
+        return courseDetails;
+      }
+      return null;
+    } catch (error) {
+      console.error("Error fetching course details:", error);
+      return null;
     }
   };
 
@@ -191,7 +198,7 @@ export const SectionCreation = ({
             <h1 className="text-2xl font-bold">Seções do curso </h1>
             {/** Tooltip for course sections header*/}
             <ToolTipIcon
-            alignLeftTop={false}
+              alignLeftTop={false}
               index={0}
               toolTipIndex={toolTipIndex}
               text={
