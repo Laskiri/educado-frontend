@@ -25,11 +25,11 @@ import CourseGuideButton from "./GuideToCreatingCourse";
 interface CourseComponentProps {
   token: string;
   id: string | undefined;
-  setTickChange: Function;
-  setId: Function;
-  courseData?: any;
-  updateHighestTick: Function;
-  updateLocalData: Function;
+  setTickChange: (tick: number) => void;
+  setId: (id: string) => void;
+  courseData?: Course;
+  updateHighestTick: (tick: number) => void;
+  updateLocalData: (course: Course) => void;
 }
 
 /**
@@ -46,9 +46,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [dialogMessage, setDialogMessage] = useState<string>("");
-  const [dialogConfirm, setDialogConfirm] = useState<Function>(() => {});
-  const [cancelBtnText, setCancelBtnText] = useState("Cancelar");
-  const [confirmBtnText, setConfirmBtnText] = useState("Confirmar");
+  const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
+  const [cancelBtnText] = useState("Cancelar");
+  const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
 
   const [charCount, setCharCount] = useState<number>(0);
@@ -105,20 +105,19 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
 
   //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
   const formatCourse = (data: Partial<Course>): Course => {
-    console.log(data.status)
     return {
-      title: data.title || '',
-      description: data.description || '',
-      category: data.category || '',
-      difficulty: data.difficulty || 0,
+      title: data.title ?? '',
+      description: data.description ?? '',
+      category: data.category ?? '',
+      difficulty: data.difficulty ?? 0,
       status: statusSTR,
       creator: getUserInfo().id,
-      estimatedHours: data.estimatedHours || 0,
-      coverImg: data.coverImg || ''
+      estimatedHours: data.estimatedHours ?? 0,
+      coverImg: data.coverImg ?? ''
     };
   };
 
-  const handleFieldChange = (field: keyof Course, value: any) => {
+  const handleFieldChange = (field: keyof Course, value: string | number | File | null) => {
     const updatedData = { ...data, [field]: value };
     updateLocalData(formatCourse(updatedData));
   };
@@ -137,7 +136,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   useEffect(() => {
     const fetchPreview = async () => {
       const fileSrc = await getPreviewCourseImg();
-      if (fileSrc && fileSrc !== previewCourseImg) {
+      if (fileSrc !== null && fileSrc !== undefined && fileSrc !== previewCourseImg) {
         setPreviewCourseImg(fileSrc);
       }
     };
@@ -256,7 +255,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         setTickChange(1);
         navigate(`/courses/manager/${id}/1`);
       }
-    };
+    }
   };
 
   
@@ -394,7 +393,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
-            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
+            <Dropzone inputType='image' id={id ?? "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>

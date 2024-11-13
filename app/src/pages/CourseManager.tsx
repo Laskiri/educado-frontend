@@ -12,7 +12,6 @@ import Loading from '../components/general/Loading';
 import NotFound from '../pages/NotFound';
 
 import { Course } from '../interfaces/Course';
-import { getUserInfo } from '../helpers/userInfo';
 
 
 /**
@@ -25,10 +24,11 @@ import { getUserInfo } from '../helpers/userInfo';
 
 const CourseManager = () => {
     const token = getUserToken();
-    let { id, tick } = useParams();
+    const { tick } = useParams();
+    const [id, setId] = useState<string>(useParams().id ?? "0");
     const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"));
     const [highestTick, setHighestTick] = useState<number>(0);
-    const [localData, setLocalData] = useState<any>(null);
+    const [localData, setLocalData] = useState<Course | undefined>(undefined);
 
     
    /**
@@ -40,23 +40,23 @@ const CourseManager = () => {
      */
 
     const getData = async (url: string, token: string) => {
-        const res: any = await CourseServices.getCourseDetail(url, token);
+        const res: Course = await CourseServices.getCourseDetail(url, token);
         return res;
     };
 
     const { data, error } = useSWR(
-        token && id !== "0" ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
+        (token.length > 0) && id !== "0" ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
         getData
     );
 
     const updateLocalData = (newData: Course) => {
-        console.log("new status", newData.status)
+        
         const changes: Course = {
             ...localData,
             ...newData,
             creator: id,
         };
-    
+        console.log(changes);
         setLocalData(changes);
     };
 
@@ -66,20 +66,20 @@ const CourseManager = () => {
         }
     }, [data]);    
 
-    const isCourseBasicInformation = (data: any) =>{
-        return data.title && data.description && data.category && data.difficulty && data.status;
+    const isCourseBasicInformation = (data: Course) =>{
+        return data.title !== "" && data.description !== "" && data.category !== "" && (data.difficulty !== 0) && data.status !== "";
     }
 
-    const doesCourseSectionsExist = (data: any) => {
+    const doesCourseSectionsExist = (data: Course) => {
         return data.sections && data.sections.length > 0
     }
 
     useEffect(() => {
-        const calculateMaxTick = (data: any) => {
+        const calculateMaxTick = (data: Course) => {
             if (isCourseBasicInformation(data)) {
                 return 1;
             }
-            if (doesCourseSectionsExist(data)) {
+            if (doesCourseSectionsExist(data) ?? false) {
                 return 1;
             }
             return 0;
@@ -102,16 +102,12 @@ const CourseManager = () => {
         }
     }
 
-    function setId(idInput: string) {
-        id = idInput;
-    }
-
     function updateHighestTick(newHighestTick: number) {
         setHighestTick(newHighestTick);
     }
 
     if (!data && id !== "0") return <Layout meta='course overview'><Loading /></Layout>;
-    if (error) return <NotFound />;
+    if (error !== undefined && error !== null) return <NotFound />;
 
     return (
         <Layout meta="Course Manager">
@@ -119,7 +115,7 @@ const CourseManager = () => {
                 <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
-                    {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
+                    {tickChange === 1 && localData && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
                 </div>
             </div>
         </Layout>
