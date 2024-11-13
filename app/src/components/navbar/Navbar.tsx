@@ -59,6 +59,12 @@ export const Navbar = () => {
               </Link>
             </li>
             <li>
+              <Link to="/certificates" className="flex items-center text-lg font-['Montserrat']">
+                <Icon path={mdiCertificate} size={1} color="grayMedium" />
+                <span>Meus certificados</span>
+              </Link>
+            </li>
+            <li>
 
               {userInfo.role === "admin" && (
                 <Link to="/educado-admin/applications" className="flex items-center text-lg font-['Montserrat']">
@@ -150,13 +156,6 @@ export const Navbar = () => {
                   <Link to="/profile" className="text-grayDark text-lg hover:bg-grayLight">
                     <Icon path={mdiAccountCog} size={1} color="grayMedium" />
                     <span>Editar perfil</span>
-                  </Link>
-                </li>
-                <hr className="w-full border-grayLight my-3" />
-                <li className="w-full">
-                  <Link to="/certificates" className="text-grayDark text-lg hover:bg-grayLight">
-                    <Icon path={mdiCertificate} size={1} color="grayMedium" />
-                    <span>Meus certificados</span>
                   </Link>
                 </li>
                 <hr className="w-full border-grayLight my-3" />
