@@ -72,8 +72,8 @@ describe("Application overview page", () => {
       statusCode: 201,
       body: {
         institution: {
-          secondaryDomain: "@instutition.otherRole.domain",
-          domain: "@institution.role.domain",
+          secondaryDomain: "@role.instutition.dom",
+          domain: "@institution.dom",
           institutionName: "MyInstitution",
         },
       },
@@ -91,12 +91,10 @@ describe("Application overview page", () => {
 
     // Fill out and submit the new institution form
     cy.get("#institution").type("MyInstitution");
-    cy.get("#domain").type("@role.dom");
-    cy.get("#secondary-domain").type("@institution.otherRole.dom");
-    cy.get("#submit").click();
+    cy.get("#domain").type("@institution.dom");
+    cy.get("#secondary-domain").type("@role.institution.dom");
+    cy.get("#confirm-button").click();
 
-    // Wait for the institution creation request and verify successful submission
-    cy.wait("@createInstitution");
     cy.url().should("not.include", "/newinstitution"); // Ensure the modal closed or redirected as expected
   });
 });

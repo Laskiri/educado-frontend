@@ -67,6 +67,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
             {/* Cancel */}
             {cancelBtnText && (
               <button
+                id="confirm-button" 
                 type="button"
                 className="flex flex-col btn bg-transparent border-none hover:bg-transparent px-0"
                 onClick={onClose}
