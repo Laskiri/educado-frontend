@@ -420,7 +420,7 @@ export const InstitutionsTableAdmin = () => {
             onClose={() => setShowModal(false)}
             isVisible={showModal}
             confirmBtnText="Deletar"
-            Loading={isLoading}
+            loading={isLoading}
             title="Deletando usuário"
             contentText="Você tem certeza de que deseja excluir este Instituições?"
             width="w-[600px]"

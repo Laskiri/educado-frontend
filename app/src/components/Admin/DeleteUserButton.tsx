@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
-import { getUserToken } from '../helpers/userInfo';
-import AdminServices from '../services/admin.services';
+import { getUserToken } from '../../helpers/userInfo';
+import AdminServices from '../../services/admin.services';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import GenericModalComponent from './GenericModalComponent';
-import { useNotifications } from './notification/NotificationContext';
-import {useApi} from '../hooks/useAPI';
+import GenericModalComponent from '../GenericModalComponent';
+import { useNotifications } from '../notification/NotificationContext';
+import {useApi} from '../../hooks/useAPI';
 interface DeleteUserButtonProps {
   applicationId: string;
   onDelete: () => void;
@@ -70,7 +70,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
 
       {/* Confirmation Modal */}
       {showModal && (
-        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} Loading={isLoading} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?' />
+        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} loading={isLoading} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?' />
       )}
 
       

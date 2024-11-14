@@ -11,7 +11,7 @@ interface GenericModalProps {
   onConfirm?: () => void;
   onClose: () => void;
   children?: ReactNode | ReactNode[];
-  Loading?: boolean;
+  loading?: boolean;
   // TODO: with some configuration tailwind types could work and this can be changed
   width?: string;
 }
@@ -26,7 +26,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
   onConfirm,
   isConfirmDisabled = false,
   children,
-  Loading = false,
+  loading = false,
   width,
 }) => {
   if (!isVisible) return null;
@@ -83,9 +83,9 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
                 type="submit"
                 className="btn bg-primary hover:bg-cyan-900 border-none px-10"
                 onClick={onConfirm}
-                disabled={isConfirmDisabled || Loading}
+                disabled={isConfirmDisabled || loading}
               >
-                {Loading ? (
+                {loading ? (
                   <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
                 ) : null}
                 <span className="normal-case text-base font-bold">
