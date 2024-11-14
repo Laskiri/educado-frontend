@@ -100,33 +100,30 @@ export default function NavigationFooter(props: propsType): JSX.Element {
   };
 
   return (
-    <div className="">
-  <label>
-    <button
-      id="continue"
-      onClick={onSubmit1} // Call onSubmit when clicked
-      className="py-2 px-7 mt-8 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2 rounded"
-    >
-      {!props.codeVerified ? "Continuar" : "Redefinir senha"}{" "}
-      {/* Continue or reset password */}
-    </button>
-  </label>
+    <div className="flex flex-col items-center justify-center">
+      <label className="w-full">
+        <button
+          id="continue"
+          onClick={onSubmit1} // Call onSubmit when clicked
+          className="py-2 px-7 mt-8 bg-primary hover:bg-gray-100 border border-primary hover:text-primary text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:ring-offset-2 rounded"
+        >
+          {!props.codeVerified ? "Continuar" : "Redefinir senha"}{" "}
+          {/* Continue or reset password */}
+        </button>
+      </label>
 
-  <label className="flex flex-col items-center w-full mt-4">
-    <p className="mb-2 text-sm text-gray-600">O código não chegou?</p>
-  </label>
-
-  <div className="flex justify-center w-full mt-2">
-    <button
-      id="resend-email"
-      onClick={resendEmail} // Call resendEmail when clicked
-      disabled={cooldown > 0} // Disable button during cooldown
-      className={`py-1 px-4 bg-secondary text-primary rounded transition ease-in duration-200 text-sm font-medium shadow-xl border border-primary 
-                  ${cooldown > 0 ? 'opacity-50 cursor-not-allowed' : 'hover:bg-primary hover:text-white hover:border-primary'}`}
-    >
-      {cooldown > 0 ? `Reenviar código em ${cooldown}s` : 'Reenviar código'}
-    </button>
-  </div>
-</div>
+      <label className="flex items-center justify-center w-full mt-4">
+        <p className="mr-2 text-l text-gray-600">O código não chegou?</p>
+        <button
+          id="resend-email"
+          onClick={resendEmail} // Call resendEmail when clicked
+          disabled={cooldown > 0} // Disable button during cooldown
+          className={`text-primary underline transition ease-in duration-200 text-l font-medium 
+            ${cooldown > 0 ? 'opacity-50 cursor-not-allowed' : 'hover:text-primary-dark'}`}
+        >
+          {cooldown > 0 ? `Reenviar código em ${cooldown}s` : 'Reenviar código'}
+        </button>
+      </label>
+    </div>
   );
 }
