@@ -184,20 +184,12 @@ export const InstitutionsTableAdmin = () => {
 
   const filteredData = institutionsResponse.data.filter((institution) => {
     if (searchTerm === "") return institution;
-    if (
-      institution.institutionName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
-    if (institution.domain.toLowerCase().includes(searchTerm.toLowerCase()))
-      return institution;
-    if (
-      institution.secondaryDomain
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
+    const fieldsToCheck = ["institutionName", "domain", "secondaryDomain"];
+    return fieldsToCheck.some(
+      (field) =>
+        institution[field] &&
+        institution[field].toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
   const paginatedData = filteredData.slice(
