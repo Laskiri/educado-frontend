@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, FormEvent } from "react";
 import useSWR from "swr";
 import { institutionService } from "../../services/Institution.services";
 import Loading from "../general/Loading";
@@ -249,11 +249,11 @@ export const InstitutionsTableAdmin = () => {
       setSecondaryDomainInput(institution.secondaryDomain);
     }, [showModal]);
 
-    const handleSumbit = async (e: ChangeEvent<HTMLFormElement>) => {
+    const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
       try {
         e.preventDefault();
-        e.target.reportValidity();
-        if (!e.target.checkValidity()) e.target.reportValidity();
+        e.currentTarget.reportValidity();
+        if (!e.currentTarget.checkValidity()) e.currentTarget.reportValidity();
         else {
           await updateInstitution(institution._id!, getUserToken(), {
             institutionName: nameInput,
