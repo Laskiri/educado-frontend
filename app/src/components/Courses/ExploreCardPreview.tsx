@@ -19,6 +19,8 @@ import {
   mdiBookMultipleOutline
 } from '@mdi/js';
 import { Course } from '../../interfaces/Course';
+import singleIcon from '../../assets/singleIcon.png'; 
+
 
 interface CardLabelProps {
   title: string;
@@ -112,38 +114,16 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
     <div className="relative w-full h-full">
       {/* Container for both card and modal */}
       <div className="bg-gray-100 rounded-lg p-2 h-full">
-        {/* Card */}
-        <div className="bg-white rounded-lg shadow-md p-3 relative h-full flex flex-col">
-          <div className="flex-1 flex flex-col">
-            {/* Title */}
-            <div className="flex justify-between items-center">
-              <h3 className="text-sm font-medium text-gray-900">{course.title}</h3>
-            </div>
-
-            <div className="h-px bg-gray-200 w-full my-2" />
-
-            <div className="flex-1 flex flex-col justify-between">
-              {/* Upper content */}
-              <div className="space-y-2">
-                {/* Labels */}
-                <div className="flex flex-wrap gap-1">
-                  <CardLabel
-                    title={determineCategory(course.category)}
-                    icon={determineIcon(course.category)}
-                  />
-                  <CardLabel
-                    title={formatHours(course.estimatedHours ? course.estimatedHours : 0)}
-                    icon={mdiClockOutline}
-                  />
-                  <CardLabel
-                    title={getDifficultyLabel(course.difficulty)}
-                    icon={mdiBookMultipleOutline}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+        {/* Explorer Card */}
+        <div className='w-full h-fit items-start justify-start flex flex-row pt-[20%]'>
+          <img
+            src={singleIcon}
+            alt="Icon"
+            className="w-6 h-6 mr-2"
+          />
+          <text className="text-l font-bold">Explorar cursos</text>
         </div>
+        <text className='text-[10px]'> Inscreva-se nos cursos do seu interesse e comece sua jornada </text>
 
         {/* Modal */}
         {
@@ -186,7 +166,7 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
 
                 {/* Description */}
                 {course.description && (
-                  <p className="text-xs text-gray-900">{course.description}</p>
+                  <p className="text-xs text-gray-900 overflow-hidden h-10 whitespace-normal pr-0.5 break-words">{course.description}</p>
                 )}
 
                 {/* Features */}
