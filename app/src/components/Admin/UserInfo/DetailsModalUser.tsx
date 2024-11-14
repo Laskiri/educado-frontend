@@ -20,7 +20,7 @@ interface UserDetailsModalProps {
   onHandleStatus: () => void;
   userApplication: any;
   contentCreator: any;
-  Loading: boolean;
+  loading: boolean;
 }
 
 const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
@@ -32,7 +32,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   onHandleStatus,
   userApplication,
   contentCreator,
-  Loading,
+  loading,
 }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState([true, false, false]);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
@@ -79,7 +79,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
       onHandleStatus: onHandleStatus,
       userDetails: userDetails,
       isReject: isRejectModalOpen,
-      Loading: Loading,
+      loading: loading,
     };
 
     if (isRejectModalOpen || isApproveModalOpen) {
@@ -103,7 +103,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
         isVisible={isOpen}
         onConfirm={() => {}}
         isConfirmDisabled={false}
-        Loading={Loading}
+        loading={loading}
         width="900px"
       >
         <div className="overflow-y-auto max-h-[600px]">

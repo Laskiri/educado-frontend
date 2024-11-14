@@ -318,7 +318,7 @@ const Application = () => {
           onConfirm={handleSubmit(onSubmit)}
           onClose={closeModal}
           isVisible={isModalVisible}
-          Loading={submitLoading}
+          loading={submitLoading}
       />
     </main>
   )
