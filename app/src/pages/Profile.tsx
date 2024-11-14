@@ -30,6 +30,9 @@ import staticForm from "../utilities/staticForm";
 // Helpers
 import { tempObjects } from "../helpers/formStates";
 
+// Contexts
+import useAuthStore from '../contexts/useAuthStore'
+
 // Yup Schema
 const profileSchema = Yup.object().shape({
   UserName: Yup.string(),
@@ -185,7 +188,7 @@ const Profile = () => {
   useEffect(() => {
     if (userID) {
       fetchStaticData();
-      fetchDynamicData();
+      //fetchDynamicData();
     }
   }, [userID]);
 
@@ -205,16 +208,30 @@ const Profile = () => {
   const openAccountDeletionModal = () => { setIsAccountDeletionModalVisible(true); }
   const closeAccountDeletionModal = () => { setIsAccountDeletionModalVisible(false); }
 
+  const { clearToken } = useAuthStore((state) => state);
+
   // Handle account deletion
   const deleteAccount = async () => {
-    await AccountServices.deleteAccount();
-
-    /* localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("userInfo");
-
-    navigate('/welcome'); */
+    const responseData = await AccountServices.deleteAccount();
+    console.log("deleted account: " + responseData);
+    
     closeAccountDeletionModal();
+    console.log("Model should now be closed!");
+
+    localStorage.removeItem("id");
+    console.log("id should be removed from localStorage");
+    
+    localStorage.removeItem("userInfo");
+    console.log("userInfo should be removed from localStorage");
+    
+    clearToken();
+    console.log("Token should be cleared");
+    
+    localStorage.removeItem('token');
+    console.log("Token should be removed");
+    
+    navigate('/welcome');
+    console.log("Should now be send back to welcome page");
   }
 
   return (
