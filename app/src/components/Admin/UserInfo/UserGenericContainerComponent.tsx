@@ -83,31 +83,21 @@ const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps
       isVisible={isOpen}
       onConfirm={handleAction}
       isConfirmDisabled={isReject && !isInputValid || Loading}
-      Loading={Loading}
+      loading={Loading}
       className={isReject ? "adaptive-modal" : ""}
       width={"800px"} // Add this line to define the width
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col bg-white p-4 md:p-6 rounded-l-lg mt-4 relative">
-          <dt className="text-[#166276] text-base font-bold font-['Lato']">Nome</dt>
-          <dd id="name" className="text-base font-['Montserrat'] text-gray-900 break-all">
+          <dt className="text-[#166276] text-base font-bold font-lato">Nome</dt>
+          <dd id="name" className="text-base font-montserrat text-gray-900 break-all">
             {userDetails.firstName} {userDetails.lastName}
           </dd>
-          <style>{`
-            .relative::after {
-              content: '';
-              position: absolute;
-              right: 0;
-              top: 20%;
-              height: 60%;
-              width: 1px;
-              background-color: #E7F3F6;
-            }
-          `}</style>
+          <div className="absolute right-0 top-1/4 h-3/5 w-px bg-[#E7F3F6]"></div>
         </div>
         <div className="flex flex-col bg-white p-4 md:p-6 rounded-r-lg mt-4">
-          <dt className="text-[#166276] text-base font-bold font-['Lato']">Email</dt>
-          <dd id="email" className="text-base font-['Montserrat'] text-gray-900 break-all">
+          <dt className="text-[#166276] text-base font-bold font-lato">Email</dt>
+          <dd id="email" className="text-base font-montserrat text-gray-900 break-all">
             {userDetails.email}
           </dd>
         </div>

@@ -70,7 +70,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({ applicationId, onDe
 
       {/* Confirmation Modal */}
       {showModal && (
-        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} Loading={isLoading} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?' />
+        <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} loading={isLoading} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?' />
       )}
 
       
