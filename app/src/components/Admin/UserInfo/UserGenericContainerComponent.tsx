@@ -84,8 +84,7 @@ const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps
       onConfirm={handleAction}
       isConfirmDisabled={isReject && !isInputValid || Loading}
       Loading={Loading}
-      className={isReject ? "adaptive-modal" : ""}
-      width={"800px"} // Add this line to define the width
+      width={"w-[900px]"} // Add this line to define the width
     >
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="flex flex-col bg-white p-4 md:p-6 rounded-l-lg mt-4 relative">

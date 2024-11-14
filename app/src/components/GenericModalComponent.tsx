@@ -34,8 +34,8 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
   return (
     <div className={`modal ${isVisible ? "modal-open" : null}`}>
       <div
-        className={`modal-box flex flex-col w-auto max-w-full bg-[#f1f9fb] space-y-8 m-10 p-10 ${
-          width || "w-[500px]"
+        className={`modal-box flex flex-col w-auto min-w-[500px] max-w-[85%] max-h-[85%] bg-[#f1f9fb] space-y-8 m-10 p-10 ${
+          width || ""
         }`}
       >
         {/* Top bar */}
