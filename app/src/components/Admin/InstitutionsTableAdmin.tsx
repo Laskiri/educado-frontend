@@ -56,7 +56,7 @@ const AddInstitutionButton = () => {
           res.data.institution.institutionName +
           " como nova instituição"
       );
-    } catch (res) {
+    } catch (error) {
       console.log(res);
       const errorCause = res.response.data.errorCause;
 
@@ -110,16 +110,15 @@ const AddInstitutionButton = () => {
 
       {showModal && (
         <GenericModalComponent
-          onConfirm={() => null}
+          onConfirm={handleSubmit(onSubmit)}
           onClose={handleClose}
           isVisible={showModal}
           title="Adicionar Instituição"
           contentText=""
+          confirmBtnText="Adicionar"
+          loading={isLoading}
           children={
-            <form
-              className="form-control flex flex-col space-y-4"
-              onSubmit={handleSubmit(onSubmit)}
-            >
+            <form className="form-control flex flex-col space-y-4">
               <div className="flex flex-col space-y-2">
                 <label>
                   <span>Nome da Instituição</span>
@@ -160,20 +159,6 @@ const AddInstitutionButton = () => {
                   id="secondary-domain"
                 />
               </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="btn bg-primary border-primary"
-                id="submit"
-              >
-                <div className="flex justify-center items-center space-x-2">
-                  {isLoading ? (
-                    <span className="spinner-border animate-spin rounded-full border-2 border-t-transparent w-4 h-4" />
-                  ) : null}
-                  <span>Adicionar</span>
-                </div>
-              </button>
             </form>
           }
         />
@@ -313,16 +298,14 @@ export const InstitutionsTableAdmin = () => {
 
         {showModal && (
           <GenericModalComponent
-            onConfirm={() => null}
+            onConfirm={handleSumbit}
             onClose={handleClose}
             isVisible={showModal}
             title="Update Instituições"
-            contentText=""
+            confirmBtnText="Atualizar"
+            loading={isLoading}
             children={
-              <form
-                className="form-control flex flex-col space-y-4"
-                onSubmit={handleSumbit}
-              >
+              <form className="form-control flex flex-col space-y-4">
                 <div className="flex flex-col space-y-2">
                   <label>
                     <span>Nome da Instituição</span>
@@ -366,19 +349,6 @@ export const InstitutionsTableAdmin = () => {
                     className="input"
                   />
                 </div>
-
-                <button
-                  type="submit"
-                  disabled={isLoading}
-                  className="btn bg-primary hover:bg-cyan-900 border-transparent"
-                >
-                  <div className="flex justify-center items-center space-x-2">
-                    {isLoading ? (
-                      <span className="spinner-border animate-spin rounded-full border-2 border-t-transparent w-4 h-4" />
-                    ) : null}
-                    <span>Atualizar</span>
-                  </div>
-                </button>
               </form>
             }
           />
