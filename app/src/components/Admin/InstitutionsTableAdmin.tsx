@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, FormEvent } from "react";
 import useSWR from "swr";
 import { institutionService } from "../../services/Institution.services";
 import Loading from "../general/Loading";
@@ -184,20 +184,12 @@ export const InstitutionsTableAdmin = () => {
 
   const filteredData = institutionsResponse.data.filter((institution) => {
     if (searchTerm === "") return institution;
-    if (
-      institution.institutionName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
-    if (institution.domain.toLowerCase().includes(searchTerm.toLowerCase()))
-      return institution;
-    if (
-      institution.secondaryDomain
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
+    const fieldsToCheck = ["institutionName", "domain", "secondaryDomain"];
+    return fieldsToCheck.some(
+      (field) =>
+        institution[field] &&
+        institution[field].toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
   const paginatedData = filteredData.slice(
@@ -257,11 +249,11 @@ export const InstitutionsTableAdmin = () => {
       setSecondaryDomainInput(institution.secondaryDomain);
     }, [showModal]);
 
-    const handleSumbit = async (e: ChangeEvent<HTMLFormElement>) => {
+    const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
       try {
         e.preventDefault();
-        e.target.reportValidity();
-        if (!e.target.checkValidity()) e.target.reportValidity();
+        e.currentTarget.reportValidity();
+        if (!e.currentTarget.checkValidity()) e.currentTarget.reportValidity();
         else {
           await updateInstitution(institution._id!, getUserToken(), {
             institutionName: nameInput,

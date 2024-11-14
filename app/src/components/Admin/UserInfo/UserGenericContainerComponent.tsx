@@ -25,7 +25,7 @@ interface UserGenericContainerComponentProps {
   onHandleStatus: () => void;
   userDetails: any;
   isReject: boolean;
-  Loading: boolean;
+  loading: boolean;
 }
 
 const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps> = ({
