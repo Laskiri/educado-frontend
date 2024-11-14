@@ -1,16 +1,12 @@
 import { Icon } from '@mdi/react';
 import { mdiAccountOutline, mdiCompassOutline, mdiHomeOutline, mdiRobotOutline, mdiChevronLeft, mdiChevronDown } from '@mdi/js';
 import { Course} from '../../interfaces/Course';
-import getAllCourseSections from '../../services/course.services';
-import { useEffect, useState } from 'react';
 import CourseServices from '../../services/course.services';
 import useSWR from 'swr';
 
 interface PhoneCourseSectionProps {
     course: Course;
 }  
-
-
 
 const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
     const { data } = useSWR("api/courses/${course_id}/sections", () =>
