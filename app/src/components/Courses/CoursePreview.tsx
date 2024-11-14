@@ -17,7 +17,7 @@ import Layout from "../Layout";
 
 // Notification
 import { useNotifications } from "../notification/NotificationContext";
-import PhoneCourseSession from "./PhoneCourseSession";
+import PhoneCourseSection from "./PhoneCourseSection";
 import ExploreCardPreview from "./ExploreCardPreview";
 
 interface Inputs {
@@ -184,7 +184,7 @@ export const CoursePreview = ({
                 <ExploreCardPreview course={courseData} />
             </PhonePreview>
             <PhonePreview title="Seções do curso" >
-                <PhoneCourseSession />
+                <PhoneCourseSection course={courseData} />
             </PhonePreview>
           </div>
         </div>

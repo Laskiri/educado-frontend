@@ -118,6 +118,16 @@ const deleteCourse = async (id: string | undefined, token: string) => {
   );
 }
 
+/**
+ * Get all sections from a course
+ */
+const getAllCourseSections = async (course_id: string | undefined) => {
+  const res = await axios.get(
+    `${BACKEND_URL}/api/courses/${course_id}/sections`,
+  );
+  return res.data;
+}
+
 // Export all methods
 const CourseServices = Object.freeze({
   createCourse,
@@ -127,7 +137,8 @@ const CourseServices = Object.freeze({
   updateCourseDetail,
   updateCourseStatus,
   updateCourseSectionOrder,
-  deleteCourse
+  deleteCourse,
+  getAllCourseSections
 });
 
 export default CourseServices;
