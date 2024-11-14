@@ -30,6 +30,7 @@ import staticForm from "../utilities/staticForm";
 
 // Helpers
 import { tempObjects } from "../helpers/formStates";
+import { toast } from "react-toastify";
 
 // Yup Schema
 const profileSchema = Yup.object().shape({
@@ -106,7 +107,7 @@ const Profile = () => {
   const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
 
   //callback
-  const { call: saveEdits, isLoading: submitLoading } = useApi(ProfileServices.putFormOne);
+  const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
 
   // Form submit, sends data to backend upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
@@ -169,7 +170,7 @@ const Profile = () => {
       }
     }
     catch(error) {
-      console.error("Error updating profile: " + error);
+      toast.error(error);
     }
   };
 

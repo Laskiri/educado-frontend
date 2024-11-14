@@ -5,6 +5,7 @@ import UserDetailsModal from '../components/Admin/UserInfo/DetailsModalUser';
 import { getUserToken } from '../helpers/userInfo';
 import AuthServices from '../services/auth.services';
 import { useApi } from '../hooks/useAPI';
+import { toast } from 'react-toastify';
 
 interface ViewUserButtonProps {
   applicationId: string;
@@ -17,7 +18,7 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
   const [userApplication, setUserApplication] = useState<any>(null); // Replace with the appropriate type
   const [contentCreator, setContentCreator] = useState<any>(null); // Replace with the appropriate type
 
-  const { call: fetchUserDetails, isLoading } = useApi(async (applicationId: string, token: string) => {
+  const { call: fetchUserDetails, isLoading, error } = useApi(async (applicationId: string, token: string) => {
     const userDetails = await AdminServices.getSingleUserDetails(applicationId, token);
     const userApplication = await AuthServices.GetSingleCCApplication(applicationId);
     const contentCreator = await AdminServices.getContentCreator(applicationId, token);
@@ -37,7 +38,7 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
       setContentCreator(contentCreator);
       setIsModalOpen(true);
     } catch (error) {
-      console.error("Failed to fetch user details:", error);
+      toast.error(error);
     }
   };
 
@@ -81,7 +82,7 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
           onHandleStatus();
           refreshUserDetails();
         }} 
-        Loading={isLoading} 
+        loading={isLoading} 
       />
     </>
   );

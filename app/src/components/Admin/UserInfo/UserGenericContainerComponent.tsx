@@ -57,21 +57,22 @@ const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps
 
     try {
       if (isReject) {
-        await AuthServices.RejectApplication(userId, reason);
-        toast.success("Application rejected!");
+      await AuthServices.RejectApplication(userId, reason);
+      toast.success("Application rejected!");
       } else {
-        await AuthServices.AcceptApplication(userId);
-        await AdminServices.changeUserRole(userId, token, 'creator');
-        toast.success("Application approved!");
+      await AuthServices.AcceptApplication(userId);
+      await AdminServices.changeUserRole(userId, token, 'creator');
+      toast.success("Application approved!");
       }
       onClose();
       onHandleStatus();
     } catch (error) {
       console.error("Failed to process application:", error);
+      toast.error(error.response?.data?.error+", But we still aproved the application");
     } finally {
       setLoading(false);
     }
-  };
+    };
 
   return (
     <GenericModalComponent
