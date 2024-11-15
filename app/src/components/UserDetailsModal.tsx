@@ -205,7 +205,7 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({ isOpen, onClose, us
         </div>
       )}
       <RejectModal isOpen={isRejectModalOpen} onClose={closeRejectModal} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
-      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} token={token} userDetails={userDetails} applicationId={applicationId} onHandleStatus={onHandleStatus} />
+      <ApproveModal isOpen={isApproveModalOpen} onClose={closeApproveModal} token={token} userDetails={userDetails} userId={applicationId} onHandleStatus={onHandleStatus} />
     </>
   );
 };
