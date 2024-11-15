@@ -1,3 +1,5 @@
+import {Answer} from "./Answer";
+
 export interface Main {
   status:  number;
   success: boolean;
@@ -32,28 +34,40 @@ export interface contentCreator {
   lastName: string,
   email: string,
   motivation: string,
-  approved: boolean,
+  approved?: boolean,
   rejectionReason: string,
-  dateCreated: Date,
-  dateUpdated: Date,
+  dateCreated?: Date,
+  dateUpdated?: Date,
 }
 
 export interface Section {
   _id:          string;
   title:        string;
   description:  string;
-  totalPoints:  number;
+  totalPoints?:  number;
   parentCourse: string;
+  components: Component[];
+}
+
+export interface Component {
+  compData: Lecture | Exercise;
+  compType: string;
+  _id: string;
 }
 
 export interface Lecture {
-  components:     string[];
-  title:          string
-  description:    string;
-  image:          string;
-  video:          string;
-  dateCreated:      Date;
-  updatedAt:      Date;
-  parentSection:  string;
-  __v:            number;
+  parentSection: string,
+  _id: string,
+  title: string,
+  description: string,
+  contentType: string,
+  content: string,
+}
+
+export interface Exercise {
+    _id: string,
+    parentSection: string,
+    title: string,
+    question: string,
+    answers?: Answer[]
 }

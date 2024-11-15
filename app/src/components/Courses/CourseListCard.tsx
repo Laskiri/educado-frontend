@@ -26,6 +26,11 @@ export const CourseListCard = ({ course }: { course: Course }) => {
   const [imageSrc, setImageSrc] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const maxTitleLength = 20;
+  //only load coursecard if ti exists
+  if(!course || !course.title) {
+    return null;
+  }
+
   //Only load the picture, when the picture is loaded
   useEffect(() => {
     const fetchImage = async () => {

@@ -2,10 +2,10 @@ import { useForm, SubmitHandler } from "react-hook-form";
 
 
 // Interfaces
-import { Lecture } from "../interfaces/Lecture";
+import { Lecture } from "@interfaces/Course";
 
 // Helpers
-import LectureService from "../services/lecture.services";
+import LectureService from "@services/lecture.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";

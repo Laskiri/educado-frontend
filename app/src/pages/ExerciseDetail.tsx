@@ -2,21 +2,21 @@ import { useState, } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 // Components
-import AnswerCards from "../components/Exercise/AnswerCards";
+import AnswerCards from "@components/Exercise/AnswerCards";
 
 // Interfaces
-import { Answer } from "../interfaces/Answer";
-import { Exercise } from "../interfaces/Exercise"
+import { Answer } from "@interfaces/Answer";
+import { Exercise } from "@interfaces/Course"
 
 // Helpers
-import ExerciseServices from "../services/exercise.services";
+import ExerciseServices from "@services/exercise.services";
 
 // Pop-up messages
-import { useNotifications } from "../components/notification/NotificationContext";
+import { useNotifications } from "@components/notification/NotificationContext";
 import { toast } from "react-toastify";
 
 // Hooks
-import { getUserToken } from "../helpers/userInfo";
+import { getUserToken } from "@helpers/userInfo";
 
 export interface ExercisePartial {
     title: string,

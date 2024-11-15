@@ -21,7 +21,7 @@ import ExerciseServices from "../../../services/exercise.services";
 import { EditLecture } from "../../EditLecturePopUp";
 import { EditExercise } from "../../Exercise/EditExercisePopUp";
 
-import { Component } from "../../../interfaces/SectionInfo";
+import { Component } from "@interfaces/Course";
 import { set } from "cypress/types/lodash";
 
 interface Props {

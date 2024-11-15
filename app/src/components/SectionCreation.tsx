@@ -22,12 +22,12 @@ import Layout from "./Layout";
 // Notification
 import { useNotifications } from "./notification/NotificationContext";
 import CourseGuideButton from "./Courses/GuideToCreatingCourse";
+import { useCourse } from '../contexts/courseStore';
 
 interface Inputs {
   id: string;
   token: string;
   setTickChange: Function;
-  courseData: Course;
 }
 
 // Create section
@@ -35,9 +35,10 @@ export const SectionCreation = ({
   id: propId,
   token,
   setTickChange,
-  courseData,
 }: Inputs) => {
   const { id: urlId } = useParams<{ id: string }>();
+  const {course} = useCourse();
+
   const id = propId === "0" ? urlId : propId;
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
@@ -51,7 +52,6 @@ export const SectionCreation = ({
   const [cancelBtnText, setCancelBtnText] = useState("Cancelar");
   const [confirmBtnText, setConfirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
-
   const [dialogConfirm, setDialogConfirm] = useState<Function>(() => {});
   const [status, setStatus] = useState<string>("draft");
 
@@ -87,7 +87,7 @@ export const SectionCreation = ({
     
     function confirmFunction() {
       onConfirm();
-      CourseServices.updateCourseDetail(courseData, id, token);
+      CourseServices.updateCourseDetail(course, id, token);
     }
 
     setDialogConfirm(() => confirmFunction);

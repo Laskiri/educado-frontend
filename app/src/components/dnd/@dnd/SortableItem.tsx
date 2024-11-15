@@ -13,7 +13,7 @@ import { SectionArrowIcon } from "../../SectionArrowIcon";
 import { ComponentList } from "../ComponentList";
 import { ToolTipIcon } from "../../ToolTip/ToolTipIcon";
 
-import { Component } from "../../../interfaces/SectionInfo";
+import { Component } from "@interfaces/Course";
 
 // icons
 import {
@@ -63,6 +63,7 @@ export function SortableItem({
     try {
       if (token) {
         SectionServices.getSectionDetail(sid, token).then((res) => {
+          console.log(res);
           setSectionData(res);
           setComponentData(res.components);
         });
