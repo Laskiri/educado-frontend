@@ -22,6 +22,7 @@ import GenericModalComponent from "../components/GenericModalComponent";
 import PersonalInformationForm from "../components/ProfileForms/PersonalInformation";
 import AcademicExperienceForm from "../components/ProfileForms/AcademicExperience";
 import ProfessionalExperienceForm from "../components/ProfileForms/ProfessionalExperience";
+import { useNotifications } from '../components/notification/NotificationContext';
 
 // Utilities
 import dynamicForms from "../utilities/dynamicForms";
@@ -208,38 +209,31 @@ const Profile = () => {
   const openAccountDeletionModal = () => { setIsAccountDeletionModalVisible(true); }
   const closeAccountDeletionModal = () => { setIsAccountDeletionModalVisible(false); }
 
+  // Notification context
+  const { addNotification } = useNotifications();
+
   const { clearToken } = useAuthStore((state) => state);
 
   // Handle account deletion
   const deleteAccount = async () => {
+    //await function to delete the account
     const responseData = await AccountServices.deleteAccount();
-    console.log("deleted account: " + responseData.baseUser);
+    console.log("Deleted account: " + responseData.baseUser);
     
+    //Close the modal after the account has been deleted
     closeAccountDeletionModal();
-    console.log("Model should now be closed!");
 
-    console.log("id is now: " + localStorage.getItem('id'))
-    console.log("Token is now: " + localStorage.getItem('token'))
-    console.log("userInfo is now: " + localStorage.getItem('userInfo'))
-
+    //Clears the local storage
     localStorage.removeItem("id");
-    console.log("id should be removed from localStorage");
-    
     localStorage.removeItem("userInfo");
-    console.log("userInfo should be removed from localStorage");
-    
     clearToken();
-    console.log("Token should be cleared");
-    
     localStorage.removeItem('token');
-    console.log("Token should be removed");
     
+    //User navigates to the welcome page after deleting the account
     navigate('/welcome');
-    console.log("Should now be send back to welcome page");
-    
-    console.log("id is now: " + localStorage.getItem('id'))
-    console.log("Token is now: " + localStorage.getItem('token'))
-    console.log("userInfo is now: " + localStorage.getItem('userInfo'))
+
+    //Popup notification, informing the user that the account has been deleted
+    addNotification('Usuário deletado com sucesso!');  
   }
 
   return (
