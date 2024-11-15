@@ -66,7 +66,7 @@ const UserGenericContainerComponent: React.FC<UserGenericContainerComponentProps
       }
       onClose();
       onHandleStatus();
-    } catch (error) {
+    } catch (error : any) {
       console.error("Failed to process application:", error);
       toast.error(error.response?.data?.error+", But we still aproved the application");
     } finally {

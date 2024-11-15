@@ -3,12 +3,22 @@
 
 import { useState } from 'react';
 
+export interface ApiError extends Error {
+  response?: {
+    data?: {
+      error?: {
+        code?: string;
+        message?: string; // Add message property for better error handling
+      };
+    };
+  };
+}
+
 type ApiFunction<T, A extends unknown[]> = (...args: A) => Promise<T>;
 
 export const useApi = <T, A extends unknown[]>(apiFunc: ApiFunction<T, A>) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState<Error | null>(null);
-
+    const [error, setError] = useState<ApiError | null>(null);
 
     const call = async (...args: A): Promise<T> => {
         setIsLoading(true);
@@ -18,7 +28,7 @@ export const useApi = <T, A extends unknown[]>(apiFunc: ApiFunction<T, A>) => {
             setIsLoading(false);
             return response;
         } catch (error) {
-            setError(error as Error);
+            setError(error as ApiError);
             setIsLoading(false);
             throw error;
         }

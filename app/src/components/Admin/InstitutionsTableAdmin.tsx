@@ -56,31 +56,35 @@ const AddInstitutionButton = () => {
           res.data.institution.institutionName +
           " como nova instituição"
       );
-    } catch (error) {
-      console.log(res);
-      const errorCause = res.response.data.errorCause;
-
-      switch (res.response.data.error.code) {
-        case "E1201":
-          toast.error("Não foi possível carregar a Instituição", {
-            hideProgressBar: true,
-          });
-          break;
-        case "E1202":
-          toast.error(errorCause + " já é uma instituição registrada", {
-            hideProgressBar: true,
-          });
-          break;
-        case "E1203":
-          toast.error(errorCause + " já está registrado em outra instituição", {
-            hideProgressBar: true,
-          });
-          break;
-        case "E1204":
-          toast.error(errorCause + " já está registrado em outra instituição", {
-            hideProgressBar: true,
-          });
-          break;
+    } catch {
+      if (error) {
+        const errorCause = error.response?.data?.error?.code;
+        switch (errorCause) {
+          case "E1201":
+            toast.error(" Não foi possível carregar a Instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1202":
+            toast.error(" já é uma instituição registrada", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1203":
+            toast.error(" já está registrado em outra instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1204":
+            toast.error(" já está registrado em outra instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          default:
+            toast.error("Ocorreu um erro desconhecido", {
+              hideProgressBar: true,
+            });
+        }
       }
     }
   };
@@ -98,8 +102,7 @@ const AddInstitutionButton = () => {
           e.preventDefault();
           setShowModal(true);
         }}
-        disabled={isLoading}
-      >
+        disabled={isLoading}>
         <div className="flex justify-center items-center space-x-2">
           {isLoading ? (
             <span className="spinner-border animate-spin rounded-full border-2 border-t-transparent w-4 h-4" />
@@ -249,22 +252,25 @@ export const InstitutionsTableAdmin = () => {
       setSecondaryDomainInput(institution.secondaryDomain);
     }, [showModal]);
 
-    const handleSumbit = async (e: FormEvent<HTMLFormElement>) => {
+    const handleSumbit = async (e?: FormEvent<HTMLFormElement>) => {
       try {
-        e.preventDefault();
-        e.currentTarget.reportValidity();
-        if (!e.currentTarget.checkValidity()) e.currentTarget.reportValidity();
-        else {
-          await updateInstitution(institution._id!, getUserToken(), {
-            institutionName: nameInput,
-            domain: domainInput,
-            secondaryDomain: secondaryDomainInput,
-          });
-
-          mutate();
-          setShowModal(false);
-          addNotification("Instituição atualizada com sucesso !");
+        if (e) {
+          e.preventDefault();
+          e.currentTarget.reportValidity();
+          if (!e.currentTarget.checkValidity()) {
+            e.currentTarget.reportValidity();
+            return;
+          }
         }
+        await updateInstitution(institution._id!, getUserToken(), {
+          institutionName: nameInput,
+          domain: domainInput,
+          secondaryDomain: secondaryDomainInput,
+        });
+
+        mutate();
+        setShowModal(false);
+        addNotification("Instituição atualizada com sucesso !");
       } catch (err) {
         toast.error(String(err));
         console.error(err);
@@ -283,14 +289,13 @@ export const InstitutionsTableAdmin = () => {
       <>
         <button
           className="btn btn-circle bg-primary hover:bg-cyan-900 border-transparent"
-          onClick={() => setShowModal(true)}
-        >
+          onClick={() => setShowModal(true)}>
           <MdCreate />
         </button>
 
         {showModal && (
           <GenericModalComponent
-            onConfirm={handleSumbit}
+            onConfirm={(e) => handleSumbit(e)}
             onClose={handleClose}
             isVisible={showModal}
             title="Update Instituições"
@@ -372,8 +377,7 @@ export const InstitutionsTableAdmin = () => {
       <>
         <button
           className="btn btn-circle bg-primary hover:bg-cyan-900 border-transparent"
-          onClick={() => setShowModal(true)}
-        >
+          onClick={() => setShowModal(true)}>
           <MdDelete />
         </button>
         {showModal && (
@@ -419,8 +423,7 @@ export const InstitutionsTableAdmin = () => {
               <th
                 scope="col"
                 className={`text-sm bg-transparent ${columnName.width}`}
-                key={`${columnName.name}-${key}`}
-              >
+                key={`${columnName.name}-${key}`}>
                 {columnName.name}
               </th>
             ))}
@@ -466,8 +469,7 @@ export const InstitutionsTableAdmin = () => {
             <select
               className="select"
               value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-            >
+              onChange={handleRowsPerPageChange}>
               <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
@@ -488,8 +490,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={handleFirstPage}
-            >
+              onClick={handleFirstPage}>
               <GoArrowLeft />
             </button>
             <button
@@ -499,8 +500,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
+              onClick={() => handlePageChange(currentPage - 1)}>
               <GoChevronLeft />
             </button>
             <button
@@ -510,8 +510,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
+              onClick={() => handlePageChange(currentPage + 1)}>
               <GoChevronRight />
             </button>
             <button
@@ -521,8 +520,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={handleLastPage}
-            >
+              onClick={handleLastPage}>
               <GoArrowRight />
             </button>
           </IconContext.Provider>
