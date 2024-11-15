@@ -7,8 +7,6 @@ import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
 import { SectionList } from "./dnd/SectionList";
 
-import { BACKEND_URL } from "../helpers/environment";
-
 import CourseServices from "../services/course.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
@@ -27,7 +25,7 @@ import { useCourse } from '../contexts/courseStore';
 interface Inputs {
   id: string;
   token: string;
-  setTickChange: Function;
+  setTickChange: (tick: number) => void;
 }
 
 // Create section
@@ -40,7 +38,6 @@ export const SectionCreation = ({
   const {course} = useCourse();
 
   const id = propId === "0" ? urlId : propId;
-  const [isLeaving, setIsLeaving] = useState<boolean>(false);
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
     []
   );
@@ -49,17 +46,26 @@ export const SectionCreation = ({
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
-  const [cancelBtnText, setCancelBtnText] = useState("Cancelar");
-  const [confirmBtnText, setConfirmBtnText] = useState("Confirmar");
+  const [cancelBtnText] = useState("Cancelar");
+  const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
-  const [dialogConfirm, setDialogConfirm] = useState<Function>(() => {});
+  const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
   const [status, setStatus] = useState<string>("draft");
 
   const navigate = useNavigate();
-  function addOnSubmitSubscriber(callback: Function) {
+  function addOnSubmitSubscriber(callback: () => void) {
     //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
   }
+
+  useEffect(() => {
+    if (course) {
+      setSections(course.sections || []);
+      setStatus(course.status !== "" ? course.status : "draft");
+      setLoading(false);
+    }
+  }, [course])
+  
 
   /**
    * Currently not used, but should be implemented in the future
@@ -137,30 +143,10 @@ export const SectionCreation = ({
    * @param token The user token
    * @returns The course details
    */
-  const getData = async (url: string /*, token: string*/) => {
-    const res: any = await CourseServices.getCourseDetail(url, token);
-    return res;
-  };
 
   // Redirect to courses page when setLeaving is s
 
-  // Fetch Course Details
-  useEffect(() => {
-    if (id !== "0") {
-      getData(`${BACKEND_URL}/api/courses/${id}`)
-        .then((data) => {
-          setStatus(data.status);
-          setSections(data.sections); // Array of section ID's
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [id, token]);
+  
 
   if (loading && id != "0")
     return (

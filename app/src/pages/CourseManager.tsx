@@ -2,12 +2,11 @@ import { CourseComponent } from "../components/Courses/CourseComponent";
 import { SectionCreation } from "../components/SectionCreation";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useApi } from "@hooks/useAPI";
 import { getUserToken } from '../helpers/userInfo';
-import { BACKEND_URL } from '../helpers/environment';
 import Checklist from "../components/Checklist";
 import Layout from "../components/Layout";
 import CourseServices from '../services/course.services';
-import useSWR from 'swr';
 import Loading from '../components/general/Loading';
 import NotFound from '../pages/NotFound';
 import { CourseProvider, useCourse } from '../contexts/courseStore';
@@ -29,7 +28,8 @@ const CourseManager = () => {
     const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"));
     const [highestTick, setHighestTick] = useState<number>(0);
     const {course, updateCourse } = useCourse();
-
+    const newCourse = id === "0" ? true : false;
+    const courseCached = course !== undefined && course !== null;
     /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
      * 
@@ -37,51 +37,44 @@ const CourseManager = () => {
      * @param token The user token
      * @returns The course details
      */
+    const {call: getCourseDetails, isLoading: fetchLoading, error: fetchError } = useApi(CourseServices.getCourseDetail);
 
-    const getData = async (url: string, token: string) => {
-        const res: Course = await CourseServices.getCourseDetail(url, token);
-        return res;
-    };
-
-    const { data, error } = useSWR(
-        (token.length > 0) && id !== "0" ? [`${BACKEND_URL}/api/courses/${id}`, token] : null,
-        getData
-    );
-
+    
     useEffect(() => {
-        if (data) {
-            updateCourse(data);
+        if (newCourse) return 
+        if (courseCached) return
+        const fetchCourseData = async () => {
+            const data = await getCourseDetails(id, token)
+            updateCourse(data) 
         }
-    }, [data]);
+        fetchCourseData()
+    }, [])
 
-    useEffect(() => {
-        console.log(course);
-    }, [course]);
 
-    const isCourseBasicInformation = (data: Course) => {
-        return data.title !== "" && data.description !== "" && data.category !== "" && (data.difficulty !== 0) && data.status !== "";
+    const isCourseBasicInformation = (course: Course) => {
+        return course.title !== "" && course.description !== "" && course.category !== "" && (course.difficulty !== 0) && course.status !== "";
     }
 
-    const doesCourseSectionsExist = (data: Course) => {
-        return data.sections && data.sections.length > 0;
+    const doesCourseSectionsExist = (course: Course) => {
+        return course.sections && course.sections.length > 0;
     }
 
     useEffect(() => {
-        const calculateMaxTick = (data: Course) => {
-            if (isCourseBasicInformation(data)) {
+        const calculateMaxTick = (course: Course) => {
+            if (isCourseBasicInformation(course)) {
                 return 1;
             }
-            if (doesCourseSectionsExist(data) ?? false) {
+            if (doesCourseSectionsExist(course) ?? false) {
                 return 1;
             }
             return 0;
         };
 
-        if (id === "0") {
+        if (newCourse) {
             return;
         }
 
-        if (course !== undefined && course !== null) {
+        if (courseCached) {
             const maxTick = calculateMaxTick(course);
             setHighestTick(maxTick);
         }
@@ -98,8 +91,8 @@ const CourseManager = () => {
         setHighestTick(newHighestTick);
     }
 
-    if (!data && id !== "0") return <Layout meta='course overview'><Loading /></Layout>;
-    if (error !== undefined && error !== null) return <NotFound />;
+    if (fetchLoading) return <Layout meta='course overview'><Loading /></Layout>;
+    if (fetchError) return <NotFound />;
 
     return (
         <Layout meta="Course Manager">

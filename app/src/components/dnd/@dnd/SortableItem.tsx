@@ -7,13 +7,14 @@ import { getUserToken } from "../../../helpers/userInfo";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useSections } from "@contexts/courseStore";
 
 // components
 import { SectionArrowIcon } from "../../SectionArrowIcon";
 import { ComponentList } from "../ComponentList";
 import { ToolTipIcon } from "../../ToolTip/ToolTipIcon";
 
-import { Component } from "@interfaces/Course";
+import { Component, Section } from "@interfaces/Course";
 
 // icons
 import {
@@ -37,7 +38,7 @@ interface Props {
   savedSID: string;
   addOnSubmitSubscriber: Function;
   setSavedSID: Function;
-  handleSectionDeletion: Function;
+  handleSectionDeletion: Function
 }
 
 export function SortableItem({
@@ -48,25 +49,35 @@ export function SortableItem({
   handleSectionDeletion,
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
-  const [title, setTitle] = useState<string>();
+  const [title, setTitle] = useState<string>("");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
-  const [description, setDescription] = useState<string>();
-  const [sectionData, setSectionData] = useState<any>();
+  const [description, setDescription] = useState<string>("");
+  const [sectionData, setSectionData] = useState<Section>();
   const [componentData, setComponentData] = useState<any>();
   const subRef = useRef<HTMLInputElement>(null);
   const openRef = useRef<HTMLInputElement>(null);
 
   const token = getUserToken();
+  const { loadSectionToCache, getCachedSection, updateCachedSection} = useSections();
 
   // Fetch the section data from the server.
   useEffect(() => {
     try {
-      if (token) {
-        SectionServices.getSectionDetail(sid, token).then((res) => {
-          console.log(res);
+      const cachedSection = getCachedSection(sid);
+      if (cachedSection) {
+        setSectionData(cachedSection);
+        setComponentData(cachedSection.components);
+      }
+
+      else {
+        const fetchSectionData = async () => {
+          const res = await SectionServices.getSectionDetail(sid, token);
+          console.log("hey", res);
+          loadSectionToCache(res);
           setSectionData(res);
           setComponentData(res.components);
-        });
+        }
+        fetchSectionData();
       }
     } catch (err) {
       toast.error("failed to fetch section data for section " + sid);
@@ -75,6 +86,13 @@ export function SortableItem({
 
   useEffect(() => {
   }, [componentData]);
+
+  useEffect(() => {
+    if (sectionData) {
+      setTitle(sectionData.title);
+      setDescription(sectionData.description);
+    }
+  } , [sectionData]);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: sid });
@@ -114,11 +132,19 @@ export function SortableItem({
     setComponentData([...componentData, component]);
   };
 
+    // Used to format PARTIAL section data, meaning that it can be used to update the course data gradually
+    const handleFieldChange = (field: keyof Section, value: string | number | Component[] | null) => {
+      const updatedData = { ...sectionData, [field]: value };
+      updateCachedSection(updatedData);
+    };
+
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
+    console.log("data", data)
+    console.log ("title", title)
     if (data === undefined) return;
-    if (title === undefined && description === undefined) return;
-    data.title = title ? title : sectionData.title;
-    data.description = description ? description : sectionData.description;
+    if (title === undefined && description === undefined) {console.log("errrr", undefined); return}
+    data.title = title;
+    data.description = description;
 
     const changes: SectionPartial = {
       title: data.title,
@@ -188,7 +214,7 @@ export function SortableItem({
           </div>
         </div>
 
-        <div className="overflow-visible collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
+        <div className="overflow-hidden collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
           <form onSubmit={handleSectionUpdate(onSubmit)}>
             <div className="pt-5">
               <label htmlFor="title">Nome </label> {/*Title of section*/}
@@ -198,7 +224,7 @@ export function SortableItem({
                 placeholder={sectionData.title ?? "Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("title", { required: true })}
-                onChange={(e) => setTitle(e.target.value)} //update the section title
+                onChange={(e) => {setTitle(e.target.value); handleFieldChange("title", e.target.value)}} //update the section title
               />
               {sectionErrors.title && <span>Este campo é obrigatório!</span>}
               {/** This field is required */}
@@ -222,7 +248,7 @@ export function SortableItem({
                 placeholder={sectionData.description ?? "Descrição da seção"}
                 className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("description", { required: true })}
-                onChange={(e) => setDescription(e.target.value)} //update the section title
+                onChange={(e) => {setDescription(e.target.value); handleFieldChange("description", e.target.value)}} //update the section title
               />
               {sectionErrors.description && (
                 <span>Este campo é obrigatório!</span>

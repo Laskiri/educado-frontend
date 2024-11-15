@@ -11,6 +11,8 @@ import { useParams } from 'react-router-dom';
 import { mdiPlus } from '@mdi/js';
 import { Icon } from '@mdi/react';
 
+import { useSections } from '@contexts/courseStore';
+
 type Inputs = {
     title: string;
 }
@@ -23,7 +25,7 @@ export const SectionForm = ({ setSections }: Props) => {
     const token = getUserToken();
     const { id } = useParams();
 
-    
+    const { loadSectionToCache } = useSections();
     // React useForm setup
     const { handleSubmit } = useForm<Inputs>();
 
@@ -32,6 +34,7 @@ export const SectionForm = ({ setSections }: Props) => {
         SectionServices.createSection(data, id, token)
             .then(res => {
                 console.log(res.data._id);
+                loadSectionToCache(res.data);
                 setSections(prevSections => [...prevSections, res.data._id]); // Add new section to the list and cause a rerender
             })
             .catch(err => console.log(err));

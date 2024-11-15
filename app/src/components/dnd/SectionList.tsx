@@ -29,12 +29,15 @@ import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import { SortableItem } from "./@dnd/SortableItem";
 import { Item } from "./@dnd/Item";
 
+//store"
+import { useSections } from "@contexts/courseStore";
+
 interface Props {
   sections: Array<string>;
   setSections: (updateFn: (prevSections: any[]) => any[]) => void;
   addOnSubmitSubscriber: Function;
 }
-
+ 
 export const SectionList = ({
   sections,
   setSections,
@@ -44,6 +47,7 @@ export const SectionList = ({
   const [activeId, setActiveId] = useState<string | null>(null);
   const [savedSID, setSavedSID] = useState<string>("");
 
+  const { deleteCachedSection } = useSections();
   const { addNotification } = useNotifications();
 
   // Setup of pointer and keyboard sensor
@@ -63,6 +67,7 @@ export const SectionList = ({
           setSections((prevSections) =>
             prevSections.filter((section) => section !== sId)
           );
+          deleteCachedSection(sId);
         })
         .catch((err) => toast.error(err));
     }

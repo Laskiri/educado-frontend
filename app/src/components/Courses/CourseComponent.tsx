@@ -56,7 +56,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
 
   const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
   const [courseImg, setCourseImg] = useState<File | null>(null);
-  const [data, setData] = useState<Course>();
   const {
     register,
     handleSubmit,
@@ -67,8 +66,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   const { addNotification } = useNotifications();
 
   const existingCourse = id != "0";
-
+  const courseCached = course !== undefined && course !== null;
   const navigate = useNavigate();
+
 
      /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
@@ -96,23 +96,22 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   }, []);
 
   useEffect(() => {
-    setData(course);
-    if (course !== null && course !== undefined) {
+    if (courseCached) {
       setStatusSTR(course.status);
       setCharCount(course.description.length);
     }
   }, [course]);
 
-  const formatCourse = (data: Partial<Course>): Course => {
+  const formatCourse = (course: Partial<Course>): Course => {
     return {
-      title: data.title ?? '',
-      description: data.description ?? '',
-      category: data.category ?? '',
-      difficulty: data.difficulty ?? 0,
-      status: data.status ?? 'draft',
-      creator: data.creator ?? '',
-      estimatedHours: data.estimatedHours ?? 0,
-      coverImg: data.coverImg ?? '',
+      title: course.title ?? '',
+      description: course.description ?? '',
+      category: course.category ?? '',
+      difficulty: course.difficulty ?? 0,
+      status: course.status ?? 'draft',
+      creator: course.creator ?? '',
+      estimatedHours: course.estimatedHours ?? 0,
+      coverImg: course.coverImg ?? '',
     };
   };
 
@@ -171,10 +170,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   };
 
   // Creates new draft course and navigates to course list
-  const handleCreateNewDraft = async (data: Course) => {
+  const handleCreateNewDraft = async (course: Course) => {
     try {
-      const newCourse = await CourseServices.createCourse(data, token);
-      console.log("creating new draft", data);
+      const newCourse = await CourseServices.createCourse(course, token);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
 
@@ -186,9 +184,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   }
 
   // Creates new course and navigates to section creation for it
-  const handleCreateNewCourse = async (data: Course) => {
+  const handleCreateNewCourse = async (course: Course) => {
     try {
-      const newCourse = await CourseServices.createCourse(data, token);
+      const newCourse = await CourseServices.createCourse(course, token);
       addNotification("Curso criado com sucesso!");
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -204,21 +202,21 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   };
 
   //Used to prepare the course changes before sending it to the backend
-  const prepareCourseChanges = (data: Course): Course => {
+  const prepareCourseChanges = (course: Course): Course => {
     return {
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      difficulty: data.difficulty,
+      title: course.title,
+      description: course.description,
+      category: course.category,
+      difficulty: course.difficulty,
       status: statusSTR,
       creator: getUserInfo().id,
-      estimatedHours: data.estimatedHours,
+      estimatedHours: course.estimatedHours,
       coverImg: id + "_" + "c",
     };
   }
 
-  const onSubmit: SubmitHandler<Course> = (data) => {
-    const changes = prepareCourseChanges(data);
+  const onSubmit: SubmitHandler<Course> = (course) => {
+    const changes = prepareCourseChanges(course);
     if (isLeaving) {
       
       // left button pressed
@@ -255,7 +253,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     }
   };
 
-  if (!data && existingCourse)
+  if (!course && existingCourse)
     return (
       <Layout meta="course overview">
         <Loading />
@@ -307,8 +305,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <input
               id="title-field"
               type="text"
-              defaultValue={data ? data.title : ""}
-              placeholder={data ? data.title : ""}
+              defaultValue={course ? course.title : ""}
+              placeholder={course ? course.title : ""}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
@@ -324,7 +322,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
             <label htmlFor='level'> Nível <span className="text-red-500">*</span></label> {/*asteric should not be hard coded*/}
               <select id="difficulty-field" 
-              defaultValue={data ? data.difficulty : ""}
+              defaultValue={course ? course.difficulty : ""}
               className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("difficulty", { required: true })}
               onChange={(e) => handleFieldChange('difficulty', parseInt(e.target.value))}
@@ -342,7 +340,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='category'>Categoria <span className="text-red-500">*</span></label> 
               <select id="category-field"
-                defaultValue={data ? data.category : ""}
+                defaultValue={course ? course.category : ""}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("category", { required: true })}
                 onChange={(e) => handleFieldChange('category', e.target.value)}
@@ -363,8 +361,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               <ToolTipIcon alignLeftTop={false} index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
-            defaultValue={data ? data.description : ""}
-            placeholder={data ? data.description : ""}
+            defaultValue={course ? course.description : ""}
+            placeholder={course ? course.description : ""}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
             {...register("description", { required: true })}
             onChange={(e) => {
@@ -430,7 +428,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               >
                 Adicionar seções {/** Add sections */}
               </button>
-            </label>
+            </label>  
           </div>
         </div>
       </form>

@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo } from "../helpers/userInfo";
 
 //interfaces
-import {Course} from "../interfaces/Course"
+import { Course } from "../interfaces/Course"
 
 
 /**
@@ -36,7 +36,7 @@ const createCourse = async (data: Course, token: string) => {
  * @param token The token of the user
  * @returns A list of all courses
  */
-const getAllCourses = async ( token: string) => {
+const getAllCourses = async (token: string) => {
   const { id } = getUserInfo();
 
   const res = await axios.get(`${BACKEND_URL}/api/courses/creator/${id}`, { headers: { Authorization: `Bearer ${token}`, token: token } });
@@ -55,8 +55,8 @@ const getAllCourses = async ( token: string) => {
  * @param url The route to get the course detail
  * @returns The course detail
  */
-const getCourseDetail = async (url: string, token: string) => {
-  const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
+const getCourseDetail = async (id: string, token: string) => {
+  const res = await axios.get(`${BACKEND_URL}/api/courses/${id}`, { headers: { Authorization: `Bearer ${token}` } })
 
   return res.data;
 };
@@ -64,7 +64,7 @@ const getCourseDetail = async (url: string, token: string) => {
 // Get course categories - FROM LAST YEAR, NOT IMPLEMENTED, CATEGORIES ARE HARDCODED RN
 const getCourseCategories = async (url: string, token: string) => {
   const res = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } })
-  
+
   return res.data;
 }
 
@@ -98,7 +98,7 @@ const updateCourseSectionOrder = async (sections: Array<string>, id: string | un
 const updateCourseStatus = async (course_id: string | undefined, status: string, token: string) => {
   const res = await axios.patch(
     `${BACKEND_URL}/api/courses/${course_id}/updateStatus`,
-    {status},
+    { status },
     { headers: { Authorization: `Bearer ${token}` } }
   )
   return res.data;
@@ -113,8 +113,8 @@ const updateCourseStatus = async (course_id: string | undefined, status: string,
  */
 const deleteCourse = async (id: string | undefined, token: string) => {
   return await axios.delete(
-      `${BACKEND_URL}/api/courses/${id}`,
-      { headers: { Authorization: `Bearer ${token}` } }
+    `${BACKEND_URL}/api/courses/${id}`,
+    { headers: { Authorization: `Bearer ${token}` } }
   );
 }
 
