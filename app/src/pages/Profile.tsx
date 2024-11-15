@@ -188,7 +188,7 @@ const Profile = () => {
   useEffect(() => {
     if (userID) {
       fetchStaticData();
-      //fetchDynamicData();
+      fetchDynamicData();
     }
   }, [userID]);
 
@@ -213,10 +213,14 @@ const Profile = () => {
   // Handle account deletion
   const deleteAccount = async () => {
     const responseData = await AccountServices.deleteAccount();
-    console.log("deleted account: " + responseData);
+    console.log("deleted account: " + responseData.baseUser);
     
     closeAccountDeletionModal();
     console.log("Model should now be closed!");
+
+    console.log("id is now: " + localStorage.getItem('id'))
+    console.log("Token is now: " + localStorage.getItem('token'))
+    console.log("userInfo is now: " + localStorage.getItem('userInfo'))
 
     localStorage.removeItem("id");
     console.log("id should be removed from localStorage");
@@ -232,6 +236,10 @@ const Profile = () => {
     
     navigate('/welcome');
     console.log("Should now be send back to welcome page");
+    
+    console.log("id is now: " + localStorage.getItem('id'))
+    console.log("Token is now: " + localStorage.getItem('token'))
+    console.log("userInfo is now: " + localStorage.getItem('userInfo'))
   }
 
   return (
