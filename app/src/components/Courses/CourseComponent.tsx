@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
+import { useCourse } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
@@ -27,9 +28,7 @@ interface CourseComponentProps {
   id: string | undefined;
   setTickChange: (tick: number) => void;
   setId: (id: string) => void;
-  courseData?: Course;
   updateHighestTick: (tick: number) => void;
-  updateLocalData: (course: Course) => void;
 }
 
 /**
@@ -40,7 +39,8 @@ interface CourseComponentProps {
  * @returns HTML Element
  */
 
-export const CourseComponent = ({ token, id, setTickChange, setId, courseData, updateHighestTick, updateLocalData }: CourseComponentProps) => {
+export const CourseComponent = ({ token, id, setTickChange, setId, updateHighestTick }: CourseComponentProps) => {
+  const {course, updateCourse } = useCourse();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -96,30 +96,30 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   }, []);
 
   useEffect(() => {
-    setData(courseData);
-    if (courseData) {
-      setStatusSTR(courseData.status);
-      setCharCount(courseData.description.length);
+    setData(course);
+    if (course !== null && course !== undefined) {
+      setStatusSTR(course.status);
+      setCharCount(course.description.length);
     }
-  }, [courseData]);
+  }, [course]);
 
-  //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
   const formatCourse = (data: Partial<Course>): Course => {
     return {
       title: data.title ?? '',
       description: data.description ?? '',
       category: data.category ?? '',
       difficulty: data.difficulty ?? 0,
-      status: statusSTR,
-      creator: getUserInfo().id,
+      status: data.status ?? 'draft',
+      creator: data.creator ?? '',
       estimatedHours: data.estimatedHours ?? 0,
-      coverImg: data.coverImg ?? ''
+      coverImg: data.coverImg ?? '',
     };
   };
 
+  //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
   const handleFieldChange = (field: keyof Course, value: string | number | File | null) => {
-    const updatedData = { ...data, [field]: value };
-    updateLocalData(formatCourse(updatedData));
+    const updatedData = { ...course, [field]: value };
+    updateCourse(formatCourse(updatedData));
   };
 
   const handleDialogEvent = (
@@ -203,8 +203,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     }
   };
 
-
-
   //Used to prepare the course changes before sending it to the backend
   const prepareCourseChanges = (data: Course): Course => {
     return {
@@ -218,7 +216,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       coverImg: id + "_" + "c",
     };
   }
-
 
   const onSubmit: SubmitHandler<Course> = (data) => {
     const changes = prepareCourseChanges(data);
@@ -245,7 +242,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       }
       setIsLeaving(false);
     } else {
-      updateLocalData(changes);
+      updateCourse(changes);
       // right button pressed
       // Creates new course and navigates to section creation for it
       if (!existingCourse) {
@@ -257,10 +254,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       }
     }
   };
-
-  
-
-  
 
   if (!data && existingCourse)
     return (

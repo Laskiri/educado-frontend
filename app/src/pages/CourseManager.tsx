@@ -10,9 +10,9 @@ import CourseServices from '../services/course.services';
 import useSWR from 'swr';
 import Loading from '../components/general/Loading';
 import NotFound from '../pages/NotFound';
+import { CourseProvider, useCourse } from '../contexts/courseStore';
 
 import { Course } from '../interfaces/Course';
-
 
 /**
  * This component is responsible for creating and editing courses.
@@ -28,10 +28,9 @@ const CourseManager = () => {
     const [id, setId] = useState<string>(useParams().id ?? "0");
     const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"));
     const [highestTick, setHighestTick] = useState<number>(0);
-    const [localData, setLocalData] = useState<Course | undefined>(undefined);
+    const {course, updateCourse } = useCourse();
 
-    
-   /**
+    /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
      * 
      * @param url The url to fetch the course details from backend
@@ -49,29 +48,18 @@ const CourseManager = () => {
         getData
     );
 
-    const updateLocalData = (newData: Course) => {
-        
-        const changes: Course = {
-            ...localData,
-            ...newData,
-            creator: id,
-        };
-        console.log(changes);
-        setLocalData(changes);
-    };
-
     useEffect(() => {
         if (data) {
-            setLocalData(data);
+            updateCourse(data);
         }
-    }, [data]);    
+    }, [data]);
 
-    const isCourseBasicInformation = (data: Course) =>{
+    const isCourseBasicInformation = (data: Course) => {
         return data.title !== "" && data.description !== "" && data.category !== "" && (data.difficulty !== 0) && data.status !== "";
     }
 
     const doesCourseSectionsExist = (data: Course) => {
-        return data.sections && data.sections.length > 0
+        return data.sections && data.sections.length > 0;
     }
 
     useEffect(() => {
@@ -84,20 +72,20 @@ const CourseManager = () => {
             }
             return 0;
         };
-    
+
         if (id === "0") {
             return;
         }
-    
-        if (localData) {
-            const maxTick = calculateMaxTick(localData);
+
+        if (course !== undefined && course !== null) {
+            const maxTick = calculateMaxTick(course);
             setHighestTick(maxTick);
         }
-    }, [localData, id]);
+    }, [course, id]);
 
     function handleTickChange(newTick: number) {
         setTickChange(newTick);
-        if(newTick > highestTick) {
+        if (newTick > highestTick) {
             setHighestTick(newTick);
         }
     }
@@ -114,12 +102,18 @@ const CourseManager = () => {
             <div className="flex flex-row">
                 <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
                 <div className='flex-none w-2/3 mr-20'>
-                    {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
-                    {tickChange === 1 && localData && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
+                    {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
+                    {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} />}
                 </div>
             </div>
         </Layout>
     );
 };
 
-export default CourseManager;
+const CourseManagerWrapper = () => (
+    <CourseProvider>
+        <CourseManager />
+    </CourseProvider>
+);
+
+export default CourseManagerWrapper;
