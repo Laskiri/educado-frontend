@@ -22,6 +22,7 @@ import GenericModalComponent from "../components/GenericModalComponent";
 import PersonalInformationForm from "../components/ProfileForms/PersonalInformation";
 import AcademicExperienceForm from "../components/ProfileForms/AcademicExperience";
 import ProfessionalExperienceForm from "../components/ProfileForms/ProfessionalExperience";
+import { useApi } from "../hooks/useAPI";
 
 // Utilities
 import dynamicForms from "../utilities/dynamicForms";
@@ -29,6 +30,7 @@ import staticForm from "../utilities/staticForm";
 
 // Helpers
 import { tempObjects } from "../helpers/formStates";
+import { toast } from "react-toastify";
 
 // Yup Schema
 const profileSchema = Yup.object().shape({
@@ -104,6 +106,9 @@ const Profile = () => {
   const [isAccountDeletionModalVisible, setIsAccountDeletionModalVisible] = useState(false);
   const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
 
+  //callback
+  const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
+
   // Form submit, sends data to backend upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
 
@@ -138,7 +143,7 @@ const Profile = () => {
 
 
     try {
-      const response = await ProfileServices.putFormOne(personalData);
+      const response = await saveEdits(personalData);
 
       if (response.status === 200) {
         // Delete existing education data on the backend before sending new updated data
@@ -165,7 +170,7 @@ const Profile = () => {
       }
     }
     catch(error) {
-      console.error("Error updating profile: " + error);
+      toast.error(error);
     }
   };
 
@@ -426,9 +431,11 @@ const Profile = () => {
                   }`}
 
                   // Button is disabled if form fields are not filled out correctly
-                  disabled={!areAllFormsFilledCorrect}
-              >
-                Salvar edições
+                  disabled={submitLoading}
+              > {submitLoading? (
+                <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+                ) : null}
+                Salvar ediçõe
               </button>
             </div>
           </div>
