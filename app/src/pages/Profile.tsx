@@ -169,8 +169,8 @@ const Profile = () => {
         setHasSubmitted(true);
       }
     }
-    catch(error) {
-      toast.error(error);
+    catch (error) {
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 

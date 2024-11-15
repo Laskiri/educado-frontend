@@ -8,7 +8,7 @@ interface GenericModalProps {
   cancelBtnText?: string;
   confirmBtnText?: string;
   isConfirmDisabled?: boolean;
-  onConfirm?: () => void;
+  onConfirm?: (e?: React.FormEvent<HTMLFormElement>) => void;
   onClose: () => void;
   children?: ReactNode | ReactNode[];
   loading?: boolean;
@@ -83,7 +83,7 @@ const GenericModalComponent: React.FC<GenericModalProps> = ({
               <button
                 type="submit"
                 className="btn bg-primary hover:bg-cyan-900 border-none px-10"
-                onClick={onConfirm}
+                onClick={() => onConfirm && onConfirm()}
                 disabled={isConfirmDisabled || loading}
               >
                 {loading ? (

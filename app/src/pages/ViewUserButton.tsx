@@ -38,7 +38,7 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
       setContentCreator(contentCreator);
       setIsModalOpen(true);
     } catch (error) {
-      toast.error(error);
+      if (error instanceof Error) toast.error(error.message);
     }
   };
 
