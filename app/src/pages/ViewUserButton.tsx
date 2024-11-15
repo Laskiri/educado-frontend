@@ -1,8 +1,11 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import React, { useState } from 'react';
 import AdminServices from '../services/admin.services';
-import UserDetailsModal from '../components/UserDetailsModal';
+import UserDetailsModal from '../components/Admin/UserInfo/DetailsModalUser';
 import { getUserToken } from '../helpers/userInfo';
 import AuthServices from '../services/auth.services';
+import { useApi } from '../hooks/useAPI';
+import { toast } from 'react-toastify';
 
 interface ViewUserButtonProps {
   applicationId: string;
@@ -15,6 +18,13 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
   const [userApplication, setUserApplication] = useState<any>(null); // Replace with the appropriate type
   const [contentCreator, setContentCreator] = useState<any>(null); // Replace with the appropriate type
 
+  const { call: fetchUserDetails, isLoading, error } = useApi(async (applicationId: string, token: string) => {
+    const userDetails = await AdminServices.getSingleUserDetails(applicationId, token);
+    const userApplication = await AuthServices.GetSingleCCApplication(applicationId);
+    const contentCreator = await AdminServices.getContentCreator(applicationId, token);
+    return { userDetails, userApplication: userApplication.data, contentCreator };
+  });
+
   const handleClick = async () => {
     try {
       const token = getUserToken();
@@ -22,18 +32,29 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
         console.error('No token found');
         return;
       }
-      const userDetails = await AdminServices.getSingleUserDetails(applicationId, token);
+      const { userDetails, userApplication, contentCreator } = await fetchUserDetails(applicationId, token);
       setUserDetails(userDetails);
-
-      const userApplication = await AuthServices.GetSingleCCApplication(applicationId);
-      setUserApplication(userApplication.data);
-
-      const contentCreator = await AdminServices.getContentCreator(applicationId, token);
+      setUserApplication(userApplication);
       setContentCreator(contentCreator);
-
       setIsModalOpen(true);
     } catch (error) {
-      console.error("Failed to fetch user details:", error);
+      toast.error(error);
+    }
+  };
+
+  const refreshUserDetails = async () => {
+    try {
+      const token = getUserToken();
+      if (!token) {
+        console.error('No token found');
+        return;
+      }
+      const { userDetails, userApplication, contentCreator } = await fetchUserDetails(applicationId, token);
+      setUserDetails(userDetails);
+      setUserApplication(userApplication);
+      setContentCreator(contentCreator);
+    } catch (error) {
+      console.error("Failed to refresh user details:", error);
     }
   };
 
@@ -49,7 +70,20 @@ const ViewUserButton: React.FC<ViewUserButtonProps> = ({ applicationId, onHandle
           <path fillRule="evenodd" d="M1.323 11.447C2.811 6.976 7.028 3.75 12.001 3.75c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113-1.487 4.471-5.705 7.697-10.677 7.697-4.97 0-9.186-3.223-10.675-7.69a1.762 1.762 0 0 1 0-1.113ZM17.25 12a5.25 5.25 0 1 1-10.5 0 5.25 5.25 0 0 1 10.5 0Z" clipRule="evenodd" />
         </svg>
       </button>
-      <UserDetailsModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} userDetails={userDetails} userApplication={userApplication} contentCreator={contentCreator} token={getUserToken()} applicationId={applicationId} onHandleStatus={onHandleStatus} />
+      <UserDetailsModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        userDetails={userDetails} 
+        userApplication={userApplication} 
+        contentCreator={contentCreator} 
+        token={getUserToken()} 
+        applicationId={applicationId} 
+        onHandleStatus={() => {
+          onHandleStatus();
+          refreshUserDetails();
+        }} 
+        loading={isLoading} 
+      />
     </>
   );
 };

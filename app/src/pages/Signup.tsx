@@ -15,6 +15,7 @@ import {
 import Carousel from "../components/archive/Carousel";
 import EmailVerificationModal from "../components/emailVerification/EmailVerificationModal";
 import NavigationFooter from "../components/emailVerification/NavigationFooter";
+import { useApi } from "../hooks/useAPI";
 
 export const ToggleModalContext = createContext<() => void>(() => {});
 export const FormDataContext = createContext<any>(null);
@@ -69,6 +70,9 @@ const Signup = () => {
   const [formData, setFormData] = useState<ApplicationInputs | null>(null);
   const [email, setEmail] = useState(""); // Replace with actual email logic
 
+
+  // callback 
+  const {call: signup, isLoading : sumbitLoading} = useApi(AuthServices.postUserSignup);
   // Navigation hook
   const navigate = useNavigate();
 
@@ -100,7 +104,7 @@ const Signup = () => {
     setEmail(data.email);
 
     // Show the email verification modal
-    await AuthServices.postUserSignup({
+    await signup({
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
@@ -445,7 +449,10 @@ const Signup = () => {
                     type="submit"
                     id="submit-signup-button"
                     className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-                    disabled>
+                    disabled={!sumbitLoading}>
+                    {sumbitLoading? (
+                    <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+                    ) : null}
                     Cadastrar
                   </button>
 
