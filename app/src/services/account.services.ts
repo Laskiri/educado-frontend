@@ -7,26 +7,23 @@ const deleteAccount = async () => {
     const baseUser = localStorage.getItem("id");
     const token = localStorage.getItem("token");
     
-    if(baseUser == null) {
-        throw new Error("No account found in localStorage");
-    }
+    if(baseUser == null)
+        throw new Error("No account found in localStorage!");
+
+    if(token == null)
+        throw new Error("No token found in localStorage!");
 
     try {
-      const res = await axios.delete(
+      await axios.delete(
         `${BACKEND_URL}/api/users/${baseUser}`,
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      console.log("Account should be deleted now!");
-
-      // If response code = 200, then display delete notification
-      return res.data;
-
     } catch (error: any) {
-        if (error.response?.data != null) {
-            throw error.response.data;
-        } else {
-            throw error;
+        console.error(error.message);
+        if (axios.isAxiosError(error)) {  
+            console.error("HTTP Status Code:", error.response?.status);
+            console.error("Response Data:", error.response?.data);
         }
     }
 }

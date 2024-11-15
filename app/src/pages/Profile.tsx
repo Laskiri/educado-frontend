@@ -7,6 +7,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
+// Other libraries
+import { toast } from 'react-toastify';
+
 // Services
 import ProfileServices from "../services/profile.services";
 import AccountServices from "../services/account.services";
@@ -22,7 +25,6 @@ import GenericModalComponent from "../components/GenericModalComponent";
 import PersonalInformationForm from "../components/ProfileForms/PersonalInformation";
 import AcademicExperienceForm from "../components/ProfileForms/AcademicExperience";
 import ProfessionalExperienceForm from "../components/ProfileForms/ProfessionalExperience";
-import { useNotifications } from '../components/notification/NotificationContext';
 
 // Utilities
 import dynamicForms from "../utilities/dynamicForms";
@@ -107,6 +109,7 @@ const Profile = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isAccountDeletionModalVisible, setIsAccountDeletionModalVisible] = useState(false);
   const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
+  const { clearToken } = useAuthStore((state) => state);
 
   // Form submit, sends data to backend upon user interaction
   const handleUpdateSubmit = async (index: any, data: any) => {
@@ -209,31 +212,22 @@ const Profile = () => {
   const openAccountDeletionModal = () => { setIsAccountDeletionModalVisible(true); }
   const closeAccountDeletionModal = () => { setIsAccountDeletionModalVisible(false); }
 
-  // Notification context
-  const { addNotification } = useNotifications();
-
-  const { clearToken } = useAuthStore((state) => state);
-
   // Handle account deletion
   const deleteAccount = async () => {
-    //await function to delete the account
-    const responseData = await AccountServices.deleteAccount();
-    console.log("Deleted account: " + responseData.baseUser);
+    await AccountServices.deleteAccount();
     
-    //Close the modal after the account has been deleted
     closeAccountDeletionModal();
 
-    //Clears the local storage
+    // Clear local storage
     localStorage.removeItem("id");
     localStorage.removeItem("userInfo");
     clearToken();
     localStorage.removeItem('token');
     
-    //User navigates to the welcome page after deleting the account
     navigate('/welcome');
 
-    //Popup notification, informing the user that the account has been deleted
-    addNotification('Usuário deletado com sucesso!');  
+    // Toastify notification informing the user that the account has been deleted
+    toast.success('Usuário deletado com sucesso!', { pauseOnHover: false, draggable: false }); 
   }
 
   return (
