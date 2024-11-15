@@ -19,7 +19,7 @@ export interface Course {
   dateUpdated?:       Date;
   coverImg?:         string;
   category:          string;
-  sections?:          Section[];
+  sections?:          string[];
   creator?:           string;
   status:            string;
   estimatedHours?:    number;

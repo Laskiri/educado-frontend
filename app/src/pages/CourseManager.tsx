@@ -54,6 +54,10 @@ const CourseManager = () => {
         }
     }, [data]);
 
+    useEffect(() => {
+        console.log(course);
+    }, [course]);
+
     const isCourseBasicInformation = (data: Course) => {
         return data.title !== "" && data.description !== "" && data.category !== "" && (data.difficulty !== 0) && data.status !== "";
     }
