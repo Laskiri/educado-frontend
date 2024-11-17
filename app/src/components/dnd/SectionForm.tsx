@@ -17,11 +17,8 @@ type Inputs = {
     title: string;
 }
 
-interface Props {
-    setSections: (updateFn: (prevSections: any[]) => any[]) => void;
-}
 
-export const SectionForm = ({ setSections }: Props) => {
+export const SectionForm = () => {
     const token = getUserToken();
     const { id } = useParams();
 
@@ -35,7 +32,6 @@ export const SectionForm = ({ setSections }: Props) => {
             .then(res => {
                 console.log(res.data._id);
                 loadSectionToCache(res.data);
-                setSections(prevSections => [...prevSections, res.data._id]); // Add new section to the list and cause a rerender
             })
             .catch(err => console.log(err));
     }

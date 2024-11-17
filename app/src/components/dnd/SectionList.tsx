@@ -30,17 +30,15 @@ import { SortableItem } from "./@dnd/SortableItem";
 import { Item } from "./@dnd/Item";
 
 //store"
-import { useSections } from "@contexts/courseStore";
+import { useSections, useCourse } from "@contexts/courseStore";
 
 interface Props {
   sections: Array<string>;
-  setSections: (updateFn: (prevSections: any[]) => any[]) => void;
   addOnSubmitSubscriber: Function;
 }
  
 export const SectionList = ({
   sections,
-  setSections,
   addOnSubmitSubscriber,
 }: Props) => {
   // States
@@ -48,6 +46,7 @@ export const SectionList = ({
   const [savedSID, setSavedSID] = useState<string>("");
 
   const { deleteCachedSection } = useSections();
+  const { updateCachedCourseSections } = useCourse();
   const { addNotification } = useNotifications();
 
   // Setup of pointer and keyboard sensor
@@ -64,9 +63,6 @@ export const SectionList = ({
       SectionServices.deleteSection(sId, token)
         .then(() => {
           addNotification("Seção excluída");
-          setSections((prevSections) =>
-            prevSections.filter((section) => section !== sId)
-          );
           deleteCachedSection(sId);
         })
         .catch((err) => toast.error(err));
@@ -83,11 +79,14 @@ export const SectionList = ({
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setSections((items) => {
-        const oldIndex = items.findIndex((item) => item === active.id);
-        const newIndex = items.findIndex((item) => item === over.id);
-        return arrayMove(items, oldIndex, newIndex);
-      });
+
+      const getAdjustedSectionList = () => {
+        const oldIndex = sections.findIndex((section) => section === active.id);
+        const newIndex = sections.findIndex((section) => section === over.id);
+        const result = arrayMove(sections, oldIndex, newIndex);
+        return result;
+      }
+      updateCachedCourseSections(getAdjustedSectionList());
     }
     setActiveId(null);
   };

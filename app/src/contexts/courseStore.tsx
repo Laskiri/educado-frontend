@@ -3,8 +3,9 @@ import { Course, Section } from '../interfaces/Course';
 
 // Define the context type
 interface CourseContextProps {
-  course: Course | undefined;
+  course: Course;
   updateCourse: (course: Course) => void;
+  updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
   updateSections: (sections: Section[]) => void;
   loadSectionToCache: (section: Section) => void;
@@ -19,8 +20,9 @@ interface CourseProviderProps {
 
 // Create context with initial value
 const CourseContext = createContext<CourseContextProps>({
-  course: undefined,
+  course: {} as Course,
   updateCourse: () => {},
+  updateCachedCourseSections: () => {},
   sections: [],
   updateSections: () => {},
   loadSectionToCache: () => {},
@@ -30,7 +32,7 @@ const CourseContext = createContext<CourseContextProps>({
 });
 
 export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
-  const [course, setCourse] = useState<Course | undefined>(undefined);
+  const [course, setCourse] = useState<Course>({} as Course);
   const [sections, setSections] = useState<Section[]>([]);
 
   useEffect(() => {
@@ -53,6 +55,17 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     }));
   };
 
+  const updateCachedCourseSections = (newSections: string[]) => {
+    console.log('Updating course sections: ' + JSON.stringify(course.sections));
+    console.log('To: ' + JSON.stringify(newSections));
+    
+    setCourse(prevCourse => ({
+      ...prevCourse,
+      sections: newSections
+    }));
+  };
+
+
   const updateSections = (newSections: Section[]) => {
     setSections(prevSections => ([...prevSections, ...newSections]));
   };
@@ -61,12 +74,12 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     console.log('Adding section to store: ' + JSON.stringify(sections));
     console.log('Newsection: ' + JSON.stringify(newSection));
     if (sections.find((section) => section._id === newSection._id)) return;
-    if (course && course.sections && !course.sections.includes(newSection._id)){
+    if (course.sections && !course.sections.includes(newSection._id)){
       setCourse(prevCourse => {
-        if (!prevCourse) return prevCourse;
+        if (!prevCourse.sections) return prevCourse;
         return {
           ...prevCourse,
-          sections: [...(prevCourse.sections || []), newSection._id]
+          sections: [...(prevCourse.sections), newSection._id]
         };
       });
     }
@@ -93,10 +106,10 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const deleteCachedSection = (sid: string) => {
     setSections(prevSections => prevSections.filter(section => section._id !== sid));
     setCourse(prevCourse => {
-        if (!prevCourse) return prevCourse;
+        if (!prevCourse.sections) return prevCourse;
         return {
             ...prevCourse,
-            sections: prevCourse.sections?.filter(sectionId => sectionId !== sid) || prevCourse.sections
+            sections: prevCourse.sections?.filter(sectionId => sectionId !== sid) 
           };
       });
   };
@@ -105,6 +118,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const value = {
     course,
     updateCourse,
+    updateCachedCourseSections,
     sections,
     updateSections,
     loadSectionToCache,
@@ -123,7 +137,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 // Custom hooks to access specific parts of the state
 export const useCourse = () => {
   const context = useContext(CourseContext);
-  return { course: context.course, updateCourse: context.updateCourse };
+  return { course: context.course, updateCourse: context.updateCourse, updateCachedCourseSections: context.updateCachedCourseSections };
 };
 
 export const useSections = () => {

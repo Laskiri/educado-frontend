@@ -76,7 +76,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   const { addNotification } = useNotifications();
 
   const existingCourse = id != "0";
-  const courseCached = course !== undefined && course !== null;
+  const courseCached = Object.keys(course).length > 0;
   const navigate = useNavigate();
 
 
@@ -107,6 +107,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
 
   useEffect(() => {
     if (courseCached) {
+      console.log("Course cached", course);
       setStatusSTR(course.status);
       setCharCount(course.description.length);
     }

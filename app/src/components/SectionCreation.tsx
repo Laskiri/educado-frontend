@@ -36,13 +36,12 @@ export const SectionCreation = ({
   setTickChange,
 }: Inputs) => {
   const { id: urlId } = useParams<{ id: string }>();
-  const {course} = useCourse();
+  const {course, updateCachedCourseSections } = useCourse();
 
   const id = propId === "0" ? urlId : propId;
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
     []
   );
-  const [sections, setSections] = useState<any[]>([]);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
@@ -61,7 +60,6 @@ export const SectionCreation = ({
 
   useEffect(() => {
     if (course) {
-      setSections(course.sections || []);
       setStatus(course.status !== "" ? course.status : "draft");
       setLoading(false);
     }
@@ -98,7 +96,7 @@ export const SectionCreation = ({
     
     async function confirmFunction() {
       onConfirm();
-     await updateCourseDetail(courseData, id, token);
+     await updateCourseDetail(course, id, token);
     }
 
     setDialogConfirm(() => confirmFunction);
@@ -132,8 +130,10 @@ export const SectionCreation = ({
   };
 
   async function updateCourseSections(): Promise<void> {
+    console.log("1")
+    updateCachedCourseSections(course.sections);
     notifyOnSubmitSubscriber();
-    await CourseServices.updateCourseSectionOrder(sections, id, token);
+    await CourseServices.updateCourseSectionOrder(course.sections, id, token);
   }
 
   function changeTick(tick: number) {
@@ -204,11 +204,10 @@ export const SectionCreation = ({
           {/** Course Sections area  */}
           <div className="flex w-full flex-col space-y-2 ">
             <SectionList
-              sections={sections}
-              setSections={setSections}
+              sections={course.sections}
               addOnSubmitSubscriber={addOnSubmitSubscriber}
             />
-            <SectionForm setSections={setSections} />
+            <SectionForm/>
           </div>
         </div>
 
