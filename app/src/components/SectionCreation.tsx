@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
+import { useApi } from '../hooks/useAPI';
 
 import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
@@ -79,6 +80,10 @@ export const SectionCreation = ({
   // Notification
   const { addNotification } = useNotifications();
 
+
+  //Callbacks
+  const { call: updateCourseDetail, isLoading: submitLoading, error } = useApi(CourseServices.updateCourseDetail);
+
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
   }
@@ -91,9 +96,9 @@ export const SectionCreation = ({
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
     
-    function confirmFunction() {
+    async function confirmFunction() {
       onConfirm();
-      CourseServices.updateCourseDetail(course, id, token);
+     await updateCourseDetail(courseData, id, token);
     }
 
     setDialogConfirm(() => confirmFunction);
@@ -112,7 +117,7 @@ export const SectionCreation = ({
 
   const handlePublishConfirm = async () => {
     try {
-      updateCourseSections();
+      await updateCourseSections();
       if (status !== "published") {
         await CourseServices.updateCourseStatus(id, "published", token);
         navigate("/courses");
@@ -169,6 +174,7 @@ export const SectionCreation = ({
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
+        loading={submitLoading}
       />
 
       <div className="">

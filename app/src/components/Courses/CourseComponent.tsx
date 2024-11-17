@@ -7,7 +7,7 @@ import { useCourse } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
-
+import {useApi} from "../../hooks/useAPI";
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
@@ -18,7 +18,6 @@ import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
 import Loading from "../general/Loading";
 import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
-
 // Interface
 import { Course } from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
@@ -30,6 +29,9 @@ interface CourseComponentProps {
   setId: (id: string) => void;
   updateHighestTick: (tick: number) => void;
 }
+
+
+
 
 /**
  * This component is responsible for creating and editing courses.
@@ -56,6 +58,14 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
 
   const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
   const [courseImg, setCourseImg] = useState<File | null>(null);
+  const [data, setData] = useState<Course>();
+
+  // Callbacks
+  const { call: createCourse, isLoading: submitLoading, error } = useApi(CourseServices.createCourse);
+
+
+
+
   const {
     register,
     handleSubmit,
@@ -172,7 +182,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (course: Course) => {
     try {
-      const newCourse = await CourseServices.createCourse(course, token);
+      const newCourse = await createCourse(course, token);
+
+      console.log("creating new draft", data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
 
@@ -186,7 +198,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new course and navigates to section creation for it
   const handleCreateNewCourse = async (course: Course) => {
     try {
-      const newCourse = await CourseServices.createCourse(course, token);
+      const newCourse = await createCourse(course, token);
       addNotification("Curso criado com sucesso!");
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -196,7 +208,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
       updateHighestTick(1);
       navigate(`/courses/manager/${newCourse.data._id}/1`);
     } catch (err) {
-      // Course created
       toast.error(err as string);
     }
   };
@@ -418,17 +429,21 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             </label>
 
             <label
-              htmlFor="course-create"
-              className="whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-            >
-              <button
-                type="submit"
-                id="addCourse"
-                className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
-              >
-                Adicionar seções {/** Add sections */}
-              </button>
-            </label>  
+          htmlFor="course-create"
+          className="whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+        >
+          <button
+            type="submit"
+            id="addCourse"
+            disabled={submitLoading}
+            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
+          >
+            {submitLoading ? (
+              <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+            ) : null}
+            Adicionar seções
+          </button>
+        </label>
           </div>
         </div>
       </form>
