@@ -31,7 +31,6 @@ import SectionServices from "../../../services/section.services";
 //pop-ups
 import { CreateLecture } from "../../CreateLecturePopUp";
 import { CreateExercise } from "../../Exercise/CreateExercisePopUp";
-import { set } from "cypress/types/lodash";
 
 interface Props {
   sid: string;
@@ -49,9 +48,7 @@ export function SortableItem({
   handleSectionDeletion,
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
-  const [title, setTitle] = useState<string>("");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
-  const [description, setDescription] = useState<string>("");
   const [sectionData, setSectionData] = useState<Section>();
   const [componentData, setComponentData] = useState<any>();
   const subRef = useRef<HTMLInputElement>(null);
@@ -71,8 +68,8 @@ export function SortableItem({
 
       else {
         const fetchSectionData = async () => {
+          console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
-          console.log("hey", res);
           loadSectionToCache(res);
           setSectionData(res);
           setComponentData(res.components);
@@ -84,15 +81,6 @@ export function SortableItem({
     }
   }, []);
 
-  useEffect(() => {
-  }, [componentData]);
-
-  useEffect(() => {
-    if (sectionData) {
-      setTitle(sectionData.title);
-      setDescription(sectionData.description);
-    }
-  } , [sectionData]);
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: sid });
@@ -134,21 +122,22 @@ export function SortableItem({
 
     // Used to format PARTIAL section data, meaning that it can be used to update the course data gradually
     const handleFieldChange = (field: keyof Section, value: string | number | Component[] | null) => {
-      const updatedData = { ...sectionData, [field]: value };
-      updateCachedSection(updatedData);
+      if (sectionData) {
+        const updatedData = { ...sectionData, [field]: value };
+        setSectionData(updatedData);
+        updateCachedSection(updatedData);
+      }
     };
 
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
     console.log("data", data)
-    console.log ("title", title)
+    console.log ("title", sectionData?.title)
     if (data === undefined) return;
-    if (title === undefined && description === undefined) {console.log("errrr", undefined); return}
-    data.title = title;
-    data.description = description;
+    if (sectionData?.title === undefined && sectionData?.description === undefined) {console.log("errrr", undefined); return}
 
     const changes: SectionPartial = {
-      title: data.title,
-      description: data.description,
+      title: sectionData.title,
+      description: sectionData.description,
     };
 
     SectionServices.saveSection(changes, sid, token)
@@ -189,7 +178,7 @@ export function SortableItem({
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{title ?? sectionData.title}</p>
+            <p className="font-semibold">{sectionData.title}</p>
           </div>
           <div className="flex collapse">
             <div
@@ -224,7 +213,7 @@ export function SortableItem({
                 placeholder={sectionData.title ?? "Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("title", { required: true })}
-                onChange={(e) => {setTitle(e.target.value); handleFieldChange("title", e.target.value)}} //update the section title
+                onChange={(e) => {handleFieldChange("title", e.target.value)}} //update the section title
               />
               {sectionErrors.title && <span>Este campo é obrigatório!</span>}
               {/** This field is required */}
@@ -248,7 +237,7 @@ export function SortableItem({
                 placeholder={sectionData.description ?? "Descrição da seção"}
                 className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("description", { required: true })}
-                onChange={(e) => {setDescription(e.target.value); handleFieldChange("description", e.target.value)}} //update the section title
+                onChange={(e) => {handleFieldChange("description", e.target.value)}} //update the section title
               />
               {sectionErrors.description && (
                 <span>Este campo é obrigatório!</span>
