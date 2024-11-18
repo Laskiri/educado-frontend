@@ -50,7 +50,7 @@ export interface Section {
 }
 
 export interface Component {
-  compData: Lecture | Exercise;
+  compId: string;
   compType: string;
   _id: string;
 }
@@ -62,6 +62,12 @@ export interface Lecture {
   description: string,
   contentType: string,
   content: string,
+}
+
+export interface Media {
+    id: string,
+    file: File,
+    parentType: string,
 }
 
 export interface Exercise {

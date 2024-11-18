@@ -7,6 +7,8 @@ import { toast } from "react-toastify";
 // import useAuthStore from '../../contexts/useAuthStore';
 // Hooks
 import { getUserToken } from "../helpers/userInfo";
+import { useApi } from "../hooks/useAPI";
+import { useLectures, useMedia } from "../contexts/courseStore";
 
 import { useNotifications } from "./notification/NotificationContext";
 // Services
@@ -31,7 +33,7 @@ type Inputs = {
 
 interface Props {
   savedSID: string;
-  handleLectureCreation: Function;
+  handleLectureCreation: (lectureData: any) => void;
 }
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
@@ -57,8 +59,10 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [editorValue, setEditorValue] = useState<string>('');
-  const [previewFile, setPreviewFile] = useState<string | null>(null);
   const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+  const { addLectureToCache } = useLectures();
+  const { addMediaToCache, getMedia } = useMedia();
+
 
 
   const { addNotification } = useNotifications();
@@ -73,50 +77,37 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
    * @param {Inputs} data The data from each field in the form put into an object
    */
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
-    
-    
-    setIsSubmitting(true);
-    LectureService.addLecture(
-      {
-        
-        title: newData.title,
-        description: newData.description,
-        contentType: newData.contentType,
-        content: newData.content,
-      },
-      token,
-      savedSID
-    )
-      .then((res) => {
-        if (lectureVideo !== null) {
-          StorageServices.uploadFile({
-            id: res.data.compId,
-            file: lectureVideo,
-            parentType: "l",
-          });
-        }
-        LectureService.updateLecture(res.data, token, res.data._id);
-        console.log("lecture created:", res);
-        handleLectureCreation(res.data);
-        setIsSubmitting(false);
-        clearLectureModalContent();
-        addNotification("Aula criada com sucesso");
-      })
-      .catch((err) => {
-        toast.error("Fracassado: " + err);
-        setIsSubmitting(false);
-      });
+    const newLecture = {
+      _id: "0",
+      title: newData.title,
+      description: newData.description,
+      contentType: newData.contentType,
+      content: newData.content,
+      parentSection: savedSID,
+    }
+    const res = addLectureToCache(newLecture);
+    const newComponent = {
+      compId: res._id,
+      compType: "lecture",
+      _id : "0",
+    }
+    handleLectureCreation(newComponent)
+    if (lectureVideo !== null) {
+      const newMedia = {
+        id: res._id,
+        file: lectureVideo,
+        parentType: "l",
+      }
+      addMediaToCache(newMedia);
+    }
+    clearLectureModalContent();
+    addNotification("Aula criada com sucesso");
   };
 
   function clearLectureModalContent() {
     reset();
       setContentType("");
   }
-
-  
-  
-
-
 
   const handleEditorChange = (value: string) => {
     setEditorValue(value); // Update local state

@@ -49,30 +49,22 @@ export function SortableItem({
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
-  const [sectionData, setSectionData] = useState<Section>();
-  const [componentData, setComponentData] = useState<any>();
   const subRef = useRef<HTMLInputElement>(null);
   const openRef = useRef<HTMLInputElement>(null);
 
   const token = getUserToken();
-  const { loadSectionToCache, getCachedSection, updateCachedSection} = useSections();
+  const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent} = useSections();
+  const cachedSection = getCachedSection(sid);
+  const cachedComponents = cachedSection?.components;
 
   // Fetch the section data from the server.
   useEffect(() => {
     try {
-      const cachedSection = getCachedSection(sid);
-      if (cachedSection) {
-        setSectionData(cachedSection);
-        setComponentData(cachedSection.components);
-      }
-
-      else {
+      if(!cachedSection) {
         const fetchSectionData = async () => {
           console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
           loadSectionToCache(res);
-          setSectionData(res);
-          setComponentData(res.components);
         }
         fetchSectionData();
       }
@@ -116,28 +108,27 @@ export function SortableItem({
    * @param data  The data to be updated
    */
 
-  const handleComponentCreation = (component: Component) => {
-    setComponentData([...componentData, component]);
-  };
+    const handleComponentCreation = (newComponent: Component) => {
+      addCachedSectionComponent(sid, newComponent);
+    };
 
     // Used to format PARTIAL section data, meaning that it can be used to update the course data gradually
     const handleFieldChange = (field: keyof Section, value: string | number | Component[] | null) => {
-      if (sectionData) {
-        const updatedData = { ...sectionData, [field]: value };
-        setSectionData(updatedData);
+      if (cachedSection) {
+        const updatedData = { ...cachedSection, [field]: value };
         updateCachedSection(updatedData);
       }
     };
 
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
     console.log("data", data)
-    console.log ("title", sectionData?.title)
+    console.log ("title", cachedSection?.title)
     if (data === undefined) return;
-    if (sectionData?.title === undefined && sectionData?.description === undefined) {console.log("errrr", undefined); return}
+    if (cachedSection?.title === undefined && cachedSection?.description === undefined) {console.log("errrr", undefined); return}
 
     const changes: SectionPartial = {
-      title: sectionData.title,
-      description: sectionData.description,
+      title: cachedSection.title,
+      description: cachedSection.description,
     };
 
     SectionServices.saveSection(changes, sid, token)
@@ -146,7 +137,7 @@ export function SortableItem({
   };
 
   useEffect(() => {
-    if (sectionData?.title === "Nova seção") {
+    if (cachedSection?.title === "Nova seção") {
       setArrowDirection(mdiChevronUp);
     }
     addOnSubmitSubscriber(() => {
@@ -155,7 +146,7 @@ export function SortableItem({
   }, []);
 
   //If data is not found yet, show a loading message.
-  if (sectionData === undefined) {
+  if (cachedSection === undefined || cachedSection === null) {
     return <p>Loading...</p>;
   }
 
@@ -166,7 +157,7 @@ export function SortableItem({
         <input
           type="checkbox"
           className="peer w-4/5 h-full"
-          defaultChecked={sectionData.title === "Nova seção"}
+          defaultChecked={cachedSection.title === "Nova seção"}
           onChange={() => changeArrowDirection()}
           ref={openRef}
         />
@@ -178,7 +169,7 @@ export function SortableItem({
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{sectionData.title}</p>
+            <p className="font-semibold">{cachedSection.title}</p>
           </div>
           <div className="flex collapse">
             <div
@@ -209,8 +200,8 @@ export function SortableItem({
               <label htmlFor="title">Nome </label> {/*Title of section*/}
               <input
                 type="text"
-                defaultValue={sectionData.title ?? ""}
-                placeholder={sectionData.title ?? "Nome da seção"}
+                defaultValue={cachedSection.title ?? ""}
+                placeholder={cachedSection.title ?? "Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("title", { required: true })}
                 onChange={(e) => {handleFieldChange("title", e.target.value)}} //update the section title
@@ -233,8 +224,8 @@ export function SortableItem({
             </div>
               {/*description of section*/}
               <textarea
-                defaultValue={sectionData.description ?? ""}
-                placeholder={sectionData.description ?? "Descrição da seção"}
+                defaultValue={cachedSection.description ?? ""}
+                placeholder={cachedSection.description ?? "Descrição da seção"}
                 className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("description", { required: true })}
                 onChange={(e) => {handleFieldChange("description", e.target.value)}} //update the section title
@@ -248,7 +239,7 @@ export function SortableItem({
             <div
               className="hidden"
               onClick={() => {
-                onSubmit(sectionData);
+                onSubmit(cachedSection);
               }}
             >
               <input type="submit" ref={subRef} />
@@ -257,8 +248,7 @@ export function SortableItem({
 
           <ComponentList
             sid={sid}
-            components={componentData}
-            setComponents={setComponentData}
+            components={cachedComponents}
             addOnSubmitSubscriber={addOnSubmitSubscriber}
           />
 
@@ -326,7 +316,7 @@ export function SortableItem({
          
             <div className="flex flex-row-reverse">
               <label htmlFor="description " className="text-black">
-                {componentData.length}/10 items
+                {cachedComponents.length}/10 items
               </label>
               {/** PLACEHOLDER TEXT */}
               <ToolTipIcon

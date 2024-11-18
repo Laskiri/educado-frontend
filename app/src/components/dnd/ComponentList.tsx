@@ -19,31 +19,36 @@ import {
 } from "@dnd-kit/sortable";
 
 import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import { useSections } from "@contexts/courseStore";
 
 // Components
 import { SortableComponentItem } from "./@dnd/SortableComponentItem";
 import { Item } from "./@dnd/Item";
+// Service
+import LectureService from "@services/lecture.services";
+import ExerciseServices from "@services/exercise.services";
 
 // Intefaces
 import ComponentService from "@services/component.service";
 import { Component } from "@interfaces/Course";
 
+// Hooks
+import { getUserToken } from "@helpers/userInfo";
+
 interface Props {
   sid: string;
   components: Component[];
-  setComponents: Function;
   addOnSubmitSubscriber: Function;
 }
 
 export const ComponentList = ({
   sid,
   components,
-  setComponents,
   addOnSubmitSubscriber,
 }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
-
+  const { updateCachedSectionComponents} = useSections();
   // Setup of pointer and keyboard sensor
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -62,29 +67,24 @@ export const ComponentList = ({
   const handleDragEnd = (event: any) => {
     const { active, over } = event;
     if (active.id !== over.id) {
-      setComponents((components: Component[]) => {
+      const adjustComponents = () => {
         const oldIndex = components.findIndex(
           (component) => component.compId === active.id
         );
         const newIndex = components.findIndex(
           (component) => component.compId === over.id
+          
         );
-        console.log("oldIndex", oldIndex);
-        console.log("newIndex", newIndex);
-        console.log("components", components);
-
         return arrayMove(components, oldIndex, newIndex);
-      });
+      }
+      const newComponents = adjustComponents();
+      updateCachedSectionComponents(sid, newComponents);
     }
   };
 
   useEffect(() => {
     addOnSubmitSubscriber(() => onSubmit());
   }, []);
-
-  function onSubmit() {
-    ComponentService.setComponents(sid, components);
-  }
 
   return (
     <div className="w-full">
@@ -103,7 +103,7 @@ export const ComponentList = ({
             <SortableComponentItem
               key={key}
               component={comp}
-              setComponents={setComponents}
+              sid={sid}
             />
           ))}
         </SortableContext>

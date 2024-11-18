@@ -201,6 +201,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     try {
       const newCourse = await createCourse(course, token);
       addNotification("Curso criado com sucesso!");
+      updateCourse(newCourse.data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
 
