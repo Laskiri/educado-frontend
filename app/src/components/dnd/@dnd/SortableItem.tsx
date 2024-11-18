@@ -109,6 +109,7 @@ export function SortableItem({
    */
 
     const handleComponentCreation = (newComponent: Component) => {
+      console.log("newComponentAAH", newComponent);
       addCachedSectionComponent(sid, newComponent);
     };
 

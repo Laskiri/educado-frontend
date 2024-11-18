@@ -154,6 +154,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const updateCachedSection = (section: Section) => {
+    console.log("ahhhhh")
     setSections((prevSections) => {
       const index = prevSections.findIndex((s) => s._id === section._id);
       if (index === -1) return prevSections;
@@ -196,18 +197,23 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const addCachedSectionComponent = (sectionId: string, component: Component) => {
     const newId = idMaker.component + 1;
-    setIdMaker((prevIdMaker) => ({...prevIdMaker, component: newId}));
+    setIdMaker((prevIdMaker) => ({ ...prevIdMaker, component: newId }));
     component.compId = newId.toString();
+  
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
       if (sectionIndex === -1) return prevSections;
-      console.log("prev components: " + JSON.stringify(prevSections[sectionIndex].components));
+  
       const updatedComponents = [...prevSections[sectionIndex].components, component];
-      console.log("updated components: " + JSON.stringify(updatedComponents));
       const updatedSections = [...prevSections];
-      updatedSections[sectionIndex].components = updatedComponents;
+      updatedSections[sectionIndex] = {
+        ...prevSections[sectionIndex],
+        components: updatedComponents,
+      };
+  
       return updatedSections;
     });
+  
     return component;
   };
 
@@ -229,6 +235,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const updateCachedLecture = (newLecture: Lecture) => {
+    console.log("hey123")
     setLectures((prevLectures) => {
       const index = prevLectures.findIndex(
         (lecture) => lecture._id === newLecture._id
