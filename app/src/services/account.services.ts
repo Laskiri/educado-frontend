@@ -23,10 +23,10 @@ const deleteAccount = async () => {
 
     } catch (error: any) {
         console.error(error.message);
-        if (axios.isAxiosError(error)) {  
+        if (axios.isAxiosError(error)) 
             console.error("Response Data: ", error.response?.data);
-        }
-        return error;
+    
+        throw error;
     }
 }
 

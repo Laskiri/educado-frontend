@@ -214,28 +214,32 @@ const Profile = () => {
 
   // Handle account deletion
   const handleDeleteAccount = async () => {
-    const statusCode = await AccountServices.deleteAccount();
-    if (statusCode !== 200) {
-      console.error("Error deleting account!");
+    try {
+      const statusCode = await AccountServices.deleteAccount();
+      if (statusCode !== 200)
+        throw new Error();
+
+      closeAccountDeletionModal();
+
+      // Clear local storage
+      localStorage.removeItem("id");
+      localStorage.removeItem("userInfo");
+      clearToken();
+      localStorage.removeItem('token');
+      
+      navigate('/welcome');
+
+      // Toastify notification: 'Account deleted successfully!'
+      toast.success('Conta excluída com sucesso!', { pauseOnHover: false, draggable: false }); 
+    } 
+    catch (error) {
+      console.error("Error deleting account: " + error);
       closeAccountDeletionModal();
 
       // Toastify notification: 'Failed to delete account!'
-      toast.error('Falha ao excluir conta!', { pauseOnHover: false, draggable: false }); 
+      toast.error('Erro ao excluir conta!', { pauseOnHover: false, draggable: false });
       return;
     }
-    
-    closeAccountDeletionModal();
-
-    // Clear local storage
-    localStorage.removeItem("id");
-    localStorage.removeItem("userInfo");
-    clearToken();
-    localStorage.removeItem('token');
-    
-    navigate('/welcome');
-
-    // Toastify notification: 'Account deleted successfully!'
-    toast.success('Conta excluída com sucesso!', { pauseOnHover: false, draggable: false }); 
   }
 
   return (
