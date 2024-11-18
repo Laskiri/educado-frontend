@@ -213,8 +213,16 @@ const Profile = () => {
   const closeAccountDeletionModal = () => { setIsAccountDeletionModalVisible(false); }
 
   // Handle account deletion
-  const deleteAccount = async () => {
-    await AccountServices.deleteAccount();
+  const handleDeleteAccount = async () => {
+    const statusCode = await AccountServices.deleteAccount();
+    if (statusCode !== 200) {
+      console.error("Error deleting account!");
+      closeAccountDeletionModal();
+
+      // Toastify notification: 'Failed to delete account!'
+      toast.error('Falha ao excluir conta!', { pauseOnHover: false, draggable: false }); 
+      return;
+    }
     
     closeAccountDeletionModal();
 
@@ -226,8 +234,8 @@ const Profile = () => {
     
     navigate('/welcome');
 
-    // Toastify notification informing the user that the account has been deleted
-    toast.success('Usuário deletado com sucesso!', { pauseOnHover: false, draggable: false }); 
+    // Toastify notification: 'Account deleted successfully!'
+    toast.success('Conta excluída com sucesso!', { pauseOnHover: false, draggable: false }); 
   }
 
   return (
@@ -452,7 +460,7 @@ const Profile = () => {
             contentText={"Você tem certeza que deseja deletar a sua conta? Todos os seus dados serão removidos permanentemente. Essa ação não pode ser desfeita."}
             cancelBtnText={"Cancelar"}
             confirmBtnText={"Confirmar"}
-            onConfirm={deleteAccount}
+            onConfirm={handleDeleteAccount}
             onClose={closeAccountDeletionModal}
             isVisible={isAccountDeletionModalVisible}
         />
