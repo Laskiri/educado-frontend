@@ -4,6 +4,7 @@ import CodeVerification from "./CodeVerification";
 import NewPasswordScreen from "./NewPasswordScreen";
 import NavigationFooter from "./NavigationFooter";
 import { validatePasswords, validateEmail } from "../../utilities/validation";
+import { useApi } from '../../hooks/useAPI';
 
 type propTypes = {
   toggleModal: () => void;
@@ -42,12 +43,17 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
   const [passwordError, setPasswordError] = useState('');
   const [passwordConfirmationError, setPasswordConfirmationError] = useState('');
 
+
+  const { call: apiSendEmail, isLoading: isSendingEmail } = useApi(Services.sendEmail);
+  const { call: apiVerifyCode, isLoading: isVerifyingCode } = useApi(Services.verifyCode);
+  const { call: apiUpdatePassword, isLoading: isUpdatingPassword } = useApi(Services.updatePassword);
+
   /**
    * Handles the continue button click. If the email has not been sent yet, validates the email and sends it.
    * If the code has not been verified yet, validates the code and verifies it.
    * If the code has been verified, validates the passwords and updates the password.
    */
-  function handleContinue() {
+  async function handleContinue() {
     if (!emailSent) {
       try {
         validateEmail(email);
@@ -55,11 +61,11 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
         setEmailError(err.message);
         return;
       }
-      sendEmail(email);
+      await sendEmail(email);
       return;
     }
     if (codeEntered && !codeVerified) {
-      verifyCode(email, code);
+      await verifyCode(email, code);
       return;
     }
     if (codeVerified) {
@@ -74,8 +80,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
         setPasswordError(err.message);
         return;
       }
-      
-      updatePassword();
+      await updatePassword();
       return;
     }
   }
@@ -84,17 +89,16 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
    * Updates the user's password. If an unexpected error occurs, sets error to the appropriate error message.
    */
   async function updatePassword() {
-    Services.updatePassword(email, password, code)
-      .then(() => {
-        props.setErrorMessage('Senha alterada com sucesso!', 'Sucesso') // Password changed successfully!
-        props.toggleModal();
-      })
-      .catch((error) => {
-        switch (error?.error?.code) {
-          default:
-            props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
-        }
-      });
+    try {
+      await apiUpdatePassword(email, password, code);
+      props.setErrorMessage('Senha alterada com sucesso!', 'Sucesso') // Password changed successfully!
+      props.toggleModal();
+    } catch (error) {
+      switch (error?.error?.code) {
+        default:
+          props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
+      }
+    }
   }
 
 
@@ -104,23 +108,24 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
    * If an unexpected error occurs, sets error to the appropriate error message.
    * @param email the user's email
    */
+
+   
   async function sendEmail(email: string) {
-    Services.sendEmail(email)
-      .then(() => {
-        setEmailSent(true);
-      })
-      .catch((error) => {
-        switch (error.error?.code) {
-          case 'E0401':
-            setEmailError('Email não cadastrado'); // Email not registered
-            break;
-          case 'E0406':
-            props.setErrorMessage('Muitas tentativas de reenvio! Espere 5 minutos...') // Too many attempts, wait 5 minutes
-            break;
-          default:
-            props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
-        }
-      });
+    try {
+      await apiSendEmail(email);
+      setEmailSent(true);
+    } catch (error) {
+      switch (error.error?.code) {
+        case 'E0401':
+          setEmailError('Email não cadastrado'); // Email not registered
+          break;
+        case 'E0406':
+          props.setErrorMessage('Muitas tentativas de reenvio! Espere 5 minutos...') // Too many attempts, wait 5 minutes
+          break;
+        default:
+          props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
+      }
+    }
   }
 
   /**
@@ -129,26 +134,26 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
    * @param email the user's email
    * @param code the verification code used to reset the password
    */
-  async function verifyCode(email: string, code: string) {
-    Services.verifyCode(email, code)
-      .then(() => {
-        setCodeVerified(true);
-      })
-      .catch((error) => {
-        console.log(error)
-        switch (error?.error?.code) {
-          case 'E0404':
-            setCodeError('Código expirado'); // Expired code
-            break;
-          case 'E0405':
-            setCodeError('Código inválido'); // Invalid code
-            break;
-          default:
-            // Unexpected error
-            props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
-        }
-      })
 
+  
+  async function verifyCode(email: string, code: string) {
+    try {
+      await apiVerifyCode(email, code);
+      setCodeVerified(true);
+    } catch (error) {
+      console.log(error)
+      switch (error?.error?.code) {
+        case 'E0404':
+          setCodeError('Código expirado'); // Expired code
+          break;
+        case 'E0405':
+          setCodeError('Código inválido'); // Invalid code
+          break;
+        default:
+          // Unexpected error
+          props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
+      }
+    }
   }
 
   useEffect(() => { // Resets errors upon changes
@@ -190,7 +195,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
           setPasswordLengthValid={setPasswordLengthValid}
         />
       )}
-      <NavigationFooter codeVerified={codeVerified} />
+      <NavigationFooter codeVerified={codeVerified} isLoading={isSendingEmail || isVerifyingCode || isUpdatingPassword} />
     </div>
   </HandleContinueContext.Provider>
 </div>
