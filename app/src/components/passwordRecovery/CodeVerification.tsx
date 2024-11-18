@@ -39,7 +39,7 @@ export default function CodeVerification(props: propsType) : JSX.Element {
       {props.emailSent &&
         <div className="flex-row w-full justify-items-center">
           {/** We sent a code to your email to reset your password, please insert it below */}
-          <p className="py-4">Enviamos para o seu email um código de redefinição de senha. Insira o código abaixo. luka</p> 
+          <p className="py-4">Enviamos para o seu email um código de redefinição de senha. Insira o código abaixo.</p> 
           <div className="grid grid-cols-1 gap-2 place-items-center">
             <div>
               <PinField

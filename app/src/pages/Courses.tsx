@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { getUserToken } from "../helpers/userInfo";
 import CourseGuideButton from "../components/Courses/GuideToCreatingCourse";
 // Services
-import CourseServices from "../services/course.services";
+import CourseServices from  "@services/course.services";
 
 // Components
 import Layout from "../components/Layout";

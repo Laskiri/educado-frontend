@@ -157,38 +157,43 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
   }, [email, code]);
 
   return (
-    <div id="password-reset-modal" className='absolute grid place-items-center bg-darkBG inset-0'>
-      <HandleContinueContext.Provider value={handleContinue}>
-        <div className="bg-gradient-to-b p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%]">
-          <h3 className="font-bold text-xl mb-4">Redefinção de senha</h3> {/** Reset password */}
+    <div id="password-reset-modal" className="absolute inset-0 grid place-items-center">
+  {/* Background overlay */}
+  <div className="absolute inset-0 bg-[#383838] opacity-60"></div>
 
-          {!codeVerified ?
-            <CodeVerification
-              email={email}
-              setEmail={setEmail}
-              setCode={setCode}
-              codeError={codeError}
-              emailError={emailError}
-              emailSent={emailSent}
-              setCodeEntered={setCodeEntered}
-            /> :
-            <NewPasswordScreen
-              password={password}
-              setPassword={setPassword}
-              passwordError={passwordError}
-              passwordConfirmation={passwordConfirmation}
-              setPasswordConfirmation={setPasswordConfirmation}
-              passwordConfirmationError={passwordConfirmationError}
-              passwordContainsLetter={passwordContainsLetter}
-              passwordLengthValid={passwordLengthValid}
-              setPasswordContainsLetter={setPasswordContainsLetter}
-              setPasswordLengthValid={setPasswordLengthValid}
-            />
-          }
-          <NavigationFooter codeVerified={codeVerified} />
-        </div>
-      </HandleContinueContext.Provider>
+  {/* Modal content */}
+  <HandleContinueContext.Provider value={handleContinue}>
+    <div className="bg-gradient-to-b p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%] relative z-10">
+      <h3 className="font-bold text-xl mb-4">Redefinção de senha</h3> {/** Reset password */}
+
+      {!codeVerified ? (
+        <CodeVerification
+          email={email}
+          setEmail={setEmail}
+          setCode={setCode}
+          codeError={codeError}
+          emailError={emailError}
+          emailSent={emailSent}
+          setCodeEntered={setCodeEntered}
+        />
+      ) : (
+        <NewPasswordScreen
+          password={password}
+          setPassword={setPassword}
+          passwordError={passwordError}
+          passwordConfirmation={passwordConfirmation}
+          setPasswordConfirmation={setPasswordConfirmation}
+          passwordConfirmationError={passwordConfirmationError}
+          passwordContainsLetter={passwordContainsLetter}
+          passwordLengthValid={passwordLengthValid}
+          setPasswordContainsLetter={setPasswordContainsLetter}
+          setPasswordLengthValid={setPasswordLengthValid}
+        />
+      )}
+      <NavigationFooter codeVerified={codeVerified} />
     </div>
+  </HandleContinueContext.Provider>
+</div>
   )
 }
 

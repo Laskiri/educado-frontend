@@ -42,7 +42,7 @@ export default function PersonalInformationForm({
     setIntError(!/^[0-9]*$/.test(e.target.value));
   };
   const getUserImage = async () => {
-    let response = await fetch(
+    const response = await fetch(
       `http://localhost:8888/api/bucket/${formData.photo}`
     );
     console.log(response);
@@ -194,7 +194,7 @@ export default function PersonalInformationForm({
           {/* Biograhy */}
           <div className="flex flex-col">
             <label htmlFor="bio" className="font-['Montserrat']">
-              Biografia e motivações:
+              Biografia
               <span className="p-2 text-[#FF4949] text-sm font-normal font-['Montserrat']">
                 *
               </span>

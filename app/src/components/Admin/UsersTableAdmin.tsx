@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 import { useState } from "react";
 import useSWR from "swr";
 import Loading from "../general/Loading";
-import DeleteUserButton from "../DeleteUserButton";
+import DeleteUserButton from "./DeleteUserButton";
 import ViewUserButton from "../../pages/ViewUserButton";
-import AdminToggleButton from "../AdminToggle";
+import AdminToggleButton from "./AdminToggle";
 import AdminServices from "../../services/admin.services";
 import { getUserToken } from "../../helpers/userInfo";
 import {
@@ -47,7 +48,17 @@ export const UsersTableAdmin = () => {
     return formattedDate;
   };
 
-  const getStatusColor = (application: any) => {
+  interface Application {
+    approved: boolean;
+    rejected: boolean;
+    firstName: string;
+    lastName: string;
+    email: string;
+    joinedAt: string;
+    _id: string;
+  }
+
+  const getStatusColor = (application: Application) => {
     if (application.approved) return "green";
     if (application.rejected) return "red";
     return "black";
@@ -74,7 +85,7 @@ export const UsersTableAdmin = () => {
     setCurrentPage(totalPages);
   };
 
-  const filteredData = data?.data.data.filter((application: any) => {
+  const filteredData = data?.data.data.filter((application: Application) => {
     if (searchTerm === "") return application;
     if (application.firstName.toLowerCase().includes(searchTerm.toLowerCase()))
       return application;
@@ -146,7 +157,7 @@ export const UsersTableAdmin = () => {
           </tr>
         </thead>
         <tbody>
-          {paginatedData.map((application: any, key: number) => {
+          {paginatedData.map((application: Application, key: number) => {
             return (
               <tr
                 key={key}

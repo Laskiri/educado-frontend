@@ -5,11 +5,13 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
+        "prebuild": "npm install esbuild-linux-64",
         "build": "tsc && vite build",
         "preview": "vite preview",
         "test": "jest --verbose --runInBand --detectOpenHandles",
         "updateSnapshots": "jest --updateSnapshot",
         "linting": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+        "prettier": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx,ts,tsx}\"",
         "typechecking": "tsc --noEmit",
         "cypress-server": "vite --port 3000",
         "cypress_local": "npx cypress run --browser chrome --env BACKEND_URL=http://localhost:8888",
