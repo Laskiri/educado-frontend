@@ -109,6 +109,7 @@ export const SectionCreation = ({
       console.error("Error fetching course details:", error);
       return null;
     }
+    
   };
 
   const handlePublishConfirm = async () => {

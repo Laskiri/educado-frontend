@@ -9,7 +9,6 @@ import { CertificateIds } from "../interfaces/Certificate";
 export interface CourseInterface {
   creatorId: string;
   courseId: string;
-  coursePublishedStatus: boolean; //er tom, har lige lavet den
 }
 
 const client = axios.create({

@@ -11,35 +11,27 @@ export default function CertificateList() {
   const [certificates, setCertificates] = useState<Certificate[]>();
   const [loading, setLoading] = useState(true); //loading istedet for emptyState? emptyState er fra CertificateEmpty
 
-  const getCourse = async () =>{
-	//vi skal have et kursus ind her på en eller anden måde?? 
-	//vi skal have adgang til published kurser herinde sådan så den ikke automatisk viser emptyState 
-  } 
-
-  //HEP måske tag udgangspunkt i certificate.services for den er pænnere 
-
-  const isCoursePublished = async () => {
-    try {
-      const courseDetails = await .getCourseDetail(status, token);//og det her skal have et kursus så vi kan få detaljer for kurset.Den her
-      if (courseDetails.status === "published") {// function er også stadig i section creation
-        return courseDetails;
-      }
-      return null;
-    } catch (error) {
-      console.error("Error fetching course details:", error);
-      return null;
-    }
-  };
-
   useEffect(() => {
+    CertificateService.getUserCertificates(localStorage.getItem("id") || "")
+      .then((res: Certificate[]) => {
+        console.log("Fetched Certificates:", res); // Log the fetched certificates
+        setCertificates(res);
+      })
+      .catch((error) => {
+        console.error("Error fetching certificates:", error);
+        setCertificates([]); // Handle errors by setting an empty array
+      });
+  }, []);
+
+  /*useEffect(() => {
     CertificateService.getUserCertificates(
       localStorage.getItem("id") || ""
     ).then((res: Certificate[]) => {
       setCertificates(res);
     });
-  }, []);
+  }, []);*/
 
-  if (!certificates) return <EmptyState />; // den tjekker om der er certifikater men vi vil gerne have den tjekker om published kurser 
+  if (!certificates) return <EmptyState />; // den tjekker om der er certifikater men vi vil gerne have den tjekker om published kurser
 
   return (
     <div className="overflow-scroll min-h-full pb-4" id="certificate-list">

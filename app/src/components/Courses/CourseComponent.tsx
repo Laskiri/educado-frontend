@@ -6,6 +6,7 @@ import { useNotifications } from "../notification/NotificationContext";
 // Services
 import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
+import CertificateService from "../../services/certificate.services";
 
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
@@ -194,7 +195,33 @@ export const CourseComponent = ({
   };
 
   // Creates new course and navigates to section creation for it
+
   const handleCreateNewCourse = async (data: Course) => {
+    try {
+      const newCourse = await CourseServices.createCourse(data, token);
+      addNotification("Curso criado com sucesso!");
+
+      // Create a certificate after course creation
+      const certificateData = {
+        creatorId: getUserInfo().id, // skal ændres til at kurset skal være taget af én waste picker inden certificatet bliver lavet, eller kommer frem?
+        courseId: newCourse.data._id,
+      };
+
+      await CertificateService.createCertificate(certificateData); // Call to create the certificate
+      console.log("Certificate created successfully"); // Log success or handle accordingly
+
+      // Upload image with the new id
+      handleFileUpload(newCourse.data._id);
+
+      setId(newCourse.data._id);
+      setTickChange(1);
+      updateHighestTick(1);
+      navigate(`/courses/manager/${newCourse.data._id}/1`);
+    } catch (err) {
+      toast.error(err as string);
+    }
+  };
+  /*const handleCreateNewCourse = async (data: Course) => {
     try {
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
@@ -209,7 +236,7 @@ export const CourseComponent = ({
       // Course created
       toast.error(err as string);
     }
-  };
+  };*/
 
   //Used to prepare the course changes before sending it to the backend
   const prepareCourseChanges = (data: Course): Course => {
