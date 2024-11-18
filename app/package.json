@@ -5,7 +5,7 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "npm run install-eslint-linux64 && tsc && vite build",
+        "build": "tsc && vite build",
         "preview": "vite preview",
         "test": "jest --verbose --runInBand --detectOpenHandles",
         "updateSnapshots": "jest --updateSnapshot",
