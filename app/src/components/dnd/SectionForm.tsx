@@ -27,7 +27,6 @@ export const SectionForm = () => {
     const { handleSubmit } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        data.title = "Nova seção";
         SectionServices.createSection(data, id, token)
             .then(res => {
                 console.log(res.data._id);

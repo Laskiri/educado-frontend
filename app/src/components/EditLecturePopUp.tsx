@@ -10,6 +10,8 @@ import RichTextEditor from "./RichTextEditor";
 import { getUserToken } from "../helpers/userInfo";
 import { useNotifications } from "./notification/NotificationContext";
 
+import { useLectures, useMedia } from "@contexts/courseStore";
+
 // Services
 import StorageServices from "../services/storage.services";
 import LectureService from "../services/lecture.services";
@@ -20,6 +22,7 @@ import { ModalButtonCompont } from "./ModalButtonCompont";
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
+import { get } from "cypress/types/lodash";
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />;
 
@@ -31,7 +34,6 @@ type Inputs = {
 };
 
 interface Props {
-  data: any;
   handleEdit: Function;
 }
 /**
@@ -42,6 +44,7 @@ interface Props {
  */
 export const EditLecture = ({ data, handleEdit }: Props) => {
   const [lectureContent, setLectureContent] = useState(null);
+  const { getMedia } = useMedia();
   //TODO: When tokens are done, Remove dummy token and uncomment useToken
   const token = getUserToken();
 
@@ -59,22 +62,26 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
   const [previewFile, setPreviewFile] = useState<string | null>(null);
-  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(getMedia(data._id));
 
   const toggler = (value: string) => {
     setContentType(value);
   };
 
   useEffect(() => {
-    const fetchPreview = async () => {
-      const fileSrc = await getPreviewVideo();
-
-      if (fileSrc) {
-        setPreviewFile(fileSrc);
-      }
-    };
-    fetchPreview();
-  }, [data._id]);
+    if (lectureVideo) {
+      const fileSrc = URL.createObjectURL(lectureVideo);
+      setPreviewFile(fileSrc);
+    } else {
+      const fetchPreview = async () => {
+        const fileSrc = await getPreviewVideo();
+        if (fileSrc !== null) {
+          setPreviewFile(fileSrc);
+        }
+      };
+      fetchPreview();
+    }
+  }, [data._id, lectureVideo]);
 
   const getPreviewVideo = async () => {
     const videoId = data._id + "_l"; // Assuming `data` is available here

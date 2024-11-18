@@ -40,7 +40,7 @@ interface CourseContextProps {
   addExerciseToCache: (exercise: Exercise) => void;
   media : Media[];
   addMediaToCache: (media: Media) => void;
-  getMedia: (mid: string) => Media | null;
+  getMedia: (mid: string) => File | null;
 }
 
 interface CourseProviderProps {
@@ -301,8 +301,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const getMedia = (mid: string) => {
-    return media.find((media) => media.id === mid) || null;
-  }
+    const mediaItem = media.find((media) => media.id === mid);
+    return mediaItem ? mediaItem.file : null;
+  };
 
   
 

@@ -54,7 +54,7 @@ export function SortableItem({
 
   const token = getUserToken();
   const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent} = useSections();
-  const cachedSection = getCachedSection(sid);
+  const [cachedSection, setCachedSection] = useState<Section | null>(null);
   const cachedComponents = cachedSection?.components;
 
   // Fetch the section data from the server.
@@ -65,13 +65,22 @@ export function SortableItem({
           console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
           loadSectionToCache(res);
+          setCachedSection(res);
         }
         fetchSectionData();
       }
     } catch (err) {
       toast.error("failed to fetch section data for section " + sid);
     }
-  }, []);
+  }, [sid, cachedSection, loadSectionToCache, token]);
+
+  // Update the cachedSection state when the section data in the context changes
+  useEffect(() => {
+    const section = getCachedSection(sid);
+    if (section) {
+      setCachedSection(section);
+    }
+  }, [sid, getCachedSection]);
 
 
   const { attributes, listeners, setNodeRef, transform, transition } =
@@ -118,6 +127,7 @@ export function SortableItem({
       if (cachedSection) {
         const updatedData = { ...cachedSection, [field]: value };
         updateCachedSection(updatedData);
+        setCachedSection(updatedData);
       }
     };
 
@@ -133,7 +143,7 @@ export function SortableItem({
     };
 
     SectionServices.saveSection(changes, sid, token)
-      //  .then(res => toast.success('Seção atualizada'))
+      //.then(res => toast.success('Seção atualizada'))
       .catch((err) => toast.error(err));
   };
 
