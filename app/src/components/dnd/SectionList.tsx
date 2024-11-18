@@ -91,6 +91,8 @@ export const SectionList = ({
     setActiveId(null);
   };
 
+  
+
   return (
     <div className="w-full">
       <DndContext

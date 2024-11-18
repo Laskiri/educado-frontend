@@ -54,7 +54,7 @@ export function SortableItem({
 
   const token = getUserToken();
   const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent} = useSections();
-  const [cachedSection, setCachedSection] = useState<Section | null>(null);
+  const cachedSection = getCachedSection(sid);
   const cachedComponents = cachedSection?.components;
 
   // Fetch the section data from the server.
@@ -65,7 +65,6 @@ export function SortableItem({
           console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
           loadSectionToCache(res);
-          setCachedSection(res);
         }
         fetchSectionData();
       }
@@ -73,15 +72,6 @@ export function SortableItem({
       toast.error("failed to fetch section data for section " + sid);
     }
   }, [sid, cachedSection, loadSectionToCache, token]);
-
-  // Update the cachedSection state when the section data in the context changes
-  useEffect(() => {
-    const section = getCachedSection(sid);
-    if (section) {
-      setCachedSection(section);
-    }
-  }, [sid, getCachedSection]);
-
 
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({ id: sid });
@@ -132,8 +122,6 @@ export function SortableItem({
     };
 
   const onSubmit: SubmitHandler<SectionPartial> = (data) => {
-    console.log("data", data)
-    console.log ("title", cachedSection?.title)
     if (data === undefined) return;
     if (cachedSection?.title === undefined && cachedSection?.description === undefined) {console.log("errrr", undefined); return}
 

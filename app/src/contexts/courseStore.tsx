@@ -89,22 +89,15 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   
 
   useEffect(() => {
-    console.log("CourseProvider mounted");
     return () => {
-      console.log("CourseProvider unmounted");
     };
   }, []);
 
   useEffect(() => {
-    console.log("seciton modified");
-    console.log("Sections: " + JSON.stringify(sections));
   }
   , [sections]);
 
   useEffect(() => {
-    console.log("Lecture or Exercise modified");
-    console.log("Lectures: " + JSON.stringify(lectures));
-    console.log("Exercises: " + JSON.stringify(exercises));
   }, [lectures, exercises]);
 
 
@@ -117,8 +110,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const updateCachedCourseSections = (newSections: string[]) => {
-    console.log("Updating course sections: " + JSON.stringify(course.sections));
-    console.log("To: " + JSON.stringify(newSections));
 
     setCourse((prevCourse) => ({
       ...prevCourse,
@@ -131,8 +122,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const loadSectionToCache = (newSection: Section) => {
-    console.log("Adding section to store: " + JSON.stringify(sections));
-    console.log("Newsection: " + JSON.stringify(newSection));
     if (sections.find((section) => section._id === newSection._id)) return;
     if (course.sections && !course.sections.includes(newSection._id)) {
       setCourse((prevCourse) => {
@@ -154,12 +143,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const updateCachedSection = (section: Section) => {
-    console.log("ahhhhh")
     setSections((prevSections) => {
       const index = prevSections.findIndex((s) => s._id === section._id);
       if (index === -1) return prevSections;
-      console.log("Updating section: " + JSON.stringify(prevSections[index]));
-      console.log("With: " + JSON.stringify(section));
       prevSections[index] = section;
       return prevSections;
     });
@@ -177,7 +163,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     });
   };
   const deleteCachedSectionComponent = (sectionId: string, compId: string) => {
-    console.log("Deleting component: " + compId + " from section: " + sectionId);
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
       if (sectionIndex === -1) return prevSections;
@@ -235,7 +220,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const updateCachedLecture = (newLecture: Lecture) => {
-    console.log("hey123")
     setLectures((prevLectures) => {
       const index = prevLectures.findIndex(
         (lecture) => lecture._id === newLecture._id
@@ -262,7 +246,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const addLectureToCache = (newLecture: Lecture) => {
-    console.log("Adding lecture to store: " + JSON.stringify(newLecture));
     const newId = idMaker.lecture + 1;
     setIdMaker((prevIdMaker) => ({...prevIdMaker, lecture: newId}));
     newLecture._id = newId.toString();

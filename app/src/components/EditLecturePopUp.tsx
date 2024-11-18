@@ -62,15 +62,17 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
   const [previewFile, setPreviewFile] = useState<string | null>(null);
-  const [lectureVideo, setLectureVideo] = useState<File | null>(getMedia(data._id));
+  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+
+  const cachedVideo = getMedia(data._id);
 
   const toggler = (value: string) => {
     setContentType(value);
   };
-
+  
   useEffect(() => {
-    if (lectureVideo) {
-      const fileSrc = URL.createObjectURL(lectureVideo);
+    if (cachedVideo) {
+      const fileSrc = URL.createObjectURL(cachedVideo);
       setPreviewFile(fileSrc);
     } else {
       const fetchPreview = async () => {

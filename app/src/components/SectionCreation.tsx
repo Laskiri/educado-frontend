@@ -59,7 +59,7 @@ export const SectionCreation = ({
   }
 
   useEffect(() => {
-    if (course) {
+    if (Object.keys(course).length > 0) {
       setStatus(course.status !== "" ? course.status : "draft");
       setLoading(false);
     }
@@ -130,7 +130,6 @@ export const SectionCreation = ({
   };
 
   async function updateCourseSections(): Promise<void> {
-    console.log("1")
     updateCachedCourseSections(course.sections);
     notifyOnSubmitSubscriber();
     await CourseServices.updateCourseSectionOrder(course.sections, id, token);
@@ -151,9 +150,9 @@ export const SectionCreation = ({
 
   // Redirect to courses page when setLeaving is s
 
-  
 
-  if (loading && id != "0")
+
+  if (loading && id != "0" && Object.keys(course).length === 0)
     return (
       <Layout meta="course overview">
         <Loading />
