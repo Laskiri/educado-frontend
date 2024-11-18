@@ -53,9 +53,10 @@ export function SortableItem({
   const openRef = useRef<HTMLInputElement>(null);
 
   const token = getUserToken();
-  const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent} = useSections();
+  const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent, sections} = useSections();
   const cachedSection = getCachedSection(sid);
   const cachedComponents = cachedSection?.components;
+  const [sectionTitle , setSectionTitle] = useState<string>(cachedSection?.title ?? "");
 
   // Fetch the section data from the server.
   useEffect(() => {
@@ -115,9 +116,7 @@ export function SortableItem({
     // Used to format PARTIAL section data, meaning that it can be used to update the course data gradually
     const handleFieldChange = (field: keyof Section, value: string | number | Component[] | null) => {
       if (cachedSection) {
-        const updatedData = { ...cachedSection, [field]: value };
-        updateCachedSection(updatedData);
-        setCachedSection(updatedData);
+        updateCachedSection({[field]: value}, sid);
       }
     };
 
@@ -168,7 +167,7 @@ export function SortableItem({
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{cachedSection.title}</p>
+            <p className="font-semibold">{sectionTitle.length > 0 ? sectionTitle : "Nova seção"}</p>
           </div>
           <div className="flex collapse">
             <div
@@ -199,11 +198,11 @@ export function SortableItem({
               <label htmlFor="title">Nome </label> {/*Title of section*/}
               <input
                 type="text"
-                defaultValue={cachedSection.title ?? ""}
-                placeholder={cachedSection.title ?? "Nome da seção"}
+                defaultValue={sectionTitle ?? "Nova seção"}
+                placeholder={sectionTitle ?? "Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("title", { required: true })}
-                onChange={(e) => {handleFieldChange("title", e.target.value)}} //update the section title
+                onChange={(e) => {handleFieldChange("title", e.target.value); setSectionTitle(e.target.value)}} //update the section title
               />
               {sectionErrors.title && <span>Este campo é obrigatório!</span>}
               {/** This field is required */}

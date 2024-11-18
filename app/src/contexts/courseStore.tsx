@@ -142,12 +142,17 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     return sections.find((section) => section._id === sid) || null;
   };
 
-  const updateCachedSection = (section: Section) => {
+  const updateCachedSection = (fieldChange: Partial<Section>, sid: string) => {
     setSections((prevSections) => {
-      const index = prevSections.findIndex((s) => s._id === section._id);
+      const index = prevSections.findIndex((s) => s._id === sid);
       if (index === -1) return prevSections;
-      prevSections[index] = section;
-      return prevSections;
+      const updatedSection = { ...prevSections[index], ...fieldChange };
+      const updatedSections = [...prevSections];
+      console.log(prevSections[index]);
+      
+      updatedSections[index] = updatedSection;
+      console.log(updatedSections[index]);
+      return updatedSections;
     });
   };
 
