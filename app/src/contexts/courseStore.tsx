@@ -235,9 +235,10 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const addCachedSectionComponent = (sectionId: string, component: Component) => {
+    console.log("Adding component", component);
     const newId = idMaker.component + 1;
     setIdMaker((prevIdMaker) => ({ ...prevIdMaker, component: newId }));
-    component.compId = newId.toString();
+    component._id = newId.toString();
   
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
@@ -249,6 +250,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
         ...prevSections[sectionIndex],
         components: updatedComponents,
       };
+      console.log("Updated sections", updatedSections);
   
       return updatedSections;
     });
@@ -333,7 +335,11 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const addExerciseToCache = (newExercise: Exercise) => {
+    const newId = idMaker.exercise + 1;
+    setIdMaker((prevIdMaker) => ({...prevIdMaker, exercise: newId}));
+    newExercise._id = newId.toString();
     setExercises((prevExercises) => [...prevExercises, newExercise]);
+    return newExercise;
   }
 
   const addMediaToCache = (newMedia: Media) => {

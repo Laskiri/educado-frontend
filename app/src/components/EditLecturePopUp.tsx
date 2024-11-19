@@ -65,7 +65,6 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
   const { addNotification } = useNotifications();
   const [previewFile, setPreviewFile] = useState<string | null>(null);
   const [lectureVideo, setLectureVideo] = useState<File | null>(null);
-  console.log(lecture);
   const cachedVideo = getMedia(lecture._id);
 
   const toggler = (value: string) => {

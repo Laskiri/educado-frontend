@@ -59,6 +59,9 @@ export function SortableItem({
   const cachedComponents = cachedSection?.components;
   const [sectionTitle , setSectionTitle] = useState<string>(cachedSection?.title ?? "");
 
+  useEffect(() => {
+    console.log("cachedSection", cachedSection);
+  } , [cachedSection])
   // Fetch the section data from the server.
   useEffect(() => {
     try {
@@ -247,7 +250,7 @@ export function SortableItem({
 
           <ComponentList
             sid={sid}
-            components={cachedComponents}
+            components={cachedComponents ?? []}
             addOnSubmitSubscriber={addOnSubmitSubscriber}
           />
 

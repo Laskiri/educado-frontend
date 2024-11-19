@@ -96,12 +96,12 @@ export const ComponentList = ({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={components.map((comp) => comp.compId)}
+          items={components.map((comp) => comp._id)}
           strategy={verticalListSortingStrategy}
         >
           {components.map((comp, key: React.Key) => (
             <SortableComponentItem
-              key={key}
+              key={comp._id}
               component={comp}
               sid={sid}
             />
