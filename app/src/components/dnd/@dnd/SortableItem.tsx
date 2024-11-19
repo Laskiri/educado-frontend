@@ -66,6 +66,7 @@ export function SortableItem({
           console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
           loadSectionToCache(res);
+          setSectionTitle(res.title);
         }
         fetchSectionData();
       }
