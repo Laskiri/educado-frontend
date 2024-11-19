@@ -63,11 +63,11 @@ const deleteCertificate = async (creatorId: string, courseId: string) => {
 }
 
 // Export all methods
-const CourseServices = Object.freeze({
+const CertificateService = Object.freeze({
 	createCertificate,
 	getUserCertificates,
 	deleteCertificate,
 });
 
-export default CourseServices;
+export default CertificateService;
 

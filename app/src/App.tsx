@@ -18,7 +18,6 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
-import NewInstitution from "./pages/NewInstitution";
 
 
 
@@ -76,10 +75,6 @@ function App() {
     {
       path: "/educado-admin",
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
-    },
-    {
-      path: "/educado-admin/new-institution",
-      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
     },
     {
       path: "/educado-admin/applications",
