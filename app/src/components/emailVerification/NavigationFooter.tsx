@@ -12,7 +12,7 @@ import { setUserInfo } from "../../helpers/userInfo";
 type propsType = {
   codeVerified: boolean;
   token: string; // Add the token (code) prop
-  isLoading: boolean;
+  isLoading?: boolean;
 };
 
 export default function NavigationFooter(props: propsType): JSX.Element {
@@ -96,7 +96,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
         setUserInfo(res.data.userInfo);
         navigate("/courses");
       }
-    } catch (err) {
+    } catch (err : any) {
       console.log(err);
       setError(err);
       toast.error(err.response?.data.message);

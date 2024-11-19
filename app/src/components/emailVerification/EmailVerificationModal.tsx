@@ -8,6 +8,7 @@ type propTypes = {
   toggleModal: () => void;
   setErrorMessage: (message: string, error?: string) => void;
   uemail: string;
+  isLoading?: boolean;
 }
 
 export const HandleContinueContext = createContext<() => void>(() => { });

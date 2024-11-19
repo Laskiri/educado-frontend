@@ -94,10 +94,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
       props.setErrorMessage('Senha alterada com sucesso!', 'Sucesso') // Password changed successfully!
       props.toggleModal();
     } catch (error) {
-      switch (error?.error?.code) {
-        default:
           props.setErrorMessage('Erro inesperado: Tente novamente mais tarde.') // Unexpected error, try again later
-      }
     }
   }
 
@@ -114,7 +111,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
     try {
       await apiSendEmail(email);
       setEmailSent(true);
-    } catch (error) {
+    } catch (error : any) {
       switch (error.error?.code) {
         case 'E0401':
           setEmailError('Email não cadastrado'); // Email not registered
@@ -140,7 +137,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
     try {
       await apiVerifyCode(email, code);
       setCodeVerified(true);
-    } catch (error) {
+    } catch (error : any) {
       console.log(error)
       switch (error?.error?.code) {
         case 'E0404':
