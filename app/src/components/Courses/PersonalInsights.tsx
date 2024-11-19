@@ -6,7 +6,7 @@ import StarRating from "../general/StarRating";
 
 // Helper functions
 import { getUserInfo } from '../../helpers/userInfo';
-import { getCourseCountWithStatus, getNumberOfCourses, getTotalSubscriberCount } from '../../helpers/courses';
+import { getNumberOfCourses, getTotalSubscriberCount } from '../../helpers/courses';
 import { getAverageRatingOfCC } from '../../services/contentCreator.services';
 import { useEffect, useState } from 'react';
 
