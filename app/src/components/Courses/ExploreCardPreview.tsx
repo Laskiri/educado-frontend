@@ -115,26 +115,28 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
       {/* Container for both card and modal */}
       <div className="bg-gray-100 rounded-lg p-2 h-full">
         {/* Explorer Card */}
-        <div className='w-full h-fit items-start justify-start flex flex-row pt-[20%]'>
-          <img
-            src={singleIcon}
-            alt="Icon"
-            className="w-6 h-6 mr-2"
-          />
-          <text className="text-l font-bold">Explorar cursos</text>
+        <div className='w-full opacity-50 h-fit px-2 items-center justify-start flex flex-col pt-[20%]'>
+          <div className='w-full h-fit flex items-center justify-start flex-row'>
+            <img
+              src={singleIcon}
+              alt="Icon"
+              className="w-5 h-5 mr-1"
+            />
+            <text className="text-xl font-bold">Explorar cursos</text>
+          </div>
+          <text className='text-[10px]'> Inscreva-se nos cursos do seu interesse e comece sua jornada </text>
         </div>
-        <text className='text-[10px]'> Inscreva-se nos cursos do seu interesse e comece sua jornada </text>
 
         {/* Modal */}
         {
           <div className="absolute inset-0 bg-black bg-opacity-50 rounded-lg">
             <div 
-              className="absolute bottom-0 left-0 right-0 bg-blue-50 rounded-t-[20px] p-3 max-h-[90%] overflow-y-auto"
+              className="absolute bottom-0 left-0 right-0 bg-blue-50 rounded-t-[20px] p-3 h-[81%] overflow-hidden"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Modal Header */}
               <div className="flex justify-between items-center mb-2">
-                <h2 className="text-base font-medium text-gray-900">{course.title}</h2>
+                <h2 className="text-projectBlack font-medium text-2xl">{course.title}</h2>
                 <button 
                   className="rounded-full p-0.5 transition-colors cursor-default"
                 >
@@ -143,7 +145,7 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
               </div>
 
               {/* Modal Content */}
-              <div className="space-y-3">
+              <div className="space-y-2 h-full">
                 {/* Course Labels */}
                 <div className="flex flex-wrap gap-1">
                   <CardLabel
@@ -166,21 +168,20 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
 
                 {/* Description */}
                 {course.description && (
-                  <p className="text-xs text-gray-900 overflow-hidden h-10 whitespace-normal pr-0.5 break-words">{course.description}</p>
+                  <p className="text-projectBlack text-xs overflow-y-auto whitespace-normal h-[5rem] pr-1 break-words">{course.description}</p>
                 )}
 
                 {/* Features */}
                 <div className="border border-gray-300 rounded-xl p-2 space-y-2">
                   {features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-1">
-                      <Icon path={feature.icon} size={0.6} className="text-gray-500" />
-                      <span className="text-[10px] text-gray-900">{feature.text}</span>
+                    <div key={index} className="flex items-center gap-0.5">
+                      <Icon path={feature.icon} size={0.4} className="text-gray-500" />
+                      <span className="text-[8px] text-gray-900">{feature.text}</span>
                     </div>
                   ))}
                 </div>
-
                 {/* Action Button */}
-                <button className="w-full bg-[#5FCBE8] text-white py-2 rounded-lg text-xs cursor-default">
+                <button className="w-full bg-[#166276] text-white py-2 rounded-lg text-xs cursor-default">
                   {'Inscrever-se agora'}
                 </button>
               </div>
