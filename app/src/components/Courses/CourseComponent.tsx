@@ -11,6 +11,7 @@ import {useApi} from "../../hooks/useAPI";
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
+import { convertSrcToFile } from "@helpers/fileHelpers";
 
 
 // Components
@@ -159,13 +160,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     setDialogMessage(message);
     setDialogConfirm(() => onConfirm);
     setShowDialog(true);
-  };
-
-  const convertSrcToFile = async (src: string, fileName: string): Promise<File> => {
-    const response = await fetch(src);
-    const data = await response.blob();
-    const file = new File([data], fileName, { type: data.type });
-    return file;
   };
 
   const handleImageUpload = (file: File | null) => {
