@@ -31,6 +31,7 @@ import SectionServices from "../../../services/section.services";
 //pop-ups
 import { CreateLecture } from "../../CreateLecturePopUp";
 import { CreateExercise } from "../../Exercise/CreateExercisePopUp";
+import { set } from "cypress/types/lodash";
 
 interface Props {
   sid: string;
@@ -63,9 +64,9 @@ export function SortableItem({
     try {
       if(!cachedSection) {
         const fetchSectionData = async () => {
-          console.log("fetching section data for section " + sid);
           const res = await SectionServices.getSectionDetail(sid, token);
           loadSectionToCache(res);
+          setSectionTitle(res.title);
         }
         fetchSectionData();
       }
