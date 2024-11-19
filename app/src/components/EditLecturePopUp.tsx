@@ -73,6 +73,8 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
   };
   
   useEffect(() => {
+    if (lecture.contentType !== "video") return;
+      
     if (cachedVideo) {
       const fileSrc = URL.createObjectURL(cachedVideo);
       setPreviewFile(fileSrc);

@@ -37,43 +37,26 @@ export const SectionCreation = ({
 }: Inputs) => {
   const { id: urlId } = useParams<{ id: string }>();
   const {course, updateCachedCourseSections } = useCourse();
+  if (!course.sections) return null;
 
   const id = propId === "0" ? urlId : propId;
   const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
     []
   );
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
-  const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
   const [cancelBtnText] = useState("Cancelar");
   const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
-  const [status, setStatus] = useState<string>("draft");
+  const [status, setStatus] = useState<string>(course.status);
 
   const navigate = useNavigate();
   function addOnSubmitSubscriber(callback: () => void) {
     //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
   }
-
-  useEffect(() => {
-    if (Object.keys(course).length > 0) {
-      setStatus(course.status !== "" ? course.status : "draft");
-      setLoading(false);
-    }
-  }, [course])
-  
-
-  /**
-   * Currently not used, but should be implemented in the future
-   */
-  // function removeOnSubmitSubscriber(callback: Function) {
-  //   setOnSubmitSubscribers((prevSubscribers) =>
-  //     prevSubscribers.filter((cb) => cb !== callback)
-  //   );
-  // }
 
   // Notification
   const { addNotification } = useNotifications();
@@ -130,9 +113,8 @@ export const SectionCreation = ({
   };
 
   async function updateCourseSections(): Promise<void> {
-    updateCachedCourseSections(course.sections);
+    updateCachedCourseSections(course.sections!);
     notifyOnSubmitSubscriber();
-    await CourseServices.updateCourseSectionOrder(course.sections, id, token);
   }
 
   function changeTick(tick: number) {
@@ -152,7 +134,7 @@ export const SectionCreation = ({
 
 
 
-  if (loading && id != "0" && Object.keys(course).length === 0)
+  if (Object.keys(course).length === 0)
     return (
       <Layout meta="course overview">
         <Loading />

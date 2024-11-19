@@ -22,17 +22,12 @@ export const SectionForm = () => {
     const token = getUserToken();
     const { id } = useParams();
 
-    const { loadSectionToCache } = useSections();
+    const { createNewSection } = useSections();
     // React useForm setup
     const { handleSubmit } = useForm<Inputs>();
 
     const onSubmit: SubmitHandler<Inputs> = (data) => {
-        SectionServices.createSection(data, id, token)
-            .then(res => {
-                console.log(res.data._id);
-                loadSectionToCache(res.data);
-            })
-            .catch(err => console.log(err));
+        createNewSection()
     }
 
     return (

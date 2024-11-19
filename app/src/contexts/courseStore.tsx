@@ -15,6 +15,7 @@ interface CourseContextProps {
   updateCourse: (course: Course) => void;
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
+  createNewSection: () => Section;
   updateSections: (sections: Section[]) => void;
   loadSectionToCache: (section: Section) => void;
   getCachedSection: (sid: string) => Section | null;
@@ -36,7 +37,7 @@ interface CourseContextProps {
   deleteCachedExercise: (eid: string) => void;
   loadExerciseToCache: (exercise: Exercise) => void;
   loadLectureToCache: (lecture: Lecture) => void;
-  addLectureToCache: (lecture: Lecture) => Section;
+  addLectureToCache: (lecture: Lecture) => Lecture;
   addExerciseToCache: (exercise: Exercise) => void;
   media : Media[];
   addMediaToCache: (media: Media) => void;
@@ -54,6 +55,14 @@ const CourseContext = createContext<CourseContextProps>({
   updateCourse: () => {},
   updateCachedCourseSections: () => {},
   sections: [] as Section[],
+  createNewSection: () => ({
+    _id: "",
+    title: "",
+    description: "",
+    totalPoints: 0,
+    parentCourse: "",
+    components: [],
+  }),
   updateSections: () => {},
   loadSectionToCache: () => {},
   getCachedSection: () => null,
@@ -61,7 +70,7 @@ const CourseContext = createContext<CourseContextProps>({
   deleteCachedSection: () => {},
   updateCachedSectionComponents: () => {},
   deleteCachedSectionComponent: () => {},
-  addCachedSectionComponent: () => {},
+  addCachedSectionComponent: (sectionId: string, component: Component) => component,
   lectures: [],
   exercises: [],
   getCachedLecture: () => null,
@@ -72,7 +81,14 @@ const CourseContext = createContext<CourseContextProps>({
   deleteCachedExercise: () => {},
   loadLectureToCache: () => {},
   loadExerciseToCache: () => {},
-  addLectureToCache: () => {},
+  addLectureToCache: (lecture: Lecture) => ({
+    _id: "",
+    title: "",
+    description: "",
+    contentType: "",
+    content: "",
+    parentSection: "",
+  }),
   addExerciseToCache: () => {},
   media: [],
   addMediaToCache: () => {},
@@ -120,6 +136,29 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     setSections((prevSections) => [...prevSections, ...newSections]);
   };
 
+
+  const createNewSection = () => {
+    const newId = idMaker.section + 1;
+    setIdMaker((prevIdMaker) => ({ ...prevIdMaker, section: newId }));
+    const newSection = {
+      _id : newId.toString(),
+      title: "",
+      description: "",
+      totalPoints: 0,
+      parentCourse: course._id || "0",
+      components: [],
+    }
+    setSections((prevSections) => [...prevSections, newSection]);
+    setCourse((prevCourse) => {
+      if (!prevCourse.sections) return prevCourse;
+      return {
+        ...prevCourse,
+        sections: [...prevCourse.sections, newSection._id],
+      };
+    });
+    return newSection;
+  }
+
   const loadSectionToCache = (newSection: Section) => {
     if (sections.find((section) => section._id === newSection._id)) return;
     if (course.sections && !course.sections.includes(newSection._id)) {
@@ -157,15 +196,26 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const updateCachedSectionComponents = (
     sectionId: string,
-    components: Component[]
+    adjustedComponents: Component[]
   ) => {
     setSections((prevSections) => {
       const index = prevSections.findIndex((s) => s._id === sectionId);
       if (index === -1) return prevSections;
-      prevSections[index].components = components;
-      return prevSections;
+    
+      // Create a new array with the updated section
+      const newSections = [...prevSections];
+      newSections[index] = {
+        ...newSections[index],
+        components: adjustedComponents,
+      };
+    
+      return newSections;
     });
   };
+
+
+
+
   const deleteCachedSectionComponent = (sectionId: string, compId: string) => {
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
@@ -312,6 +362,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     updateCourse,
     updateCachedCourseSections,
     sections,
+    createNewSection,
     updateSections,
     loadSectionToCache,
     getCachedSection,
@@ -357,6 +408,7 @@ export const useSections = () => {
   const context = useContext(CourseContext);
   return {
     sections: context.sections,
+    createNewSection: context.createNewSection,
     updateSections: context.updateSections,
     loadSectionToCache: context.loadSectionToCache,
     getCachedSection: context.getCachedSection,
