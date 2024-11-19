@@ -132,7 +132,7 @@ export function SortableComponentItem({ component, sid }: Props) {
               className="modal-toggle"
             />
             {component.compType === "lecture" ? (
-              <EditLecture data={data} handleEdit={handleEdit} />
+              <EditLecture lecture={data} handleEdit={handleEdit} />
             ) : (
               <EditExercise data={data} handleEdit={handleEdit} />
             )}

@@ -41,6 +41,7 @@ interface CourseContextProps {
   media : Media[];
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
+  updateMedia: (media: Media) => void;
 }
 
 interface CourseProviderProps {
@@ -76,6 +77,7 @@ const CourseContext = createContext<CourseContextProps>({
   media: [],
   addMediaToCache: () => {},
   getMedia: () => null,
+  updateMedia: () => {},
 });
 
 export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
@@ -93,9 +95,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     };
   }, []);
 
-  useEffect(() => {
-  }
-  , [sections]);
 
   useEffect(() => {
   }, [lectures, exercises]);
@@ -244,6 +243,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     setLectures((prevLectures) =>
       prevLectures.filter((lecture) => lecture._id !== lid)
     );
+    setMedia((prevMedia) =>
+      prevMedia.filter((media) => media.id !== lid)
+    );
   };
 
   const getCachedLecture = (lid: string) => {
@@ -293,6 +295,14 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     return mediaItem ? mediaItem.file : null;
   };
 
+  const updateMedia = (newMedia: Media) => {
+    const index = media.findIndex((media) => media.id === newMedia.id);
+    if (index === -1) return;
+    const updatedMedia = [...media];
+    updatedMedia[index] = newMedia;
+    setMedia(updatedMedia);
+  }
+
   
 
 
@@ -325,6 +335,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     media,
     addMediaToCache,
     getMedia,
+    updateMedia,
   }
 
   return (
@@ -387,5 +398,6 @@ export const useMedia = () => {
     media: context.media,
     addMediaToCache: context.addMediaToCache,
     getMedia: context.getMedia,
+    updateMedia: context.updateMedia,
   };
 }
