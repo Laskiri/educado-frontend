@@ -38,7 +38,7 @@ interface CourseContextProps {
   loadExerciseToCache: (exercise: Exercise) => void;
   loadLectureToCache: (lecture: Lecture) => void;
   addLectureToCache: (lecture: Lecture) => Lecture;
-  addExerciseToCache: (exercise: Exercise) => void;
+  addExerciseToCache: (exercise: Exercise) => Exercise;
   media : Media[];
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
@@ -81,15 +81,8 @@ const CourseContext = createContext<CourseContextProps>({
   deleteCachedExercise: () => {},
   loadLectureToCache: () => {},
   loadExerciseToCache: () => {},
-  addLectureToCache: (lecture: Lecture) => ({
-    _id: "",
-    title: "",
-    description: "",
-    contentType: "",
-    content: "",
-    parentSection: "",
-  }),
-  addExerciseToCache: () => {},
+  addLectureToCache: () => ({} as Lecture),
+  addExerciseToCache: () => ({} as Exercise),
   media: [],
   addMediaToCache: () => {},
   getMedia: () => null,
@@ -102,7 +95,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [media, setMedia] = useState<Media[]>([]);
-  const [idMaker, setIdMaker] = useState({"lecture": 0, "exercise": 0, "section": 0, "component": 0});
+  const [idMaker, setIdMaker] = useState({"section": 0, "component": 0});
 
   
 
@@ -113,7 +106,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
 
   useEffect(() => {
-  }, [lectures, exercises]);
+    console.log("Media updated", media);
+  }, [media]);
 
 
   const updateCourse = (newCourse: Course) => {
@@ -145,7 +139,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       title: "",
       description: "",
       totalPoints: 0,
-      parentCourse: course._id || "0",
+      parentCourse: course._id ?? "0",
       components: [],
     }
     setSections((prevSections) => [...prevSections, newSection]);
@@ -259,6 +253,20 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const deleteCachedSection = (sid: string) => {
+    setExercises((prevExercises) =>
+      prevExercises.filter((exercise) => exercise.parentSection !== sid)
+    );
+    setLectures((prevLectures) => {
+      return prevLectures.filter((lecture) => {
+        if (lecture.parentSection !== sid) {
+          return true;
+        }
+        if (lecture.contentType === 'video') {
+          deleteMedia(lecture._id); 
+        }
+        return false;
+      });
+    });
     setSections((prevSections) =>
       prevSections.filter((section) => section._id !== sid)
     );
@@ -293,11 +301,12 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const deleteCachedLecture = (lid: string) => {
     setLectures((prevLectures) =>
-      prevLectures.filter((lecture) => lecture._id !== lid)
-    );
-    setMedia((prevMedia) =>
-      prevMedia.filter((media) => media.id !== lid)
-    );
+      prevLectures.filter((lecture) => {
+        if (lecture._id === lid && lecture.contentType === 'video') {
+          deleteMedia(lid);
+        }
+        lecture._id !== lid})
+    );   
   };
 
   const getCachedLecture = (lid: string) => {
@@ -305,8 +314,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const addLectureToCache = (newLecture: Lecture) => {
-    const newId = idMaker.lecture + 1;
-    setIdMaker((prevIdMaker) => ({...prevIdMaker, lecture: newId}));
+    const newId = idMaker.component + 1;
+    setIdMaker((prevIdMaker) => ({...prevIdMaker, component: newId}));
     newLecture._id = newId.toString();
     setLectures((prevLectures) => [...prevLectures, newLecture]);
     return newLecture;
@@ -335,14 +344,15 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const addExerciseToCache = (newExercise: Exercise) => {
-    const newId = idMaker.exercise + 1;
-    setIdMaker((prevIdMaker) => ({...prevIdMaker, exercise: newId}));
+    const newId = idMaker.component + 1;
+    setIdMaker((prevIdMaker) => ({...prevIdMaker, component: newId}));
     newExercise._id = newId.toString();
     setExercises((prevExercises) => [...prevExercises, newExercise]);
     return newExercise;
   }
 
   const addMediaToCache = (newMedia: Media) => {
+    if (media.find((media) => media.id === newMedia.id)) return;
     setMedia((prevMedia) => [...prevMedia, newMedia]);
   }
 
@@ -350,6 +360,10 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     const mediaItem = media.find((media) => media.id === mid);
     return mediaItem ? mediaItem.file : null;
   };
+
+  const deleteMedia = (mid: string) => {
+    setMedia((prevMedia) => prevMedia.filter((media) => media.id !== mid));
+  }
 
   const updateMedia = (newMedia: Media) => {
     const index = media.findIndex((media) => media.id === newMedia.id);

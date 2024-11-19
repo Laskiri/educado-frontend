@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
-import { useCourse } from '../../contexts/courseStore';
+import { useCourse, useMedia } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
@@ -11,6 +11,7 @@ import {useApi} from "../../hooks/useAPI";
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
+
 
 // Components
 import { Dropzone } from "../Dropzone/Dropzone";
@@ -24,7 +25,7 @@ import CourseGuideButton from "./GuideToCreatingCourse";
 
 interface CourseComponentProps {
   token: string;
-  id: string | undefined;
+  id: string;
   setTickChange: (tick: number) => void;
   setId: (id: string) => void;
   updateHighestTick: (tick: number) => void;
@@ -52,16 +53,19 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   const [cancelBtnText] = useState("Cancelar");
   const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
+  
 
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
 
-  const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
-  const [courseImg, setCourseImg] = useState<File | null>(null);
-  const [data, setData] = useState<Course>();
+  const { addMediaToCache, updateMedia, getMedia } = useMedia();
+
+  const courseImg = getMedia(id);
+  const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
 
   // Callbacks
-  const { call: createCourse, isLoading: submitLoading, error } = useApi(CourseServices.createCourse);
+  const { call: fetchCoverImg} = useApi(StorageServices.getMedia);
+  const { call: createCourse, isLoading: submitLoading} = useApi(CourseServices.createCourse);
 
 
 
@@ -87,6 +91,21 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
      * @param token The user token
      * @returns The course details
      */
+     useEffect(() => {
+      if (courseImg || !existingCourse) return;
+  
+      const fetchPreview = async () => {
+        const courseImgId = id + "_c";
+        const fileSrc = await fetchCoverImg(courseImgId);
+        const validFileSrc = fileSrc !== null && fileSrc !== undefined;
+        if (validFileSrc) {
+          const file = await convertSrcToFile(fileSrc, `${id}_c`);
+          addMediaToCache({ id: id, file: file, parentType: "c" });
+        }
+      };
+      fetchPreview(); 
+    }, [id]);
+  
 
   useEffect(() => {
     //TODO: get categories from db
@@ -131,7 +150,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     const updatedData = { ...course, [field]: value };
     updateCourse(formatCourse(updatedData));
   };
-
   const handleDialogEvent = (
     message: string,
     onConfirm: () => void,
@@ -143,35 +161,33 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     setShowDialog(true);
   };
 
-  useEffect(() => {
-    const fetchPreview = async () => {
-      const fileSrc = await getPreviewCourseImg();
-      if (fileSrc !== null && fileSrc !== undefined && fileSrc !== previewCourseImg) {
-        setPreviewCourseImg(fileSrc);
-      }
-    };
-    fetchPreview();
-  }, [existingCourse, id]);
+  const convertSrcToFile = async (src: string, fileName: string): Promise<File> => {
+    const response = await fetch(src);
+    const data = await response.blob();
+    const file = new File([data], fileName, { type: data.type });
+    return file;
+  };
 
-  const getPreviewCourseImg = async () => {
-    if (existingCourse) {
-      const courseImgId = id + "_c"; // Ensure `id` and `existingCourse` are defined
-      const fileSrc = await StorageServices.getMedia(courseImgId);
-      return fileSrc;
+  const handleImageUpload = (file: File | null) => {
+    console.log("file", file);
+    if (!file) return;
+    const newMedia = { id: id, file: file, parentType: "c" };
+    if (!courseImg) {
+      console.log("adding media");
+      addMediaToCache(newMedia);
     }
-    return null;
-  };
+    else {
+      console.log("updating media");
+      updateMedia(newMedia);
+    }
+  }
 
-  const handleFileUpload = (id : string | undefined) => {
-    const file = courseImg;
-    StorageServices.uploadFile({ id: id, file: file, parentType: "c" });
-  };
+
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
       //Upload image with the old id
-      handleFileUpload(id);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -183,11 +199,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (course: Course) => {
     try {
-      const newCourse = await createCourse(course, token);
-
-      console.log("creating new draft", data);
+      await createCourse(course, token);
       //Upload image with the new id
-      handleFileUpload(newCourse.data._id);
 
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
@@ -199,12 +212,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new course and navigates to section creation for it
   const handleCreateNewCourse = async (course: Course) => {
     try {
+      console.log("new course", course);
       const newCourse = await createCourse(course, token);
       addNotification("Curso criado com sucesso!");
       updateCourse(newCourse.data);
       //Upload image with the new id
-      handleFileUpload(newCourse.data._id);
-
       setId(newCourse.data._id);
       setTickChange(1);
       updateHighestTick(1);
@@ -266,7 +278,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     }
   };
 
-  if (!course && existingCourse)
+  if (Object.keys(course).length === 0  && existingCourse)
     return (
       <Layout meta="course overview">
         <Loading />
@@ -287,7 +299,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
         }}
         onClose={() => {
           setShowDialog(false);
-        }} // Do nothing
+        }} 
       />
       <div className="w-full flex flex-row items-center justify-between py-5">
         <div className="flex items-center gap-2">
@@ -318,8 +330,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <input
               id="title-field"
               type="text"
-              defaultValue={course ? course.title : ""}
-              placeholder={course ? course.title : ""}
+              defaultValue={course.title}
+              placeholder={course.title}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
@@ -335,7 +347,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
             <label htmlFor='level'> Nível <span className="text-red-500">*</span></label> {/*asteric should not be hard coded*/}
               <select id="difficulty-field" 
-              defaultValue={course ? course.difficulty : ""}
+              defaultValue={course.difficulty}
               className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("difficulty", { required: true })}
               onChange={(e) => handleFieldChange('difficulty', parseInt(e.target.value))}
@@ -353,7 +365,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <div className="flex flex-col w-1/2 space-y-2 text-left  ">
               <label htmlFor='category'>Categoria <span className="text-red-500">*</span></label> 
               <select id="category-field"
-                defaultValue={course ? course.category : ""}
+                defaultValue={course.category}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...register("category", { required: true })}
                 onChange={(e) => handleFieldChange('category', e.target.value)}
@@ -374,8 +386,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               <ToolTipIcon alignLeftTop={false} index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
-            defaultValue={course ? course.description : ""}
-            placeholder={course ? course.description : ""}
+            defaultValue={course.description}
+            placeholder={course.description}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
             {...register("description", { required: true })}
             onChange={(e) => {
@@ -397,7 +409,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
-            <Dropzone inputType='image' id={id ?? "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
+              <Dropzone inputType='image' id={id ?? "0"} previewFile={previewCourseImg} onFileChange={handleImageUpload} />
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>

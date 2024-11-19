@@ -58,6 +58,9 @@ export const SectionCreation = ({
     setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
   }
 
+  useEffect(() => {
+    console.log("SectionCreation useEffect");
+  }, []);
   // Notification
   const { addNotification } = useNotifications();
 

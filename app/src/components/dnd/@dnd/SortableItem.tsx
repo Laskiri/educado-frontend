@@ -58,10 +58,6 @@ export function SortableItem({
   const cachedSection = getCachedSection(sid);
   const cachedComponents = cachedSection?.components;
   const [sectionTitle , setSectionTitle] = useState<string>(cachedSection?.title ?? "");
-
-  useEffect(() => {
-    console.log("cachedSection", cachedSection);
-  } , [cachedSection])
   // Fetch the section data from the server.
   useEffect(() => {
     try {
@@ -171,7 +167,7 @@ export function SortableItem({
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{sectionTitle.length > 0 ? sectionTitle : "Nova seção"}</p>
+            <p className="font-semibold">{sectionTitle?.length > 0 ? sectionTitle : "Nova seção"}</p>
           </div>
           <div className="flex collapse">
             <div

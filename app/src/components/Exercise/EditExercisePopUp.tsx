@@ -8,14 +8,17 @@ import AnswerCards from "./AnswerCards";
 import { ModalButtonCompont } from "../ModalButtonCompont";
 
 // Interfaces
-import { Answer } from "../../interfaces/Answer";
+import { Answer } from "@interfaces/Answer";
+import { Exercise } from "@interfaces/Course";
+
+//hooks
+import { useExercises } from "@contexts/courseStore";
 
 // Helpers
 import ExerciseServices from "../../services/exercise.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";
-import { use } from "chai";
 
 export interface ExercisePartial {
   title: string;
@@ -39,9 +42,10 @@ export const EditExercise = ({ data, handleEdit }: Props) => {
     { text: "", correct: false, feedback: "" },
   ];
 
-  const [answers, setAnswers] = useState<Answer[]>(data.answers);
+  const [answers, setAnswers] = useState<Answer[]>(data.answers ?? TempAnswers);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
+  const { updateCachedExercise } = useExercises();
 
   const { register, handleSubmit } = useForm<Inputs>();
 
@@ -49,26 +53,16 @@ export const EditExercise = ({ data, handleEdit }: Props) => {
   const token = getUserToken();
 
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
-    //update
-    console.log("answers", answers);
-    ExerciseServices.updateExercise(
-      {
-        title: newData.title,
-        question: newData.question,
-        answers: answers,
-      },
-      token,
-      data._id
-    )
-
-      .then(() => {
-        addNotification("Exercício atualizado com sucesso");
-        handleEdit(newData.title);
-      })
-      .catch((err) => {
-        toast.error("Fracassado: " + err);
-        setIsSubmitting(false);
-      });
+    const updatedExercise = {
+      title: newData.title,
+      question: newData.question,
+      answers: answers,
+      parentSection: data.parentSection,
+      _id: data._id,
+    };
+    updateCachedExercise(updatedExercise);
+    addNotification("Exercício atualizado com sucesso");
+    handleEdit(newData.title);
   };
 
   return (

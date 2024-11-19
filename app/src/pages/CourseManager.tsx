@@ -41,8 +41,22 @@ const CourseManager = () => {
 
     
     useEffect(() => {
-        if (newCourse) return 
+        console.log("CourseManager useEffect")
         if (courseCached) return
+        if (newCourse) { 
+            const data = {
+                title: "",
+                description: "",
+                category: "personal finance",
+                difficulty: 1,
+                status: "draft",
+                estimatedHours: 0,
+                sections: [],
+                coverImg: "0_c",
+            }
+            updateCourse(data)
+            return
+        }
         const fetchCourseData = async () => {
             const data = await getCourseDetails(id, token)
             updateCourse(data) 
