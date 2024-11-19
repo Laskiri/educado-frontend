@@ -36,8 +36,8 @@ interface CourseContextProps {
   deleteCachedExercise: (eid: string) => void;
   loadExerciseToCache: (exercise: Exercise) => void;
   loadLectureToCache: (lecture: Lecture) => void;
-  addLectureToCache: (lecture: Lecture) => Section;
-  addExerciseToCache: (exercise: Exercise) => void;
+  addLectureToCache: (lecture: Lecture) => Lecture;
+  addExerciseToCache: (exercise: Exercise) => Exercise;
   media : Media[];
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
@@ -283,7 +283,11 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const addExerciseToCache = (newExercise: Exercise) => {
+    const newId = idMaker.exercise + 1;
+    setIdMaker((prevIdMaker) => ({...prevIdMaker, exercise: newId}));
+    newExercise._id = newId.toString();
     setExercises((prevExercises) => [...prevExercises, newExercise]);
+    return newExercise;
   }
 
   const addMediaToCache = (newMedia: Media) => {

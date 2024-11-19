@@ -17,6 +17,9 @@ import ExerciseServices from "../../services/exercise.services";
 import { toast } from "react-toastify";
 import { use } from "chai";
 
+//hooks
+import { useExercises } from "../../contexts/courseStore";
+
 export interface ExercisePartial {
   title: string;
   question: string;
@@ -44,31 +47,31 @@ export const EditExercise = ({ data, handleEdit }: Props) => {
   const { addNotification } = useNotifications();
 
   const { register, handleSubmit } = useForm<Inputs>();
+  const {updateCachedExercise} = useExercises();
 
   /** Token doesnt work, reimplement when it token is implemented */
   const token = getUserToken();
 
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
     //update
-    console.log("answers", answers);
-    ExerciseServices.updateExercise(
-      {
-        title: newData.title,
-        question: newData.question,
-        answers: answers,
-      },
-      token,
-      data._id
-    )
+    setIsSubmitting(true);
+    const updatedExercise = {
+      title: newData.title,
+      question: newData.question,
+      answers: answers,
+      parentSection: data.parentSection,
+      _id: data._id,
+    };
 
-      .then(() => {
+    try {
+        updateCachedExercise(updatedExercise);
         addNotification("Exercício atualizado com sucesso");
         handleEdit(newData.title);
-      })
-      .catch((err) => {
+        setIsSubmitting(false);
+    } catch (err) {
         toast.error("Fracassado: " + err);
         setIsSubmitting(false);
-      });
+    }
   };
 
   return (

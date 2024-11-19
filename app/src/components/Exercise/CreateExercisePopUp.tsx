@@ -15,6 +15,10 @@ import ExerciseServices from "../../services/exercise.services";
 // Pop-up messages
 import { toast } from "react-toastify";
 
+//Hooks
+import { useExercises } from "../../contexts/courseStore";
+import _, { set } from "cypress/types/lodash";
+
 export interface ExercisePartial {
   title: string;
   question: string;
@@ -46,30 +50,34 @@ export const CreateExercise = ({ savedSID, handleExerciseCreation }: Props) => {
 
   /** Token doesnt work, reimplement when it token is implemented */
   const token = getUserToken();
+  const {addExerciseToCache} = useExercises();
 
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
     setIsSubmitting(true);
-    ExerciseServices.addExercise(
-      {
-        title: newData.title,
-        question: newData.question,
-        answers: answers,
-      },
-      token,
-      savedSID
-    )
-      .then((res) => {
-        addNotification("Exercício criado com sucesso");
-        handleExerciseCreation(res.data);
-        reset();
-        setIsSubmitting(false);
-        setAnswers(TempAnswers);
-      }) /** Successfully created exercise */
+    const updatedExercise = {
+      title: newData.title,
+      question: newData.question,
+      answers: answers,
+      parentSection: savedSID,
+      _id: "0",
 
-      .catch((err) => {
-        toast.error("Fracassado: " + err);
-        setIsSubmitting(false);
-      });
+    }
+    const res = addExerciseToCache(updatedExercise);
+    const newComponent = {
+      compId: res._id,
+      compType: "exercise",
+      _id : "0",
+    }
+    handleExerciseCreation(newComponent);
+
+    clearExerciseModalContent();
+    setIsSubmitting(false);
+    addNotification("Exercício criado com sucesso");
+  };
+
+  const clearExerciseModalContent = () => {
+    reset();
+    setAnswers(TempAnswers);
   };
 
   return (
