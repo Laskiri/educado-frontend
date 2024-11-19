@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { getUserToken } from "../../helpers/userInfo";
+import { getUserToken } from "@helpers/userInfo";
 import { useNotifications } from "../notification/NotificationContext";
 // Components
 import AnswerCards from "../../components/Exercise/AnswerCards";
 import { ModalButtonCompont } from "../ModalButtonCompont";
 
 // Interfaces
-import { Answer } from "../../interfaces/Answer";
+import { Answer } from "@interfaces/Answer";
 
 // Helpers
-import ExerciseServices from "../../services/exercise.services";
+import ExerciseServices from "@services/exercise.services";
 
 // Pop-up messages
 import { toast } from "react-toastify";
