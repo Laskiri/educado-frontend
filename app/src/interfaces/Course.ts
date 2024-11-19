@@ -1,35 +1,35 @@
-import {Answer} from "./Answer";
+import { Answer } from "./Answer";
 
 export interface Main {
-  status:  number;
+  status: number;
   success: boolean;
-  count:   number;
-  data:    Course[];
+  count: number;
+  data: Course[];
 }
 
 // TODO: Make sure this is in accordance with the backend
 
 
 export interface Course {
-  _id?:               string;
-  title:             string;
-  description:       string;
-  difficulty:        number;
-  dateCreated?:       Date;
-  dateUpdated?:       Date;
-  coverImg?:         string;
-  category:          string;
-  sections?:          string[];
-  creator?:           string;
-  status:            string;
-  estimatedHours?:    number;
-  rating?:            number;
-  numOfSubscriptions?:   number;
-  __v?:               number;
+  _id?: string;
+  title: string;
+  description: string;
+  difficulty: number;
+  dateCreated?: Date;
+  dateUpdated?: Date;
+  coverImg?: string;
+  category: string;
+  sections?: string[];
+  creator?: string;
+  status: string;
+  estimatedHours?: number;
+  rating?: number;
+  numOfSubscriptions?: number;
+  __v?: number;
 }
 
 export interface contentCreator {
-	_id: string;
+  _id: string;
   firstName: string,
   lastName: string,
   email: string,
@@ -41,10 +41,10 @@ export interface contentCreator {
 }
 
 export interface Section {
-  _id:          string;
-  title:        string;
-  description:  string;
-  totalPoints?:  number;
+  _id: string;
+  title: string;
+  description: string;
+  totalPoints?: number;
   parentCourse: string;
   components: Component[];
 }
@@ -65,15 +65,37 @@ export interface Lecture {
 }
 
 export interface Media {
-    id: string,
-    file: File,
-    parentType: string,
+  id: string,
+  file: File,
+  parentType: string,
 }
 
 export interface Exercise {
-    _id: string,
-    parentSection: string,
-    title: string,
-    question: string,
-    answers?: Answer[]
+  _id: string,
+  parentSection: string,
+  title: string,
+  question: string,
+  answers?: Answer[]
+}
+
+export interface FormattedCourse {
+  courseInfo: {
+    _id: string;
+    title: string;
+    category: string;
+    difficulty: number;
+    description: string;
+    coverImg: string;
+    status: string;
+  };
+  sections: {
+    _id: string;
+    title: string;
+    description: string;
+    components: {
+      compType: string;
+      component: Lecture | Exercise;
+      video: Media | null;
+    }[];
+  }[];
 }

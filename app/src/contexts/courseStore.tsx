@@ -6,12 +6,15 @@ import {
   Lecture,
   Media,
   Exercise,
+  FormattedCourse,
 } from "../interfaces/Course";
-import { create, set } from "cypress/types/lodash";
+import { formatCourse } from "@helpers/courseStoreHelper";
+
 
 // Define the context type
 interface CourseContextProps {
   course: Course;
+  getFormattedCourse: () => FormattedCourse;
   updateCourse: (course: Course) => void;
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
@@ -52,6 +55,7 @@ interface CourseProviderProps {
 // Create context with initial value
 const CourseContext = createContext<CourseContextProps>({
   course: {} as Course,
+  getFormattedCourse: () => ({} as FormattedCourse),
   updateCourse: () => {},
   updateCachedCourseSections: () => {},
   sections: [] as Section[],
@@ -108,6 +112,16 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   useEffect(() => {
     console.log("Media updated", media);
   }, [media]);
+
+
+
+
+
+  const getFormattedCourse = () => {
+    const formattedCourse = formatCourse(course, sections, lectures, exercises, media);
+    return formattedCourse;
+  }
+
 
 
   const updateCourse = (newCourse: Course) => {
@@ -352,6 +366,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const addMediaToCache = (newMedia: Media) => {
+    console.log("Adding media", newMedia);
     if (media.find((media) => media.id === newMedia.id)) return;
     setMedia((prevMedia) => [...prevMedia, newMedia]);
   }
@@ -379,6 +394,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const value = {
     course,
+    getFormattedCourse,
     updateCourse,
     updateCachedCourseSections,
     sections,
@@ -419,6 +435,7 @@ export const useCourse = () => {
   const context = useContext(CourseContext);
   return {
     course: context.course,
+    getFormattedCourse: context.getFormattedCourse,
     updateCourse: context.updateCourse,
     updateCachedCourseSections: context.updateCachedCourseSections,
   };

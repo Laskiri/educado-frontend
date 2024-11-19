@@ -60,23 +60,33 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
-  const [lectureVideo, setLectureVideo] = useState<File | null>(getMedia(lecture._id));
+  const cachedVideo = getMedia(lecture._id);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(cachedVideo);
   const previewFileSrc = lectureVideo ? URL.createObjectURL(lectureVideo) : null;
   const { call: fetchPreviewVideo, isLoading: loadingPreview } = useApi(StorageServices.getMedia);
 
   const toggler = (value: string) => {
     setContentType(value);
   };
+
+  useEffect(() => {
+    console.log("cachedVideo changed", cachedVideo);
+    setLectureVideo(cachedVideo);
+  }
+  , [cachedVideo]);
   
   useEffect(() => {
     if (lecture.contentType !== "video") return;
     if (lectureVideo) return 
+    console.log("fetching preview")
     const fetchPreview = async () => {
       const videoId = lecture._id + "_l"; // Assuming `data` is available here
       const fileSrc = await fetchPreviewVideo(videoId);
+      
       const videoSrc = `data:video/mp4;base64,${fileSrc.split(',')[1]}`; //Quickfix - backend has to be adjusted to do this correctly, lasse don't @ me
       if (fileSrc !== null) {
         const file = await convertSrcToFile(videoSrc, videoId);
+        console.log("file", file);
         const newMedia = {
           id: lecture._id,
           file: file,
@@ -88,6 +98,18 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
     fetchPreview();
   }, [lecture._id]);
 
+  // Initialize the editorValue with data.content if available (for editing)
+  useEffect(() => {
+    if (lecture?.content !== "") {
+      setEditorValue(lecture.content);
+      setValue('content', lecture.content);  // Initialize form value as well
+    }
+  }, [lecture, setValue]);
+
+  const handleFileChange = (file: File) => {
+    if (file === null) return;
+    setLectureVideo(file);
+  }
 
 
   /**
@@ -120,13 +142,7 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
 
   const [editorValue, setEditorValue] = useState<string>('');
 
-// Initialize the editorValue with data.content if available (for editing)
-useEffect(() => {
-  if (lecture?.content !== "") {
-    setEditorValue(lecture.content);
-    setValue('content', lecture.content);  // Initialize form value as well
-  }
-}, [lecture, setValue]);
+
 
 const handleEditorChange = (value: string) => {
   setEditorValue(value); // Update local state
@@ -242,7 +258,7 @@ const handleEditorChange = (value: string) => {
                   </label>{" "}
                   {/*Input file*/}
                   {!loadingPreview &&
-                  <Dropzone inputType="video" id={lecture._id} previewFile={previewFileSrc} onFileChange={setLectureVideo}></Dropzone>}
+                  <Dropzone inputType="video" id={lecture._id} previewFile={previewFileSrc} onFileChange={handleFileChange}></Dropzone>}
                 </>
               ) : (lecture?.contentType === "text" && contentType === "") ||
                 contentType === "text" ? (

@@ -21,6 +21,7 @@ import RichTextEditor from "./RichTextEditor";
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
+import { set } from "cypress/types/lodash";
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />;
 
@@ -61,7 +62,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   const [editorValue, setEditorValue] = useState<string>('');
   const [lectureVideo, setLectureVideo] = useState<File | null>(null);
   const { addLectureToCache } = useLectures();
-  const { addMediaToCache, getMedia } = useMedia();
+  const { addMediaToCache } = useMedia();
 
 
 
@@ -99,6 +100,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
         parentType: "l",
       }
       addMediaToCache(newMedia);
+      setLectureVideo(null);
     }
     clearLectureModalContent();
     addNotification("Aula criada com sucesso");

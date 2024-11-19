@@ -44,7 +44,8 @@ interface CourseComponentProps {
  */
 
 export const CourseComponent = ({ token, id, setTickChange, setId, updateHighestTick }: CourseComponentProps) => {
-  const {course, updateCourse } = useCourse();
+  const {course, updateCourse, getFormattedCourse } = useCourse();
+  const { addMediaToCache, updateMedia, getMedia } = useMedia();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -59,7 +60,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   const [charCount, setCharCount] = useState<number>(0);
   const [isLeaving, setIsLeaving] = useState<boolean>(false);
 
-  const { addMediaToCache, updateMedia, getMedia } = useMedia();
+  
 
   const courseImg = getMedia(id);
   const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
@@ -180,7 +181,10 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Updates existing draft of course and navigates to course list
   const handleSaveExistingDraft = async (changes: Course) => {
     try {
-      await CourseServices.updateCourseDetail(changes, id, token);
+      const newCourse = getFormattedCourse();
+      // Do somethign with Formated Course
+
+
       //Upload image with the old id
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
@@ -206,15 +210,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new course and navigates to section creation for it
   const handleCreateNewCourse = async (course: Course) => {
     try {
-      console.log("new course", course);
-      const newCourse = await createCourse(course, token);
-      addNotification("Curso criado com sucesso!");
-      updateCourse(newCourse.data);
-      //Upload image with the new id
-      setId(newCourse.data._id);
+      const newCourse = getFormattedCourse();
+      // call some service or something with the new formatted course
       setTickChange(1);
       updateHighestTick(1);
-      navigate(`/courses/manager/${newCourse.data._id}/1`);
+      navigate(`/courses/manager/${newCourse.courseInfo._id}/1`);
     } catch (err) {
       toast.error(err as string);
     }
