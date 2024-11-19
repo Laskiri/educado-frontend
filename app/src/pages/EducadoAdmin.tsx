@@ -31,6 +31,7 @@ const EducadoAdmin = () => {
             <span>Users</span>
           </button>
           <button
+            id="InstitutionsButton"
             className={`flex-1 py-3 ${
               selectedTable === "institutions"
                 ? ""
@@ -38,7 +39,7 @@ const EducadoAdmin = () => {
             }`}
             onClick={() => setSelectedTable("institutions")}
           >
-            <span>Institutions</span>
+            <span >Institutions</span>
           </button>
         </div>
         {activeTable}
