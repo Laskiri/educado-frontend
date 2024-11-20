@@ -161,7 +161,7 @@ export default () => {
   const addNewEducationForm = async (index: number) => {
     if (!educationErrorState && dynamicInputsFilled("education")) {
       setEducationErrors((prevState) => {
-        let newState = [...prevState];
+        const newState = [...prevState];
         newState.push({
           educationStartDate: "",
           educationEndDate: "",
@@ -204,7 +204,7 @@ export default () => {
       setEducationErrorState(false);
     }
     setEducationErrors((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState.splice(index, 1);
       return newState;
     });
@@ -215,7 +215,7 @@ export default () => {
     //Creates new dynamic block based on conditions
     if (!experienceErrorState && dynamicInputsFilled("experience")) {
       setExperienceErrors((prevState) => {
-        let newState = [...prevState];
+        const newState = [...prevState];
         newState.push({
           workStartDate: "",
           workEndDate: "",
@@ -241,7 +241,7 @@ export default () => {
   // isCurrentJob checkbox handler
   const handleCheckboxChange = (index: number): void => {
     setExperienceFormData((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
@@ -270,7 +270,7 @@ export default () => {
       setExperienceErrorState(false);
     }
     setExperienceErrors((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState.splice(index, 1);
       return newState;
     });

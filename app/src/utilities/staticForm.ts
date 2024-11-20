@@ -44,7 +44,7 @@ export default () => {
     const response = await ProfileServices.postImage(formData);
     if (response.status == 200) {
       setFormData((prevSTate) => {
-        let newState = { ...prevSTate };
+        const newState = { ...prevSTate };
         newState.photo = event.target.files[0].name
         return newState;
       });

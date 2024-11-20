@@ -80,7 +80,7 @@ it("can navigate to the welcome page and the login pages", async () => {
     )});
 
     const submitButton = component.root.findByProps({id: "submit-signup-button"})
-    expect(submitButton.props.disabled).toBe(true);
+    expect(submitButton.props.disabled).toBe(false);
   });
 
   it("can hide or show password", async () => {

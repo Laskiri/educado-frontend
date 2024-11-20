@@ -83,10 +83,6 @@ function App() {
       element: <ProtectedRoute><EducadoAdmin /></ProtectedRoute>,
     },
     {
-      path: "/educado-admin/new-institution",
-      element: <ProtectedRoute><NewInstitution /></ProtectedRoute>
-    },
-    {
       path: "/educado-admin/applications",
       element: <AdminProtectedRoute requiredRole="admin"><EducadoAdmin /></AdminProtectedRoute>
     },

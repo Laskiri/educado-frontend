@@ -1,7 +1,8 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, FormEvent } from "react";
 import useSWR from "swr";
 import { institutionService } from "../../services/Institution.services";
 import Loading from "../general/Loading";
+import AuthServices from "../../services/auth.services";
 import {
   GoArrowLeft,
   GoArrowRight,
@@ -9,13 +10,165 @@ import {
   GoChevronRight,
 } from "react-icons/go";
 import { MdDelete, MdCreate, MdSearch } from "react-icons/md";
-import { Link } from "react-router-dom";
-import GenericModalComponent from "../GenericModalComponent";
+import { useNavigate } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { getUserToken } from "../../helpers/userInfo";
 import { toast } from "react-toastify";
 import { IconContext } from "react-icons/lib";
 import { useNotifications } from "../notification/NotificationContext";
 import { Institution } from "../../interfaces/Institution";
+import GenericModalComponent from "../GenericModalComponent";
+
+import { useApi } from "../../hooks/useAPI";
+// Interface
+export type NewInstitution = {
+  institutionName: string;
+  domain: string;
+  secondaryDomain: string;
+};
+
+const AddInstitutionButton = () => {
+  const [showModal, setShowModal] = useState(false);
+  const { addNotification } = useNotifications();
+  const navigate = useNavigate();
+  const {
+    call: addInstitution,
+    isLoading,
+    error,
+  } = useApi(AuthServices.addInstitution);
+
+  // Use-form setup
+  const { register, handleSubmit } = useForm<NewInstitution>();
+
+  // Function to execute upon accepting an application
+  const onSubmit: SubmitHandler<NewInstitution> = async (data) => {
+    try {
+      const res = await addInstitution({
+        domain: data.domain,
+        institutionName: data.institutionName,
+        secondaryDomain: data.secondaryDomain,
+      });
+      console.log(res);
+      setShowModal(false);
+      navigate("/educado-admin/applications");
+      addNotification(
+        "Adicionado " +
+          res.data.institution.institutionName +
+          " como nova instituição"
+      );
+    } catch {
+      if (error) {
+        const errorCause = error.response?.data?.error?.code;
+        switch (errorCause) {
+          case "E1201":
+            toast.error(" Não foi possível carregar a Instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1202":
+            toast.error(" já é uma instituição registrada", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1203":
+            toast.error(" já está registrado em outra instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          case "E1204":
+            toast.error(" já está registrado em outra instituição", {
+              hideProgressBar: true,
+            });
+            break;
+          default:
+            toast.error("Ocorreu um erro desconhecido", {
+              hideProgressBar: true,
+            });
+        }
+      }
+    }
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+
+  return (
+    <>
+      <button
+        id="newInstitutionButton"
+        className="btn text-base bg-[#166276]"
+        onClick={(e) => {
+          e.preventDefault();
+          setShowModal(true);
+        }}
+        disabled={isLoading}>
+        <div className="flex justify-center items-center space-x-2">
+          {isLoading ? (
+            <span className="spinner-border animate-spin rounded-full border-2 border-t-transparent w-4 h-4" />
+          ) : null}
+          <span>Adicionar</span>
+        </div>
+      </button>
+
+      {showModal && (
+        <GenericModalComponent
+          onConfirm={handleSubmit(onSubmit)}
+          onClose={handleClose}
+          isVisible={showModal}
+          title="Adicionar Instituição"
+          contentText=""
+          confirmBtnText="Adicionar"
+          loading={isLoading}
+          children={
+            <form className="form-control flex flex-col space-y-4">
+              <div className="flex flex-col space-y-2">
+                <label>
+                  <span>Nome da Instituição</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="Instituição"
+                  {...register("institutionName", { required: true })}
+                  className="input"
+                  id="institution"
+                />
+
+                <label>
+                  <span>Domínio</span>
+                </label>
+                <input
+                  type="text"
+                  required
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}"
+                  title="@domain.com"
+                  placeholder="@domain.com"
+                  {...register("domain", { required: true })}
+                  className="input"
+                  id="domain"
+                />
+
+                <label>
+                  <span>Segundo Domínio</span>
+                </label>
+                <input
+                  type="text"
+                  placeholder="@domain.com (opcional)"
+                  title="@domain.com"
+                  pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
+                  {...register("secondaryDomain")}
+                  className="input"
+                  id="secondary-domain"
+                />
+              </div>
+            </form>
+          }
+        />
+      )}
+    </>
+  );
+};
 
 export const InstitutionsTableAdmin = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -34,20 +187,12 @@ export const InstitutionsTableAdmin = () => {
 
   const filteredData = institutionsResponse.data.filter((institution) => {
     if (searchTerm === "") return institution;
-    if (
-      institution.institutionName
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
-    if (institution.domain.toLowerCase().includes(searchTerm.toLowerCase()))
-      return institution;
-    if (
-      institution.secondaryDomain
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
-    )
-      return institution;
+    const fieldsToCheck = ["institutionName", "domain", "secondaryDomain"];
+    return fieldsToCheck.some(
+      (field) =>
+        institution[field] &&
+        institution[field].toLowerCase().includes(searchTerm.toLowerCase())
+    );
   });
 
   const paginatedData = filteredData.slice(
@@ -95,32 +240,37 @@ export const InstitutionsTableAdmin = () => {
       institution.secondaryDomain
     );
 
+    const {
+      call: updateInstitution,
+      isLoading,
+      error,
+    } = useApi(institutionService.updateInstitution);
+
     useEffect(() => {
       setNameInput(institution.institutionName);
       setDomainInput(institution.domain);
       setSecondaryDomainInput(institution.secondaryDomain);
     }, [showModal]);
 
-    const handleSumbit = async (e: ChangeEvent<HTMLFormElement>) => {
+    const handleSumbit = async (e?: FormEvent<HTMLFormElement>) => {
       try {
-        e.preventDefault();
-        e.target.reportValidity();
-        if (!e.target.checkValidity()) e.target.reportValidity();
-        else {
-          await institutionService.updateInstitution(
-            institution._id!,
-            getUserToken(),
-            {
-              institutionName: nameInput,
-              domain: domainInput,
-              secondaryDomain: secondaryDomainInput,
-            }
-          );
-
-          mutate();
-          setShowModal(false);
-          addNotification("Instituição atualizada com sucesso !");
+        if (e) {
+          e.preventDefault();
+          e.currentTarget.reportValidity();
+          if (!e.currentTarget.checkValidity()) {
+            e.currentTarget.reportValidity();
+            return;
+          }
         }
+        await updateInstitution(institution._id!, getUserToken(), {
+          institutionName: nameInput,
+          domain: domainInput,
+          secondaryDomain: secondaryDomainInput,
+        });
+
+        mutate();
+        setShowModal(false);
+        addNotification("Instituição atualizada com sucesso !");
       } catch (err) {
         toast.error(String(err));
         console.error(err);
@@ -138,24 +288,21 @@ export const InstitutionsTableAdmin = () => {
     return (
       <>
         <button
-          className="btn btn-circle bg-[#166276] border-[#166276]"
-          onClick={() => setShowModal(true)}
-        >
+          className="btn btn-circle bg-primary hover:bg-cyan-900 border-transparent"
+          onClick={() => setShowModal(true)}>
           <MdCreate />
         </button>
 
         {showModal && (
           <GenericModalComponent
-            onConfirm={() => null}
+            onConfirm={(e) => handleSumbit(e)}
             onClose={handleClose}
             isVisible={showModal}
             title="Update Instituições"
-            contentText=""
+            confirmBtnText="Atualizar"
+            loading={isLoading}
             children={
-              <form
-                className="form-control flex flex-col space-y-4"
-                onSubmit={handleSumbit}
-              >
+              <form className="form-control flex flex-col space-y-4">
                 <div className="flex flex-col space-y-2">
                   <label>
                     <span>Nome da Instituição</span>
@@ -192,19 +339,13 @@ export const InstitutionsTableAdmin = () => {
                     type="text"
                     name="secondary-domain"
                     placeholder="@domain.com (opcional)"
-                    title="@domain.com"
+                    title="@domain.com (opcional)"
                     pattern="@([\w\-]+\.)+[\w\-]{2,4}$"
                     value={secondaryDomainInput}
                     onChange={(e) => setSecondaryDomainInput(e.target.value)}
                     className="input"
                   />
                 </div>
-
-                <input
-                  type="submit"
-                  value="submit"
-                  className="btn bg-[#166276] border-[#166276]"
-                />
               </form>
             }
           />
@@ -215,13 +356,15 @@ export const InstitutionsTableAdmin = () => {
 
   const DeleteButton = ({ institutionId }: { institutionId: string }) => {
     const [showModal, setShowModal] = useState(false);
+    const {
+      call: deleteInstitution,
+      isLoading,
+      error,
+    } = useApi(institutionService.deleteInstitution);
 
     const handleConfirm = async () => {
       try {
-        await institutionService.deleteInstitution(
-          institutionId,
-          getUserToken()
-        );
+        await deleteInstitution(institutionId, getUserToken());
         mutate();
         addNotification("Instituição deletada com sucesso !");
       } catch (err) {
@@ -233,9 +376,8 @@ export const InstitutionsTableAdmin = () => {
     return (
       <>
         <button
-          className="btn btn-circle bg-[#166276] border-[#166276]"
-          onClick={() => setShowModal(true)}
-        >
+          className="btn btn-circle bg-primary hover:bg-cyan-900 border-transparent"
+          onClick={() => setShowModal(true)}>
           <MdDelete />
         </button>
         {showModal && (
@@ -244,8 +386,10 @@ export const InstitutionsTableAdmin = () => {
             onClose={() => setShowModal(false)}
             isVisible={showModal}
             confirmBtnText="Deletar"
+            loading={isLoading}
             title="Deletando usuário"
             contentText="Você tem certeza de que deseja excluir este Instituições?"
+            width="w-[600px]"
           />
         )}
       </>
@@ -253,8 +397,8 @@ export const InstitutionsTableAdmin = () => {
   };
 
   return (
-    <div className="container flex flex-col overflow-hidden gap-6">
-      <form className="flex justify-end space-x-2">
+    <div className="container mx-auto flex flex-col overflow-hidden gap-6">
+      <div className="flex flex-wrap justify-end gap-2">
         <select className="select select-bordered">
           <option value="most-recent">Mais recentes</option>
         </select>
@@ -269,20 +413,17 @@ export const InstitutionsTableAdmin = () => {
             <MdSearch className="-ml-6" />
           </div>
         </div>
-        <Link to={"/educado-admin/new-institution"}>
-          <button className="btn text-base bg-[#166276]">Adicionar</button>
-        </Link>
-      </form>
+        <AddInstitutionButton />
+      </div>
 
       <table className="table w-full">
         <thead>
-          <tr className="border-b-4 border-[#166276] text-[#166276]">
+          <tr className="border-b-4 border-primary text-primary">
             {columnNames.map((columnName, key) => (
               <th
                 scope="col"
                 className={`text-sm bg-transparent ${columnName.width}`}
-                key={`${columnName.name}-${key}`}
-              >
+                key={`${columnName.name}-${key}`}>
                 {columnName.name}
               </th>
             ))}
@@ -304,10 +445,14 @@ export const InstitutionsTableAdmin = () => {
                   <p>{institution.secondaryDomain}</p>
                 </td>
                 <td>
-                  <div className="flex justify-end space-x-2">
+                  <div className="flex flex-wrap justify-end gap-2">
                     <IconContext.Provider value={{ size: "20" }}>
-                      <UpdateButton institution={institution} />
-                      <DeleteButton institutionId={institution._id!} />
+                      <div>
+                        <UpdateButton institution={institution} />
+                      </div>
+                      <div>
+                        <DeleteButton institutionId={institution._id!} />
+                      </div>
                     </IconContext.Provider>
                   </div>
                 </td>
@@ -324,8 +469,7 @@ export const InstitutionsTableAdmin = () => {
             <select
               className="select"
               value={rowsPerPage}
-              onChange={handleRowsPerPageChange}
-            >
+              onChange={handleRowsPerPageChange}>
               <option value={10}>10</option>
               <option value={20}>20</option>
               <option value={30}>30</option>
@@ -346,8 +490,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={handleFirstPage}
-            >
+              onClick={handleFirstPage}>
               <GoArrowLeft />
             </button>
             <button
@@ -357,8 +500,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={() => handlePageChange(currentPage - 1)}
-            >
+              onClick={() => handlePageChange(currentPage - 1)}>
               <GoChevronLeft />
             </button>
             <button
@@ -368,8 +510,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={() => handlePageChange(currentPage + 1)}
-            >
+              onClick={() => handlePageChange(currentPage + 1)}>
               <GoChevronRight />
             </button>
             <button
@@ -379,8 +520,7 @@ export const InstitutionsTableAdmin = () => {
                   ? "text-gray-300 cursor-not-allowed"
                   : "text-gray-600 hover:bg-gray-100 cursor-pointer"
               }`}
-              onClick={handleLastPage}
-            >
+              onClick={handleLastPage}>
               <GoArrowRight />
             </button>
           </IconContext.Provider>
