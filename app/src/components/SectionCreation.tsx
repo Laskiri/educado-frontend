@@ -109,12 +109,11 @@ export const SectionCreation = ({
       console.error("Error fetching course details:", error);
       return null;
     }
-    
   };
 
   const handlePublishConfirm = async () => {
     try {
-      updateCourseSections();
+      await updateCourseSections();
       if (status !== "published") {
         await CourseServices.updateCourseStatus(id, "published", token);
         navigate("/courses");

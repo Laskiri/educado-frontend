@@ -12,7 +12,7 @@ export default function CertificateList() {
   const [loading, setLoading] = useState(true); //loading istedet for emptyState? emptyState er fra CertificateEmpty
 
   useEffect(() => {
-    CertificateService.getUserCertificates(localStorage.getItem("id") || "")
+    CertificateService.getUserCertificates(localStorage.getItem("id") || "", "") // er der noget galt med det her kald?
       .then((res: Certificate[]) => {
         console.log("Fetched Certificates:", res); // Log the fetched certificates
         setCertificates(res);

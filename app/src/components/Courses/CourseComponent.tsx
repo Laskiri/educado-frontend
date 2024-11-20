@@ -22,6 +22,7 @@ import GenericModalComponent from "../GenericModalComponent";
 // Interface
 import { Course } from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
+import { string } from "yup";
 
 interface CourseComponentProps {
   token: string;
@@ -194,6 +195,9 @@ export const CourseComponent = ({
     }
   };
 
+  const createCertificate = async (data: Course) => {};
+  //TODO lav den he rfunktion med kald itl certificate.sercives createCertificate
+
   // Creates new course and navigates to section creation for it
 
   const handleCreateNewCourse = async (data: Course) => {
@@ -201,14 +205,8 @@ export const CourseComponent = ({
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
 
-      // Create a certificate after course creation
-      const certificateData = {
-        creatorId: getUserInfo().id, // skal ændres til at kurset skal være taget af én waste picker inden certificatet bliver lavet, eller kommer frem?
-        courseId: newCourse.data._id,
-      };
-
-      await CertificateService.createCertificate(certificateData); // Call to create the certificate
-      console.log("Certificate created successfully"); // Log success or handle accordingly
+      await createCertificate(newCourse.data);
+      console.log("Certificate created successfully");
 
       // Upload image with the new id
       handleFileUpload(newCourse.data._id);
