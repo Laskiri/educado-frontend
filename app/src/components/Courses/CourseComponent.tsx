@@ -197,7 +197,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
   // Creates new draft course and navigates to course list
   const handleCreateNewDraft = async (course: Course) => {
     try {
-      await createCourse(course, token);
+      const newCourse = getFormattedCourse();
+      console.log("new course", newCourse);
+
+      const res = await createCourse(newCourse, token);
+      console.log(res);
       //Upload image with the new id
 
       navigate("/courses");

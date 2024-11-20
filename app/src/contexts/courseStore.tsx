@@ -118,11 +118,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
 
   const getFormattedCourse = () => {
-    const creator = localStorage.getItem("id");
-    if(creator === null) {
-      throw new Error("No creator found")
-    }
-    const formattedCourse = formatCourse(course, sections, lectures, exercises, media, creator);
+    const formattedCourse = formatCourse(course, sections, lectures, exercises, media);
     return formattedCourse;
   }
 

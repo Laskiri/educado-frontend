@@ -5,7 +5,7 @@ import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo } from "../helpers/userInfo";
 
 //interfaces
-import { Course } from "../interfaces/Course"
+import { Course, FormattedCourse } from "../interfaces/Course"
 
 
 /**
@@ -13,22 +13,21 @@ import { Course } from "../interfaces/Course"
  */
 
 
-const createCourse = async (data: Course, token: string) => {
-  return await axios.put(
-
-    `${BACKEND_URL}/api/courses`,
-    {
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      difficulty: data.difficulty,
-      creator: data.creator,
-      status: data.status
-    },
-    { headers: { Authorization: `Bearer ${token}`, token: localStorage.getItem('token') || '' } }
-  );
-
+const createCourse = async (newCourse: FormattedCourse, token: string) => {
+  const { id: userId } = getUserInfo();
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/courses/create/new`,
+      { course: newCourse, userId },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error creating course:", error);
+    throw error;
+  }
 };
+
 
 
 /**

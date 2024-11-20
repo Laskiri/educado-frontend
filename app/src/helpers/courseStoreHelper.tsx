@@ -1,4 +1,5 @@
 import { Course, Section, Component, Lecture, Exercise, Media, FormattedCourse } from "../interfaces/Course";
+import { getUserInfo } from "./userInfo";
 
 export const formatCourse = (
   course: Course,
@@ -6,15 +7,14 @@ export const formatCourse = (
   lectures: Lecture[],
   exercises: Exercise[],
   media: Media[],
-  creator: string
 ): FormattedCourse => {
   return {
-    courseInfo: formatCourseInfo(course, creator),
+    courseInfo: formatCourseInfo(course),
     sections: formatSections(course, sections, lectures, exercises, media),
   };
 };
 
-const formatCourseInfo = (course: Course, creator : string) => {
+const formatCourseInfo = (course: Course) => {
   return {
     _id : course._id,
     title: course.title,
@@ -23,7 +23,6 @@ const formatCourseInfo = (course: Course, creator : string) => {
     description: course.description,
     coverImg: course.coverImg ?? "",
     status: course.status,
-    creator: creator
   };
 };
 
