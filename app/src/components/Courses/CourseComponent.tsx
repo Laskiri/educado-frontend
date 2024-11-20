@@ -195,18 +195,12 @@ export const CourseComponent = ({
     }
   };
 
-  const createCertificate = async (data: Course) => {};
-  //TODO lav den he rfunktion med kald itl certificate.sercives createCertificate
-
   // Creates new course and navigates to section creation for it
 
   const handleCreateNewCourse = async (data: Course) => {
     try {
       const newCourse = await CourseServices.createCourse(data, token);
       addNotification("Curso criado com sucesso!");
-
-      await createCertificate(newCourse.data);
-      console.log("Certificate created successfully");
 
       // Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -215,6 +209,9 @@ export const CourseComponent = ({
       setTickChange(1);
       updateHighestTick(1);
       navigate(`/courses/manager/${newCourse.data._id}/1`);
+
+      await CertificateService.createCertificate(newCourse.data, "");
+      console.log("Certificate created successfully");
     } catch (err) {
       toast.error(err as string);
     }
