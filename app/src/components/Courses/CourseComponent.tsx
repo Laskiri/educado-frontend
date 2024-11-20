@@ -288,6 +288,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
+        width="w-[500px]"
         onConfirm={async () => {
           await dialogConfirm();
         }}

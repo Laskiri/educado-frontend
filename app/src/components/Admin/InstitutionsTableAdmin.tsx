@@ -120,6 +120,7 @@ const AddInstitutionButton = () => {
           contentText=""
           confirmBtnText="Adicionar"
           loading={isLoading}
+          width="w-[450px]"
           children={
             <form className="form-control flex flex-col space-y-4">
               <div className="flex flex-col space-y-2">
@@ -301,6 +302,7 @@ export const InstitutionsTableAdmin = () => {
             title="Update Instituições"
             confirmBtnText="Atualizar"
             loading={isLoading}
+            width="w-[450px]"
             children={
               <form className="form-control flex flex-col space-y-4">
                 <div className="flex flex-col space-y-2">
@@ -389,7 +391,7 @@ export const InstitutionsTableAdmin = () => {
             loading={isLoading}
             title="Deletando usuário"
             contentText="Você tem certeza de que deseja excluir este Instituições?"
-            width="w-[600px]"
+            width="w-[550px]"
           />
         )}
       </>
