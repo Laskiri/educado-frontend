@@ -87,6 +87,7 @@ export interface FormattedCourse {
     description: string;
     coverImg: string;
     status: string;
+    creator: string;
   };
   sections: {
     _id: string;
