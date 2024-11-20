@@ -41,7 +41,7 @@ const PersonalInsights = (props: PersonalInsightsProps) => {
         case 'this_month':
           return courseDate.getMonth() === now.getMonth() && 
                  courseDate.getFullYear() === now.getFullYear();
-        case 'last_month': //TODO: FIX LOGIC FOR LAST MONTH 
+        case 'last_month': 
           const lastMonth = new Date(now.setMonth(now.getMonth() - 1));
           return courseDate.getMonth() === lastMonth.getMonth() && 
                  courseDate.getFullYear() === lastMonth.getFullYear();
@@ -75,7 +75,7 @@ const PersonalInsights = (props: PersonalInsightsProps) => {
 
   useEffect(() => {
     async function fetchAverageRating() {
-        const rating = await getAverageRatingOfCC('672b727ad51069fc04ceb8eb', selectedPeriod);
+        const rating = await getAverageRatingOfCC(userInfo.id, selectedPeriod);
         setAverageRating(rating);
     }
     fetchAverageRating();
