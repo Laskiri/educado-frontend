@@ -5,15 +5,16 @@ export const formatCourse = (
   sections: Section[],
   lectures: Lecture[],
   exercises: Exercise[],
-  media: Media[]
+  media: Media[],
+  creator: string
 ): FormattedCourse => {
   return {
-    courseInfo: formatCourseInfo(course),
+    courseInfo: formatCourseInfo(course, creator),
     sections: formatSections(course, sections, lectures, exercises, media),
   };
 };
 
-const formatCourseInfo = (course: Course) => {
+const formatCourseInfo = (course: Course, creator : string) => {
   return {
     _id : course._id,
     title: course.title,
@@ -22,6 +23,7 @@ const formatCourseInfo = (course: Course) => {
     description: course.description,
     coverImg: course.coverImg ?? "",
     status: course.status,
+    creator: creator
   };
 };
 
