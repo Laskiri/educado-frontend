@@ -6,6 +6,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        personalInsights: 'Montserrat, sans-serif',
+      },
       colors: {
         primary: '#166276',
         secondary: '#F1F9FB',
