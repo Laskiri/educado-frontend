@@ -1,5 +1,5 @@
 import {Icon} from '@mdi/react';
-import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
+import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog, mdiChatQuestionOutline } from '@mdi/js';
 import { Link } from 'react-router-dom'
 import useAuthStore from '../../contexts/useAuthStore'
 import { getUserInfo } from '../../helpers/userInfo';
@@ -156,6 +156,20 @@ export const Navbar = () => {
                   <Link to="/profile" className="text-grayDark text-lg hover:bg-grayLight">
                     <Icon path={mdiAccountCog} size={1} color="grayMedium" />
                     <span>Editar perfil</span>
+                  </Link>
+                </li>
+                <hr className="w-full border-grayLight my-3" />
+                <li className="w-full">
+                  <Link to="/certificates" className="text-grayDark text-lg hover:bg-grayLight">
+                    <Icon path={mdiCertificate} size={1} color="grayMedium" />
+                    <span>Meus certificados</span>
+                  </Link>
+                </li>
+                <hr className="w-full border-grayLight my-3" />
+                <li className="w-full">
+                  <Link to="/feedback" className="text-grayDark text-lg hover:bg-grayLight">
+                    <Icon path={mdiChatQuestionOutline} size={1} color="grayMedium" />
+                    <span>Feedback</span>
                   </Link>
                 </li>
                 <hr className="w-full border-grayLight my-3" />
