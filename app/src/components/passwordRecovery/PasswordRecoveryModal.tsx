@@ -59,9 +59,9 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
         validateEmail(email);
       } catch (err: any) {
         if (err.message === 'Email inválido') { // Invalid email
-          setEmailError('Formato de email inválido. Deve ser no estilo exemplo@mail.com'); // Invalid email format. Should be like example@mail.com
+          setEmailError('Email inválido'); // Invalid email
         } else {
-          setEmailError(err.message);
+          setEmailError('Formato de email inválido. Deve ser no estilo exemplo@mail.com'); // Invalid email format. Should be like example@mail.com
         }
         return;
       }
@@ -181,6 +181,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
           emailError={emailError}
           emailSent={emailSent}
           setCodeEntered={setCodeEntered}
+          setEmailError={setEmailError} 
         />
       ) : (
         <NewPasswordScreen

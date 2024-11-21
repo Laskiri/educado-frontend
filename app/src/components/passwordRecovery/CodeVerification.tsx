@@ -37,7 +37,7 @@ export default function CodeVerification(props: propsType) : JSX.Element {
             value={props.email} 
             onChange={props.setEmail} 
           />
-          {props.emailError && <p className="text-error">{props.emailError}</p>} {/* Display email error in red */}
+          {props.emailError && <p id="email-error" className="text-error">{props.emailError}</p>} {/* Display email error in red */}
         </div>
       )}
       {props.emailSent &&
