@@ -35,13 +35,9 @@ export default function CodeVerification(props: propsType) : JSX.Element {
             placeholder="Insira sua Email" // Enter your email
             label="Email"
             value={props.email} 
-            onChange={(value) => {
-              props.setEmail(value);
-              if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-                props.setEmailError('Formato de email inválido. Deve ser no estilo exemplo@mail.com'); // Invalid email format. Should be like example@mail.com
-              }
-            }} 
+            onChange={props.setEmail} 
           />
+          {props.emailError && <p className="text-error">{props.emailError}</p>} {/* Display email error in red */}
         </div>
       )}
       {props.emailSent &&
