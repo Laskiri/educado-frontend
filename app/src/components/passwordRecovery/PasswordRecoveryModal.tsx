@@ -58,7 +58,11 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
       try {
         validateEmail(email);
       } catch (err: any) {
-        setEmailError(err.message);
+        if (err.message === 'Email inválido') { // Invalid email
+          setEmailError('Formato de email inválido. Deve ser no estilo exemplo@mail.com'); // Invalid email format. Should be like example@mail.com
+        } else {
+          setEmailError(err.message);
+        }
         return;
       }
       await sendEmail(email);
@@ -72,7 +76,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
       try {
         validatePasswords(password, passwordConfirmation)
       } catch (err: any) {
-        // Password needs to contain at least one letter
+        // Remove the check for password containing at least one letter
         if(err.message === 'Os campos de senha precisam ser iguais') {
           setPasswordConfirmationError(err.message);
           return;
@@ -165,7 +169,7 @@ const PasswordRecoveryModal = (props: propTypes) : JSX.Element => {
 
   {/* Modal content */}
   <HandleContinueContext.Provider value={handleContinue}>
-    <div className="bg-gradient-to-b p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%] relative z-10">
+    <div className="bg-[#F1F9FB] p-10 rounded-xl w-11/12 xl:max-w-[35%] overflow-scroll lg:max-w-[40%] md:max-w-[50%] sm:max-w-[60%] max-w-[80%] max-h-[100%] relative z-10">
       <h3 className="font-bold text-xl mb-4">Redefinção de senha</h3> {/** Reset password */}
 
       {!codeVerified ? (
