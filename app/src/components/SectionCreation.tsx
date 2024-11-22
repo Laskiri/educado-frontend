@@ -3,12 +3,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { useApi } from '../hooks/useAPI';
+import CourseService from '@services/course.services';
 
 import { Course } from "../interfaces/Course";
 import { SectionForm } from "./dnd/SectionForm";
 import { SectionList } from "./dnd/SectionList";
-
-import CourseServices from "../services/course.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
@@ -36,13 +35,8 @@ export const SectionCreation = ({
   setTickChange,
 }: Inputs) => {
   const { id: urlId } = useParams<{ id: string }>();
-  const {course, updateCachedCourseSections } = useCourse();
-  if (!course.sections) return null;
-
+  const {course, getFormattedCourse } = useCourse();
   const id = propId === "0" ? urlId : propId;
-  const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
-    []
-  );
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -50,27 +44,22 @@ export const SectionCreation = ({
   const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
-  const [status, setStatus] = useState<string>(course.status);
+
+  const { call: createCourse, isLoading: createLoading} = useApi(CourseService.createCourse);
+  const { call: updateCourse, isLoading: updateLoading} = useApi(CourseService.updateCourse);
+  const existingCourse = id !== "0";
+  const courseCacheLoading = Object.keys(course).length = 0;
+
+
+  const status = course.status;
 
   const navigate = useNavigate();
-  function addOnSubmitSubscriber(callback: () => void) {
-    //console.log("add subscriber");
-    setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
-  }
 
   useEffect(() => {
     console.log("SectionCreation useEffect");
   }, []);
   // Notification
   const { addNotification } = useNotifications();
-
-
-  //Callbacks
-  const { call: updateCourseDetail, isLoading: submitLoading, error } = useApi(CourseServices.updateCourseDetail);
-
-  function notifyOnSubmitSubscriber() {
-    onSubmitSubscribers.forEach((cb) => cb());
-  }
 
   const handleDialogEvent = (
     dialogText: string,
@@ -79,19 +68,20 @@ export const SectionCreation = ({
   ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
-    
-    async function confirmFunction() {
-      onConfirm();
-     await updateCourseDetail(course, id, token);
-    }
-
-    setDialogConfirm(() => confirmFunction);
+    setDialogConfirm(() => onConfirm);
     setShowDialog(true);
   };
 
   const handleDraftConfirm = async () => {
     try {
-      await updateCourseSections();
+      const updatedCourse = getFormattedCourse();
+      if (!existingCourse) {
+        await createCourse(updatedCourse, token);
+      }
+      else {
+        await updateCourse(updatedCourse, token
+        );    }
+
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -100,25 +90,21 @@ export const SectionCreation = ({
   };
 
   const handlePublishConfirm = async () => {
+    const updatedCourse = getFormattedCourse();
+    console.log("updatedCourse", updatedCourse);
+    updatedCourse.courseInfo.status = "published";
     try {
-      await updateCourseSections();
-      if (status !== "published") {
-        await CourseServices.updateCourseStatus(id, "published", token);
-        navigate("/courses");
-        addNotification("Curso publicado com sucesso!");
-      } else {
-        navigate("/courses");
-        addNotification("Seções salvas com sucesso!");
-      }
-    } catch (err) {
+        if (!existingCourse) {
+          await createCourse(updatedCourse, token)
+        }
+        else {
+          await updateCourse(updatedCourse, token)
+        }
+    }
+    catch (err) {
       console.error(err);
     }
   };
-
-  async function updateCourseSections(): Promise<void> {
-    updateCachedCourseSections(course.sections!);
-    notifyOnSubmitSubscriber();
-  }
 
   function changeTick(tick: number) {
     setTickChange(tick);
@@ -135,9 +121,7 @@ export const SectionCreation = ({
 
   // Redirect to courses page when setLeaving is s
 
-
-
-  if (Object.keys(course).length === 0)
+  if (courseCacheLoading)
     return (
       <Layout meta="course overview">
         <Loading />
@@ -158,7 +142,7 @@ export const SectionCreation = ({
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
-        loading={submitLoading}
+        loading={createLoading || updateLoading}
       />
 
       <div className="">
@@ -189,7 +173,6 @@ export const SectionCreation = ({
           <div className="flex w-full flex-col space-y-2 ">
             <SectionList
               sections={course.sections}
-              addOnSubmitSubscriber={addOnSubmitSubscriber}
             />
             <SectionForm/>
           </div>

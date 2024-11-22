@@ -52,13 +52,15 @@ const CourseManager = () => {
                 status: "draft",
                 estimatedHours: 0,
                 sections: [],
-                coverImg: "0_c",
+                coverImg: "",
+                _id: "0"
             }
             updateCourse(data)
             return
         }
         const fetchCourseData = async () => {
             const data = await getCourseDetails(id, token)
+            console.log("CourseManager useEffect fetchCourseData", data)
             updateCourse(data) 
         }
         fetchCourseData()

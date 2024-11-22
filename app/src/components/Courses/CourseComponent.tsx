@@ -43,46 +43,41 @@ interface CourseComponentProps {
  * @returns HTML Element
  */
 
-export const CourseComponent = ({ token, id, setTickChange, setId, updateHighestTick }: CourseComponentProps) => {
-  const {course, updateCourse, getFormattedCourse } = useCourse();
+export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProps) => {
+  const {course, updateCourseField, getFormattedCourse } = useCourse();
   const { addMediaToCache, updateMedia, getMedia } = useMedia();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
-  const [statusSTR, setStatusSTR] = useState<string>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [dialogMessage, setDialogMessage] = useState<string>("");
-  const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
+  const [dialogConfirm, setDialogConfirm] = useState<() => void>(async () => {});
   const [cancelBtnText] = useState("Cancelar");
   const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   
-
-  const [charCount, setCharCount] = useState<number>(0);
-  const [isLeaving, setIsLeaving] = useState<boolean>(false);
-
-  
-
   const courseImg = getMedia(id);
   const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
 
   // Callbacks
   const { call: fetchCoverImg} = useApi(StorageServices.getMedia);
-  const { call: createCourse, isLoading: submitLoading} = useApi(CourseServices.createCourse);
+  const { call: createCourse, isLoading: createLoading} = useApi(CourseServices.createCourse);
+  const { call: saveCourseDraft, isLoading: saveLoading} = useApi(CourseServices.updateCourse);
 
+  const errors = {
+    title: course.title === "",
+    description: course.description === "",
+    category: course.category === "",
+    difficulty: course.difficulty === 0,
+    coverimg: !courseImg,
+  };
 
-
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Course>();
-
+  const isMissingRequiredFields = Object.values(errors).some((error) => error);
   // Notification
   const { addNotification } = useNotifications();
 
   const existingCourse = id != "0";
   const courseCached = Object.keys(course).length > 0;
+  const charCount = course?.description?.length ?? 0;
   const navigate = useNavigate();
 
 
@@ -126,31 +121,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     );
   }, []);
 
-  useEffect(() => {
-    if (courseCached) {
-      console.log("Course cached", course);
-      setStatusSTR(course.status);
-      setCharCount(course.description.length);
-    }
-  }, [course]);
-
-  const formatCourse = (course: Partial<Course>): Course => {
-    return {
-      title: course.title ?? '',
-      description: course.description ?? '',
-      category: course.category ?? '',
-      difficulty: course.difficulty ?? 0,
-      status: course.status ?? 'draft',
-      creator: course.creator ?? '',
-      estimatedHours: course.estimatedHours ?? 0,
-      coverImg: course.coverImg ?? '',
-    };
-  };
 
   //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
   const handleFieldChange = (field: keyof Course, value: string | number | File | null) => {
     const updatedData = { ...course, [field]: value };
-    updateCourse(formatCourse(updatedData));
+    updateCourseField(updatedData);
   };
   const handleDialogEvent = (
     message: string,
@@ -162,48 +137,36 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     setDialogConfirm(() => onConfirm);
     setShowDialog(true);
   };
-
+ 
   const handleImageUpload = (file: File | null) => {
     console.log("file", file);
     if (!file) return;
     const newMedia = { id: id, file: file, parentType: "c" };
     if (!courseImg) {
-      console.log("adding media");
       addMediaToCache(newMedia);
     }
     else {
-      console.log("updating media");
       updateMedia(newMedia);
     }
   }
 
-
-  // Updates existing draft of course and navigates to course list
-  const handleSaveExistingDraft = async (changes: Course) => {
+  const saveExistingDraft = async () => {
     try {
-      const newCourse = getFormattedCourse();
-      // Do somethign with Formated Course
-
-
-      //Upload image with the old id
+      const updatedCourse = getFormattedCourse();
+      await saveCourseDraft(updatedCourse, token);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
       toast.error(err as string);
-
     }
   };
 
   // Creates new draft course and navigates to course list
-  const handleCreateNewDraft = async (course: Course) => {
+  const createNewDraft = async () => {
     try {
       const newCourse = getFormattedCourse();
-      console.log("new course", newCourse);
-
-      const res = await createCourse(newCourse, token);
-      console.log(res);
-      //Upload image with the new id
-
+      console.log("newCourse", newCourse);
+      await createCourse(newCourse, token);
       navigate("/courses");
       addNotification("Seção deletada com sucesso!");
     } catch (err) {
@@ -211,72 +174,22 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
     }
   }
 
-  // Creates new course and navigates to section creation for it
-  const handleCreateNewCourse = async (course: Course) => {
-    try {
-      const newCourse = getFormattedCourse();
-      // call some service or something with the new formatted course
-      setTickChange(1);
-      updateHighestTick(1);
-      navigate(`/courses/manager/${newCourse.courseInfo._id}/1`);
-    } catch (err) {
-      toast.error(err as string);
-    }
+  const handleSave = () => {
+    const funcCall = existingCourse ? saveExistingDraft : createNewDraft;
+    handleDialogEvent(
+      "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
+      funcCall,
+      "Salvar como rascunho "
+    );
   };
 
-  //Used to prepare the course changes before sending it to the backend
-  const prepareCourseChanges = (course: Course): Course => {
-    return {
-      title: course.title,
-      description: course.description,
-      category: course.category,
-      difficulty: course.difficulty,
-      status: statusSTR,
-      creator: getUserInfo().id,
-      estimatedHours: course.estimatedHours,
-      coverImg: id + "_" + "c",
-    };
+  const navigateToSections = () => { 
+    setTickChange(1);
+    navigate(`/courses/manager/${id}/1`);
   }
 
-  const onSubmit: SubmitHandler<Course> = (course) => {
-    const changes = prepareCourseChanges(course);
-    if (isLeaving) {
-      
-      // left button pressed
-      // StorageService.deleteFile(id, token);
-  
-      // Update course details
-      // When the user press the button to the right, the tick changes and it goes to the next component
-      // When the user press the draft button, it saves as a draft and goes back to the course list
-      if (existingCourse && statusSTR === "draft") {
-        handleDialogEvent(
-          "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-          handleSaveExistingDraft.bind(this, changes),
-          "Salvar como rascunho "
-        );
-      } else if (!existingCourse && statusSTR === "draft") {
-        handleDialogEvent(
-          "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-          handleCreateNewDraft.bind(this, changes),
-          "Salvar como rascunho "
-        );
-      }
-      setIsLeaving(false);
-    } else {
-      updateCourse(changes);
-      // right button pressed
-      // Creates new course and navigates to section creation for it
-      if (!existingCourse) {
-        handleCreateNewCourse(changes);
-      } else {
-        // navigates to section creation for existing course
-        setTickChange(1);
-        navigate(`/courses/manager/${id}/1`);
-      }
-    }
-  };
 
-  if (Object.keys(course).length === 0  && existingCourse)
+  if (!courseCached && existingCourse)
     return (
       <Layout meta="course overview">
         <Loading />
@@ -292,12 +205,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
-        onConfirm={async () => {
-          await dialogConfirm();
-        }}
+        onConfirm={dialogConfirm}
         onClose={() => {
           setShowDialog(false);
         }} 
+        loading = {saveLoading || createLoading}
       />
       <div className="w-full flex flex-row items-center justify-between py-5">
         <div className="flex items-center gap-2">
@@ -316,12 +228,8 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
         <CourseGuideButton />
       </div>
 
-      {/*Field to input the title of the new course*/}
-      <form
-        className="flex h-full flex-col justify-between space-y-4"
-        onSubmit={handleSubmit(onSubmit)}
-      >
-        {/*White bagground*/}
+    
+      <div className="flex h-full flex-col justify-between space-y-4"> 
         <div className="w-full float-right bg-white rounded-lg shadow-lg justify-between space-y-4 p-10">
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor="title">Nome do curso <span className="text-red-500">*</span></label> {/*Title*/}
@@ -331,7 +239,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               defaultValue={course.title}
               placeholder={course.title}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
             />
             {errors.title && (
@@ -347,7 +254,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               <select id="difficulty-field" 
               defaultValue={course.difficulty}
               className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-              {...register("difficulty", { required: true })}
               onChange={(e) => handleFieldChange('difficulty', parseInt(e.target.value))}
               >
                 {/*Hard coded options by PO, should be changed to get from db*/}
@@ -365,7 +271,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               <select id="category-field"
                 defaultValue={course.category}
                 className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...register("category", { required: true })}
                 onChange={(e) => handleFieldChange('category', e.target.value)}
               >
                 {/*Hard coded options by PO, should be changed to get from db*/}
@@ -387,9 +292,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
             defaultValue={course.description}
             placeholder={course.description}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
-            {...register("description", { required: true })}
             onChange={(e) => {
-              setCharCount(e.target.value.length);
               handleFieldChange('description', e.target.value);
             }}
             />
@@ -408,7 +311,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
               <Dropzone inputType='image' id={id ?? "0"} previewFile={previewCourseImg} onFileChange={handleImageUpload} />
-            {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
+            {errors.coverimg && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>
         {/*Create and cancel buttons*/}
@@ -426,39 +329,36 @@ export const CourseComponent = ({ token, id, setTickChange, setId, updateHighest
 
             <label
               htmlFor="course-create"
-              className={` ${
-                statusSTR === "published" ? "invisible pointer-events-none" : ""
-              } whitespace-nowrap ml-42 underline py-2 px-4 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded`}
+              className={`${
+              course.status === "published" ? "invisible pointer-events-none" : ""
+              } whitespace-nowrap ml-42 underline py-2 px-4 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 rounded ${isMissingRequiredFields ? 'opacity-70' : ''}`}
             >
               <button
-                id="SaveAsDraft"
-                onClick={() => setIsLeaving(true)}
-                type="submit"
-                className="underline"
+              id="SaveAsDraft"
+              onClick={handleSave}
+              disabled={isMissingRequiredFields}
+              className="underline"
               >
-                Salvar como Rascunho {/** Save as draft */}
+              Salvar como Rascunho {/** Save as draft */}
               </button>
             </label>
 
             <label
-          htmlFor="course-create"
-          className="whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-        >
-          <button
-            type="submit"
-            id="addCourse"
-            disabled={submitLoading}
-            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
-          >
-            {submitLoading ? (
-              <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
-            ) : null}
-            Adicionar seções
-          </button>
-        </label>
+              htmlFor="course-create"
+              className={`whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${isMissingRequiredFields ? 'opacity-70' : ''}`}
+            >
+              <button
+              onClick={navigateToSections}
+              disabled={isMissingRequiredFields}
+              id="addCourse"
+              className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
+              >
+              Adicionar seções
+              </button>
+            </label>
           </div>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

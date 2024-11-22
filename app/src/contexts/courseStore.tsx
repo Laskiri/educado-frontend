@@ -16,6 +16,7 @@ interface CourseContextProps {
   course: Course;
   getFormattedCourse: () => FormattedCourse;
   updateCourse: (course: Course) => void;
+  updateCourseField: (fieldChange: Partial<Section>) => void;
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
   createNewSection: () => Section;
@@ -57,6 +58,7 @@ const CourseContext = createContext<CourseContextProps>({
   course: {} as Course,
   getFormattedCourse: () => ({} as FormattedCourse),
   updateCourse: () => {},
+  updateCourseField: () => {},
   updateCachedCourseSections: () => {},
   sections: [] as Section[],
   createNewSection: () => ({
@@ -128,9 +130,15 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       ...newCourse,
-      creator: prevCourse?.creator ?? "",
     }));
   };
+
+  const updateCourseField = (fieldChange: Partial<Section>) => {
+    setCourse((prevCourse) => ({
+      ...prevCourse,
+      ...fieldChange,
+    })); 
+  }
 
   const updateCachedCourseSections = (newSections: string[]) => {
 
@@ -396,6 +404,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     course,
     getFormattedCourse,
     updateCourse,
+    updateCourseField,
     updateCachedCourseSections,
     sections,
     createNewSection,
@@ -437,6 +446,7 @@ export const useCourse = () => {
     course: context.course,
     getFormattedCourse: context.getFormattedCourse,
     updateCourse: context.updateCourse,
+    updateCourseField: context.updateCourseField,
     updateCachedCourseSections: context.updateCachedCourseSections,
   };
 };

@@ -34,12 +34,10 @@ import { useSections, useCourse } from "@contexts/courseStore";
 
 interface Props {
   sections: Array<string>;
-  addOnSubmitSubscriber: Function;
 }
  
 export const SectionList = ({
   sections,
-  addOnSubmitSubscriber,
 }: Props) => {
   // States
   const [activeId, setActiveId] = useState<string | null>(null);
@@ -110,7 +108,6 @@ export const SectionList = ({
             <SortableItem
               key={section}
               sid={section}
-              addOnSubmitSubscriber={addOnSubmitSubscriber}
               savedSID={savedSID}
               setSavedSID={setSavedSID}
               handleSectionDeletion={handleSectionDeletion}

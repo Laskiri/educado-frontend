@@ -19,7 +19,7 @@ export interface Course {
   dateUpdated?: Date;
   coverImg?: string;
   category: string;
-  sections?: string[];
+  sections: string[];
   creator?: string;
   status: string;
   estimatedHours?: number;
@@ -97,6 +97,6 @@ export interface FormattedCourse {
       compType: string;
       component: Lecture | Exercise;
       video: Media | null;
-    }[];
-  }[];
+    }[]
+  }[] | null;
 }

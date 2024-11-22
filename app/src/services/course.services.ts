@@ -28,6 +28,22 @@ const createCourse = async (newCourse: FormattedCourse, token: string) => {
   }
 };
 
+const updateCourse = async (updatedCourse: FormattedCourse, token: string) => {
+  const courseId = updatedCourse.courseInfo._id;
+  console.log("updatedCourse", updatedCourse);
+  try {
+    const res = await axios.post(
+      `${BACKEND_URL}/api/courses/update/${courseId}`,
+      { updatedCourse },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
+    return res.data;
+  } catch (error) {
+    console.error("Error creating course:", error);
+    throw error;
+  }
+}
+
 
 
 /**
@@ -120,6 +136,7 @@ const deleteCourse = async (id: string | undefined, token: string) => {
 // Export all methods
 const CourseServices = Object.freeze({
   createCourse,
+  updateCourse,
   getAllCourses,
   getCourseDetail,
   getCourseCategories,

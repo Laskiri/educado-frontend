@@ -9,20 +9,24 @@ export const formatCourse = (
   media: Media[],
 ): FormattedCourse => {
   return {
-    courseInfo: formatCourseInfo(course),
+    courseInfo: formatCourseInfo(course, media),
     sections: formatSections(course, sections, lectures, exercises, media),
   };
 };
 
-const formatCourseInfo = (course: Course) => {
+const formatCourseInfo = (course: Course, media: Media[]) => {
+  console.log(media);
+  const coverIMG = media.find((media) => media.parentType === "c" && media.id === course._id) || null
+  console.log("coverIMG", coverIMG);
   return {
-    _id : course._id,
+    _id : course._id ?? "",
     title: course.title,
     category: course.category,
     difficulty: course.difficulty,
     description: course.description,
-    coverImg: course.coverImg ?? "",
+    coverImg: coverIMG ?? "",
     status: course.status,
+    creator: course.creator ?? "",
   };
 };
 
@@ -33,16 +37,13 @@ const formatSections = (
   exercises: Exercise[],
   media: Media[]
 ) => {
-  const uniqueSections = new Set<string>();
-  const filteredSections = sections.filter((section) => {
-    if (uniqueSections.has(section._id)) {
-      return false;
-    } else {
-      uniqueSections.add(section._id);
-      return true;
-    }
-  });
-  return filteredSections.map((section) => {
+  if (course.sections.length === 0) return [];
+  let haventCachedSections = false;
+
+  const formattedSections = course.sections.map((sectionId) => {
+    const section = sections.find((sec) => sec._id === sectionId);
+    if (!section) { haventCachedSections = true; return {_id: "", title: "", description: "", components: [] }; }
+
     return {
       _id: section._id,
       title: section.title,
@@ -50,6 +51,8 @@ const formatSections = (
       components: formatComponents(section.components, lectures, exercises, media),
     };
   });
+  // This is in case that the sectionspage hasn't been accessed yet and courseInfo changes are tried to be made, then the sections are not cached yet.
+  return haventCachedSections ? null : formattedSections;
 };
 
 const formatComponents = (

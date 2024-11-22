@@ -38,13 +38,12 @@ import { getUserToken } from "@helpers/userInfo";
 interface Props {
   sid: string;
   components: Component[];
-  addOnSubmitSubscriber: Function;
+
 }
 
 export const ComponentList = ({
   sid,
-  components,
-  addOnSubmitSubscriber,
+  components
 }: Props) => {
   // States
   const [activeId, setActiveId] = useState(null);
@@ -81,10 +80,6 @@ export const ComponentList = ({
       updateCachedSectionComponents(sid, newComponents);
     }
   };
-
-  useEffect(() => {
-    addOnSubmitSubscriber(() => onSubmit());
-  }, []);
 
   return (
     <div className="w-full">

@@ -36,14 +36,12 @@ import { set } from "cypress/types/lodash";
 interface Props {
   sid: string;
   savedSID: string;
-  addOnSubmitSubscriber: Function;
   setSavedSID: Function;
   handleSectionDeletion: Function
 }
 
 export function SortableItem({
   sid,
-  addOnSubmitSubscriber,
   savedSID,
   setSavedSID,
   handleSectionDeletion,
@@ -138,9 +136,6 @@ export function SortableItem({
     if (cachedSection?.title === "Nova seção") {
       setArrowDirection(mdiChevronUp);
     }
-    addOnSubmitSubscriber(() => {
-      subRef.current?.click();
-    });
   }, []);
 
   //If data is not found yet, show a loading message.
@@ -247,7 +242,6 @@ export function SortableItem({
           <ComponentList
             sid={sid}
             components={cachedComponents ?? []}
-            addOnSubmitSubscriber={addOnSubmitSubscriber}
           />
 
           {/**ADD lecture and exercise to the section */}
