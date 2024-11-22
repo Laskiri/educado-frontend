@@ -35,7 +35,7 @@ const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
                     <hr className="mt-2" />
                     <div className="flex flex-row text-[11px] font-extralight justify-between mt-1">
                         <p>🏅80 pontos</p>
-                        <p>⚡️40% concludído</p>
+                        <p>⚡️40% concluído</p>
                     </div>
                 </div>
             </div>
