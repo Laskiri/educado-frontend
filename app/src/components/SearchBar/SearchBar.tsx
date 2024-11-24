@@ -4,9 +4,8 @@ import { MdSearch } from "react-icons/md";
 export const SearchBar = ({
   sortingOptions,
   placeholderText,
-  searchFn,
-} // sortingFn,
-: {
+  searchFn, // sortingFn,
+}: {
   sortingOptions: { displayName: string; htmlValue: string }[];
   placeholderText?: string;
   searchFn: (searchString: string) => void;
@@ -20,7 +19,7 @@ export const SearchBar = ({
   }, [searchTerm]);
 
   return (
-    <div className="flex flex-wrap justify-end gap-2">
+    <div className="flex flex-wrap justify-end items-center gap-2 p-1">
       <select className="select select-bordered">
         {sortingOptions.map((option) => (
           <option key={option.htmlValue} value={option.htmlValue}>
