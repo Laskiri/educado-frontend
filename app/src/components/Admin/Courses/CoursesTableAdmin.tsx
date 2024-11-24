@@ -38,14 +38,15 @@ export const CoursesTableAdmin = () => {
 
     const filteredItems = coursesResponse.filter((course) => {
       if (searchString === "") return course;
-      //what should be searchable?
+
+      // this will be typed in a better way when a hook is made
       const fieldsToCheck = [
         "title",
         "creator",
         "category",
         "numOfSubscriptions",
         "rating",
-      ] as Array<Partial<keyof typeof course>>;
+      ] as const;
 
       const user = course.creator?.baseUser;
       if (user) {
@@ -55,6 +56,8 @@ export const CoursesTableAdmin = () => {
 
       return fieldsToCheck.some((field) => {
         const valueToSearch = course[field];
+
+        if (valueToSearch === null || valueToSearch === undefined) return false;
 
         switch (typeof valueToSearch) {
           case "string":
