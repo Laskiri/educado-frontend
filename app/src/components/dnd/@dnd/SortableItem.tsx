@@ -38,6 +38,7 @@ interface Props {
   addOnSubmitSubscriber: Function;
   setSavedSID: Function;
   handleSectionDeletion: Function;
+  sectionNumber: number;
 }
 
 export function SortableItem({
@@ -46,6 +47,7 @@ export function SortableItem({
   savedSID,
   setSavedSID,
   handleSectionDeletion,
+  sectionNumber,
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
   const [title, setTitle] = useState<string>();
@@ -146,28 +148,28 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className="overflow-visible collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
+      <div className="overflow-hidden collapse w-full min-h-16 rounded border border-primary border-bg-white shadow-lg rounded-lg my-4">
         <input
           type="checkbox"
-          className="peer w-4/5 h-full"
-          defaultChecked={sectionData.title === "Nova seção"}
+          className="peer w-full h-full"
+          defaultChecked={sectionData.title === ""}
           onChange={() => changeArrowDirection()}
           ref={openRef}
         />
 
-        <div className="collapse-title flex flex-row-2 rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white ">
-          <div className="flex w-5/6 ">
+        <div className="collapse-title flex justify-center items-center flex-row-2 rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white h-16 ">
+          <div className="flex">
             <SectionArrowIcon
               setArrowDirection={setArrowDirection}
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{title ?? sectionData.title}</p>
+            <p className="font-semibold">{`Seção ${sectionNumber}: ${title ?? sectionData.title ?? "Nome da seção"}`}</p>
           </div>
-          <div className="flex collapse">
+          <div className="flex gap-0 ml-auto -mr-9 z-10">
             <div
               onClick={() => handleSectionDeletion(sid)}
-              className="btn btn-ghost hover:bg-transparent hover:text-primary"
+              className="btn btn-ghost hover:bg-transparent hover:text-primary p-0"
             >
               {/**delete and move buttons on the left side of the section headers */}
               <Icon path={mdiDeleteCircle} size={1.2}></Icon>
@@ -179,7 +181,7 @@ export function SortableItem({
               {...attributes}
               {...listeners}
             >
-              <div className="btn btn-ghost hover:bg-transparent hover:text-primary">
+              <div className="btn btn-ghost hover:bg-transparent hover:text-primary p-0">
                 {/**delete and move buttons on the left side of the section headers */}
                 <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
               </div>
@@ -194,7 +196,7 @@ export function SortableItem({
               <input
                 type="text"
                 defaultValue={sectionData.title ?? ""}
-                placeholder={sectionData.title ?? "Nome da seção"}
+                placeholder={"Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("title", { required: true })}
                 onChange={(e) => setTitle(e.target.value)} //update the section title
@@ -218,7 +220,7 @@ export function SortableItem({
               {/*description of section*/}
               <textarea
                 defaultValue={sectionData.description ?? ""}
-                placeholder={sectionData.description ?? "Descrição da seção"}
+                placeholder={"Descrição da seção"}
                 className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                 {...registerSection("description", { required: true })}
                 onChange={(e) => setDescription(e.target.value)} //update the section title

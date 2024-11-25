@@ -319,14 +319,13 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         onSubmit={handleSubmit(onSubmit)}
       >
         {/*White bagground*/}
-        <div className="w-full float-right bg-white rounded-lg shadow-lg justify-between space-y-4 p-10">
+        <div className="w-full float-right bg-white rounded-2xl shadow-lg justify-between space-y-4 p-10">
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor="title">Nome do curso <span className="text-red-500">*</span></label> {/*Title*/}
             <input
               id="title-field"
               type="text"
-              defaultValue={data ? data.title : ""}
-              placeholder={data ? data.title : ""}
+              placeholder={"Nome do curso"}
               className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
               {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
@@ -381,8 +380,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
               <ToolTipIcon alignLeftTop={false} index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
-            defaultValue={data ? data.description : ""}
-            placeholder={data ? data.description : ""}
+            placeholder={"Conte mais sobre o curso"}
             className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
             {...register("description", { required: true })}
             onChange={(e) => {
@@ -395,7 +393,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             )}{" "}
             {/** This field is required */}
             <div className="text-right">
-              <label htmlFor="">{charCount}/400</label>
+              <label htmlFor="">{charCount}/400 caracteres</label>
             </div>
           </div>
 

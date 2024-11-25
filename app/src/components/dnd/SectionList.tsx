@@ -104,6 +104,7 @@ export const SectionList = ({
             <SortableItem
               key={section}
               sid={section}
+              sectionNumber={index + 1}
               addOnSubmitSubscriber={addOnSubmitSubscriber}
               savedSID={savedSID}
               setSavedSID={setSavedSID}
