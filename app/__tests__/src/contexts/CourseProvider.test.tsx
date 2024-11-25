@@ -116,9 +116,9 @@ describe('CourseProvider', () => {
       const secondSection = result.current.sectionsHook.sections[1];
       expect(firstSection._id).toBe('1');
       expect(secondSection._id).toBe('2');
-      expect(result.current.course.course.sections.length).toBe(2);
-      expect(result.current.course.course.sections).toContain(firstSection._id);
-      expect(result.current.course.course.sections).toContain(secondSection._id);
+      expect(result.current.courseHook.course.sections.length).toBe(2);
+      expect(result.current.courseHook.course.sections).toContain(firstSection._id);
+      expect(result.current.courseHook.course.sections).toContain(secondSection._id);
     });
   
 
@@ -127,7 +127,7 @@ describe('CourseProvider', () => {
     act(() => {
       result.current.loadSectionToCache(mockSection);
     });
-    const section = result.current.getCachedSection('1');
+    const section = result.current.getCachedSection('0');
     expect(section).toEqual(mockSection);
   });
 
@@ -135,9 +135,9 @@ describe('CourseProvider', () => {
     const { result } = renderHook(() => useSections(), { wrapper: Wrapper });
     act(() => {
       result.current.loadSectionToCache(mockSection);
-      result.current.updateCachedSection({ title: 'Updated Section' }, '1');
+      result.current.updateCachedSection({ title: 'Updated Section' }, '0');
     });
-    const section = result.current.getCachedSection('1');
+    const section = result.current.getCachedSection('0');
     expect(section?.title).toBe('Updated Section');
   });
 
@@ -154,7 +154,7 @@ describe('CourseProvider', () => {
   it('should add lecture to cache', () => {
     const { result } = renderHook(() => useLectures(), { wrapper: Wrapper });
     act(() => {
-      result.current.addLectureToCache({ ...mockLecture, description: 'Sample description', content: 'Sample content' });
+      result.current.addLectureToCache(mockLecture);
     });
     expect(result.current.lectures).toContainEqual(mockLecture);
   });
@@ -238,7 +238,7 @@ describe('CourseProvider', () => {
     act(() => {
       result.current.addMediaToCache(mockMedia);
     });
-    const mediaFile = result.current.getMedia('1');
+    const mediaFile = result.current.getMedia('0');
     expect(mediaFile).toEqual(mockMedia.file);
   });
 
@@ -246,9 +246,10 @@ describe('CourseProvider', () => {
     const { result } = renderHook(() => useMedia(), { wrapper: Wrapper });
     act(() => {
       result.current.addMediaToCache(mockMedia);
-      result.current.updateMedia({ ...mockMedia, file: new File([''], 'updated.mp4', { type: 'video/mp4' }) });
     });
-    const mediaFile = result.current.getMedia('1');
+    result.current.updateMedia({id : mockMedia.id, file: new File([''], 'updated.mp4', { type: 'video/mp4' }), parentType: 'c' });
+    
+    const mediaFile = result.current.getMedia(mockMedia.id);
     expect(mediaFile?.name).toBe('updated.mp4');
   });
 
@@ -256,9 +257,9 @@ describe('CourseProvider', () => {
     const { result } = renderHook(() => useMedia(), { wrapper: Wrapper });
     act(() => {
       result.current.addMediaToCache(mockMedia);
-      result.current.deleteMedia('1');
+      result.current.deleteMedia('0');
     });
-    const mediaFile = result.current.getMedia('1');
+    const mediaFile = result.current.getMedia('0');
     expect(mediaFile).toBeNull();
   });
 });
