@@ -19,6 +19,18 @@
       "jest",
       "cypress"
     ],
+    "baseUrl": "./", 
+    "paths": {
+      "@assets/*": ["src/assets/*"],
+      "@components/*": ["src/components/*"],
+      "@contexts/*": ["src/contexts/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@interfaces/*": ["src/interfaces/*"],
+      "@pages/*": ["src/pages/*"],
+      "@services/*": ["src/services/*"],
+      "@utilities/*": ["src/utilities/*"]
+    }
   },
   "include": [
     "src",

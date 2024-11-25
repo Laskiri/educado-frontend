@@ -1,92 +1,101 @@
 import React, { ReactNode } from "react";
-import "./styles/GenericModalComponent.css";
+import { MdClose } from "react-icons/md";
 
 interface GenericModalProps {
   title?: string;
+  isVisible?: boolean;
   contentText?: string;
   cancelBtnText?: string;
   confirmBtnText?: string;
-  onClose: () => void;
-  isVisible?: boolean;
-  onConfirm: () => void;
   isConfirmDisabled?: boolean;
-  customStyles?: {
-    overlay?: React.CSSProperties;
-    body?: React.CSSProperties;
-    title?: React.CSSProperties;
-    closeButton?: React.CSSProperties;
-    content?: React.CSSProperties;
-    cancelButton?: React.CSSProperties;
-    confirmButton?: React.CSSProperties;
-  };
+  onConfirm?: (e?: React.FormEvent<HTMLFormElement>) => void;
+  onClose: () => void;
   children?: ReactNode | ReactNode[];
+  loading?: boolean;
+  // TODO: with some configuration tailwind types could work and this can be changed
+  width?: string;
 }
 
-/**
- * Component that renders a generic modal with customizable text for title, content and action buttons.
- * Used to either display important information or prompt user for confirmation.
- * If text for confirmation button is not defined, only cancel button will be displayed (and centered).
- *
- * @returns JSX.Element
- */
 const GenericModalComponent: React.FC<GenericModalProps> = ({
-  // Destructuring of props and initialization of default values
   title,
   contentText,
-  confirmBtnText = "", // If empty, no confirmation button will be displayed
+  confirmBtnText, // If empty, no confirmation button will be displayed
   cancelBtnText = "Cancelar", // Renameable to e.g. "Fechar" (close) when invoking the component
   onClose,
   isVisible = false,
   onConfirm,
   isConfirmDisabled = false,
   children,
+  loading = false,
+  width,
 }) => {
   if (!isVisible) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
-        {/* Title */}
-        <div className="modal-title">
-          {title !== null ? <h2>{title}</h2> : null}
+    <div className={`modal ${isVisible ? "modal-open" : null}`}>
+      <div
+        className={`modal-box flex flex-col w-auto min-w-[300px] max-w-[85%] max-h-[85%] bg-[#f1f9fb] space-y-8 m-10 p-10 ${
+          width || ""
+        }`}
+      >
+        {/* Top bar */}
+        <div className="flex justify-between">
+          {title !== null ? (
+            <span className="font-bold text-xl">{title}</span>
+          ) : null}
 
           {/* Window close button (X) */}
-          <button onClick={onClose} className="close-button">
-            &times;
+          <button onClick={onClose} className="btn btn-sm btn-circle btn-ghost">
+            <MdClose size={25} className="text-slate-400" />
           </button>
         </div>
 
         {/* Content */}
-        <div className="modal-body">
-          {title !== null ? <p>{contentText}</p> : null}
+        <div className="overflow-auto">
+          {contentText !== null ? (
+            <p className="whitespace-normal text-wrap">{contentText}</p>
+          ) : null}
           {children}
         </div>
 
-        {/* Action buttons */}
-        {/* Only the cancel button is rendered (and centered), if text for confirmation button isn't defined */}
-        <div
-          className={`action-buttons ${
-            confirmBtnText === "" ? "justify-center" : "justify-between"
-          }`}
-        >
-          {/* Cancel */}
-          <button type="button" className="cancel-button" onClick={onClose}>
-            {cancelBtnText}
-          </button>
+        {(cancelBtnText || confirmBtnText) && (
+          <div
+            className={`flex w-full ${
+              confirmBtnText === null ? "justify-center" : "justify-between"
+            }`}
+          >
+            {/* Cancel */}
+            {cancelBtnText && (
+              <button
+                id="confirm-button" 
+                type="button"
+                className="flex flex-col btn bg-transparent border-none hover:bg-transparent px-0"
+                onClick={onClose}
+              >
+                <span className="text-primary normal-case text-lg">
+                  {cancelBtnText}
+                </span>
+                <hr className="w-4/5 border-primary" />
+              </button>
+            )}
 
-          {/* Confirmation */}
-          {/* Button not rendered if confirmBtnText is not defined when component is invoked */}
-          {confirmBtnText !== "" && (
-            <button
-              type="submit"
-              className="btn"
-              onClick={onConfirm}
-              disabled={isConfirmDisabled}
-            >
-              {confirmBtnText}
-            </button>
-          )}
-        </div>
+            {confirmBtnText && (
+              <button
+                type="submit"
+                className="btn bg-primary hover:bg-cyan-900 border-none px-10"
+                onClick={() => onConfirm && onConfirm()}
+                disabled={isConfirmDisabled || loading}
+              >
+                {loading ? (
+                  <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+                ) : null}
+                <span className="normal-case text-base font-bold">
+                  {confirmBtnText}
+                </span>
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

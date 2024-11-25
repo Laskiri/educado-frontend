@@ -6,7 +6,7 @@ import { useNotifications } from "../notification/NotificationContext";
 // Services
 import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
-
+import {useApi} from "../../hooks/useAPI";
 // Helpers
 import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
@@ -17,9 +17,8 @@ import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
 import Loading from "../general/Loading";
 import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
-
 // Interface
-import { Course } from "../../interfaces/Course";
+import { Course, NewCourse } from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
 
 interface CourseComponentProps {
@@ -32,6 +31,9 @@ interface CourseComponentProps {
   updateLocalData: Function;
 }
 
+
+
+
 /**
  * This component is responsible for creating and editing courses.
  *
@@ -42,7 +44,7 @@ interface CourseComponentProps {
 
 export const CourseComponent = ({ token, id, setTickChange, setId, courseData, updateHighestTick, updateLocalData }: CourseComponentProps) => {
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
-  const [statusSTR, setStatusSTR] = useState<string>("draft");
+  const [statusSTR, setStatusSTR] = useState<Course["status"]>("draft");
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState<boolean>(false);
   const [dialogMessage, setDialogMessage] = useState<string>("");
@@ -57,6 +59,13 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   const [previewCourseImg, setPreviewCourseImg] = useState<string | null>(null);
   const [courseImg, setCourseImg] = useState<File | null>(null);
   const [data, setData] = useState<Course>();
+
+  // Callbacks
+  const { call: createCourse, isLoading: submitLoading, error } = useApi(CourseServices.createCourse);
+
+
+
+
   const {
     register,
     handleSubmit,
@@ -104,12 +113,11 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   }, [courseData]);
 
   //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
-  const formatCourse = (data: Partial<Course>): Course => {
-    console.log(data.status)
+  const formatCourse = (data: Partial<NewCourse>): NewCourse => {
     return {
       title: data.title || '',
       description: data.description || '',
-      category: data.category || '',
+      category: data.category || "health and workplace safety",
       difficulty: data.difficulty || 0,
       status: statusSTR,
       creator: getUserInfo().id,
@@ -158,7 +166,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     StorageServices.uploadFile({ id: id, file: file, parentType: "c" });
   };
   // Updates existing draft of course and navigates to course list
-  const handleSaveExistingDraft = async (changes: Course) => {
+  const handleSaveExistingDraft = async (changes: NewCourse) => {
     try {
       await CourseServices.updateCourseDetail(changes, id, token);
       //Upload image with the old id
@@ -172,9 +180,10 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   };
 
   // Creates new draft course and navigates to course list
-  const handleCreateNewDraft = async (data: Course) => {
+  const handleCreateNewDraft = async (data: NewCourse) => {
     try {
-      const newCourse = await CourseServices.createCourse(data, token);
+      const newCourse = await createCourse(data, token);
+
       console.log("creating new draft", data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -187,9 +196,9 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
   }
 
   // Creates new course and navigates to section creation for it
-  const handleCreateNewCourse = async (data: Course) => {
+  const handleCreateNewCourse = async (data: NewCourse) => {
     try {
-      const newCourse = await CourseServices.createCourse(data, token);
+      const newCourse = await createCourse(data, token);
       addNotification("Curso criado com sucesso!");
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
@@ -199,7 +208,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
       updateHighestTick(1);
       navigate(`/courses/manager/${newCourse.data._id}/1`);
     } catch (err) {
-      // Course created
       toast.error(err as string);
     }
   };
@@ -207,7 +215,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
 
 
   //Used to prepare the course changes before sending it to the backend
-  const prepareCourseChanges = (data: Course): Course => {
+  const prepareCourseChanges = (data: NewCourse): NewCourse => {
     return {
       title: data.title,
       description: data.description,
@@ -256,7 +264,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         setTickChange(1);
         navigate(`/courses/manager/${id}/1`);
       }
-    };
+    }
   };
 
   
@@ -279,6 +287,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
+        width="w-[500px]"
         onConfirm={async () => {
           await dialogConfirm();
         }}
@@ -428,17 +437,21 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             </label>
 
             <label
-              htmlFor="course-create"
-              className="whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
-            >
-              <button
-                type="submit"
-                id="addCourse"
-                className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
-              >
-                Adicionar seções {/** Add sections */}
-              </button>
-            </label>
+          htmlFor="course-create"
+          className="whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg"
+        >
+          <button
+            type="submit"
+            id="addCourse"
+            disabled={submitLoading}
+            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
+          >
+            {submitLoading ? (
+              <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+            ) : null}
+            Adicionar seções
+          </button>
+        </label>
           </div>
         </div>
       </form>

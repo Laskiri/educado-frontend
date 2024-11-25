@@ -10,6 +10,7 @@
         "test": "jest --verbose --runInBand --detectOpenHandles",
         "updateSnapshots": "jest --updateSnapshot",
         "linting": "eslint --fix --ext .js,.jsx,.ts,.tsx .",
+        "prettier": "prettier --write \"{,!(node_modules)/**/}*.{js,jsx,ts,tsx}\"",
         "typechecking": "tsc --noEmit",
         "cypress-server": "vite --port 3000",
         "cypress_local": "npx cypress run --browser chrome --env BACKEND_URL=http://localhost:8888",
@@ -82,7 +83,16 @@
     "jest": {
         "moduleNameMapper": {
             "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/mocks/fileMock.js",
-            "\\.(css|less)$": "<rootDir>/mocks/fileMock.js"
+            "\\.(css|less)$": "<rootDir>/mocks/fileMock.js",
+            "^@assets(.*)$": "<rootDir>/src/assets$1",
+            "^@components(.*)$": "<rootDir>/src/components$1",
+            "^@contexts(.*)$": "<rootDir>/src/contexts$1",
+            "^@helpers(.*)$": "<rootDir>/src/helpers$1",
+            "^@hooks(.*)$": "<rootDir>/src/hooks$1",
+            "^@interfaces(.*)$": "<rootDir>/src/interfaces$1",
+            "^@pages(.*)$": "<rootDir>/src/pages$1",
+            "^@services(.*)$": "<rootDir>/src/services$1",
+            "^@utilities(.*)$": "<rootDir>/src/utilities$1"
         }
     }
 }
