@@ -50,43 +50,27 @@ const createCertificate = async (data: Course, token: string) => {
   );*/
 };
 
-/**
- * @param url
- * @returns
- */
-const getUserCertificates = async () => {
-  let config = {
-    method: "get",
-    maxBodyLength: Infinity,
-    url: "http://localhost:8888/api/certificate/get-all-creator-certificates/672b727ad51069fc04ceb8eb", //TODO ændre url efter det virker
-    headers: {},
-  };
+const getCertificatePreview = async () => {
+	return await axios.get('/api/creator-certificates/preview');
+}
 
-  const res = await axios.get(config.url);
-    // .request(config)
-    // .then((response) => {
-    //   console.log(JSON.stringify(response.data));
-    //   return response;
-    // })
-    // .catch((error) => {
-    //   console.log(error);
-    // });
-
-  // const res = await axios.get(url, {
-  //   headers: { Authorization: `Bearer ${token}` },
-  // });
-  console.log('..................................................... ', res.data);
-
-  return res.data;
-};
+const getUserCertificates = async (id : string) => {
+	const certificates = await axios.get('/api/creator-certificates/creator/' + id, {
+		headers: {
+			token: getUserToken(),
+		},
+	});
+}
 
 // Export all methods
-const CourseServices = Object.freeze({
-  createCertificate,
-  getUserCertificates,
+
+const CertificateService = Object.freeze({
+	createCertificate,
+	getUserCertificates,
+	getCertificatePreview,
 });
 
-export default CourseServices;
+export default CertificateService;
 
 /*const client = axios.create({
   baseURL: CERT_URL,
@@ -120,4 +104,4 @@ export default CourseServices;
   });
 
   return certificates.data;
-};*/
+}; */
