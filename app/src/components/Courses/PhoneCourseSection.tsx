@@ -3,7 +3,8 @@ import { mdiAccountOutline, mdiCompassOutline, mdiHomeOutline, mdiRobotOutline, 
 import { Course} from '../../interfaces/Course';
 import CourseServices from '../../services/course.services';
 import useSWR from 'swr';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import PhoneExercisesAndLectures from './PhoneExercisesAndLectures';
 
 interface PhoneCourseSectionProps {
     course: Course;
@@ -14,7 +15,14 @@ const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
         CourseServices.getAllCourseSections(course._id)
     );
 
+    const [showExercises, setShowExercises] = useState(false);
+    const [selectedSection, setSelectedSection] = useState<any>();
+    
     const progress = 40;
+
+    if (showExercises) {
+        return <PhoneExercisesAndLectures course={course} selectedSection={selectedSection} />;
+    }
     
     return (
         <div className="flex flex-col h-screen justify-end bg-[#F2F9FB] w-full">
@@ -49,10 +57,15 @@ const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
             
             {data?.map((section: any, index: number) => (
                 index < 3 && (
-                <button key={index} className="flex flex-row justify-between items-center ml-4 mr-4 mb-3 border border-gray text-black h-14 rounded-lg text-xs cursor-default">
-                    <div className="flex flex-col">
-                        <h2 className="ml-3 mt-1 max-w-xs font-bold">{section.title}</h2>
-                        <h2 className="ml-3 mt-1 text-gray-600 text-[9px] whitespace-nowrap">0/{section.__v} Não iniciado</h2>
+                <button key={index} 
+                    className="flex flex-row justify-between items-center ml-4 mr-4 mb-3 border border-gray text-black h-14 rounded-lg text-xs cursor-pointer"
+                    onClick={() => {
+                    setShowExercises(true)
+                    setSelectedSection({ id: section._id, title: section.title })
+                    }}>
+                    <div className="flex flex-col items-start ml-3">
+                        <h2 className="mt-1 font-bold">{section.title}</h2>
+                        <h2 className="mt-1 text-gray-600 text-[9px]">0/{section.__v} Não iniciado</h2>
                     </div>
                     <Icon path={mdiChevronRight} size={1} className="mr-3 text-[#166276]" />
                 </button>
@@ -63,7 +76,7 @@ const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
                 <h2 className="text-[red] text-[14px] font-bold underline">Retirar curso</h2>
             </div>
 
-            <div className="flex-grow"></div>
+            <div className="flex-grow" />
             <nav className="bg-white p-1 shadow-lg" style={{ boxShadow: '0 -4px 6px -1px rgba(0, 0, 0, 0.1), 0 -2px 4px -1px rgba(0, 0, 0, 0.06)' }}>
                 <ul className="flex space-x-2 text-[10px]">
                     <li className="flex-1 bg-[#166276] text-white p-1 rounded-xl flex flex-col items-center font-bold">
