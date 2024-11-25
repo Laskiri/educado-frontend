@@ -17,7 +17,7 @@ const createCertificate = async (data: Course, token: string) => {
   let config = {
     method: "get",
     maxBodyLength: Infinity,
-    url: "http://localhost:8888/api/certificate/creator-certificates/672c912d8a371d0027232c62", //TODO ændre url efter det virker
+    url: "http://localhost:8888/api/certificate/get-creator-certificates/672b727ad51069fc04ceb8eb&672b79607ba5d51e8494d602", //TODO ændre url efter det virker
     headers: {},
   };
 
@@ -54,10 +54,28 @@ const createCertificate = async (data: Course, token: string) => {
  * @param url
  * @returns
  */
-const getUserCertificates = async (url: string, token: string) => {
-  const res = await axios.get(url, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+const getUserCertificates = async () => {
+  let config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: "http://localhost:8888/api/certificate/get-all-creator-certificates/672b727ad51069fc04ceb8eb", //TODO ændre url efter det virker
+    headers: {},
+  };
+
+  const res = await axios.get(config.url);
+    // .request(config)
+    // .then((response) => {
+    //   console.log(JSON.stringify(response.data));
+    //   return response;
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
+
+  // const res = await axios.get(url, {
+  //   headers: { Authorization: `Bearer ${token}` },
+  // });
+  console.log('..................................................... ', res.data);
 
   return res.data;
 };

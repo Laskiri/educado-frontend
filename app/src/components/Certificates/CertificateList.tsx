@@ -12,7 +12,7 @@ export default function CertificateList() {
   const [loading, setLoading] = useState(true); //loading istedet for emptyState? emptyState er fra CertificateEmpty
 
   useEffect(() => {
-    CertificateService.getUserCertificates(localStorage.getItem("id") || "", "") // er der noget galt med det her kald?
+    CertificateService.getUserCertificates() // er der noget galt med det her kald?
       .then((res: Certificate[]) => {
         console.log("Fetched Certificates:", res); // Log the fetched certificates
         setCertificates(res);
@@ -23,15 +23,17 @@ export default function CertificateList() {
       });
   }, []);
 
-  /*useEffect(() => {
-    CertificateService.getUserCertificates(
-      localStorage.getItem("id") || ""
-    ).then((res: Certificate[]) => {
-      setCertificates(res);
-    });
-  }, []);*/
+  // useEffect(() => {
+  //   CertificateService.getUserCertificates(
+  //     localStorage.getItem("id") || ""
+  //   ).then((res: Certificate[]) => {
+  //     setCertificates(res);
+  //   });
+  // }, []);
 
-  if (!certificates) return <EmptyState />; // den tjekker om der er certifikater men vi vil gerne have den tjekker om published kurser
+  if (!certificates) {
+    return <EmptyState />; // den tjekker om der er certifikater men vi vil gerne have den tjekker om published kurser
+  }
 
   return (
     <div className="overflow-scroll min-h-full pb-4" id="certificate-list">
