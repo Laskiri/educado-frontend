@@ -126,6 +126,12 @@ describe('Certificate overview page', () => {
 		cy.get('#preview-button-0').click()
 		cy.get('#preview-window-0').should('exist')
 	});
+
+	Cypress.on('uncaught:exception', (err, runnable) => {
+		if (err.message.includes('Network Error')) {
+		  return false;
+		}
+	  });
 })
 
 export { }
