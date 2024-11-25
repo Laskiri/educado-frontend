@@ -188,6 +188,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
+        width="w-[500px]"
         onConfirm={dialogConfirm}
         onClose={() => {
           setShowDialog(false);

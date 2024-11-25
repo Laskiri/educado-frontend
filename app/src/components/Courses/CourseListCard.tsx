@@ -16,6 +16,9 @@ import imageNotFoundImage from '../../assets/image-not-found.png';
 import { useEffect, useState } from "react";
 import StorageServices from "../../services/storage.services";
 
+// Rating
+import { getAverageRatingOfCC, getAverageRatingOfCourse } from '../../services/contentCreator.services';
+
 /**
  * Displays a course in a card format
  * 
@@ -48,7 +51,16 @@ export const CourseListCard = ({ course }: { course: Course }) => {
         setIsLoading(false);
       }
     };
+    const fetchRating = async () => {
+      try {
+        const rating = await getAverageRatingOfCourse(course._id);
+        console.log("card" +rating);
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
+    fetchRating();
     fetchImage();
   }, [course.coverImg, course.title]);
   return (

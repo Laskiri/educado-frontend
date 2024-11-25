@@ -14,15 +14,6 @@ export function getNumberOfCourses(courses: Course[]) {
 	return courses.length;
 }
 
-// Gets the average rating of all courses written by the content creator
-export function getAverageRating(courses: Course[]) {
-	let avgRating = 0;
-	courses.forEach(course => {
-		avgRating += course.rating ?? 0;
-	});
-	return avgRating / Math.max(courses.length, 1);
-}
-
 // Gets the number of courses with a specific status
 export function getCourseCountWithStatus(courses: Course[], status: string) {
 	let count = 0;
