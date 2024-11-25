@@ -73,7 +73,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   // Notification
   const { addNotification } = useNotifications();
 
-  const courseCached = Object.keys(course).length > 0;
+  const courseCached = course.title !== "";
   const charCount = course?.description?.length ?? 0;
   const navigate = useNavigate();
 

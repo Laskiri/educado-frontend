@@ -47,6 +47,7 @@ interface CourseContextProps {
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
   updateMedia: (media: Media) => void;
+  deleteMedia: (mid: string) => void;
 }
 
 interface CourseProviderProps {
@@ -93,10 +94,19 @@ const CourseContext = createContext<CourseContextProps>({
   addMediaToCache: () => {},
   getMedia: () => null,
   updateMedia: () => {},
+  deleteMedia: () => {},
 });
 
 export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
-  const [course, setCourse] = useState<Course>({} as Course);
+  const [course, setCourse] = useState<Course>({title: "",
+    description: "",
+    category: "personal finance",
+    difficulty: 1,
+    status: "draft",
+    estimatedHours: 0,
+    sections: [],
+    coverImg: "",
+    _id: "0"});
   const [sections, setSections] = useState<Section[]>([] as Section[]);
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -148,7 +158,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const createNewSection = () => {
     const newId = idMaker.section + 1;
-    setIdMaker((prevIdMaker) => ({ ...prevIdMaker, section: newId }));
+    setIdMaker((prevIdMaker) => ({ ...prevIdMaker, section: prevIdMaker.section + 1 }));
     const newSection = {
       _id : newId.toString(),
       title: "",
@@ -193,10 +203,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       if (index === -1) return prevSections;
       const updatedSection = { ...prevSections[index], ...fieldChange };
       const updatedSections = [...prevSections];
-      console.log(prevSections[index]);
-      
       updatedSections[index] = updatedSection;
-      console.log(updatedSections[index]);
       return updatedSections;
     });
   };
@@ -242,7 +249,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const addCachedSectionComponent = (sectionId: string, component: Component) => {
-    console.log("Adding component", component);
     const newId = idMaker.component + 1;
     setIdMaker((prevIdMaker) => ({ ...prevIdMaker, component: newId }));
     component._id = newId.toString();
@@ -257,7 +263,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
         ...prevSections[sectionIndex],
         components: updatedComponents,
       };
-      console.log("Updated sections", updatedSections);
   
       return updatedSections;
     });
@@ -419,6 +424,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     addMediaToCache,
     getMedia,
     updateMedia,
+    deleteMedia
   }
 
   return (
@@ -485,5 +491,6 @@ export const useMedia = () => {
     addMediaToCache: context.addMediaToCache,
     getMedia: context.getMedia,
     updateMedia: context.updateMedia,
+    deleteMedia: context.deleteMedia
   };
 }
