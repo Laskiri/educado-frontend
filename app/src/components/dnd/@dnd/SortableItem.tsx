@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
@@ -31,13 +30,12 @@ import SectionServices from "../../../services/section.services";
 //pop-ups
 import { CreateLecture } from "../../CreateLecturePopUp";
 import { CreateExercise } from "../../Exercise/CreateExercisePopUp";
-import { set } from "cypress/types/lodash";
 
 interface Props {
   sid: string;
   savedSID: string;
-  setSavedSID: Function;
-  handleSectionDeletion: Function
+  setSavedSID: (sid: string) => void;
+  handleSectionDeletion: (sid: string) => void;
 }
 
 export function SortableItem({
@@ -46,13 +44,13 @@ export function SortableItem({
   setSavedSID,
   handleSectionDeletion,
 }: Props) {
-  const [arrowDirection, setArrowDirection] = useState<any>(mdiChevronDown);
+  const [arrowDirection, setArrowDirection] = useState<string>(mdiChevronDown);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const subRef = useRef<HTMLInputElement>(null);
   const openRef = useRef<HTMLInputElement>(null);
 
   const token = getUserToken();
-  const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent, sections} = useSections();
+  const { loadSectionToCache, getCachedSection, updateCachedSection, addCachedSectionComponent} = useSections();
   const cachedSection = getCachedSection(sid);
   const cachedComponents = cachedSection?.components;
   const [sectionTitle , setSectionTitle] = useState<string>(cachedSection?.title ?? "");
@@ -107,7 +105,6 @@ export function SortableItem({
    */
 
     const handleComponentCreation = (newComponent: Component) => {
-      console.log("newComponentAAH", newComponent);
       addCachedSectionComponent(sid, newComponent);
     };
 
@@ -298,7 +295,6 @@ export function SortableItem({
             />
             <CreateExercise
               savedSID={savedSID}
-              data={undefined}
               handleExerciseCreation={handleComponentCreation}
             />{" "}
             {/** Create new Exercise */}
@@ -308,7 +304,7 @@ export function SortableItem({
          
             <div className="flex flex-row-reverse">
               <label htmlFor="description " className="text-black">
-                {cachedComponents.length}/10 items
+                {cachedComponents?.length}/10 items
               </label>
               {/** PLACEHOLDER TEXT */}
               <ToolTipIcon

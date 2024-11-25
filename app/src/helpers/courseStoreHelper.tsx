@@ -1,5 +1,4 @@
 import { Course, Section, Component, Lecture, Exercise, Media, FormattedCourse } from "../interfaces/Course";
-import { getUserInfo } from "./userInfo";
 
 export const formatCourse = (
   course: Course,
@@ -24,7 +23,7 @@ const formatCourseInfo = (course: Course, media: Media[]) => {
     category: course.category,
     difficulty: course.difficulty,
     description: course.description,
-    coverImg: coverIMG ?? "",
+    coverImg: coverIMG,
     status: course.status,
     creator: course.creator ?? "",
   };

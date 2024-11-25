@@ -1,42 +1,35 @@
 // Icon from: https://materialdesignicons.com/
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
 import { useApi } from '../hooks/useAPI';
+import { useCourse } from '../contexts/courseStore';
+import { useNotifications } from "./notification/NotificationContext";
+
 import CourseService from '@services/course.services';
 
-import { Course } from "../interfaces/Course";
-import { SectionForm } from "./dnd/SectionForm";
-import { SectionList } from "./dnd/SectionList";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
 import GenericModalComponent from "./GenericModalComponent";
+import { SectionForm } from "./dnd/SectionForm";
+import { SectionList } from "./dnd/SectionList";
 
 import { ToolTipIcon } from "./ToolTip/ToolTipIcon";
 import Loading from "./general/Loading";
 import Layout from "./Layout";
-
 // Notification
-import { useNotifications } from "./notification/NotificationContext";
 import CourseGuideButton from "./Courses/GuideToCreatingCourse";
-import { useCourse } from '../contexts/courseStore';
-
 interface Inputs {
-  id: string;
   token: string;
   setTickChange: (tick: number) => void;
 }
-
 // Create section
 export const SectionCreation = ({
-  id: propId,
   token,
   setTickChange,
 }: Inputs) => {
-  const { id: urlId } = useParams<{ id: string }>();
-  const {course, getFormattedCourse } = useCourse();
-  const id = propId === "0" ? urlId : propId;
+  const { id } = useParams<{ id: string }>();
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -45,20 +38,14 @@ export const SectionCreation = ({
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
-  const { call: createCourse, isLoading: createLoading} = useApi(CourseService.createCourse);
-  const { call: updateCourse, isLoading: updateLoading} = useApi(CourseService.updateCourse);
+  const {course, getFormattedCourse } = useCourse();
   const existingCourse = id !== "0";
-  const courseCacheLoading = Object.keys(course).length = 0;
+  const courseCacheLoading = Object.keys(course).length === 0;
 
-
+  const callFunc = existingCourse ? CourseService.updateCourse : CourseService.createCourse;
+  const { call: submitCourse, isLoading: submitLoading} = useApi(callFunc);
   const status = course.status;
-
   const navigate = useNavigate();
-
-  useEffect(() => {
-    console.log("SectionCreation useEffect");
-  }, []);
-  // Notification
   const { addNotification } = useNotifications();
 
   const handleDialogEvent = (
@@ -70,36 +57,29 @@ export const SectionCreation = ({
     setDialogMessage(dialogText);
     setDialogConfirm(() => onConfirm);
     setShowDialog(true);
-  };
+  };  
+  
+  const onSuccessfulSubmit = () => {
+    navigate("/courses");
+    addNotification("Seções salvas com sucesso!");  
+  }
 
   const handleDraftConfirm = async () => {
     try {
       const updatedCourse = getFormattedCourse();
-      if (!existingCourse) {
-        await createCourse(updatedCourse, token);
-      }
-      else {
-        await updateCourse(updatedCourse, token
-        );    }
-
-      navigate("/courses");
-      addNotification("Seções salvas com sucesso!");
+      await submitCourse(updatedCourse, token);
+      onSuccessfulSubmit();
     } catch (err) {
       console.error(err);
     }
   };
 
   const handlePublishConfirm = async () => {
-    const updatedCourse = getFormattedCourse();
-    console.log("updatedCourse", updatedCourse);
-    updatedCourse.courseInfo.status = "published";
     try {
-        if (!existingCourse) {
-          await createCourse(updatedCourse, token)
-        }
-        else {
-          await updateCourse(updatedCourse, token)
-        }
+      const updatedCourse = getFormattedCourse();
+      updatedCourse.courseInfo.status = "published";
+      await submitCourse(updatedCourse, token);
+      onSuccessfulSubmit();
     }
     catch (err) {
       console.error(err);
@@ -110,16 +90,6 @@ export const SectionCreation = ({
     setTickChange(tick);
     navigate(`/courses/manager/${id}/0`);
   }
-
-  /**
-   * Extra function to handle the response from the course service before it is passed to the useSWR hook
-   *
-   * @param url The url to fetch the course details from backend
-   * @param token The user token
-   * @returns The course details
-   */
-
-  // Redirect to courses page when setLeaving is s
 
   if (courseCacheLoading)
     return (
@@ -136,13 +106,13 @@ export const SectionCreation = ({
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
-        onConfirm={async () => {
-          await dialogConfirm();
-        }}
+        onConfirm={
+          dialogConfirm 
+        }
         onClose={() => {
           setShowDialog(false);
-        }} // Do nothing
-        loading={createLoading || updateLoading}
+        }}
+        loading={submitLoading}
       />
 
       <div className="">

@@ -1,4 +1,3 @@
-import useSWR from "swr";
 import { BACKEND_URL } from "../../../helpers/environment";
 import { useState, useEffect } from "react";
 
@@ -24,7 +23,6 @@ import { EditLecture } from "../../EditLecturePopUp";
 import { EditExercise } from "../../Exercise/EditExercisePopUp";
 
 import { Component, Exercise, Lecture } from "@interfaces/Course";
-import { set } from "cypress/types/lodash";
 
 interface Props {
   component: Component;
@@ -33,10 +31,9 @@ interface Props {
 
 export function SortableComponentItem({ component, sid }: Props) {
   const token = getUserToken();
-  const isLecture = component.compType === "lecture";
   const { loadLectureToCache, getCachedLecture, deleteCachedLecture } = useLectures();
   const { loadExerciseToCache, getCachedExercise, deleteCachedExercise } = useExercises();
-  const [data, setData] = useState<Exercise | Lecture | null>(isLecture ? getCachedLecture(component.compId) : getCachedExercise(component.compId));
+  const [data, setData] = useState<Exercise | Lecture | null>(component.compType === "lecture" ? getCachedLecture(component.compId) : getCachedExercise(component.compId));
   const [newTitle, setNewTitle] = useState("");
   const { deleteCachedSectionComponent } = useSections();
 
@@ -45,18 +42,21 @@ export function SortableComponentItem({ component, sid }: Props) {
   //     token ? [cid, map.get(cid), token] : null,
   //     ComponentService.getComponentDetail
   //   );
+  const isLecture = (data: Exercise | Lecture | null): data is Lecture => {
+    return (data as Lecture)?.contentType !== undefined;
+  }
   
-  const { call: getComponentDetails, isLoading: fetchLoading, error: fetchError } = useApi(isLecture ? LectureService.getLectureDetail : ExerciseServices.getExerciseDetail);
-  const deleteCachedComponentDetails = isLecture ? deleteCachedLecture : deleteCachedExercise;
+  const { call: getComponentDetails, isLoading: fetchLoading} = useApi(isLecture(data) ? LectureService.getLectureDetail : ExerciseServices.getExerciseDetail);
+  const deleteCachedComponentDetails = isLecture(data) ? deleteCachedLecture : deleteCachedExercise;
 
   useEffect(() => {
-      if (data || !token) return;
+      if (data || token === "") return;
       const fetchData = async () => {
         const url = `${BACKEND_URL}/api/${component.compType}s/${component.compId}`;
         try {
           const res = await getComponentDetails(url, token);
           setData(res);
-          if (isLecture) {
+          if (isLecture(data)) {
             loadLectureToCache(res);
           } else {
             loadExerciseToCache(res);
@@ -84,11 +84,24 @@ export function SortableComponentItem({ component, sid }: Props) {
     }   
   }
 
-  function handleEdit(newTitle: string) {
-    setData((prevData: any) => {
-      return { ...prevData, title: newTitle };
+  
+
+  const handleEdit = (newTitle: string) => {
+    setData((prevData: Exercise | Lecture | null) => {
+      if (!prevData) return prevData;
+      return { ...prevData, title: newTitle } as Exercise | Lecture;
     });
   }
+  const getIcon = () => {
+    if (isLecture(data)) {
+      if ((data as Lecture).contentType === "video") {
+        return <Icon path={mdiVideo} size={1} />;
+      }
+      return <Icon path={mdiTextBox} size={1} />;
+    }
+    
+    return <Icon path={mdiDraw} size={1} />;     
+  };
 
   useEffect(() => {
     if (data) {
@@ -107,13 +120,7 @@ export function SortableComponentItem({ component, sid }: Props) {
       <div className="w-full rounded border bg-white shadow-lg rounded-lg mb-4">
         <div className="flex flex-row-2 space-y-2 bg-secondary">
           <div className="flex flex-row-2 space-x-2 text-primary items-center ml-5 flex w-5/6 text-right">
-            {component.compType === "exercise" ? (
-              <Icon path={mdiDraw} size={1} />
-            ) : data?.contentType === "video" ? (
-              <Icon path={mdiVideo} size={1} />
-            ) : (
-              <Icon path={mdiTextBox} size={1} />
-            )}
+            {getIcon()}
             <p className="font-semibold">{newTitle}</p>
           </div>
 
@@ -131,7 +138,7 @@ export function SortableComponentItem({ component, sid }: Props) {
               id={component.compType + "-edit-" + data._id}
               className="modal-toggle"
             />
-            {component.compType === "lecture" ? (
+            {isLecture(data) ? (
               <EditLecture lecture={data} handleEdit={handleEdit} />
             ) : (
               <EditExercise data={data} handleEdit={handleEdit} />

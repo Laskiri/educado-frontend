@@ -16,14 +16,14 @@ interface CourseContextProps {
   course: Course;
   getFormattedCourse: () => FormattedCourse;
   updateCourse: (course: Course) => void;
-  updateCourseField: (fieldChange: Partial<Section>) => void;
+  updateCourseField: (fieldChange: Partial<Course>) => void;
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
   createNewSection: () => Section;
   updateSections: (sections: Section[]) => void;
   loadSectionToCache: (section: Section) => void;
   getCachedSection: (sid: string) => Section | null;
-  updateCachedSection: (section: Section) => void;
+  updateCachedSection: (fieldChange: Partial<Section>, sid: string) => void;
   deleteCachedSection: (sid: string) => void;
   updateCachedSectionComponents: (
     sectionId: string,
@@ -133,7 +133,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     }));
   };
 
-  const updateCourseField = (fieldChange: Partial<Section>) => {
+  const updateCourseField = (fieldChange: Partial<Course>) => {
     setCourse((prevCourse) => ({
       ...prevCourse,
       ...fieldChange,
@@ -166,7 +166,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     }
     setSections((prevSections) => [...prevSections, newSection]);
     setCourse((prevCourse) => {
-      if (!prevCourse.sections) return prevCourse;
       return {
         ...prevCourse,
         sections: [...prevCourse.sections, newSection._id],
@@ -177,9 +176,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const loadSectionToCache = (newSection: Section) => {
     if (sections.find((section) => section._id === newSection._id)) return;
-    if (course.sections && !course.sections.includes(newSection._id)) {
+    if (!course.sections.includes(newSection._id)) {
       setCourse((prevCourse) => {
-        if (!prevCourse.sections) return prevCourse;
         return {
           ...prevCourse,
           sections: [...prevCourse.sections, newSection._id],
@@ -293,7 +291,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       prevSections.filter((section) => section._id !== sid)
     );
     setCourse((prevCourse) => {
-      if (!prevCourse.sections) return prevCourse;
       return {
         ...prevCourse,
         sections: prevCourse.sections?.filter((sectionId) => sectionId !== sid),

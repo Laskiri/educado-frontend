@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useExercises } from "@contexts/courseStore";
-import { getUserToken } from "@helpers/userInfo";
 import { useNotifications } from "../notification/NotificationContext";
 // Components
 import AnswerCards from "../../components/Exercise/AnswerCards";
@@ -9,10 +8,7 @@ import { ModalButtonCompont } from "../ModalButtonCompont";
 
 // Interfaces
 import { Answer } from "@interfaces/Answer";
-import { Exercise, Component } from "@interfaces/Course";
-
-// Pop-up messages
-import { toast } from "react-toastify";
+import { Component } from "@interfaces/Course";
 
 export interface ExercisePartial {
   title: string;
@@ -22,7 +18,6 @@ export interface ExercisePartial {
 
 interface Props {
   savedSID: string;
-  data: Exercise;
   handleExerciseCreation: (newComponent: Component) => void;
 }
 

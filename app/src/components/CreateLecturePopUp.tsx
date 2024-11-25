@@ -1,19 +1,11 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Dropzone } from "./Dropzone/Dropzone";
-import { toast } from "react-toastify";
 
-// Contexts
-// import useAuthStore from '../../contexts/useAuthStore';
 // Hooks
-import { getUserToken } from "../helpers/userInfo";
-import { useApi } from "../hooks/useAPI";
 import { useLectures, useMedia } from "../contexts/courseStore";
 
 import { useNotifications } from "./notification/NotificationContext";
-// Services
-import StorageServices from "../services/storage.services";
-import LectureService from "../services/lecture.services";
 
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
@@ -21,7 +13,8 @@ import RichTextEditor from "./RichTextEditor";
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
-import { set } from "cypress/types/lodash";
+
+import { Component } from "../interfaces/Course";
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />;
 
@@ -34,7 +27,7 @@ type Inputs = {
 
 interface Props {
   savedSID: string;
-  handleLectureCreation: (lectureData: any) => void;
+  handleLectureCreation: (newComponent: Component) => void;
 }
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
@@ -43,10 +36,6 @@ interface Props {
  * @returns HTML Element
  */
 export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
-  //TODO: When tokens are done, Remove dummy token and uncomment useToken
-  const token = getUserToken();
-
-  //const sid = window.location.pathname.split("/")[2];
 
   // use-form setup
   const {
@@ -58,7 +47,6 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   } = useForm<Inputs>();
 
   const [contentType, setContentType] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [editorValue, setEditorValue] = useState<string>('');
   const [lectureVideo, setLectureVideo] = useState<File | null>(null);
   const { addLectureToCache } = useLectures();
@@ -75,9 +63,9 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   /**
    * Function to handle the submit of the form
    *
-   * @param {Inputs} data The data from each field in the form put into an object
+   * @param {Inputs} newData The data from each field in the form put into an object
    */
-  const onSubmit: SubmitHandler<Inputs> = async (newData) => {
+  const onSubmit: SubmitHandler<Inputs> = async (newData: Inputs) => {
     const newLecture = {
       _id: "0",
       title: newData.title,
@@ -230,7 +218,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             </div>
             {/*Create and cancel buttons*/}
             <ModalButtonCompont
-              isSubmitting={isSubmitting}
+              isSubmitting={false}
               typeButtons={`lecture-create-${savedSID}`}
               type={"create"}
             />

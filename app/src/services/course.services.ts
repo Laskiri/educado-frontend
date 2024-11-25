@@ -57,9 +57,13 @@ const getAllCourses = async (token: string) => {
   const res = await axios.get(`${BACKEND_URL}/api/courses/creator/${id}`, { headers: { Authorization: `Bearer ${token}`, token: token } });
 
   // Convert dates in course data to Date objects
-  res.data.forEach((course: any) => {
-    course.dateCreated = new Date(course.dateCreated);
-    course.dateUpdated = new Date(course.dateUpdated);
+  res.data.forEach((course: Course) => {
+    if (course.dateCreated) {
+      course.dateCreated = new Date(course.dateCreated);
+    }
+    if (course.dateUpdated) {
+      course.dateUpdated = new Date(course.dateUpdated);
+    }
   });
 
   return res.data;
@@ -84,43 +88,6 @@ const getCourseCategories = async (url: string, token: string) => {
 }
 
 /**
- * Update a specific course
- * @param data the data of the course to be updated 
- * @param id The id of the course
- * @param token The token of the user
- * @returns Confirmation of the update
- */
-const updateCourseDetail = async (data: Course, id: string | undefined, token: string) => {
-
-  const res = await axios.patch(
-    `${BACKEND_URL}/api/courses/${id}`,
-    data,
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
-
-  return res.data;
-}
-
-const updateCourseSectionOrder = async (sections: Array<string>, id: string | undefined, token: string) => {
-  const res = await axios.patch(
-    `${BACKEND_URL}/api/courses/${id}/sections`,
-    { sections },
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
-  return res.data;
-}
-
-const updateCourseStatus = async (course_id: string | undefined, status: string, token: string) => {
-  const res = await axios.patch(
-    `${BACKEND_URL}/api/courses/${course_id}/updateStatus`,
-    { status },
-    { headers: { Authorization: `Bearer ${token}` } }
-  )
-  return res.data;
-}
-
-
-/**
  * Delete a specific course 
  * @param id the id of the course that will be deleted
  * @param token token of the user 
@@ -140,9 +107,6 @@ const CourseServices = Object.freeze({
   getAllCourses,
   getCourseDetail,
   getCourseCategories,
-  updateCourseDetail,
-  updateCourseStatus,
-  updateCourseSectionOrder,
   deleteCourse
 });
 

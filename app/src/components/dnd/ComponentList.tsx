@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState} from "react";
 
 // DND-KIT
 import {
+  UniqueIdentifier,
+  DragEndEvent,
   DndContext,
   closestCenter,
   DragOverlay,
@@ -24,16 +26,10 @@ import { useSections } from "@contexts/courseStore";
 // Components
 import { SortableComponentItem } from "./@dnd/SortableComponentItem";
 import { Item } from "./@dnd/Item";
-// Service
-import LectureService from "@services/lecture.services";
-import ExerciseServices from "@services/exercise.services";
 
 // Intefaces
-import ComponentService from "@services/component.service";
 import { Component } from "@interfaces/Course";
 
-// Hooks
-import { getUserToken } from "@helpers/userInfo";
 
 interface Props {
   sid: string;
@@ -46,7 +42,7 @@ export const ComponentList = ({
   components
 }: Props) => {
   // States
-  const [activeId, setActiveId] = useState(null);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const { updateCachedSectionComponents} = useSections();
   // Setup of pointer and keyboard sensor
   const sensors = useSensors(
@@ -57,15 +53,15 @@ export const ComponentList = ({
   );
 
   // handle start of dragging
-  const handleDragStart = (event: any) => {
+  const handleDragStart = (event: { active: { id: UniqueIdentifier } }) => {
     const { active } = event;
     setActiveId(active.id);
   };
 
   // handle end of dragging
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
+    if (over === null || active.id === over.id) return;
       const adjustComponents = () => {
         const oldIndex = components.findIndex(
           (component) => component.compId === active.id
@@ -76,9 +72,9 @@ export const ComponentList = ({
         );
         return arrayMove(components, oldIndex, newIndex);
       }
+
       const newComponents = adjustComponents();
       updateCachedSectionComponents(sid, newComponents);
-    }
   };
 
   return (
@@ -94,7 +90,7 @@ export const ComponentList = ({
           items={components.map((comp) => comp._id)}
           strategy={verticalListSortingStrategy}
         >
-          {components.map((comp, key: React.Key) => (
+          {components.map((comp) => (
             <SortableComponentItem
               key={comp._id}
               component={comp}
@@ -104,7 +100,7 @@ export const ComponentList = ({
         </SortableContext>
 
         <DragOverlay className="w-full">
-          {activeId ? <Item id={activeId} /> : null}
+          {activeId !== null ? <Item id={activeId} /> : null}
         </DragOverlay>
       </DndContext>
     </div>

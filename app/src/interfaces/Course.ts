@@ -85,7 +85,7 @@ export interface FormattedCourse {
     category: string;
     difficulty: number;
     description: string;
-    coverImg: string;
+    coverImg: Media | null;
     status: string;
     creator: string;
   };

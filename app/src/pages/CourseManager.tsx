@@ -9,7 +9,7 @@ import Layout from "../components/Layout";
 import CourseServices from '../services/course.services';
 import Loading from '../components/general/Loading';
 import NotFound from '../pages/NotFound';
-import { CourseProvider, useCourse } from '../contexts/courseStore';
+import { CourseProvider, useCourse} from '../contexts/courseStore';
 
 import { Course } from '../interfaces/Course';
 
@@ -41,7 +41,6 @@ const CourseManager = () => {
 
     
     useEffect(() => {
-        console.log("CourseManager useEffect")
         if (courseCached) return
         if (newCourse) { 
             const data = {
@@ -60,7 +59,6 @@ const CourseManager = () => {
         }
         const fetchCourseData = async () => {
             const data = await getCourseDetails(id, token)
-            console.log("CourseManager useEffect fetchCourseData", data)
             updateCourse(data) 
         }
         fetchCourseData()
@@ -68,11 +66,11 @@ const CourseManager = () => {
 
 
     const isCourseBasicInformation = (course: Course) => {
-        return course.title !== "" && course.description !== "" && course.category !== "" && (course.difficulty !== 0) && course.status !== "";
+        return course.title !== "" && course.description !== "" && course.category !== "" && (course.difficulty !== 0) && course.status !== "" && course.coverImg !== "";
     }
 
     const doesCourseSectionsExist = (course: Course) => {
-        return course.sections && course.sections.length > 0;
+        return course.sections.length > 0;
     }
 
     useEffect(() => {
@@ -85,7 +83,6 @@ const CourseManager = () => {
             }
             return 0;
         };
-
         if (newCourse) {
             return;
         }
@@ -116,7 +113,7 @@ const CourseManager = () => {
                 <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
-                    {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} />}
+                    {tickChange === 1 && <SectionCreation token={token} setTickChange={handleTickChange} />}
                 </div>
             </div>
         </Layout>

@@ -106,7 +106,7 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
     }
   }, [lecture, setValue]);
 
-  const handleFileChange = (file: File) => {
+  const handleFileChange = (file: File | null) => {
     if (file === null) return;
     setLectureVideo(file);
   }

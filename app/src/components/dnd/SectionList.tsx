@@ -1,19 +1,18 @@
 import { useState } from "react";
+import { UniqueIdentifier } from "@dnd-kit/core";
 
 // DND-KIT
 import {
   DndContext,
   closestCenter,
   DragOverlay,
+  DragEndEvent,
   KeyboardSensor,
   PointerSensor,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 
-import { getUserToken } from "../../helpers/userInfo";
-import SectionServices from "../../services/section.services";
-import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
 
 import {
@@ -40,7 +39,7 @@ export const SectionList = ({
   sections,
 }: Props) => {
   // States
-  const [activeId, setActiveId] = useState<string | null>(null);
+  const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const [savedSID, setSavedSID] = useState<string>("");
 
   const { deleteCachedSection } = useSections();
@@ -56,36 +55,27 @@ export const SectionList = ({
   );
 
   const handleSectionDeletion = (sId: string) => {
-    const token = getUserToken();
-    if (confirm("Tem certeza que deseja excluir?") == true) {
-      SectionServices.deleteSection(sId, token)
-        .then(() => {
-          addNotification("Seção excluída");
-          deleteCachedSection(sId);
-        })
-        .catch((err) => toast.error(err));
+    if (confirm("Tem certeza que deseja excluir?")){
+      addNotification("Seção excluída");
+      deleteCachedSection(sId);
     }
   };
-
-  // handle start of dragging
-  const handleDragStart = (event: any) => {
+  const handleDragStart = (event: { active: { id: UniqueIdentifier } }) => {
     const { active } = event;
     setActiveId(active.id);
   };
 
-  // handle end of dragging
-  const handleDragEnd = (event: any) => {
+  const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
-    if (active.id !== over.id) {
-
-      const getAdjustedSectionList = () => {
-        const oldIndex = sections.findIndex((section) => section === active.id);
-        const newIndex = sections.findIndex((section) => section === over.id);
-        const result = arrayMove(sections, oldIndex, newIndex);
-        return result;
-      }
-      updateCachedCourseSections(getAdjustedSectionList());
+    if (over === null || active.id === over.id) return; 
+    const getAdjustedSectionList = () => {
+      const oldIndex = sections.findIndex((section) => section === active.id);
+      const newIndex = sections.findIndex((section) => section === over.id);
+      const result = arrayMove(sections, oldIndex, newIndex);
+      return result;
     }
+    updateCachedCourseSections(getAdjustedSectionList());
+    
     setActiveId(null);
   };
 
@@ -104,7 +94,7 @@ export const SectionList = ({
           items={sections}
           strategy={verticalListSortingStrategy}
         >
-          {sections.map((section, index) => (
+          {sections.map((section) => (
             <SortableItem
               key={section}
               sid={section}
@@ -116,7 +106,7 @@ export const SectionList = ({
         </SortableContext>
 
         <DragOverlay className="w-full">
-          {activeId ? <Item id={activeId} /> : null}
+          {activeId !== null ? <Item id={activeId} /> : null}
         </DragOverlay>
       </DndContext>
     </div>

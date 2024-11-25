@@ -1,7 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useForm, SubmitHandler } from "react-hook-form";
-import { toast } from "react-toastify";
 import { useNotifications } from "../notification/NotificationContext";
 import { useCourse, useMedia } from '../../contexts/courseStore';
 // Services
@@ -9,7 +7,6 @@ import CourseServices from "../../services/course.services";
 import StorageServices from "../../services/storage.services";
 import {useApi} from "../../hooks/useAPI";
 // Helpers
-import { getUserInfo } from "../../helpers/userInfo";
 import categories from "../../helpers/courseCategories";
 import { convertSrcToFile } from "@helpers/fileHelpers";
 
@@ -21,7 +18,7 @@ import Loading from "../general/Loading";
 import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
 // Interface
-import { Course } from "../../interfaces/Course";
+import { Course} from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
 
 interface CourseComponentProps {
@@ -32,19 +29,19 @@ interface CourseComponentProps {
   updateHighestTick: (tick: number) => void;
 }
 
-
-
-
 /**
  * This component is responsible for creating and editing courses.
  *
  * @param token The user token
  * @param id The course id
+ * @param setTickChange The function to set the tick change
+ * @param setId The function to set the course id
+ * @param updateHighestTick The function to update the highest tick
  * @returns HTML Element
  */
 
 export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProps) => {
-  const {course, updateCourseField, getFormattedCourse } = useCourse();
+  const {course, updateCourseField, getFormattedCourse} = useCourse();
   const { addMediaToCache, updateMedia, getMedia } = useMedia();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
@@ -60,8 +57,9 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
 
   // Callbacks
   const { call: fetchCoverImg} = useApi(StorageServices.getMedia);
-  const { call: createCourse, isLoading: createLoading} = useApi(CourseServices.createCourse);
-  const { call: saveCourseDraft, isLoading: saveLoading} = useApi(CourseServices.updateCourse);
+  const existingCourse = id !== "0";
+  const submitCall = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
+  const { call: submitCourse, isLoading: submitLoading} = useApi(submitCall);
 
   const errors = {
     title: course.title === "",
@@ -75,7 +73,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   // Notification
   const { addNotification } = useNotifications();
 
-  const existingCourse = id != "0";
   const courseCached = Object.keys(course).length > 0;
   const charCount = course?.description?.length ?? 0;
   const navigate = useNavigate();
@@ -124,8 +121,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
 
   //Used to format PARTIAL course data, meaning that it can be used to update the course data gradually
   const handleFieldChange = (field: keyof Course, value: string | number | File | null) => {
-    const updatedData = { ...course, [field]: value };
-    updateCourseField(updatedData);
+    updateCourseField({[field]: value});
   };
   const handleDialogEvent = (
     message: string,
@@ -144,41 +140,28 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
     const newMedia = { id: id, file: file, parentType: "c" };
     if (!courseImg) {
       addMediaToCache(newMedia);
+      updateCourseField({coverImg: course._id + "_c"});
     }
     else {
       updateMedia(newMedia);
     }
   }
 
-  const saveExistingDraft = async () => {
+  const handleSubmitCourse = async () => {
     try {
       const updatedCourse = getFormattedCourse();
-      await saveCourseDraft(updatedCourse, token);
+      await submitCourse(updatedCourse, token);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
-      toast.error(err as string);
-    }
-  };
-
-  // Creates new draft course and navigates to course list
-  const createNewDraft = async () => {
-    try {
-      const newCourse = getFormattedCourse();
-      console.log("newCourse", newCourse);
-      await createCourse(newCourse, token);
-      navigate("/courses");
-      addNotification("Seção deletada com sucesso!");
-    } catch (err) {
-      toast.error(err as string);
+      console.error(err);
     }
   }
 
   const handleSave = () => {
-    const funcCall = existingCourse ? saveExistingDraft : createNewDraft;
     handleDialogEvent(
       "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-      funcCall,
+      handleSubmitCourse,
       "Salvar como rascunho "
     );
   };
@@ -209,7 +192,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
         onClose={() => {
           setShowDialog(false);
         }} 
-        loading = {saveLoading || createLoading}
+        loading = {submitLoading}
       />
       <div className="w-full flex flex-row items-center justify-between py-5">
         <div className="flex items-center gap-2">
