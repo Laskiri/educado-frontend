@@ -2,17 +2,17 @@ import axios from "axios";
 
 // Backend URL from enviroment
 import { BACKEND_URL } from "../helpers/environment";
-import { getUserToken } from "../helpers/userInfo";
+import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
 //interfaces
-import { Course } from "../interfaces/Course";
+import { CreatorPopulatedCourse, Course, NewCourse } from "@interfaces/Course";
 
 /**
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
  */
 
-const createCourse = async (data: Course, token: string) => {
-  return await axios.put(
+const createCourse = async (data: NewCourse, token: string) => {
+  return await axios.put<Course>(
     `${BACKEND_URL}/api/courses`,
     {
       title: data.title,
@@ -32,19 +32,46 @@ const createCourse = async (data: Course, token: string) => {
 };
 
 /**
+ * Get all courses from specific creator
+ * @param token The token of the user
+ * @returns A list of all courses for the creator
+ */
+const getAllCreatorCourses = async (token: string) => {
+  const { id } = getUserInfo();
+
+  const res = await axios.get<Course[]>(
+    `${BACKEND_URL}/api/courses/creator/${id}`,
+    {
+      headers: { Authorization: `Bearer ${token}`, token: token },
+    }
+  );
+
+  // Convert dates in course data to Date objects
+  res.data.forEach((course) => {
+    if (course.dateCreated) course.dateCreated = new Date(course.dateCreated);
+    if (course.dateUpdated) course.dateUpdated = new Date(course.dateUpdated);
+  });
+
+  return res.data;
+};
+
+/**
  * Get all courses
  * @returns A list of all courses
  */
 const getAllCourses = async () => {
   const token = getUserToken();
-  const res = await axios.get<Course[]>(`${BACKEND_URL}/api/courses/`, {
-    headers: { Authorization: `Bearer ${token}` },
-  });
+  const res = await axios.get<CreatorPopulatedCourse[]>(
+    `${BACKEND_URL}/api/courses/`,
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
 
   // Convert dates in course data to Date objects
   res.data.forEach((course) => {
-    course.dateCreated = new Date(course.dateCreated);
-    course.dateUpdated = new Date(course.dateUpdated);
+    if (course.dateCreated) course.dateCreated = new Date(course.dateCreated);
+    if (course.dateUpdated) course.dateUpdated = new Date(course.dateUpdated);
   });
 
   return res.data;
@@ -56,7 +83,7 @@ const getAllCourses = async () => {
  * @returns The course detail
  */
 const getCourseDetail = async (url: string, token: string) => {
-  const res = await axios.get(url, {
+  const res = await axios.get<Course>(url, {
     headers: { Authorization: `Bearer ${token}` },
   });
 
@@ -132,6 +159,7 @@ const deleteCourse = async (id: string | undefined, token: string) => {
 // Export all methods
 const CourseServices = Object.freeze({
   createCourse,
+  getAllCreatorCourses,
   getAllCourses,
   getCourseDetail,
   getCourseCategories,

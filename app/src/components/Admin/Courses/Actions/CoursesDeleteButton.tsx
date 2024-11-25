@@ -8,7 +8,7 @@ import { useApi } from "@hooks/useAPI";
 import { toast } from "react-toastify";
 import courseService from "@services/course.services";
 
-import { Course } from "@interfaces/Course";
+import { CreatorPopulatedCourse } from "@interfaces/Course";
 import { KeyedMutator } from "swr";
 
 export const CoursesDeleteButton = ({
@@ -16,7 +16,7 @@ export const CoursesDeleteButton = ({
   refreshFn,
 }: {
   courseId: string;
-  refreshFn: KeyedMutator<Course[]>;
+  refreshFn: KeyedMutator<CreatorPopulatedCourse[]>;
 }) => {
   const [showModal, setShowModal] = useState(false);
   const { call: deleteCourse, isLoading } = useApi(courseService.deleteCourse);

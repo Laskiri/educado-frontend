@@ -8,7 +8,7 @@ import { getUserToken } from "@helpers/userInfo";
 import { toast } from "react-toastify";
 import courseService from "@services/course.services";
 
-import { Course } from "@interfaces/Course";
+import { CreatorPopulatedCourse } from "@interfaces/Course";
 import { KeyedMutator } from "swr";
 import { SubmitHandler, useForm } from "react-hook-form";
 
@@ -16,15 +16,15 @@ export const CoursesUpdateButton = ({
   course,
   refreshFn,
 }: {
-  course: Course;
-  refreshFn: KeyedMutator<Course[]>;
+  course: CreatorPopulatedCourse;
+  refreshFn: KeyedMutator<CreatorPopulatedCourse[]>;
 }) => {
   const [showModal, setShowModal] = useState(false);
 
   const { addNotification } = useNotifications();
 
   type FormInputs = Pick<
-    Course,
+    CreatorPopulatedCourse,
     "title" | "difficulty" | "category" | "description"
   >;
 

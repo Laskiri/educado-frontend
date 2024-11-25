@@ -16,13 +16,15 @@ import { SearchBar } from "@components/SearchBar/SearchBar";
 import { IconContext } from "react-icons";
 import { MdStar } from "react-icons/md";
 
-import { Course } from "@interfaces/Course";
+import { CreatorPopulatedCourse } from "@interfaces/Course";
 import courseService from "@services/course.services";
 import useSWR from "swr";
 import { usePagination } from "@hooks/usePagination";
 
 export const CoursesTableAdmin = () => {
-  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<
+    CreatorPopulatedCourse[]
+  >([]);
 
   const { data: coursesResponse, mutate } = useSWR("api/courses", () =>
     courseService.getAllCourses()
