@@ -35,6 +35,10 @@ const createCertificate = async (certificate: CertificateIds) => {
 	);
 }
 
+const getCertificatePreview = async () => {
+	return await client.get('/api/creator-certificates/preview');
+}
+
 const getUserCertificates = async (id : string) => {
 	const certificates = await client.get('/api/creator-certificates/creator/' + id, {
 		headers: {
@@ -63,11 +67,12 @@ const deleteCertificate = async (creatorId: string, courseId: string) => {
 }
 
 // Export all methods
-const CourseServices = Object.freeze({
+const CertificateService = Object.freeze({
 	createCertificate,
 	getUserCertificates,
 	deleteCertificate,
+	getCertificatePreview,
 });
 
-export default CourseServices;
+export default CertificateService;
 

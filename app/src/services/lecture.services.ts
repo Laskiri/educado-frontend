@@ -9,7 +9,7 @@ export interface LectureInterface {
   description: string,
   contentType: string,
   content: string,
-};
+}
 
 
 /**
