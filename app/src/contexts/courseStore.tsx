@@ -111,16 +111,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }, []);
 
 
-  useEffect(() => {
-    console.log("Media updated", media);
-  }, [media]);
-
-
-
-
-
   const getFormattedCourse = () => {
     const formattedCourse = formatCourse(course, sections, lectures, exercises, media);
+    console.log("Formatted course", formattedCourse);
     return formattedCourse;
   }
 

@@ -135,7 +135,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   };
  
   const handleImageUpload = (file: File | null) => {
-    console.log("file", file);
     if (!file) return;
     const newMedia = { id: id, file: file, parentType: "c" };
     if (!courseImg) {

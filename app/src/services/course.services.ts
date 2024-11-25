@@ -30,7 +30,6 @@ const createCourse = async (newCourse: FormattedCourse, token: string) => {
 
 const updateCourse = async (updatedCourse: FormattedCourse, token: string) => {
   const courseId = updatedCourse.courseInfo._id;
-  console.log("updatedCourse", updatedCourse);
   try {
     const res = await axios.post(
       `${BACKEND_URL}/api/courses/update/${courseId}`,

@@ -70,7 +70,6 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
   };
 
   useEffect(() => {
-    console.log("cachedVideo changed", cachedVideo);
     setLectureVideo(cachedVideo);
   }
   , [cachedVideo]);
@@ -78,7 +77,6 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
   useEffect(() => {
     if (lecture.contentType !== "video") return;
     if (lectureVideo) return 
-    console.log("fetching preview")
     const fetchPreview = async () => {
       const videoId = lecture._id + "_l"; // Assuming `data` is available here
       const fileSrc = await fetchPreviewVideo(videoId);
@@ -86,7 +84,6 @@ export const EditLecture = ({ lecture, handleEdit }: Props) => {
       const videoSrc = `data:video/mp4;base64,${fileSrc.split(',')[1]}`; //Quickfix - backend has to be adjusted to do this correctly, lasse don't @ me
       if (fileSrc !== null) {
         const file = await convertSrcToFile(videoSrc, videoId);
-        console.log("file", file);
         const newMedia = {
           id: lecture._id,
           file: file,

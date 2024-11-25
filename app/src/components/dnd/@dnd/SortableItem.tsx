@@ -1,4 +1,3 @@
-import { useForm, SubmitHandler } from "react-hook-form";
 import { toast } from "react-toastify";
 
 // Hooks
@@ -46,7 +45,6 @@ export function SortableItem({
 }: Props) {
   const [arrowDirection, setArrowDirection] = useState<string>(mdiChevronDown);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
-  const subRef = useRef<HTMLInputElement>(null);
   const openRef = useRef<HTMLInputElement>(null);
 
   const token = getUserToken();
@@ -54,6 +52,9 @@ export function SortableItem({
   const cachedSection = getCachedSection(sid);
   const cachedComponents = cachedSection?.components;
   const [sectionTitle , setSectionTitle] = useState<string>(cachedSection?.title ?? "");
+  const sectionErrors = { title: sectionTitle === "", description: cachedSection?.description === ""};
+
+
   // Fetch the section data from the server.
   useEffect(() => {
     try {
@@ -87,16 +88,7 @@ export function SortableItem({
     }
   }
 
-  type SectionPartial = {
-    title: string;
-    description: string;
-  };
-  // Create Form Hooks
-  const {
-    register: registerSection,
-    handleSubmit: handleSectionUpdate,
-    formState: { errors: sectionErrors },
-  } = useForm<SectionPartial>();
+
 
   /**
    * SubmitHandler: update section
@@ -114,20 +106,6 @@ export function SortableItem({
         updateCachedSection({[field]: value}, sid);
       }
     };
-
-  const onSubmit: SubmitHandler<SectionPartial> = (data) => {
-    if (data === undefined) return;
-    if (cachedSection?.title === undefined && cachedSection?.description === undefined) {console.log("errrr", undefined); return}
-
-    const changes: SectionPartial = {
-      title: cachedSection.title,
-      description: cachedSection.description,
-    };
-
-    SectionServices.saveSection(changes, sid, token)
-      //.then(res => toast.success('Seção atualizada'))
-      .catch((err) => toast.error(err));
-  };
 
   useEffect(() => {
     if (cachedSection?.title === "Nova seção") {
@@ -185,7 +163,7 @@ export function SortableItem({
         </div>
 
         <div className="overflow-hidden collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
-          <form onSubmit={handleSectionUpdate(onSubmit)}>
+          
             <div className="pt-5">
               <label htmlFor="title">Nome </label> {/*Title of section*/}
               <input
@@ -193,10 +171,9 @@ export function SortableItem({
                 defaultValue={sectionTitle ?? "Nova seção"}
                 placeholder={sectionTitle ?? "Nome da seção"}
                 className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...registerSection("title", { required: true })}
                 onChange={(e) => {handleFieldChange("title", e.target.value); setSectionTitle(e.target.value)}} //update the section title
               />
-              {sectionErrors.title && <span>Este campo é obrigatório!</span>}
+              {sectionErrors.title && <span className="text-warning">Este campo é obrigatório!</span>}
               {/** This field is required */}
             </div>
 
@@ -217,24 +194,13 @@ export function SortableItem({
                 defaultValue={cachedSection.description ?? ""}
                 placeholder={cachedSection.description ?? "Descrição da seção"}
                 className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                {...registerSection("description", { required: true })}
                 onChange={(e) => {handleFieldChange("description", e.target.value)}} //update the section title
               />
               {sectionErrors.description && (
-                <span>Este campo é obrigatório!</span>
+                <span className="text-warning">Este campo é obrigatório!</span>
               )}
               {/** This field is required */}
             </div>
-
-            <div
-              className="hidden"
-              onClick={() => {
-                onSubmit(cachedSection);
-              }}
-            >
-              <input type="submit" ref={subRef} />
-            </div>
-          </form>
 
           <ComponentList
             sid={sid}

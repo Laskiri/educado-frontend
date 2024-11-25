@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useApi } from '../hooks/useAPI';
-import { useCourse } from '../contexts/courseStore';
+import { useCourse, useSections } from '../contexts/courseStore';
 import { useNotifications } from "./notification/NotificationContext";
 
 import CourseService from '@services/course.services';
@@ -39,6 +39,7 @@ export const SectionCreation = ({
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
   const {course, getFormattedCourse } = useCourse();
+  const {getCachedSection} = useSections();
   const existingCourse = id !== "0";
   const courseCacheLoading = Object.keys(course).length === 0;
 
@@ -48,6 +49,13 @@ export const SectionCreation = ({
   const navigate = useNavigate();
   const { addNotification } = useNotifications();
 
+  const isMissingRequiredFields = () => {
+    return course.sections.some((section) => {
+      const secInfo = getCachedSection(section);
+      return secInfo?.title === "" || secInfo?.description === "";
+  });
+
+};
   const handleDialogEvent = (
     dialogText: string,
     onConfirm: () => void,
@@ -160,27 +168,32 @@ export const SectionCreation = ({
               {/** GO BACK TO COURSE CREATION PAGE 1/3 IN THE CHECKLIST */}
             </label>
 
-            <label
+            <div
               className={` ${
-                status === "published" ? "invisible pointer-events-none" : ""
-              } pl-32  underline py-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded `}
+              status === "published" ? "invisible pointer-events-none" : ""
+              } pl-32 underline mx-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 rounded ${
+              isMissingRequiredFields() ? "opacity-70" : ""
+              }`}
             >
-              <label
-                onClick={() => {
-                  handleDialogEvent(
-                    "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-                    handleDraftConfirm,
-                    "Salvar como rascunho"
-                  );
-                }}
-                className="whitespace-nowrap hover:cursor-pointer underline"
+              <button
+              disabled={isMissingRequiredFields()}
+              onClick={() => {
+                handleDialogEvent(
+                "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
+                handleDraftConfirm,
+                "Salvar como rascunho"
+                );
+              }}
+              className="whitespace-nowrap hover:cursor-pointer underline"
               >
-                Salvar como Rascunho {/** Save as draft */}
-              </label>
-            </label>
+              Salvar como Rascunho {/** Save as draft */}
+              </button>
+            </div>
 
-            <label className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
-              <label
+            <div className={`h-12 m-2 bg-primary flex items-center content-center hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${
+              isMissingRequiredFields() ? "opacity-70" : ""}`}>
+              <button
+                disabled={isMissingRequiredFields()}
                 onClick={() => {
                   handleDialogEvent(
                     status === "published"
@@ -190,12 +203,12 @@ export const SectionCreation = ({
                     "Publicar curso"
                   );
                 }}
-                className="whitespace-nowrap py-4 px-8 h-full w-full cursor-pointer"
+                className="whitespace-nowrap px-8  w-full cursor-pointer"
               >
                 {status === "published" ? "Publicar Edições" : "Publicar Curso"}{" "}
                 {/** Publish course, this should be replaced with a move to preview button when preview page is implemented */}
-              </label>
-            </label>
+              </button>
+            </div>
           </div>
         </div>
       </div>

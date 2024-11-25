@@ -14,9 +14,7 @@ export const formatCourse = (
 };
 
 const formatCourseInfo = (course: Course, media: Media[]) => {
-  console.log(media);
   const coverIMG = media.find((media) => media.parentType === "c" && media.id === course._id) || null
-  console.log("coverIMG", coverIMG);
   return {
     _id : course._id ?? "",
     title: course.title,
@@ -60,7 +58,7 @@ const formatComponents = (
   exercises: Exercise[],
   media: Media[]
 ) => {
-  return components
+    return components
     .map((component) => {
       const isLecture = component.compType === "lecture";
       const comp = isLecture
@@ -78,10 +76,6 @@ const formatComponents = (
 };
 
 const lookForMedia = (media: Media[], lookupId: string): Media | null => {
-    console.log("looking for media", media);
-    console.log("lookupId", lookupId);
-    const foundMedia = media.find((media) => media.id === lookupId)
-    console.log("foundMedia", foundMedia);
-
+  const foundMedia = media.find((media) => media.id === lookupId)
   return foundMedia ? foundMedia : null;
 };

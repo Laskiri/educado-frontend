@@ -31,9 +31,10 @@ interface Props {
 
 export function SortableComponentItem({ component, sid }: Props) {
   const token = getUserToken();
+  const isLectureComponent = component.compType === "lecture";
   const { loadLectureToCache, getCachedLecture, deleteCachedLecture } = useLectures();
   const { loadExerciseToCache, getCachedExercise, deleteCachedExercise } = useExercises();
-  const [data, setData] = useState<Exercise | Lecture | null>(component.compType === "lecture" ? getCachedLecture(component.compId) : getCachedExercise(component.compId));
+  const [data, setData] = useState<Exercise | Lecture | null>(isLectureComponent ? getCachedLecture(component.compId) : getCachedExercise(component.compId));
   const [newTitle, setNewTitle] = useState("");
   const { deleteCachedSectionComponent } = useSections();
 
@@ -42,12 +43,13 @@ export function SortableComponentItem({ component, sid }: Props) {
   //     token ? [cid, map.get(cid), token] : null,
   //     ComponentService.getComponentDetail
   //   );
-  const isLecture = (data: Exercise | Lecture | null): data is Lecture => {
+  
+  const isLectureData = (data: Exercise | Lecture | null): data is Lecture => {
     return (data as Lecture)?.contentType !== undefined;
   }
   
-  const { call: getComponentDetails, isLoading: fetchLoading} = useApi(isLecture(data) ? LectureService.getLectureDetail : ExerciseServices.getExerciseDetail);
-  const deleteCachedComponentDetails = isLecture(data) ? deleteCachedLecture : deleteCachedExercise;
+  const { call: getComponentDetails, isLoading: fetchLoading} = useApi(isLectureComponent ? LectureService.getLectureDetail : ExerciseServices.getExerciseDetail);
+  const deleteCachedComponentDetails = isLectureData(data) ? deleteCachedLecture : deleteCachedExercise;
 
   useEffect(() => {
       if (data || token === "") return;
@@ -56,7 +58,7 @@ export function SortableComponentItem({ component, sid }: Props) {
         try {
           const res = await getComponentDetails(url, token);
           setData(res);
-          if (isLecture(data)) {
+          if (component.compType === "lecture") {
             loadLectureToCache(res);
           } else {
             loadExerciseToCache(res);
@@ -77,7 +79,6 @@ export function SortableComponentItem({ component, sid }: Props) {
   };
 
   const handleComponentDeletion = async () => {
-    console.log("Deleting component", component);
     if (confirm("Tem certeza de que deseja excluir esse componente?")) {
       deleteCachedSectionComponent(sid, component.compId); // removes comp from section
       deleteCachedComponentDetails(component.compId); // deletes the specific lecture or exercise
@@ -93,7 +94,7 @@ export function SortableComponentItem({ component, sid }: Props) {
     });
   }
   const getIcon = () => {
-    if (isLecture(data)) {
+    if (isLectureData(data)) {
       if ((data as Lecture).contentType === "video") {
         return <Icon path={mdiVideo} size={1} />;
       }
@@ -138,10 +139,10 @@ export function SortableComponentItem({ component, sid }: Props) {
               id={component.compType + "-edit-" + data._id}
               className="modal-toggle"
             />
-            {isLecture(data) ? (
+            {isLectureData(data) ? (
               <EditLecture lecture={data} handleEdit={handleEdit} />
             ) : (
-              <EditExercise data={data} handleEdit={handleEdit} />
+              <EditExercise exercise={data} handleEdit={handleEdit} />
             )}
 
             {/**delete a lecture or exercise and trash icon*/}
