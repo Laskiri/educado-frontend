@@ -32,16 +32,16 @@ interface CourseContextProps {
   deleteCachedSectionComponent: (sectionId: string, compId: string) => void;
   addCachedSectionComponent: (sectionId: string, component: Component) => Component;
   lectures: Lecture[];
-  exercises: Exercise[];
   getCachedLecture: (lid: string) => Lecture | null;
-  getCachedExercise: (eid: string) => Exercise | null;
   updateCachedLecture: (lecture: Lecture) => void;
-  updateCachedExercise: (exercise: Exercise) => void;
   deleteCachedLecture: (lid: string) => void;
-  deleteCachedExercise: (eid: string) => void;
-  loadExerciseToCache: (exercise: Exercise) => void;
   loadLectureToCache: (lecture: Lecture) => void;
   addLectureToCache: (lecture: Lecture) => Lecture;
+  exercises: Exercise[];
+  getCachedExercise: (eid: string) => Exercise | null;
+  updateCachedExercise: (exercise: Exercise) => void;
+  deleteCachedExercise: (eid: string) => void;
+  loadExerciseToCache: (exercise: Exercise) => void;
   addExerciseToCache: (exercise: Exercise) => Exercise;
   media : Media[];
   addMediaToCache: (media: Media) => void;
@@ -78,16 +78,16 @@ const CourseContext = createContext<CourseContextProps>({
   deleteCachedSectionComponent: () => {},
   addCachedSectionComponent: (sectionId: string, component: Component) => component,
   lectures: [],
-  exercises: [],
   getCachedLecture: () => null,
-  getCachedExercise: () => null,
   updateCachedLecture: () => {},
-  updateCachedExercise: () => {},
   deleteCachedLecture: () => {},
-  deleteCachedExercise: () => {},
   loadLectureToCache: () => {},
-  loadExerciseToCache: () => {},
   addLectureToCache: () => ({} as Lecture),
+  exercises: [],
+  getCachedExercise: () => null,
+  updateCachedExercise: () => {},
+  deleteCachedExercise: () => {},
+  loadExerciseToCache: () => {},
   addExerciseToCache: () => ({} as Exercise),
   media: [],
   addMediaToCache: () => {},
@@ -371,7 +371,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const addMediaToCache = (newMedia: Media) => {
-    console.log("Adding media", newMedia);
     if (media.find((media) => media.id === newMedia.id)) return;
     setMedia((prevMedia) => [...prevMedia, newMedia]);
   }
@@ -393,8 +392,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     setMedia(updatedMedia);
   }
 
-  
-
 
 
   const value = {
@@ -414,17 +411,17 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     deleteCachedSectionComponent,
     addCachedSectionComponent,
     lectures,
-    exercises,
     getCachedLecture,
-    getCachedExercise,
     updateCachedLecture,
+    deleteCachedLecture,
+    addLectureToCache,
+    loadLectureToCache,
+    exercises,
+    getCachedExercise,
     updateCachedExercise,
     deleteCachedExercise,
-    deleteCachedLecture,
-    loadLectureToCache,
-    loadExerciseToCache,
-    addLectureToCache,
     addExerciseToCache,
+    loadExerciseToCache,
     media,
     addMediaToCache,
     getMedia,
