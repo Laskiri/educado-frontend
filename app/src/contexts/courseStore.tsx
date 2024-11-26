@@ -118,6 +118,11 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     };
   }, []);
 
+  useEffect(() => {
+    console.log("Lectures", lectures);
+    console.log("Exercises", exercises);
+  }, [lectures, exercises]);
+
 
   const getFormattedCourse = () => {
     const formattedCourse = formatCourse(course, sections, lectures, exercises, media);
@@ -235,6 +240,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
           return false;
         }
       );
+
+      console.log("Updated components", updatedComponents);
   
       const updatedSections = [...prevSections];
       updatedSections[sectionIndex] = {
@@ -243,6 +250,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       };
       return updatedSections;
     });
+
   };
 
   const addCachedSectionComponent = (sectionId: string, component: Component) => {
@@ -320,7 +328,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
         if (lecture._id === lid && lecture.contentType === 'video') {
           deleteMedia(lid);
         }
-        lecture._id !== lid})
+        return lecture._id !== lid;
+      })
     );   
   };
 

@@ -36,7 +36,6 @@ const formatSections = (
 ) => {
   if (course.sections.length === 0) return [];
   let haventCachedSections = false;
-
   const formattedSections = course.sections.map((sectionId) => {
     const section = sections.find((sec) => sec._id === sectionId);
     if (!section) { haventCachedSections = true; return {_id: "", title: "", description: "", components: [] }; }

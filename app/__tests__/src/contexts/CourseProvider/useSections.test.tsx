@@ -99,7 +99,7 @@ describe('useSection', () => {
         const { result } = renderHook(() => useCombinedHooks(), { wrapper: Wrapper });
         act(() => {
           result.current.sectionsHook.createNewSection();
-          /* result.current.sectionsHook.deleteCachedSection('1'); */
+          result.current.sectionsHook.deleteCachedSection('1'); */
         });
         const section = result.current.sectionsHook.getCachedSection('1');
         expect(section).toBeNull();
