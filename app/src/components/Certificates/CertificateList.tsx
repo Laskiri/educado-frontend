@@ -9,27 +9,14 @@ import EmptyState from "./CertificateEmpty";
 
 export default function CertificateList() {
   const [certificates, setCertificates] = useState<Certificate[]>();
-  const [loading, setLoading] = useState(true); //loading istedet for emptyState? emptyState er fra CertificateEmpty
 
   useEffect(() => {
-    CertificateService.getUserCertificates() // er der noget galt med det her kald?
-      .then((res: Certificate[]) => {
-        console.log("Fetched Certificates:", res); // Log the fetched certificates
-        setCertificates(res);
-      })
-      .catch((error) => {
-        console.error("Error fetching certificates:", error);
-        setCertificates([]); // Handle errors by setting an empty array
-      });
+    CertificateService.getUserCertificates(
+      localStorage.getItem("id") || ""
+    ).then((res: Certificate[]) => {
+      setCertificates(res);
+    });
   }, []);
-
-  // useEffect(() => {
-  //   CertificateService.getUserCertificates(
-  //     localStorage.getItem("id") || ""
-  //   ).then((res: Certificate[]) => {
-  //     setCertificates(res);
-  //   });
-  // }, []);
 
   if (!certificates) {
     return <EmptyState />; // den tjekker om der er certifikater men vi vil gerne have den tjekker om published kurser
