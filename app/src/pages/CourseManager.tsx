@@ -5,6 +5,7 @@ import { useParams } from "react-router";
 import { getUserToken } from '../helpers/userInfo';
 import { BACKEND_URL } from '../helpers/environment';
 import Checklist from "../components/Checklist";
+import FeedbackBox from "../components/FeedbackBox";
 import Layout from "../components/Layout";
 import CourseServices from '../services/course.services';
 import useSWR from 'swr';
@@ -117,6 +118,9 @@ const CourseManager = () => {
         <Layout meta="Course Manager">
             <div className="flex flex-row">
                 <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
+                    <div className="fixed bottom-10 left-5 w-1/5">
+                        <FeedbackBox id={id ?? ''} token={token} />
+                    </div>
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
                     {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}

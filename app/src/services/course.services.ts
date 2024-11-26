@@ -118,6 +118,15 @@ const deleteCourse = async (id: string | undefined, token: string) => {
   );
 }
 
+const getCourseFeedback = async (url: string, token: string) => {
+  const response = await axios.get(url, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+  return response;
+}
+
 // Export all methods
 const CourseServices = Object.freeze({
   createCourse,
@@ -127,7 +136,9 @@ const CourseServices = Object.freeze({
   updateCourseDetail,
   updateCourseStatus,
   updateCourseSectionOrder,
-  deleteCourse
+  deleteCourse,
+  getCourseFeedback
+
 });
 
 export default CourseServices;
