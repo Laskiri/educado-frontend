@@ -319,6 +319,7 @@ const Application = () => {
           onClose={closeModal}
           isVisible={isModalVisible}
           loading={submitLoading}
+          width="w-[500px]"
       />
     </main>
   )
