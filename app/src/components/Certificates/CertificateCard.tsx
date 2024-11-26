@@ -50,7 +50,7 @@ export default function CertificateCard(props: {
   }
 
 	return (
-		<div className="overflow-hidden w-full m-auto duration-200 shadow-md rounded-xl hover:shadow-lg group">
+		<div className="w-full m-auto duration-200 shadow-md rounded-xl hover:shadow-lg group max-h-[400px]">
 			<div className={"bg-white w-full"}>
 				<div className={'mt-5 grid grid-cols-[50fr,1fr] rounded-xl border'}>
 					{/* Card info */}
@@ -89,7 +89,7 @@ export default function CertificateCard(props: {
 							</div>
 							{
 								previewVisible &&
-                <iframe srcDoc={previewHtml} className="w-full col-span-2 px-5 py-4 rounded-b-xl bg-[rgb(250,_250,_250)] grid grid-cols-2"></iframe>
+                <iframe srcDoc={previewHtml} className="w-full h-72 mb-auto col-span-2 px-5 py-4 rounded-b-xl bg-[rgb(250,_250,_250)] grid grid-cols-2"></iframe>
 							}
 						</div>
 					}

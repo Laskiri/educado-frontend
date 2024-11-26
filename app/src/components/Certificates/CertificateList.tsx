@@ -23,7 +23,7 @@ export default function CertificateList() {
   }
 
   return (
-    <div className="overflow-scroll min-h-full pb-4" id="certificate-list">
+    <div className="overflow-scroll min-h-full max-h-full pb-4" id="certificate-list">
       {certificates.length > 0 ? ( //hvordan connecter den til certifikaterne=
         <>
           <div className="w-full">
