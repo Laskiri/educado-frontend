@@ -17,16 +17,9 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 	const [isOpen, setIsOpen] = useState(false);
 	const [previewVisible, setPreviewVisible] = useState(false);
 	const [pdfPath, setPdfPath] = useState('');
-  const [previewHtml, setPreviewHtml] = useState('');
-  const parser = new DOMParser();
 
 	function toggleModal() {
 		setPreviewVisible(!previewVisible);
-    axios.get(CERT_URL + '/api/creator-certificates/preview')
-      .then(res => {
-        console.log(res);
-        setPreviewHtml(res.data);
-      });
 	}
 
 	function toggleDropdown() {
@@ -34,7 +27,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 	}
 
 	useEffect(() => {
-		axios.post(CERT_URL + '/api/creator-certificates/download?courseId=' + certificate.course._id + '&creatorId=' + certificate.creator._id)
+		axios.post(CERT_URL + '/api/student-certificates/download?courseId=' + certificate.course._id + '&studentId=' + certificate.creator._id)
 			.then(res => {
 				setPdfPath(res.data);
 			});
@@ -48,7 +41,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 	return (
 		<div className="overflow-hidden w-full m-auto duration-200 shadow-md rounded-xl hover:shadow-lg group">
 			<div className={"bg-white w-full"}>
-				<div className={'mt-5 grid grid-cols-[5fr,5fr] rounded-xl border'}>
+				<div className={'mt-5 grid grid-cols-[50fr,1fr] rounded-xl border'}>
 					{/* Card info */}
 					<div className='px-5 py-6 grid grid-cols-4 justify-space-between -mr-20'>
 						{/* Course title */}
@@ -72,7 +65,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 					</button>
 					{isOpen && <div className="col-span-2 bg-grayLight h-[1px]"></div>}
 					{isOpen &&
-						<div className="w-full h-max col-span-2 px-5 py-4 rounded-b-xl bg-[rgb(250,_250,_250)] grid grid-cols-2">
+						<div className="w-full col-span-2 px-5 py-4 rounded-b-xl bg-[rgb(250,_250,_250)] grid grid-cols-2">
 							{/** Export certificate */}
 							<p className="text-xl translate-y-2 text-grayDark">Exportar certificado: </p>
 							<div className="gap-20 flex flex-row-reverse ">
@@ -85,7 +78,7 @@ export default function CertificateCard(props: { certificate: Certificate, num: 
 							</div>
 							{
 								previewVisible &&
-                <iframe srcDoc={previewHtml} className="w-full col-span-2 px-5 py-4 rounded-b-xl bg-[rgb(250,_250,_250)] grid grid-cols-2"></iframe>
+								<object id={'preview-window-' + props.num} className="rounded-xl justify-self-center col-span-2 mt-4" data={CERT_URL + pdfPath} type="application/pdf" width='600' height='482'/>
 							}
 						</div>
 					}
