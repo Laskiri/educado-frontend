@@ -20,8 +20,7 @@ interface CourseContextProps {
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
   createNewSection: () => Section;
-  updateSections: (sections: Section[]) => void;
-  loadSectionToCache: (section: Section) => void;
+  loadSectionToCache: (section: Section) => Section;
   getCachedSection: (sid: string) => Section | null;
   updateCachedSection: (fieldChange: Partial<Section>, sid: string) => void;
   deleteCachedSection: (sid: string) => void;
@@ -35,13 +34,13 @@ interface CourseContextProps {
   getCachedLecture: (lid: string) => Lecture | null;
   updateCachedLecture: (lecture: Lecture) => void;
   deleteCachedLecture: (lid: string) => void;
-  loadLectureToCache: (lecture: Lecture) => void;
+  loadLectureToCache: (lecture: Lecture) => Lecture;
   addLectureToCache: (lecture: Lecture) => Lecture;
   exercises: Exercise[];
   getCachedExercise: (eid: string) => Exercise | null;
   updateCachedExercise: (exercise: Exercise) => void;
   deleteCachedExercise: (eid: string) => void;
-  loadExerciseToCache: (exercise: Exercise) => void;
+  loadExerciseToCache: (exercise: Exercise) => Exercise;
   addExerciseToCache: (exercise: Exercise) => Exercise;
   media : Media[];
   addMediaToCache: (media: Media) => void;
@@ -70,8 +69,7 @@ const CourseContext = createContext<CourseContextProps>({
     parentCourse: "",
     components: [],
   }),
-  updateSections: () => {},
-  loadSectionToCache: () => {},
+  loadSectionToCache: () => ({} as Section),
   getCachedSection: () => null,
   updateCachedSection: () => {},
   deleteCachedSection: () => {},
@@ -82,13 +80,13 @@ const CourseContext = createContext<CourseContextProps>({
   getCachedLecture: () => null,
   updateCachedLecture: () => {},
   deleteCachedLecture: () => {},
-  loadLectureToCache: () => {},
+  loadLectureToCache: () => ({} as Lecture),
   addLectureToCache: () => ({} as Lecture),
   exercises: [],
   getCachedExercise: () => null,
   updateCachedExercise: () => {},
   deleteCachedExercise: () => {},
-  loadExerciseToCache: () => {},
+  loadExerciseToCache: () => ({} as Exercise),
   addExerciseToCache: () => ({} as Exercise),
   media: [],
   addMediaToCache: () => {},
@@ -151,11 +149,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     }));
   };
 
-  const updateSections = (newSections: Section[]) => {
-    setSections((prevSections) => [...prevSections, ...newSections]);
-  };
-
-
   const createNewSection = () => {
     const newId = idMaker.section + 1;
     setIdMaker((prevIdMaker) => ({ ...prevIdMaker, section: prevIdMaker.section + 1 }));
@@ -179,15 +172,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const loadSectionToCache = (newSection: Section) => {
     if (sections.find((section) => section._id === newSection._id)) return;
-    if (!course.sections.includes(newSection._id)) {
-      setCourse((prevCourse) => {
-        return {
-          ...prevCourse,
-          sections: [...prevCourse.sections, newSection._id],
-        };
-      });
-    }
     setSections((prevSections) => [...prevSections, newSection]);
+    return newSection;
   };
 
   
@@ -234,9 +220,20 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
       if (sectionIndex === -1) return prevSections;
+
+      
   
       const updatedComponents = prevSections[sectionIndex].components.filter(
-        (component) => component.compId !== compId
+        (component) => {
+          if (component.compId !== compId) return true;
+          
+          if (component.compType === 'lecture') {
+            deleteCachedLecture(compId);
+          } else if (component.compType === 'exercise') {
+            deleteCachedExercise(compId);
+          }
+          return false;
+        }
       );
   
       const updatedSections = [...prevSections];
@@ -314,6 +311,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const loadLectureToCache = (newLecture: Lecture) => {
     if (lectures.find((lecture) => lecture._id === newLecture._id)) return;
     setLectures((prevLectures) => [...prevLectures, newLecture]);
+    return newLecture;
   }
 
   const deleteCachedLecture = (lid: string) => {
@@ -352,6 +350,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const loadExerciseToCache = (newExercise: Exercise) => {
     if (exercises.find((exercise) => exercise._id === newExercise._id)) return;
     setExercises((prevExercises) => [...prevExercises, newExercise]);
+    return newExercise;
   }
 
   const deleteCachedExercise = (eid: string) => {
@@ -400,7 +399,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     updateCachedCourseSections,
     sections,
     createNewSection,
-    updateSections,
     loadSectionToCache,
     getCachedSection,
     updateCachedSection,
@@ -449,7 +447,6 @@ export const useSections = () => {
   return {
     sections: context.sections,
     createNewSection: context.createNewSection,
-    updateSections: context.updateSections,
     loadSectionToCache: context.loadSectionToCache,
     getCachedSection: context.getCachedSection,
     updateCachedSection: context.updateCachedSection,
@@ -466,7 +463,6 @@ export const useLectures = () => {
     lectures: context.lectures,
     getCachedLecture: context.getCachedLecture,
     updateCachedLecture: context.updateCachedLecture,
-    deleteCachedLecture: context.deleteCachedLecture,
     loadLectureToCache: context.loadLectureToCache,
     addLectureToCache: context.addLectureToCache,
   };
@@ -478,7 +474,6 @@ export const useExercises = () => {
     exercises: context.exercises,
     getCachedExercise: context.getCachedExercise,
     updateCachedExercise: context.updateCachedExercise,
-    deleteCachedExercise: context.deleteCachedExercise,
     loadExerciseToCache: context.loadExerciseToCache,
     addExerciseToCache: context.addExerciseToCache,
   };

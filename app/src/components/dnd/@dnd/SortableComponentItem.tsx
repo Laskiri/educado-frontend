@@ -32,8 +32,8 @@ interface Props {
 export function SortableComponentItem({ component, sid }: Props) {
   const token = getUserToken();
   const isLectureComponent = component.compType === "lecture";
-  const { loadLectureToCache, getCachedLecture, deleteCachedLecture } = useLectures();
-  const { loadExerciseToCache, getCachedExercise, deleteCachedExercise } = useExercises();
+  const { loadLectureToCache, getCachedLecture} = useLectures();
+  const { loadExerciseToCache, getCachedExercise} = useExercises();
   const [data, setData] = useState<Exercise | Lecture | null>(isLectureComponent ? getCachedLecture(component.compId) : getCachedExercise(component.compId));
   const [newTitle, setNewTitle] = useState("");
   const { deleteCachedSectionComponent } = useSections();
@@ -49,7 +49,6 @@ export function SortableComponentItem({ component, sid }: Props) {
   }
   
   const { call: getComponentDetails, isLoading: fetchLoading} = useApi(isLectureComponent ? LectureService.getLectureDetail : ExerciseServices.getExerciseDetail);
-  const deleteCachedComponentDetails = isLectureData(data) ? deleteCachedLecture : deleteCachedExercise;
 
   useEffect(() => {
       if (data || token === "") return;
@@ -81,7 +80,6 @@ export function SortableComponentItem({ component, sid }: Props) {
   const handleComponentDeletion = async () => {
     if (confirm("Tem certeza de que deseja excluir esse componente?")) {
       deleteCachedSectionComponent(sid, component.compId); // removes comp from section
-      deleteCachedComponentDetails(component.compId); // deletes the specific lecture or exercise
     }   
   }
 
