@@ -129,8 +129,8 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
     <>
       {/*Text shown in the top of create lecture*/}
       <div className="modal" id={`lecture-create-${savedSID}-modal`}>
-        <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
-          <h3 className="font-bold text-lg">Crie sua nova aula</h3>{" "}
+        <div className="modal-box bg-gradient-to-b from-primaryLight rounded-3xl w-11/12 max-w-xl">
+          <h3 className="font-bold text-lg">Crie sua nova aula </h3>{" "}
           {/*Create your new lecture!*/}
           <p className="py-4">
             Preencha o formulário e inicie sua nova aula!
@@ -142,12 +142,12 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor="title">Título</label> {/*Title*/}
+              <label htmlFor="title">Nome <span className="text-red-500">*</span></label> {/*Title*/}
               <input
                 type="text"
-                placeholder={"Insira o título da aula"}
+                placeholder={"Noma da aula"}
                 defaultValue={""}
-                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg border-none"
                 {...register("title", { required: true })}
               />
               {errors.title && (
@@ -156,12 +156,12 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             </div>
             {/*Field to input the description of the lecture*/}
             <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor="description">Descrição</label> {/*Description*/}
+              <label htmlFor="description">Descrição <span className="text-red-500">*</span></label> {/*Description*/}
               <textarea
                 rows={4}
-                placeholder={"Insira o conteúdo escrito dessa aula"}
+                placeholder={"Descrição da aula"}
                 defaultValue={""}
-                className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary rounded-lg focus:border-transparent border-none"
                 {...register("description", { required: true })}
               />
               {/*defaultValue=Add a description to your lecture*/}
@@ -170,7 +170,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               )}
             </div>
             
-            <label htmlFor="content-type">Tipo de conteúdo</label>{" "}
+            <label htmlFor="content-type">Tipo de conteúdo <span className="text-red-500">*</span></label>{" "}
             {/*Content type*/}
             <div className="flex flex-row space-x-8">
               <div>
@@ -217,7 +217,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
               {contentType === "video" ? (
                 <>
                   <label htmlFor="cover-image">
-                    Arquivo de entrada: vídeo ou imagem
+                    Upload do video <span className="text-red-500">*</span>
                   </label>{" "}
                   {/*Input file*/}
                   

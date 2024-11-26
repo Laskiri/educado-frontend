@@ -148,7 +148,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className="overflow-hidden collapse w-full min-h-16 rounded border border-primary border-bg-white shadow-lg rounded-lg my-4">
+      <div className={`overflow-hidden collapse w-full min-h-16 rounded bg-white shadow-lg rounded-lg my-4 ${openRef.current?.checked ? "border-primary" : ""} ${openRef.current?.checked ? "border-primary" : ""}`}>
         <input
           type="checkbox"
           className="peer w-full h-full"
@@ -169,7 +169,7 @@ export function SortableItem({
           <div className="flex gap-0 ml-auto -mr-9 z-10">
             <div
               onClick={() => handleSectionDeletion(sid)}
-              className="btn btn-ghost hover:bg-transparent hover:text-primary p-0"
+              className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"
             >
               {/**delete and move buttons on the left side of the section headers */}
               <Icon path={mdiDeleteCircle} size={1.2}></Icon>
@@ -181,7 +181,7 @@ export function SortableItem({
               {...attributes}
               {...listeners}
             >
-              <div className="btn btn-ghost hover:bg-transparent hover:text-primary p-0">
+              <div className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0">
                 {/**delete and move buttons on the left side of the section headers */}
                 <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
               </div>
@@ -192,12 +192,12 @@ export function SortableItem({
         <div className="overflow-visible collapse-content flex flex-col rounded-lg h-50  w-full rounded space-2 px-128 space-y-5">
           <form onSubmit={handleSectionUpdate(onSubmit)}>
             <div className="pt-5">
-              <label htmlFor="title">Nome </label> {/*Title of section*/}
+              <label htmlFor="title">Nome <span className="text-red-500">*</span> </label> {/*Title of section*/}
               <input
                 type="text"
                 defaultValue={sectionData.title ?? ""}
                 placeholder={"Nome da seção"}
-                className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="text-gray-500 flex form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none"
                 {...registerSection("title", { required: true })}
                 onChange={(e) => setTitle(e.target.value)} //update the section title
               />
@@ -207,7 +207,7 @@ export function SortableItem({
 
             <div className="pt-5">
             <div style={{ display: 'flex', alignItems: 'center' }}>
-              <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição</label>
+              <label htmlFor="title" style={{ marginRight: '8px' }}>Descrição <span className="text-red-500">*</span></label>
               <ToolTipIcon
                 alignLeftTop={false}
                 index={0}
@@ -221,7 +221,7 @@ export function SortableItem({
               <textarea
                 defaultValue={sectionData.description ?? ""}
                 placeholder={"Descrição da seção"}
-                className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="text-gray-500 form-field bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none h-11"
                 {...registerSection("description", { required: true })}
                 onChange={(e) => setDescription(e.target.value)} //update the section title
               />
@@ -230,7 +230,7 @@ export function SortableItem({
               )}
               {/** This field is required */}
             </div>
-
+            
             <div
               className="hidden"
               onClick={() => {
@@ -240,13 +240,19 @@ export function SortableItem({
               <input type="submit" ref={subRef} />
             </div>
           </form>
-
-          <ComponentList
-            sid={sid}
-            components={componentData}
-            setComponents={setComponentData}
-            addOnSubmitSubscriber={addOnSubmitSubscriber}
-          />
+            
+          <div className="border-t border-gray"></div>
+          {componentData && componentData.length > 0 && (
+            <div>
+              <ComponentList
+                sid={sid}
+                components={componentData}
+                setComponents={setComponentData}
+                addOnSubmitSubscriber={addOnSubmitSubscriber}
+              />
+              <div className="border-t border-gray"></div> {/* Divider below ComponentList */}
+            </div>
+          )}
 
           {/**ADD lecture and exercise to the section */}
           <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2">
@@ -262,7 +268,7 @@ export function SortableItem({
                 className="hover:text-gray-500 text-gray-500 "
               />
               <p className="hover:text-gray-500 text-gray-500 normal-case ">
-                Criar nova aula
+                Adicionar Aula
               </p>
             </label>
             {/* Put this part before </body> tag */}
@@ -291,7 +297,7 @@ export function SortableItem({
                 className="hover:text-gray-500 text-gray-500 "
               />
               <p className="hover:text-gray-500 text-gray-500 normal-case">
-                Criar novo exercício
+                Adicionar Exercício
               </p>{" "}
               {/** Create new Exercise */}
             </label>

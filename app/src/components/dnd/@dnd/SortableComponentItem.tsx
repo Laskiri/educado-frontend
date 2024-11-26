@@ -101,8 +101,8 @@ export function SortableComponentItem({ component, setComponents }: Props) {
   //Else show the sections.
   return (
     <div>
-      <div className="w-full rounded border bg-white shadow-lg rounded-lg mb-4">
-        <div className="flex flex-row-2 space-y-2 bg-secondary">
+      <div className="w-full rounded border bg-white rounded-lg mb-4">
+        <div className="flex flex-row-2 bg-secondary">
           <div className="flex flex-row-2 space-x-2 text-primary items-center ml-5 flex w-5/6 text-right">
             {component.compType === "exercise" ? (
               <Icon path={mdiDraw} size={1} />

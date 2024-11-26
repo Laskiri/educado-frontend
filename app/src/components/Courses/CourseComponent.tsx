@@ -319,14 +319,14 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
         onSubmit={handleSubmit(onSubmit)}
       >
         {/*White bagground*/}
-        <div className="w-full float-right bg-white rounded-2xl shadow-lg justify-between space-y-4 p-10">
+        <div className="w-full float-right bg-white rounded-2xl shadow-lg justify-between space-y-4 p-6">
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor="title">Nome do curso <span className="text-red-500">*</span></label> {/*Title*/}
             <input
               id="title-field"
               type="text"
               placeholder={"Nome do curso"}
-              className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="form-field  bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
               {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
             />
@@ -342,7 +342,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <label htmlFor='level'> Nível <span className="text-red-500">*</span></label> {/*asteric should not be hard coded*/}
               <select id="difficulty-field" 
               defaultValue={data ? data.difficulty : ""}
-              className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
               {...register("difficulty", { required: true })}
               onChange={(e) => handleFieldChange('difficulty', parseInt(e.target.value))}
               >
@@ -360,7 +360,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
               <label htmlFor='category'>Categoria <span className="text-red-500">*</span></label> 
               <select id="category-field"
                 defaultValue={data ? data.category : ""}
-                className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
                 {...register("category", { required: true })}
                 onChange={(e) => handleFieldChange('category', e.target.value)}
               >
@@ -381,7 +381,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
             placeholder={"Conte mais sobre o curso"}
-            className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
+            className="resize-none form-field border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary rounded-lg"
             {...register("description", { required: true })}
             onChange={(e) => {
               setCharCount(e.target.value.length);
@@ -393,7 +393,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             )}{" "}
             {/** This field is required */}
             <div className="text-right">
-              <label htmlFor="">{charCount}/400 caracteres</label>
+              <label htmlFor="">{charCount} / 400 caracteres</label>
             </div>
           </div>
 
@@ -443,7 +443,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             type="submit"
             id="addCourse"
             disabled={submitLoading}
-            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
+            className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer "
           >
             {submitLoading ? (
               <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
