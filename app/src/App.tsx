@@ -18,6 +18,7 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
+import Feedback from "./pages/Feedback";
 
 
 
@@ -49,6 +50,10 @@ function App() {
 			path: "/certificates",
 			element: <ProtectedRoute><Certificates /></ProtectedRoute>,
 		},
+    {
+      path: "/feedback",
+      element: <ProtectedRoute><Feedback/></ProtectedRoute>
+    },
     {
       path: "/settings",
       element: <p>settings</p>
