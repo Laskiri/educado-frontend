@@ -68,7 +68,7 @@ export default function NewPasswordScreen(props: propsType) : JSX.Element {
           />
           <PasswordEye id='reset-password-password-eye' passwordVisible={showPassword} togglePasswordVisibility={() => { togglePasswordVisibility(false) }} />
         </div>
-        <p id={'password-error'} className="text-warning h-5">{props.passwordError}</p>
+        <p id="password-error" className="text-error">{props.passwordError}</p> {/* Display password error in red */}
       </div>
       <div className="flex justify-start h-3">
         <p className={'text-sm' + ((props.passwordLengthValid || !props.password) ? ' text-grayMedium' : ' text-error')}>
