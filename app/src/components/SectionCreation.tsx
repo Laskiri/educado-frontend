@@ -215,7 +215,7 @@ export const SectionCreation = ({
           <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
         </div>
 
-        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4">
           {/** Course Sections area  */}
           <div className="flex w-full flex-col space-y-2 ">
             <SectionList
@@ -257,7 +257,7 @@ export const SectionCreation = ({
               </label>
             </label>
 
-            <label className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+            <label className="h-12 p-2 bg-primary hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
               <label
                 onClick={() => {
                   handleDialogEvent(

@@ -157,7 +157,7 @@ export function SortableItem({
           ref={openRef}
         />
 
-        <div className="collapse-title flex justify-center items-center flex-row-2 rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white h-16 ">
+        <div className="collapse-title flex justify-between items-center rounded-top text-primary normal-case peer-checked:bg-primary peer-checked:text-white h-16 p-4">
           <div className="flex">
             <SectionArrowIcon
               setArrowDirection={setArrowDirection}
@@ -166,7 +166,7 @@ export function SortableItem({
             />
             <p className="font-semibold">{`Seção ${sectionNumber}: ${title ?? sectionData.title ?? "Nome da seção"}`}</p>
           </div>
-          <div className="flex gap-0 ml-auto -mr-9 z-10">
+          <div className="flex z-10">
             <div
               onClick={() => handleSectionDeletion(sid)}
               className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"

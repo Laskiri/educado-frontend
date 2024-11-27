@@ -100,60 +100,57 @@ export function SortableComponentItem({ component, setComponents }: Props) {
 
   //Else show the sections.
   return (
-    <div>
-      <div className="w-full rounded border bg-white rounded-lg mb-4">
-        <div className="flex flex-row-2 bg-secondary">
-          <div className="flex flex-row-2 space-x-2 text-primary items-center ml-5 flex w-5/6 text-right">
-            {component.compType === "exercise" ? (
-              <Icon path={mdiDraw} size={1} />
-            ) : data.contentType === "video" ? (
-              <Icon path={mdiVideo} size={1} />
-            ) : (
-              <Icon path={mdiTextBox} size={1} />
-            )}
-            <p className="font-semibold">{newTitle}</p>
+    <div className="w-full rounded border bg-secondary rounded-lg mb-4">
+      <div className="flex justify-between ">
+        <div className="flex space-x-2 text-primary items-center ml-5 text-right">
+          {component.compType === "exercise" ? (
+            <Icon path={mdiDraw} size={1} />
+          ) : data.contentType === "video" ? (
+            <Icon path={mdiVideo} size={1} />
+          ) : (
+            <Icon path={mdiTextBox} size={1} />
+          )}
+          <p className="font-semibold">{newTitle}</p>
+        </div>
+
+        <div className="flex text-primary mr-4">
+          {/**edit a lecture or exercise and pencil icon*/}
+          <label
+            htmlFor={component.compType + "-edit-" + data._id}
+            className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"
+          >
+            <Icon path={mdiPencilCircle} size={1.2}></Icon>
+          </label>
+
+          <input
+            type="checkbox"
+            id={component.compType + "-edit-" + data._id}
+            className="modal-toggle"
+          />
+          {component.compType === "lecture" ? (
+            <EditLecture data={data} handleEdit={handleEdit} />
+          ) : (
+            <EditExercise data={data} handleEdit={handleEdit} />
+          )}
+
+          {/**delete a lecture or exercise and trash icon*/}
+          <div
+            className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"
+            onClick={() => handleDelete()}
+          >
+            <Icon path={mdiDeleteCircle} size={1.2}></Icon>
           </div>
-
-          <div className="flex -space-x-6 text-primary ">
-            {/**edit a lecture or exercise and pencil icon*/}
-            <label
-              htmlFor={component.compType + "-edit-" + data._id}
-              className="btn btn-ghost hover:bg-transparent hover:text-primaryHover"
-            >
-              <Icon path={mdiPencilCircle} size={1.2}></Icon>
-            </label>
-
-            <input
-              type="checkbox"
-              id={component.compType + "-edit-" + data._id}
-              className="modal-toggle"
-            />
-            {component.compType === "lecture" ? (
-              <EditLecture data={data} handleEdit={handleEdit} />
-            ) : (
-              <EditExercise data={data} handleEdit={handleEdit} />
-            )}
-
-            {/**delete a lecture or exercise and trash icon*/}
-            <div
-              className="btn btn-ghost hover:bg-transparent hover:text-primaryHover"
-              onClick={() => handleDelete()}
-            >
-              <Icon path={mdiDeleteCircle} size={1.2}></Icon>
-            </div>
-
-            <div
-              className=""
-              ref={setNodeRef}
-              style={style}
-              {...attributes}
-              {...listeners}
-            >
-              {/**Move a lecture or exercise and "move" icon*/}
-              <div className="btn btn-ghost hover:bg-transparent hover:text-primaryHover">
-                <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
-              </div>
-            </div>
+            
+          {/**Move a lecture or exercise and "move" icon*/}
+          <div
+            className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"
+            ref={setNodeRef}
+            style={style}
+            {...attributes}
+            {...listeners}
+          >
+            
+            <Icon path={mdiDotsVerticalCircle} size={1.2}></Icon>
           </div>
         </div>
       </div>
