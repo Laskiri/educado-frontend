@@ -39,7 +39,7 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ id, token }) => {
     if (loading) return <Loading />;
 
     return (
-        <div className="feedback-box bg-white p-4 rounded shadow-md overflow-y-auto">
+        <div className="feedback-box bg-white p-4 rounded shadow-md overflow-y-auto max-h-[500px]">
             <h2 className="text-lg font-semibold mb-4">Feedback do Curso</h2>
             {feedbacks.length > 0 ? (
             feedbacks.map((feedback, index) => (

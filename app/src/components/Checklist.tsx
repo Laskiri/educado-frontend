@@ -22,7 +22,7 @@ const Checklist: React.FC<ChecklistProps> = ({ tickChange, highestTick, id, setT
     };
 
     return (
-        <div className="w-full h-[20%] mb-4 items-center justify-left space-y-4 grid grid-flow-row auto-rows-max">
+        <div className="w-full h-[20%] items-center justify-left space-y-4 grid grid-flow-row auto-rows-max">
             <div>
                 <p className="text-2xl text-grayMedium">Novo Curos</p>
             </div>
