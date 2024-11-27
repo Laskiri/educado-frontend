@@ -25,6 +25,12 @@ describe('useLecture', () => {
         const lecture = result.current.getCachedLecture('1');
         expect(lecture).toEqual(mockLecture);
       });
+
+      it('should get null when lecture is not in cache', () => {
+        const { result } = renderHook(() => useLectures(), { wrapper: Wrapper });
+        const lecture = result.current.getCachedLecture('1');
+        expect(lecture).toBeNull();
+      });
     
       it('should update cached lecture', () => {
         const { result } = renderHook(() => useLectures(), { wrapper: Wrapper });

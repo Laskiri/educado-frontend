@@ -45,7 +45,7 @@ interface CourseContextProps {
   media : Media[];
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
-  updateMedia: (media: Media) => void;
+  updateMedia: (media: Media) => Media;
   deleteMedia: (mid: string) => void;
 }
 
@@ -91,7 +91,7 @@ const CourseContext = createContext<CourseContextProps>({
   media: [],
   addMediaToCache: () => {},
   getMedia: () => null,
-  updateMedia: () => {},
+  updateMedia: () => ({} as Media),
   deleteMedia: () => {},
 });
 
@@ -119,8 +119,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    console.log("Lectures", lectures);
-    console.log("Exercises", exercises);
   }, [lectures, exercises]);
 
 
@@ -147,10 +145,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const updateCachedCourseSections = (newSections: string[]) => {
-
     setCourse((prevCourse) => ({
       ...prevCourse,
-      sections: newSections,
+      sections: newSections ?? [],
     }));
   };
 
@@ -184,7 +181,6 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   
 
   const getCachedSection = (sid: string) => {
-    if (sections.length == 0) return null;
     return sections.find((section) => section._id === sid) || null;
   };
 
@@ -218,16 +214,11 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     });
   };
 
-
-
-
   const deleteCachedSectionComponent = (sectionId: string, compId: string) => {
     setSections((prevSections) => {
       const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
       if (sectionIndex === -1) return prevSections;
 
-      
-  
       const updatedComponents = prevSections[sectionIndex].components.filter(
         (component) => {
           if (component.compId !== compId) return true;
@@ -239,10 +230,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
           }
           return false;
         }
-      );
-
-      console.log("Updated components", updatedComponents);
-  
+      );  
       const updatedSections = [...prevSections];
       updatedSections[sectionIndex] = {
         ...prevSections[sectionIndex],
@@ -250,18 +238,17 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       };
       return updatedSections;
     });
-
   };
 
   const addCachedSectionComponent = (sectionId: string, component: Component) => {
     const newId = idMaker.component + 1;
     setIdMaker((prevIdMaker) => ({ ...prevIdMaker, component: newId }));
     component._id = newId.toString();
-  
+    
+    const sectionIndex = sections.findIndex((s) => s._id === sectionId);
+   
+    if (sectionIndex === -1) return null;
     setSections((prevSections) => {
-      const sectionIndex = prevSections.findIndex((s) => s._id === sectionId);
-      if (sectionIndex === -1) return prevSections;
-  
       const updatedComponents = [...prevSections[sectionIndex].components, component];
       const updatedSections = [...prevSections];
       updatedSections[sectionIndex] = {
@@ -396,6 +383,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     const updatedMedia = [...media];
     updatedMedia[index] = newMedia;
     setMedia(updatedMedia);
+    return newMedia;
   }
 
 

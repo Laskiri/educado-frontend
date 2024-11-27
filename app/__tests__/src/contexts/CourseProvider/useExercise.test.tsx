@@ -15,8 +15,8 @@ describe('useExercise', () => {
           result.current.addExerciseToCache(mockExercise);
         });
         expect(result.current.exercises).toContainEqual(mockExercise);
-      });
-    
+    });
+
       it('should get cached exercise', () => {
         const { result } = renderHook(() => useExercises(), { wrapper: Wrapper });
         act(() => {
@@ -25,6 +25,12 @@ describe('useExercise', () => {
         const exercise = result.current.getCachedExercise('1');
         expect(exercise).toEqual(mockExercise);
       });
+
+      it('should get null when exercise is not in cache', () => {
+        const { result } = renderHook(() => useExercises(), { wrapper: Wrapper });
+        const exercise = result.current.getCachedExercise('1');
+        expect(exercise).toBeNull();
+    });
     
       it('should update cached exercise', () => {
         const { result } = renderHook(() => useExercises(), { wrapper: Wrapper });

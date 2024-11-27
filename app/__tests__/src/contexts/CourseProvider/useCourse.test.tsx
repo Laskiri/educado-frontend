@@ -31,4 +31,26 @@ describe('useCourse', () => {
         expect(result.current.course.sections).toEqual(['2', '1']);
     })
 
+    it('should handle empty sections array', () => {
+      const { result } = renderHook(() => useCourse(), { wrapper: Wrapper });
+      act(() => {
+        result.current.updateCachedCourseSections(['2', '1']);
+      });
+      act(() => {
+        result.current.updateCachedCourseSections([]);
+      });
+      expect(result.current.course.sections).toEqual([]);
+    });
+
+    it('should handle null sections array', () => {
+      const { result } = renderHook(() => useCourse(), { wrapper: Wrapper });
+      act(() => {
+        result.current.updateCachedCourseSections(['2', '1']);
+      });
+      act(() => {
+        result.current.updateCachedCourseSections(null as unknown as string[]);
+      });
+      expect(result.current.course.sections).toEqual([]);
+    });
+
 });
