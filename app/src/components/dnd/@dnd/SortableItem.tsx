@@ -148,7 +148,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className={`overflow-hidden collapse w-full min-h-16 rounded bg-white shadow-lg rounded-lg my-4 ${openRef.current?.checked ? "border-primary" : ""} ${openRef.current?.checked ? "border-primary" : ""}`}>
+      <div className={`overflow-hidden border collapse w-full min-h-16 rounded bg-white shadow-lg rounded-lg my-4 ${openRef.current?.checked ? "border-primary" : ""}`}>
         <input
           type="checkbox"
           className="peer w-full h-full"
