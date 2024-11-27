@@ -89,7 +89,7 @@ export const CoursesTableAdmin = () => {
 
   const rows = paginatedCourses.map((course, key) => {
     const fullName =
-      course.creator !== undefined
+      course.creator && course.creator.baseUser
         ? `${course.creator.baseUser.firstName} ${course.creator.baseUser.lastName}`
         : null;
 
