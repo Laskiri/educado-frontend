@@ -146,7 +146,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className="overflow-visible collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
+      <div className="overflow-hidden collapse w-full rounded border bg-white shadow-lg rounded-lg my-4">
         <input
           type="checkbox"
           className="peer w-4/5 h-full"

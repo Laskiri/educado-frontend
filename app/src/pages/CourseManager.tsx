@@ -116,14 +116,15 @@ const CourseManager = () => {
 
     return (
         <Layout meta="Course Manager">
-            <div className="flex flex-row">
-                <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
-                    <div className="fixed bottom-10 left-5 w-1/5">
-                        <FeedbackBox id={id ?? ''} token={token} />
-                    </div>
+            <div className="flex flex-row  w-full">
+                <div className="flex flex-col h-full items-start justify-start m-8 w-[312px] ">
+                    <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
+                    <p className="text-2xl text-grayMedium my-4">Feedbacks</p>
+                    <FeedbackBox id={id ?? ''} token={token} />
+                </div>
                 <div className='flex-none w-2/3 mr-20'>
-                    {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
-                    {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
+                        {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
+                        {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
                 </div>
             </div>
         </Layout>
