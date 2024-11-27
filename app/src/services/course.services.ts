@@ -15,11 +15,43 @@ import { Course, FormattedCourse } from "../interfaces/Course"
 
 const createCourse = async (newCourse: FormattedCourse, token: string) => {
   const { id: userId } = getUserInfo();
+  const formData = new FormData();
+
+  // Append the entire course data (excluding files) to formData
+  const courseData = { ...newCourse, userId };
+  formData.append("courseData", JSON.stringify(courseData));
+  console.log(JSON.stringify(courseData));
+  // Append cover image to formData if it exists
+  if (newCourse.courseInfo.coverImg) {
+    formData.append("coverImg", newCourse.courseInfo.coverImg.file);
+  }
+
+  // Append section data and any media files in the components
+  if (newCourse.sections) {
+    newCourse.sections.forEach((section, sectionIndex) => {
+      section.components.forEach((component, componentIndex) => {
+        if (component.video) {
+          formData.append(`sections[${sectionIndex}].components[${componentIndex}].video`, component.video.file);
+        }
+      });
+    });
+  }
+
+  // Log FormData contents
+  for (const pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
   try {
     const res = await axios.post(
       `${BACKEND_URL}/api/courses/create/new`,
-      { course: newCourse, userId },
-      { headers: { Authorization: `Bearer ${token}` } }
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return res.data;
   } catch (error) {
