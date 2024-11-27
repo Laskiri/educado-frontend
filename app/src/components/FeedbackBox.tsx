@@ -40,17 +40,20 @@ const FeedbackBox: React.FC<FeedbackBoxProps> = ({ id, token }) => {
 
     return (
         <div className="feedback-box bg-white p-4 rounded shadow-md overflow-y-auto">
-            <h2 className="text-lg font-semibold mb-4">Course Feedback</h2>
+            <h2 className="text-lg font-semibold mb-4">Feedback do Curso</h2>
             {feedbacks.length > 0 ? (
-                feedbacks.map(feedback => (
-                    <div key={feedback._id} className="feedback-item mb-2">
-                        <p className="text-sm">Rating: {feedback.rating}</p>
-                        <p className="text-sm">{feedback.feedbackText}</p>
-                        <small className="text-gray-500">On {new Date(feedback.dateCreated).toLocaleDateString()}</small>
-                    </div>
-                ))
+            feedbacks.map((feedback, index) => (
+            <React.Fragment key={feedback._id}>
+            <div className="feedback-item mb-2">
+                <p className="text-sm">Avaliação: {feedback.rating} de 5</p>
+                <p className="text-sm">{feedback.feedbackText}</p>
+                <small className="text-gray-500">Em {new Date(feedback.dateCreated).toLocaleDateString()}</small>
+            </div>
+            {index < feedbacks.length - 1 && <hr className="my-2" />}
+            </React.Fragment>
+            ))
             ) : (
-                <p>No feedback available for this course.</p>
+            <p>Nenhum feedback disponível para este curso.</p>
             )}
         </div>
     );
