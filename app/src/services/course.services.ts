@@ -8,27 +8,22 @@ import { getUserInfo } from "../helpers/userInfo";
 import { Course, FormattedCourse } from "../interfaces/Course"
 
 
-/**
- * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
- */
-
-
-const createCourse = async (newCourse: FormattedCourse, token: string) => {
-  const { id: userId } = getUserInfo();
+// Prepare form data for course creation or update
+const prepareFormData = (course: FormattedCourse, userId: string) => {
   const formData = new FormData();
 
   // Append the entire course data (excluding files) to formData
-  const courseData = { ...newCourse, userId };
+  const courseData = { ...course, userId };
   formData.append("courseData", JSON.stringify(courseData));
-  console.log(JSON.stringify(courseData));
+
   // Append cover image to formData if it exists
-  if (newCourse.courseInfo.coverImg) {
-    formData.append("coverImg", newCourse.courseInfo.coverImg.file);
+  if (course.courseInfo.coverImg) {
+    formData.append("coverImg", course.courseInfo.coverImg.file);
   }
 
-  // Append section data and any media files in the components
-  if (newCourse.sections) {
-    newCourse.sections.forEach((section, sectionIndex) => {
+  // Append section data and any media files in the components, right now a max of 10 in the backend
+  if (course.sections) {
+    course.sections.forEach((section, sectionIndex) => {
       section.components.forEach((component, componentIndex) => {
         if (component.video) {
           formData.append(`sections[${sectionIndex}].components[${componentIndex}].video`, component.video.file);
@@ -41,6 +36,13 @@ const createCourse = async (newCourse: FormattedCourse, token: string) => {
   for (const pair of formData.entries()) {
     console.log(pair[0], pair[1]);
   }
+
+  return formData;
+};
+// Create a new course
+const createCourse = async (newCourse: FormattedCourse, token: string) => {
+  const { id: userId } = getUserInfo();
+  const formData = prepareFormData(newCourse, userId);
 
   try {
     const res = await axios.post(
@@ -59,22 +61,30 @@ const createCourse = async (newCourse: FormattedCourse, token: string) => {
     throw error;
   }
 };
-
+// Update a course
 const updateCourse = async (updatedCourse: FormattedCourse, token: string) => {
+  const { id: userId } = getUserInfo();
+  console.log("Updated course:", updatedCourse);
+  const formData = prepareFormData(updatedCourse, userId);
   const courseId = updatedCourse.courseInfo._id;
+
   try {
     const res = await axios.post(
       `${BACKEND_URL}/api/courses/update/${courseId}`,
-      { updatedCourse },
-      { headers: { Authorization: `Bearer ${token}` } }
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      }
     );
     return res.data;
   } catch (error) {
-    console.error("Error creating course:", error);
+    console.error("Error updating course:", error);
     throw error;
   }
-}
-
+};
 
 
 /**
