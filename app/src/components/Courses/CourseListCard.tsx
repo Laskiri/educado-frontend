@@ -49,9 +49,8 @@ export const CourseListCard = ({ course }: { course: Course }) => {
     const fetchRating = async () => {
       try {
         const rating = await getAverageRatingOfCourse(course._id);
-        console.log("card" +rating);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
 

@@ -184,7 +184,6 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
     try {
       const newCourse = await createCourse(data, token);
 
-      console.log("creating new draft", data);
       //Upload image with the new id
       handleFileUpload(newCourse.data._id);
 
