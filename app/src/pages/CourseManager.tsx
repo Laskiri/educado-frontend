@@ -51,7 +51,6 @@ const CourseManager = () => {
     );
 
     const updateLocalData = (newData: Course) => {
-        console.log("new status", newData.status)
         const changes: Course = {
             ...localData,
             ...newData,

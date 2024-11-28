@@ -49,9 +49,8 @@ export const CourseListCard = ({ course }: { course: Course }) => {
     const fetchRating = async () => {
       try {
         const rating = await getAverageRatingOfCourse(course._id);
-        console.log("card" +rating);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
 
@@ -95,7 +94,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
             <div className="flex flex-row justify-between">
               {/* Course rating */}
               <div className='w-[8rem]'>
-                <StarRating rating={course.rating ?? 0} />
+                <StarRating rating={course.rating ? course.rating : 0} />
               </div>
               {/* Subsriber count */}
               <div className='flex flex-row'>
@@ -109,7 +108,7 @@ export const CourseListCard = ({ course }: { course: Course }) => {
               {/* Course category */}
               <div className='flex flex-row'>
                 <Icon
-                  path={categories[course.category]?.icon ?? categories.default.icon}
+                  path={course.category ? categories[course.category]?.icon : categories.default.icon}
                   className='w-4 mr-1'
                 />
                 <p>{categories[course.category]?.br ?? course.category}</p>
@@ -123,9 +122,9 @@ export const CourseListCard = ({ course }: { course: Course }) => {
 
                 {/* Course status */}
                 <div className='flex flex-row'>
-                  <div className={'w-3 h-3 mx-2 rounded-full m-auto '+(statuses[course.status].color ?? statuses.default.color)} />
+                  <div className={'w-3 h-3 mx-2 rounded-full m-auto '+ (course.status ? statuses[course.status].color : statuses.default.color)} />
                   <p className='italic'>
-                    {statuses[course.status].br ?? statuses.default.br}
+                    {course.status ? statuses[course.status].br : statuses.default.br}
                   </p>
                 </div>
               </div>
