@@ -8,9 +8,11 @@ import { getUserToken } from '../helpers/userInfo';
 import Checklist from "../components/Checklist";
 import Layout from "../components/Layout";
 import CourseServices from '../services/course.services';
+import StorageServices from '../services/storage.services';
 import Loading from '../components/general/Loading';
 import NotFound from '../pages/NotFound';
-import { CourseProvider, useCourse} from '../contexts/courseStore';
+import { CourseProvider, useCourse, useMedia} from '../contexts/courseStore';
+import { convertSrcToFile } from "@helpers/fileHelpers";
 
 import { Course } from '../interfaces/Course';
 
@@ -29,6 +31,7 @@ const CourseManager = () => {
     const [tickChange, setTickChange] = useState<number>(parseInt(tick ?? "0"));
     const [highestTick, setHighestTick] = useState<number>(0);
     const {course, updateCourse } = useCourse();
+    const { addMediaToCache } = useMedia();
     const newCourse = id === "0" ? true : false;
     const courseCached = course.title !== "";
     /**
@@ -39,7 +42,7 @@ const CourseManager = () => {
      * @returns The course details
      */
     const {call: getCourseDetails, isLoading: fetchLoading, error: fetchError } = useApi(CourseServices.getCourseDetail);
-
+    const { call: fetchCoverImg} = useApi(StorageServices.getMedia);
     
     useEffect(() => {
         if (courseCached) return
@@ -47,8 +50,26 @@ const CourseManager = () => {
         const fetchCourseData = async () => {
             const data = await getCourseDetails(id, token)
             updateCourse(data) 
+
         }
-        fetchCourseData()
+        const fetchPreview = async () => {
+            const courseImgId = id + "_c";
+            const fileSrc = await fetchCoverImg(courseImgId);
+            const validFileSrc = fileSrc !== null && fileSrc !== undefined;
+            if (validFileSrc) {
+              const file = await convertSrcToFile(fileSrc, `${id}_c`);
+              addMediaToCache({ id: id, file: file, parentType: "c" });
+            }
+          };
+          const fetchData = async () => {
+            try {
+                await Promise.all([fetchCourseData(), fetchPreview()]);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        
+        fetchData();
     }, [])
 
 

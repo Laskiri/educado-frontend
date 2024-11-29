@@ -4,11 +4,10 @@ import { useNotifications } from "../notification/NotificationContext";
 import { useCourse, useMedia } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
-import StorageServices from "../../services/storage.services";
 import {useApi} from "../../hooks/useAPI";
 // Helpers
 import categories from "../../helpers/courseCategories";
-import { convertSrcToFile } from "@helpers/fileHelpers";
+
 
 
 // Components
@@ -57,7 +56,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
 
   // Callbacks
-  const { call: fetchCoverImg} = useApi(StorageServices.getMedia);
+  
   const existingCourse = id !== "0";
   const submitCall = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
   const { call: submitCourse, isLoading: submitLoading} = useApi(submitCall);
@@ -86,22 +85,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
      * @param token The user token
      * @returns The course details
      */
-     useEffect(() => {
-      if (courseImg || !existingCourse) return;
-  
-      const fetchPreview = async () => {
-        const courseImgId = id + "_c";
-        const fileSrc = await fetchCoverImg(courseImgId);
-        const validFileSrc = fileSrc !== null && fileSrc !== undefined;
-        if (validFileSrc) {
-          const file = await convertSrcToFile(fileSrc, `${id}_c`);
-          addMediaToCache({ id: id, file: file, parentType: "c" });
-        }
-      };
-      fetchPreview(); 
-    }, [id]);
-  
-
   useEffect(() => {
     //TODO: get categories from db
     const inputArray = [

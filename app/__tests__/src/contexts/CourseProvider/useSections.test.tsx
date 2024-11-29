@@ -42,6 +42,7 @@ describe('useSection', () => {
       totalPoints: 0,
       parentCourse: mockCourse._id,
       components: [],
+      __v: 0
     });
     expect(result.current.sectionsHook.sections.length).toBe(1);
     expect(result.current.courseHook.course.sections.includes(newSection._id)).toBe(true);
@@ -109,11 +110,17 @@ describe('useSection', () => {
     it('should delete cachedSectionComponent and corresponding lecture', () => {
       const { result } = renderHook(() => useCombinedHooks(), { wrapper: Wrapper });
       act(() => {
-        const newSec = result.current.sectionsHook.loadSectionToCache(mockSection);
-        result.current.sectionsHook.addCachedSectionComponent(newSec._id, mockLectureComponent);
-        const newLec = result.current.lecturesHook.loadLectureToCache(mockLecture);
-        result.current.sectionsHook.deleteCachedSectionComponent(mockSection._id, newLec._id); 
+        result.current.sectionsHook.loadSectionToCache(mockSection);
+        result.current.lecturesHook.loadLectureToCache(mockLecture);
       });
+      act(() => {
+        result.current.sectionsHook.addCachedSectionComponent(mockSection._id, mockLectureComponent);
+      }
+      );
+      act(() => {
+        result.current.sectionsHook.deleteCachedSectionComponent(mockSection._id, mockLectureComponent.compId);
+      }
+      );
       const section = result.current.sectionsHook.getCachedSection('0');
       expect(section?.components).toEqual([]);
       const lectures = result.current.lecturesHook.lectures;
@@ -123,10 +130,16 @@ describe('useSection', () => {
       const { result } = renderHook(() => useCombinedHooks(), { wrapper: Wrapper });
       act(() => {
         result.current.sectionsHook.loadSectionToCache(mockSection);
-        result.current.sectionsHook.addCachedSectionComponent('0', mockExerciseComponent);
-        const newExercise = result.current.exercisesHook.loadExerciseToCache(mockExercise);
-        result.current.sectionsHook.deleteCachedSectionComponent(mockSection._id, newExercise._id); 
+        result.current.exercisesHook.loadExerciseToCache(mockExercise);
       });
+      act(() => {
+        result.current.sectionsHook.addCachedSectionComponent(mockSection._id, mockExerciseComponent);
+      }
+      );
+      act(() => {
+        result.current.sectionsHook.deleteCachedSectionComponent(mockSection._id, mockExerciseComponent.compId);
+      }
+      );
       const section = result.current.sectionsHook.getCachedSection(mockSection._id);
       expect(section?.components).toEqual([]);
       const exercises = result.current.exercisesHook.exercises;

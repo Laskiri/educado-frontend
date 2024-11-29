@@ -6,17 +6,19 @@ export const mockCourse = {
     coverImg: 'test.jpg',
     estimatedHours: 0,
     category: 'Test Category',
+    creator: '',
     status: 'Draft',
     sections: []
-  };
-  
+};
+
 export const mockSection = {
     _id: '0',
     title: 'Test Section',
     description: '',
     totalPoints: 0,
     parentCourse: '0',
-    components: []
+    components: [],
+    __v: 0
 };
 
 export const mockLectureComponent = {
@@ -35,16 +37,16 @@ export const mockLecture = {
     _id: '0',
     title: 'Test Lecture',
     contentType: 'text',
-    parentSection: '0', 
-    description: 'Sample description', 
+    parentSection: '0',
+    description: 'Sample description',
     content: 'Sample content'
 };
 
-export const mockExercise = { 
-    _id: '0', 
-    title: 'Sample Exercise', 
-    parentSection: '0', 
-    question: 'Sample Question' 
+export const mockExercise = {
+    _id: '0',
+    title: 'Sample Exercise',
+    parentSection: '0',
+    question: 'Sample Question'
 }
 
 export const mockMedia = {
