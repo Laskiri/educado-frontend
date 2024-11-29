@@ -11,6 +11,7 @@ import { SectionList } from "./dnd/SectionList";
 import { BACKEND_URL } from "../helpers/environment";
 
 import CourseServices from "../services/course.services";
+import SectionServices from "../services/section.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
@@ -109,8 +110,32 @@ export const SectionCreation = ({
     }
   };
 
+  const checkSectionsNotEmpty = async () => {
+    try {
+      let emptySections = [];
+      for(let i in sections) {
+        const section = await SectionServices.getSectionDetail(sections[i], token);
+        if(section.components.length === 0) {
+          emptySections.push(section);
+        }
+      }
+      for(let emptySection of emptySections) {
+        addNotification(`Secção: "${emptySection.title}", está vazia!`);
+      }
+
+      return emptySections.length === 0;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handlePublishConfirm = async () => {
     try {
+      const sectionsAreValid = await checkSectionsNotEmpty();
+      if (!sectionsAreValid) {
+        addNotification("Curso não pode ser publicado devido a secções vazias!");
+        return;
+      }
       await updateCourseSections();
       if (status !== "published") {
         await CourseServices.updateCourseStatus(id, "published", token);

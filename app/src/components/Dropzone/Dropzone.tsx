@@ -101,7 +101,7 @@ export const Dropzone: FC<DropzoneProps> = ({
                 >
                   <span>Carregamento de arquivo</span>
                   <input
-                    required={true}
+                    required={preview ? false : true}
                     id={`file-upload-${id}`}
                     name={`file-upload-${id}`}
                     accept={inputType === "image" ? "image/*" : "video/*"}
