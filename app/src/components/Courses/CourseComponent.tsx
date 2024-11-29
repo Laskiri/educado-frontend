@@ -400,7 +400,7 @@ export const CourseComponent = ({ token, id, setTickChange, setId, courseData, u
             <div className="flex flex-col space-y-2 text-left">
               <label htmlFor='cover-image'>Imagem de capa <span className="text-red-500">*</span></label> {/** Cover image */} 
             </div>
-            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} />
+            <Dropzone inputType='image' id={id ? id : "0"} previewFile={previewCourseImg} onFileChange={setCourseImg} maxSize={5 * 1024 * 1024 /* 5mb */} />
             {errors.description && <span className='text-warning'>Este campo é obrigatório</span>} {/** This field is required */}
           </div>
         </div>
