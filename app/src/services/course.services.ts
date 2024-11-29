@@ -114,6 +114,18 @@ const getCourseDetail = async (id: string, token: string) => {
   return res.data;
 };
 
+const updateCourseDetail = async (
+  data: Partial<Course>,
+  id: string | undefined,
+  token: string
+) => {
+  const res = await axios.patch(`${BACKEND_URL}/api/courses/${id}`, data, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+  return res.data;
+};
+
 // Get course categories - FROM LAST YEAR, NOT IMPLEMENTED, CATEGORIES ARE HARDCODED RN
 const getCourseCategories = async (url: string, token: string) => {
   const res = await axios.get(url, {
@@ -144,6 +156,7 @@ const CourseServices = Object.freeze({
   getAllCreatorCourses,
   getAllCourses,
   getCourseDetail,
+  updateCourseDetail,
   getCourseCategories,
   deleteCourse,
 });

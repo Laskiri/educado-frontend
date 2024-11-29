@@ -1,15 +1,17 @@
+
 export const mockCourse = {
-    _id: '0',
+    _id: '1',
     title: 'Test Course',
     description: 'Test Description',
-    difficulty: 1,
+    difficulty: 2 as 0 | 1 | 2 | 3,
     coverImg: 'test.jpg',
-    estimatedHours: 0,
-    category: 'Test Category',
-    creator: '',
-    status: 'Draft',
+    estimatedHours: 10,
+    category: "personal finance" as "" | "personal finance" | "health and workplace safety" | "sewing" | "electronics",
+    creator: 'Test Creator',
+    status: 'draft' as 'draft' | 'published' | 'hidden',
     sections: []
 };
+
 
 export const mockSection = {
     _id: '0',
