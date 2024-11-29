@@ -159,6 +159,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
       totalPoints: 0,
       parentCourse: course._id ?? "0",
       components: [],
+      __v: 0,
     }
     setSections((prevSections) => [...prevSections, newSection]);
     setCourse((prevCourse) => {

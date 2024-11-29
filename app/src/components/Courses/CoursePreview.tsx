@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useParams } from "react-router";
-import { useCourse, useSections } from '@contexts/courseStore';
+import { useCourse} from '@contexts/courseStore';
 import { prepareFormData } from "@helpers/courseStoreHelper";
-import { Course } from "../../interfaces/Course";
 import { PhonePreview } from "./PhonePreview";
 
 import { useApi } from "@hooks/useAPI";
@@ -24,7 +23,7 @@ import ExploreCardPreview from "./ExploreCardPreview";
 interface Inputs {
   id: string;
   token: string;
-  setTickChange: Function;
+  setTickChange: (tick: number) => void;
 }
 
 // Create section
@@ -36,17 +35,16 @@ export const CoursePreview = ({
 
   const { id: urlId } = useParams<{ id: string }>();
   const id = propId === "0" ? urlId : propId;
-  const [loading, setLoading] = useState(true);
+
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
-  const [cancelBtnText, setCancelBtnText] = useState("Cancelar");
-  const [confirmBtnText, setConfirmBtnText] = useState("Confirmar");
+  const [cancelBtnText] = useState("Cancelar");
+  const [confirmBtnText] = useState("Confirmar");
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
 
-  const [dialogConfirm, setDialogConfirm] = useState<Function>(() => {});
+  const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
   const {course, getFormattedCourse} = useCourse();
-  const { sections } = useSections();
   const courseCacheLoading = Object.keys(course).length === 0;
   const existingCourse = id !== "0";
   const callFunc = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
@@ -147,7 +145,7 @@ export const CoursePreview = ({
           {/** Course Sections area  */}
           <div className="flex w-full flex-row justify-around gap-x-8 max-w-5xl">
             <PhonePreview title="Informações do curso" >
-                <ExploreCardPreview course={course} />
+                <ExploreCardPreview/>
             </PhonePreview>
             <PhonePreview title="Seções do curso" >
                 <PhoneCourseSection/>

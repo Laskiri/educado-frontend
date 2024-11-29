@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '@mdi/react';
 import { 
   mdiCalendarMonth, 
@@ -95,7 +95,7 @@ const ExploreCardPreview: React.FC = () => {
   const features: FeatureItem[] = [
     { 
       icon: mdiClockOutline, 
-      text: `${course.estimatedHours ? course.estimatedHours : '-'} horas de conteúdo (vídeos, exercícios, leituras complementares)` 
+      text: `${course.estimatedHours ?? 0 + '-'} horas de conteúdo (vídeos, exercícios, leituras complementares)` 
     },
     { icon: mdiCertificateOutline, text: 'Certificado de Conclusão' },
     { icon: mdiClockFast, text: 'Início imediato' },
@@ -162,7 +162,7 @@ const ExploreCardPreview: React.FC = () => {
                 <div className="h-px bg-gray-200 w-full" />
 
                 {/* Description */}
-                {course.description && (
+                {course.description !== "" && (
                   <p className="text-projectBlack text-xs overflow-y-auto whitespace-normal h-[5rem] pr-1 break-words">{course.description}</p>
                 )}
 

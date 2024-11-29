@@ -56,9 +56,8 @@ export const SectionCreation = ({
     return course.sections.some((section) => {
       const secInfo = getCachedSection(section);
       return secInfo?.title === "" || secInfo?.description === "";
-  });
-
-};
+    });
+  };
   const handleDialogEvent = (
     dialogText: string,
     onConfirm: () => void,

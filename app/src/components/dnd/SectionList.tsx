@@ -94,12 +94,11 @@ export const SectionList = ({
           items={sections}
           strategy={verticalListSortingStrategy}
         >
-          {sections.map((section) => (
+          {sections.map((section, index) => (
             <SortableItem
               key={section}
               sid={section}
               sectionNumber={index + 1}
-              addOnSubmitSubscriber={addOnSubmitSubscriber}
               savedSID={savedSID}
               setSavedSID={setSavedSID}
               handleSectionDeletion={handleSectionDeletion}

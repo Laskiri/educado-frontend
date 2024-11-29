@@ -105,11 +105,6 @@ export const prepareFormData = (course: FormattedCourse): FormData => {
     });
   }
 
-  // Log FormData contents
-  for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
-
   return formData;
 };
 

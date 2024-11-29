@@ -26,9 +26,9 @@ interface CommonCourse {
   | "health and workplace safety"
   | "sewing"
   | "electronics";
-  sections?: string[];
+  sections: string[];
   status: "draft" | "published" | "hidden";
-  estimatedHours?: number;
+  estimatedHours: number;
   rating?: number;
   numOfSubscriptions?: number;
   __v?: number;

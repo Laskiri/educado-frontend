@@ -218,11 +218,6 @@ export function SortableItem({
             </div>
           )}
 
-          <ComponentList
-            sid={sid}
-            components={cachedComponents ?? []}
-          />
-
           {/**ADD lecture and exercise to the section */}
           <div className="mt-5 flex  w-full h-12 border border-dashed border-gray-400 rounded-lg flex-col-3 justify-center space-x-2">
             {/* The button to open create lecture modal */}

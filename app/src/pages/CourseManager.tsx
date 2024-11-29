@@ -53,7 +53,7 @@ const CourseManager = () => {
 
 
     const isCourseBasicInformation = (course: Course) => {
-        return course.title !== "" && course.description !== "" && course.category !== "" && (course.difficulty !== 0) && course.status !== "" && course.coverImg !== "";
+        return course.title !== "" && course.description !== "" && course.category !== "" && (course.difficulty !== 0) && course.coverImg !== "";
     }
 
     const doesCourseSectionsExist = (course: Course) => {
@@ -61,7 +61,7 @@ const CourseManager = () => {
     }
 
     useEffect(() => {
-        const calculateMaxTick = (data: any) => {
+        const calculateMaxTick = (data: Course) => {
             if (isCourseBasicInformation(data)) {
                 if (doesCourseSectionsExist(data)) return 2;
                 else return 1;
