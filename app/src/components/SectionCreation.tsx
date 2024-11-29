@@ -6,8 +6,7 @@ import { useApi } from '../hooks/useAPI';
 import { useCourse, useSections } from '../contexts/courseStore';
 import { useNotifications } from "./notification/NotificationContext";
 
-import CourseService from '@services/course.services';
-
+import CourseService from "../services/course.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
@@ -41,7 +40,7 @@ export const SectionCreation = ({
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
   const {course, getFormattedCourse} = useCourse();
-  const {getCachedSection} = useSections();
+  const {sections, getCachedSection} = useSections();
   const existingCourse = id !== "0";
   const courseCacheLoading = Object.keys(course).length === 0;
 
@@ -85,8 +84,26 @@ export const SectionCreation = ({
     }
   };
 
+  const checkSectionsNotEmpty =  () => {
+      const emptySections = [];
+      for(const sec of sections) {
+        if(sec.components.length === 0) {
+          addNotification(`Secção: "${sec.title}", está vazia!`);
+          emptySections.push(sec);
+        }
+      } 
+      return emptySections.length === 0;
+  };
+
+  
+
   const handleConfirm = async () => {
     try {
+      const sectionsAreValid = checkSectionsNotEmpty();
+      if (!sectionsAreValid) {
+        addNotification("Curso não pode ser publicado devido a secções vazias!");
+        return;
+      }
         setTickChange(2);
         navigate(`/courses/manager/${id}/2`);
     } catch (err) {
