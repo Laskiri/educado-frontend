@@ -115,22 +115,21 @@ export function SortableComponentItem({ component, sid }: Props) {
 
   //Else show the sections.
   return (
-    <div>
-      <div className="w-full rounded border bg-white shadow-lg rounded-lg mb-4">
-        <div className="flex flex-row-2 space-y-2 bg-secondary">
-          <div className="flex flex-row-2 space-x-2 text-primary items-center ml-5 flex w-5/6 text-right">
-            {getIcon()}
-            <p className="font-semibold">{newTitle}</p>
-          </div>
+    <div className="w-full rounded border bg-secondary rounded-lg mb-4">
+      <div className="flex justify-between ">
+        <div className="flex space-x-2 text-primary items-center ml-5 text-right">
+          {getIcon()}
+          <p className="font-semibold">{newTitle}</p>
+        </div>
 
-          <div className="flex -space-x-6 text-primary ">
-            {/**edit a lecture or exercise and pencil icon*/}
-            <label
-              htmlFor={component.compType + "-edit-" + data._id}
-              className="btn btn-ghost hover:bg-transparent hover:text-primaryHover"
-            >
-              <Icon path={mdiPencilCircle} size={1.2}></Icon>
-            </label>
+        <div className="flex text-primary mr-4">
+          {/**edit a lecture or exercise and pencil icon*/}
+          <label
+            htmlFor={component.compType + "-edit-" + data._id}
+            className="btn btn-ghost hover:bg-transparent hover:text-primaryHover p-0"
+          >
+            <Icon path={mdiPencilCircle} size={1.2}></Icon>
+          </label>
 
             <input
               type="checkbox"

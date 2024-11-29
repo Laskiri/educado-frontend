@@ -75,34 +75,18 @@ export const SectionCreation = ({
     addNotification("Seções salvas com sucesso!");  
   }
 
-  const handleDraftConfirm = async () => {
+  const handleConfirm = async () => {
     try {
-      const updatedCourse = getFormattedCourse();
-      const formData = prepareFormData(updatedCourse);
-      await submitCourse(formData, token);
-      onSuccessfulSubmit();
+        setTickChange(2);
+        navigate(`/courses/manager/${id}/2`);
     } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handlePublishConfirm = async () => {
-    try {
-      const updatedCourse = getFormattedCourse();
-      updatedCourse.courseInfo.status = "published";
-      const formData = prepareFormData(updatedCourse);
-
-      await submitCourse(formData, token);
-      onSuccessfulSubmit();
-    }
-    catch (err) {
       console.error(err);
     }
   };
 
   function changeTick(tick: number) {
     setTickChange(tick);
-    navigate(`/courses/manager/${id}/0`);
+    navigate(`/courses/manager/${id}/${tick}`);
   }
 
   if (courseCacheLoading)
@@ -153,7 +137,7 @@ export const SectionCreation = ({
           <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
         </div>
 
-        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4">
           {/** Course Sections area  */}
           <div className="flex w-full flex-col space-y-2 ">
             <SectionList
@@ -196,23 +180,14 @@ export const SectionCreation = ({
               </button>
             </div>
 
-            <div className={`h-12 m-2 bg-primary flex items-center content-center hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${
+            <div className={`h-12 m-2 bg-primary flex items-center content-center hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${
               isMissingRequiredFields() ? "opacity-70" : ""}`}>
               <button
                 disabled={isMissingRequiredFields()}
-                onClick={() => {
-                  handleDialogEvent(
-                    status === "published"
-                      ? "Tem certeza de que deseja publicar o curso? Isso o disponibilizará para os usuários do aplicativo"
-                      : "Tem certeza de que deseja publicar as alterações feitas no curso",
-                    handlePublishConfirm,
-                    "Publicar curso"
-                  );
-                }}
+                onClick={() => handleConfirm()}
                 className="whitespace-nowrap px-8  w-full cursor-pointer"
               >
-                {status === "published" ? "Publicar Edições" : "Publicar Curso"}{" "}
-                {/** Publish course, this should be replaced with a move to preview button when preview page is implemented */}
+                Revisar Curso
               </button>
             </div>
           </div>

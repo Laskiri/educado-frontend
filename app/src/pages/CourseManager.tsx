@@ -1,4 +1,5 @@
 import { CourseComponent } from "../components/Courses/CourseComponent";
+import { CoursePreview } from "../components/Courses/CoursePreview";
 import { SectionCreation } from "../components/SectionCreation";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
@@ -60,12 +61,10 @@ const CourseManager = () => {
     }
 
     useEffect(() => {
-        const calculateMaxTick = (course: Course) => {
-            if (isCourseBasicInformation(course)) {
-                return 1;
-            }
-            if (doesCourseSectionsExist(course) ?? false) {
-                return 1;
+        const calculateMaxTick = (data: any) => {
+            if (isCourseBasicInformation(data)) {
+                if (doesCourseSectionsExist(data)) return 2;
+                else return 1;
             }
             return 0;
         };
@@ -100,6 +99,7 @@ const CourseManager = () => {
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
                     {tickChange === 1 && <SectionCreation token={token} setTickChange={handleTickChange} />}
+                    {tickChange === 2 && <CoursePreview id={id ?? ""} token={token} setTickChange={handleTickChange}/>}
                 </div>
             </div>
         </Layout>

@@ -1,43 +1,68 @@
+import { User } from "./User";
+
 import { Answer } from "./Answer";
 
 export interface Main {
   status: number;
+  status: number;
   success: boolean;
+  count: number;
+  data: Course[];
   count: number;
   data: Course[];
 }
 
 // TODO: Make sure this is in accordance with the backend
-
-
-export interface Course {
-  _id?: string;
+interface CommonCourse {
+  _id: string;
   title: string;
   description: string;
-  difficulty: number;
+
+  //1: beginner, 2: intermediate, 3: advanced. This should be changed to enums on database instead of numbers
+  difficulty: 0 | 1 | 2 | 3;
   dateCreated?: Date;
   dateUpdated?: Date;
   coverImg?: string;
-  category: string;
-  sections: string[];
-  creator?: string;
-  status: string;
+  category:
+  | "personal finance"
+  | "health and workplace safety"
+  | "sewing"
+  | "electronics";
+  sections?: Section[];
+  status: "draft" | "published" | "hidden";
   estimatedHours?: number;
   rating?: number;
   numOfSubscriptions?: number;
   __v?: number;
 }
 
+export interface Course extends CommonCourse {
+  creator: string;
+}
+
+export interface CreatorPopulatedCourse extends CommonCourse {
+  creator: {
+    _id: string;
+    approved: boolean;
+    rejected: boolean;
+    baseUser: User;
+  };
+}
+
+export interface NewCourse extends Omit<CommonCourse, "_id"> {
+  creator: string;
+}
+
 export interface contentCreator {
   _id: string;
-  firstName: string,
-  lastName: string,
-  email: string,
-  motivation: string,
-  approved?: boolean,
-  rejectionReason: string,
-  dateCreated?: Date,
-  dateUpdated?: Date,
+  firstName: string;
+  lastName: string;
+  email: string;
+  motivation: string;
+  approved: boolean;
+  rejectionReason: string;
+  dateCreated: Date;
+  dateUpdated: Date;
 }
 
 export interface Section {

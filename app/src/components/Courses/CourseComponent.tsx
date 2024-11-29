@@ -215,15 +215,15 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
 
     
       <div className="flex h-full flex-col justify-between space-y-4"> 
-        <div className="w-full float-right bg-white rounded-lg shadow-lg justify-between space-y-4 p-10">
+        <div className="w-full float-right bg-white rounded-2xl shadow-lg justify-between space-y-4 p-6">
           <div className="flex flex-col space-y-2 text-left">
             <label htmlFor="title">Nome do curso <span className="text-red-500">*</span></label> {/*Title*/}
             <input
               id="title-field"
               type="text"
-              defaultValue={course.title}
-              placeholder={course.title}
-              className="form-field  bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              placeholder={"Nome do curso"}
+              className="form-field  bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
+              {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
             />
             {errors.title && (
@@ -238,7 +238,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
             <label htmlFor='level'> Nível <span className="text-red-500">*</span></label> {/*asteric should not be hard coded*/}
               <select id="difficulty-field" 
               defaultValue={course.difficulty}
-              className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+              className="bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
               onChange={(e) => handleFieldChange('difficulty', parseInt(e.target.value))}
               >
                 {/*Hard coded options by PO, should be changed to get from db*/}
@@ -255,7 +255,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
               <label htmlFor='category'>Categoria <span className="text-red-500">*</span></label> 
               <select id="category-field"
                 defaultValue={course.category}
-                className="bg-secondary focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
                 onChange={(e) => handleFieldChange('category', e.target.value)}
               >
                 {/*Hard coded options by PO, should be changed to get from db*/}
@@ -274,9 +274,9 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
               <ToolTipIcon alignLeftTop={false} index={1} toolTipIndex={toolTipIndex} text={"😉 Dica: insira uma descrição que desperte a curiosidade e o interesse dos alunos"} tooltipAmount={2} callBack={setToolTipIndex}/>
             </div>
             <textarea id="description-field" maxLength={400} rows={4}
-            defaultValue={course.description}
-            placeholder={course.description}
-            className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary"
+            placeholder={"Conte mais sobre o curso"}
+            className="resize-none form-field border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary rounded-lg"
+            {...register("description", { required: true })}
             onChange={(e) => {
               handleFieldChange('description', e.target.value);
             }}
@@ -286,7 +286,7 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
             )}{" "}
             {/** This field is required */}
             <div className="text-right">
-              <label htmlFor="">{charCount}/400</label>
+              <label htmlFor="">{charCount} / 400 caracteres</label>
             </div>
           </div>
 
@@ -330,13 +330,13 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
 
             <label
               htmlFor="course-create"
-              className={`whitespace-nowrap h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${isMissingRequiredFields ? 'opacity-70' : ''}`}
+              className={`whitespace-nowrap h-12 p-2 bg-primary hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${isMissingRequiredFields ? 'opacity-70' : ''}`}
             >
               <button
               onClick={navigateToSections}
               disabled={isMissingRequiredFields}
               id="addCourse"
-              className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer"
+              className="flex items-center justify-center py-4 px-8 h-full w-full cursor-pointer "
               >
               Adicionar seções
               </button>

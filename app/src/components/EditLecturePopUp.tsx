@@ -154,25 +154,21 @@ const handleEditorChange = (value: string) => {
         className="modal"
         id={`lecture-edit-${lecture._id}`}
       >
-        <div className="modal-box bg-gradient-to-b from-primaryLight rounded w-11/12 max-w-xl">
-          <h3 className="font-bold text-lg">Crie sua nova aula</h3>{" "}
+        <div className="modal-box bg-gradient-to-b from-primaryLight w-11/12 max-w-xl rounded-3xl ">
+          <h3 className="font-bold text-lg">Editar sua aula</h3>{" "}
           {/*Create your new lecture!*/}
-          <p className="py-4">
-            Preencha o formulário e inicie sua nova aula!
-          </p>{" "}
-          {/*Fill out the form and start your new lecture!*/}
           {/*Field to input the title of the new lecture*/}
           <form
             className="flex h-full flex-col justify-between space-y-4"
             onSubmit={handleSubmit(onSubmit)}
           >
             <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor="title">Título</label> {/*Title*/}
+              <label htmlFor="title">Título <span className="text-red-500">*</span></label> {/*Title*/}
               <input
                 type="text"
                 placeholder={"Insira o título da aula"}
                 defaultValue={lecture.title}
-                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none rounded-lg"
                 {...register("title", { required: true })}
               />
               {errors.title && (
@@ -181,12 +177,12 @@ const handleEditorChange = (value: string) => {
             </div>
             {/*Field to input the description of the lecture*/}
             <div className="flex flex-col space-y-2 text-left">
-              <label htmlFor="description">Descrição</label> {/*Description*/}
+              <label htmlFor="description">Descrição <span className="text-red-500">*</span></label> {/*Description*/}
               <textarea
                 rows={4}
                 placeholder={"Insira o conteúdo escrito dessa aula"}
                 defaultValue={lecture.description}
-                className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none rounded-lg"
                 {...register("description", { required: true })}
               />
               {/*defaultValue=Add a description to your lecture*/}
@@ -194,7 +190,7 @@ const handleEditorChange = (value: string) => {
                 <span className="text-warning">Este campo é obrigatório</span>
               )}
             </div>
-            <label htmlFor="content-type">Tipo de conteúdo</label>{" "}
+            <label htmlFor="content-type">Tipo de conteúdo <span className="text-red-500">*</span></label>{" "}
             {/*Content type*/}
             <div className="flex flex-row space-x-8">
               <div>
@@ -251,7 +247,7 @@ const handleEditorChange = (value: string) => {
               contentType === "video" ? (
                 <>
                   <label htmlFor="cover-image">
-                    Arquivo de entrada: vídeo ou imagem
+                    Upload do video <span className="text-red-500">*</span>
                   </label>{" "}
                   {/*Input file*/}
                   {!loadingPreview &&
