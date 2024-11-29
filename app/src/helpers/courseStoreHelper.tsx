@@ -1,4 +1,5 @@
 import { Course, Section, Component, Lecture, Exercise, Media, FormattedCourse } from "../interfaces/Course";
+import { getUserInfo } from "./userInfo";
 
 export const formatCourse = (
   course: Course,
@@ -7,10 +8,9 @@ export const formatCourse = (
   exercises: Exercise[],
   media: Media[],
 ): FormattedCourse => {
-  return {
-    courseInfo: formatCourseInfo(course, media),
-    sections: formatSections(course, sections, lectures, exercises, media),
-  };
+  const courseInfo = formatCourseInfo(course, media);
+  const formattedSections = formatSections(course, sections, lectures, exercises, media);
+  return { courseInfo, sections: formattedSections };
 };
 
 const formatCourseInfo = (course: Course, media: Media[]) => {
@@ -78,3 +78,44 @@ const lookForMedia = (media: Media[], lookupId: string): Media | null => {
   const foundMedia = media.find((media) => media.id === lookupId)
   return foundMedia ? foundMedia : null;
 };
+
+// Prepare form data for course creation or update
+export const prepareFormData = (course: FormattedCourse): FormData => {
+  const formData = new FormData();
+  const { id: userId } = getUserInfo();
+
+
+  // Append the entire course data (excluding files) to formData
+  const courseData = { ...course, userId };
+  formData.append("courseData", JSON.stringify(courseData));
+
+  // Append cover image to formData if it exists
+  if (course.courseInfo.coverImg) {
+    formData.append("coverImg", course.courseInfo.coverImg.file);
+  }
+
+  // Append section data and any media files in the components, right now a max of 10 in the backend
+  if (course.sections) {
+    course.sections.forEach((section, sectionIndex) => {
+      section.components.forEach((component, componentIndex) => {
+        if (component.video) {
+          formData.append(`sections[${sectionIndex}].components[${componentIndex}].video`, component.video.file);
+        }
+      });
+    });
+  }
+
+  // Log FormData contents
+  for (const pair of formData.entries()) {
+    console.log(pair[0], pair[1]);
+  }
+
+  return formData;
+};
+
+export const getCourseIdFromFormData = (formData: FormData): string => {
+  const courseData = formData.get("courseData");
+  const course = JSON.parse(courseData as string);
+  return course.courseInfo._id;
+}
+

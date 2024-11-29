@@ -5,49 +5,17 @@ import { BACKEND_URL } from '../helpers/environment';
 import { getUserInfo } from "../helpers/userInfo";
 
 //interfaces
-import { Course, FormattedCourse } from "../interfaces/Course"
+import { Course } from "../interfaces/Course"
+import { getCourseIdFromFormData } from "@helpers/courseStoreHelper";
 
 
-// Prepare form data for course creation or update
-const prepareFormData = (course: FormattedCourse, userId: string) => {
-  const formData = new FormData();
 
-  // Append the entire course data (excluding files) to formData
-  const courseData = { ...course, userId };
-  formData.append("courseData", JSON.stringify(courseData));
-
-  // Append cover image to formData if it exists
-  if (course.courseInfo.coverImg) {
-    formData.append("coverImg", course.courseInfo.coverImg.file);
-  }
-
-  // Append section data and any media files in the components, right now a max of 10 in the backend
-  if (course.sections) {
-    course.sections.forEach((section, sectionIndex) => {
-      section.components.forEach((component, componentIndex) => {
-        if (component.video) {
-          formData.append(`sections[${sectionIndex}].components[${componentIndex}].video`, component.video.file);
-        }
-      });
-    });
-  }
-
-  // Log FormData contents
-  for (const pair of formData.entries()) {
-    console.log(pair[0], pair[1]);
-  }
-
-  return formData;
-};
 // Create a new course
-const createCourse = async (newCourse: FormattedCourse, token: string) => {
-  const { id: userId } = getUserInfo();
-  const formData = prepareFormData(newCourse, userId);
-
+const createCourse = async (newCourse: FormData, token: string) => {
   try {
-    const res = await axios.post(
+    const res = await axios.put(
       `${BACKEND_URL}/api/courses/create/new`,
-      formData,
+      newCourse,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -62,16 +30,12 @@ const createCourse = async (newCourse: FormattedCourse, token: string) => {
   }
 };
 // Update a course
-const updateCourse = async (updatedCourse: FormattedCourse, token: string) => {
-  const { id: userId } = getUserInfo();
-  console.log("Updated course:", updatedCourse);
-  const formData = prepareFormData(updatedCourse, userId);
-  const courseId = updatedCourse.courseInfo._id;
-
+const updateCourse = async (updatedCourse: FormData, token: string) => {
+  const courseId = getCourseIdFromFormData(updatedCourse);
   try {
     const res = await axios.post(
       `${BACKEND_URL}/api/courses/update/${courseId}`,
-      formData,
+      updatedCourse,
       {
         headers: {
           Authorization: `Bearer ${token}`,

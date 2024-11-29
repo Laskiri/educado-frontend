@@ -8,7 +8,7 @@ import {
   Exercise,
   FormattedCourse,
 } from "../interfaces/Course";
-import { formatCourse } from "@helpers/courseStoreHelper";
+import { formatCourse} from "@helpers/courseStoreHelper";
 
 
 // Define the context type
@@ -20,7 +20,7 @@ interface CourseContextProps {
   updateCachedCourseSections: (sections: string[]) => void;
   sections: Section[];
   createNewSection: () => Section;
-  loadSectionToCache: (section: Section) => Section;
+  loadSectionToCache: (section: Section) => Section | null;
   getCachedSection: (sid: string) => Section | null;
   updateCachedSection: (fieldChange: Partial<Section>, sid: string) => void;
   deleteCachedSection: (sid: string) => void;
@@ -29,23 +29,23 @@ interface CourseContextProps {
     components: Component[]
   ) => void;
   deleteCachedSectionComponent: (sectionId: string, compId: string) => void;
-  addCachedSectionComponent: (sectionId: string, component: Component) => Component;
+  addCachedSectionComponent: (sectionId: string, component: Component) => Component | null;
   lectures: Lecture[];
   getCachedLecture: (lid: string) => Lecture | null;
   updateCachedLecture: (lecture: Lecture) => void;
   deleteCachedLecture: (lid: string) => void;
-  loadLectureToCache: (lecture: Lecture) => Lecture;
+  loadLectureToCache: (lecture: Lecture) => Lecture | null;
   addLectureToCache: (lecture: Lecture) => Lecture;
   exercises: Exercise[];
   getCachedExercise: (eid: string) => Exercise | null;
   updateCachedExercise: (exercise: Exercise) => void;
   deleteCachedExercise: (eid: string) => void;
-  loadExerciseToCache: (exercise: Exercise) => Exercise;
+  loadExerciseToCache: (exercise: Exercise) => Exercise | null;
   addExerciseToCache: (exercise: Exercise) => Exercise;
   media : Media[];
   addMediaToCache: (media: Media) => void;
   getMedia: (mid: string) => File | null;
-  updateMedia: (media: Media) => Media;
+  updateMedia: (media: Media) => Media | null;
   deleteMedia: (mid: string) => void;
 }
 
@@ -111,24 +111,15 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const [media, setMedia] = useState<Media[]>([]);
   const [idMaker, setIdMaker] = useState({"section": 0, "component": 0});
 
-  
-
   useEffect(() => {
     return () => {
     };
   }, []);
 
-  useEffect(() => {
-  }, [lectures, exercises]);
-
-
   const getFormattedCourse = () => {
-    const formattedCourse = formatCourse(course, sections, lectures, exercises, media);
-    console.log("Formatted course", formattedCourse);
+    const formattedCourse : FormattedCourse = formatCourse(course, sections, lectures, exercises, media);
     return formattedCourse;
   }
-
-
 
   const updateCourse = (newCourse: Course) => {
     setCourse((prevCourse) => ({
@@ -173,7 +164,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   }
 
   const loadSectionToCache = (newSection: Section) => {
-    if (sections.find((section) => section._id === newSection._id)) return;
+    if (sections.find((section) => section._id === newSection._id)) return null;
     setSections((prevSections) => [...prevSections, newSection]);
     return newSection;
   };
@@ -304,7 +295,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const loadLectureToCache = (newLecture: Lecture) => {
-    if (lectures.find((lecture) => lecture._id === newLecture._id)) return;
+    if (lectures.find((lecture) => lecture._id === newLecture._id)) return null;
     setLectures((prevLectures) => [...prevLectures, newLecture]);
     return newLecture;
   }
@@ -344,7 +335,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   };
 
   const loadExerciseToCache = (newExercise: Exercise) => {
-    if (exercises.find((exercise) => exercise._id === newExercise._id)) return;
+    if (exercises.find((exercise) => exercise._id === newExercise._id)) return null;
     setExercises((prevExercises) => [...prevExercises, newExercise]);
     return newExercise;
   }
@@ -379,7 +370,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
 
   const updateMedia = (newMedia: Media) => {
     const index = media.findIndex((media) => media.id === newMedia.id);
-    if (index === -1) return;
+    if (index === -1) return null;
     const updatedMedia = [...media];
     updatedMedia[index] = newMedia;
     setMedia(updatedMedia);

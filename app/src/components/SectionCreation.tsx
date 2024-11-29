@@ -20,6 +20,8 @@ import Loading from "./general/Loading";
 import Layout from "./Layout";
 // Notification
 import CourseGuideButton from "./Courses/GuideToCreatingCourse";
+
+import { prepareFormData } from "@helpers/courseStoreHelper";
 interface Inputs {
   token: string;
   setTickChange: (tick: number) => void;
@@ -38,7 +40,7 @@ export const SectionCreation = ({
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
-  const {course, getFormattedCourse } = useCourse();
+  const {course, getFormattedCourse} = useCourse();
   const {getCachedSection} = useSections();
   const existingCourse = id !== "0";
   const courseCacheLoading = Object.keys(course).length === 0;
@@ -48,6 +50,7 @@ export const SectionCreation = ({
   const status = course.status;
   const navigate = useNavigate();
   const { addNotification } = useNotifications();
+
 
   const isMissingRequiredFields = () => {
     return course.sections.some((section) => {
@@ -75,7 +78,8 @@ export const SectionCreation = ({
   const handleDraftConfirm = async () => {
     try {
       const updatedCourse = getFormattedCourse();
-      await submitCourse(updatedCourse, token);
+      const formData = prepareFormData(updatedCourse);
+      await submitCourse(formData, token);
       onSuccessfulSubmit();
     } catch (err) {
       console.error(err);
@@ -86,7 +90,9 @@ export const SectionCreation = ({
     try {
       const updatedCourse = getFormattedCourse();
       updatedCourse.courseInfo.status = "published";
-      await submitCourse(updatedCourse, token);
+      const formData = prepareFormData(updatedCourse);
+
+      await submitCourse(formData, token);
       onSuccessfulSubmit();
     }
     catch (err) {

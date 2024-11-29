@@ -20,6 +20,7 @@ import GenericModalComponent from "../GenericModalComponent";
 // Interface
 import { Course} from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
+import { prepareFormData } from "@helpers/courseStoreHelper";
 
 interface CourseComponentProps {
   token: string;
@@ -149,7 +150,8 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   const handleSubmitCourse = async () => {
     try {
       const updatedCourse = getFormattedCourse();
-      await submitCourse(updatedCourse, token);
+      const formData = prepareFormData(updatedCourse);
+      await submitCourse(formData, token);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
