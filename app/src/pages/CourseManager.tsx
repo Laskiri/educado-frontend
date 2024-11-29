@@ -1,4 +1,5 @@
 import { CourseComponent } from "../components/Courses/CourseComponent";
+import { CoursePreview } from "../components/Courses/CoursePreview";
 import { SectionCreation } from "../components/SectionCreation";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
@@ -50,7 +51,6 @@ const CourseManager = () => {
     );
 
     const updateLocalData = (newData: Course) => {
-        console.log("new status", newData.status)
         const changes: Course = {
             ...localData,
             ...newData,
@@ -77,10 +77,8 @@ const CourseManager = () => {
     useEffect(() => {
         const calculateMaxTick = (data: any) => {
             if (isCourseBasicInformation(data)) {
-                return 1;
-            }
-            if (doesCourseSectionsExist(data)) {
-                return 1;
+                if (doesCourseSectionsExist(data)) return 2;
+                else return 1;
             }
             return 0;
         };
@@ -120,6 +118,7 @@ const CourseManager = () => {
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} courseData={localData} updateHighestTick={updateHighestTick} updateLocalData={updateLocalData}/>}
                     {tickChange === 1 && <SectionCreation id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
+                    {tickChange === 2 && <CoursePreview id={id ?? ""} token={token} setTickChange={handleTickChange} courseData={localData} />}
                 </div>
             </div>
         </Layout>

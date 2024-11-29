@@ -1,29 +1,24 @@
-// Icon from: https://materialdesignicons.com/
-
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-import { useApi } from '../hooks/useAPI';
 
-import { Course } from "../interfaces/Course";
-import { SectionForm } from "./dnd/SectionForm";
-import { SectionList } from "./dnd/SectionList";
+import { Course } from "../../interfaces/Course";
+import { PhonePreview } from "./PhonePreview";
 
-import { BACKEND_URL } from "../helpers/environment";
+import { BACKEND_URL } from "../../helpers/environment";
 
-import CourseServices from "../services/course.services";
-import SectionServices from "../services/section.services";
-import { YellowWarning } from "./Courses/YellowWarning";
+import CourseServices from "../../services/course.services";
+import { YellowWarning } from "../Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
-import GenericModalComponent from "./GenericModalComponent";
+import GenericModalComponent from "../GenericModalComponent";
 
-import { ToolTipIcon } from "./ToolTip/ToolTipIcon";
-import Loading from "./general/Loading";
-import Layout from "./Layout";
+import Loading from "../general/Loading";
+import Layout from "../Layout";
 
 // Notification
-import { useNotifications } from "./notification/NotificationContext";
-import CourseGuideButton from "./Courses/GuideToCreatingCourse";
+import { useNotifications } from "../notification/NotificationContext";
+import PhoneCourseSection from "./PhoneCourseSection";
+import ExploreCardPreview from "./ExploreCardPreview";
 
 interface Inputs {
   id: string;
@@ -33,20 +28,17 @@ interface Inputs {
 }
 
 // Create section
-export const SectionCreation = ({
+export const CoursePreview = ({
   id: propId,
   token,
   setTickChange,
   courseData,
 }: Inputs) => {
+
   const { id: urlId } = useParams<{ id: string }>();
   const id = propId === "0" ? urlId : propId;
-  const [isLeaving, setIsLeaving] = useState<boolean>(false);
-  const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>(
-    []
-  );
+  const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
   const [sections, setSections] = useState<any[]>([]);
-  const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -58,25 +50,9 @@ export const SectionCreation = ({
   const [status, setStatus] = useState<string>("draft");
 
   const navigate = useNavigate();
-  function addOnSubmitSubscriber(callback: Function) {
-    setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
-  }
-
-  /**
-   * Currently not used, but should be implemented in the future
-   */
-  // function removeOnSubmitSubscriber(callback: Function) {
-  //   setOnSubmitSubscribers((prevSubscribers) =>
-  //     prevSubscribers.filter((cb) => cb !== callback)
-  //   );
-  // }
 
   // Notification
   const { addNotification } = useNotifications();
-
-
-  //Callbacks
-  const { call: updateCourseDetail, isLoading: submitLoading, error } = useApi(CourseServices.updateCourseDetail);
 
   function notifyOnSubmitSubscriber() {
     onSubmitSubscribers.forEach((cb) => cb());
@@ -90,9 +66,9 @@ export const SectionCreation = ({
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
     
-    async function confirmFunction() {
+    function confirmFunction() {
       onConfirm();
-     await updateCourseDetail(courseData, id, token);
+      CourseServices.updateCourseDetail(courseData, id, token);
     }
 
     setDialogConfirm(() => confirmFunction);
@@ -109,54 +85,17 @@ export const SectionCreation = ({
     }
   };
 
-  const checkSectionsNotEmpty = async () => {
+  const handlePublishConfirm = async () => {
     try {
-      let emptySections = [];
-      for(let i in sections) {
-        const section = await SectionServices.getSectionDetail(sections[i], token);
-        if(section.components.length === 0) {
-          emptySections.push(section);
-        }
+      updateCourseSections();
+      if (status !== "published") {
+        await CourseServices.updateCourseStatus(id, "published", token);
+        navigate("/courses");
+        addNotification("Curso publicado com sucesso!");
+      } else {
+        navigate("/courses");
+        addNotification("Seções salvas com sucesso!");
       }
-      for(let emptySection of emptySections) {
-        addNotification(`Secção: "${emptySection.title}", está vazia!`);
-      }
-
-      return emptySections.length === 0;
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const checkSectionsNotEmpty = async () => {
-    try {
-      let emptySections = [];
-      for(let i in sections) {
-        const section = await SectionServices.getSectionDetail(sections[i], token);
-        if(section.components.length === 0) {
-          emptySections.push(section);
-        }
-      }
-      for(let emptySection of emptySections) {
-        addNotification(`Secção: "${emptySection.title}", está vazia!`);
-      }
-
-      return emptySections.length === 0;
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const handleConfirm = async () => {
-    try {
-        const sectionsAreValid = await checkSectionsNotEmpty();
-      if (!sectionsAreValid) {
-        addNotification("Curso não pode ser publicado devido a secções vazias!");
-        return;
-      }
-      await updateCourseSections();
-        setTickChange(2);
-        navigate(`/courses/manager/${id}/2`);
     } catch (err) {
       console.error(err);
     }
@@ -219,48 +158,34 @@ export const SectionCreation = ({
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
-        width="w-[500px]"
         onConfirm={async () => {
           await dialogConfirm();
         }}
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
-        loading={submitLoading}
       />
 
       <div className="">
         <div className="flex w-full items-center justify-between my-4">
           <div className="flex">
-            <h1 className="text-2xl font-bold">Seções do curso </h1>
-            {/** Tooltip for course sections header*/}
-            <ToolTipIcon
-            alignLeftTop={false}
-              index={0}
-              toolTipIndex={toolTipIndex}
-              text={
-                "👩🏻‍🏫Nossos cursos são separados em seções e você pode adicionar quantas quiser!"
-              }
-              tooltipAmount={1}
-              callBack={setToolTipIndex}
-            />
+            <h1 className="text-2xl font-bold">Revisar curso</h1>
           </div>
-          <CourseGuideButton />
         </div>
 
         <div className="flex w-full float-right space-y-4">
-          <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
+          <YellowWarning text="Navegue pelo seu curso na visualização do aluno antes de publicá-lo." />
         </div>
 
-        <div className="flex w-full float-right items-center justify-left space-y-4">
+        <div className="flex w-full float-right items-center justify-center space-y-4 my-4">
           {/** Course Sections area  */}
-          <div className="flex w-full flex-col space-y-2 ">
-            <SectionList
-              sections={sections}
-              setSections={setSections}
-              addOnSubmitSubscriber={addOnSubmitSubscriber}
-            />
-            <SectionForm setSections={setSections} />
+          <div className="flex w-full flex-row justify-around gap-x-8 max-w-5xl">
+            <PhonePreview title="Informações do curso" >
+                <ExploreCardPreview course={courseData} />
+            </PhonePreview>
+            <PhonePreview title="Seções do curso" >
+                <PhoneCourseSection course={courseData} />
+            </PhonePreview>
           </div>
         </div>
 
@@ -268,11 +193,11 @@ export const SectionCreation = ({
         <div className='className="flex w-full float-right space-y-4 "'>
           <div className="flex items-center justify-between gap-4 w-full mt-8">
             <label
-              onClick={() => changeTick(0)}
+              onClick={() => changeTick(1)}
               className="whitespace-nowrap cursor-pointer underline py-2 pr-4 bg-transparent hover:bg-warning-100 text-primary w-full transition ease-in duration-200 text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded"
             >
-              Voltar para Informações{" "}
-              {/** GO BACK TO COURSE CREATION PAGE 1/3 IN THE CHECKLIST */}
+              Voltar para Seções
+              {/** GO BACK TO COURSE CREATION PAGE 2/3 IN THE CHECKLIST */}
             </label>
 
             <label
@@ -294,12 +219,20 @@ export const SectionCreation = ({
               </label>
             </label>
 
-            <label className="h-12 p-2 bg-primary hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+            <label className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
               <label
-                onClick={() => handleConfirm()}
+                onClick={() => {
+                  handleDialogEvent(
+                    status === "published"
+                      ? "Tem certeza de que deseja publicar o curso? Isso o disponibilizará para os usuários do aplicativo"
+                      : "Tem certeza de que deseja publicar as alterações feitas no curso",
+                    handlePublishConfirm,
+                    "Publicar curso"
+                  );
+                }}
                 className="whitespace-nowrap py-4 px-8 h-full w-full cursor-pointer"
               >
-                Revisar Curso
+                {status === "published" ? "Publicar Edições" : "Publicar Curso"}{" "}
               </label>
             </label>
           </div>
