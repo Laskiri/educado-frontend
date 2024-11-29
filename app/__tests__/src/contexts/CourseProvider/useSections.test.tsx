@@ -171,4 +171,52 @@ describe('useSection', () => {
       const res = result.current.sectionsHook.addCachedSectionComponent('3', mockLectureComponent);
       expect(res).toBeNull();
     });
+
+    it('should get all exercises in a section', () => {
+      const { result } = renderHook(() => useCombinedHooks(), { wrapper: Wrapper });
+      const mockSection1 = { ...mockSection, _id: '1' };
+      const mockSection2 = { ...mockSection, _id: '2' };
+      const mockExComp1 = { ...mockExerciseComponent, compId: '1' };
+      const mockExComp2 = { ...mockExerciseComponent, compId: '2' };
+      const mockExComp3 = { ...mockExerciseComponent, compId: '3' };
+      const mockEx1 = { ...mockExercise, parentSection: '1' };
+      const mockEx2 = { ...mockExercise, parentSection: '1' };
+      const mockEx3 = { ...mockExercise, parentSection: '2' };
+      act(() => {
+        result.current.sectionsHook.loadSectionToCache(mockSection1);
+        result.current.sectionsHook.loadSectionToCache(mockSection2);
+        result.current.sectionsHook.addCachedSectionComponent("1", mockExComp1);
+        result.current.sectionsHook.addCachedSectionComponent("1", mockExComp2);
+        result.current.sectionsHook.addCachedSectionComponent("2", mockExComp3);
+        result.current.exercisesHook.addExerciseToCache(mockEx1);
+        result.current.exercisesHook.addExerciseToCache(mockEx2);
+        result.current.exercisesHook.addExerciseToCache(mockEx3);
+      });
+      const exercises = result.current.sectionsHook.getAllSectionExercises('1');
+      expect(exercises).toEqual([mockEx1, mockEx2]);
+    });
+
+    it('should get all lectures in a section', () => {
+        const { result } = renderHook(() => useCombinedHooks(), { wrapper: Wrapper });
+        const mockSection1 = { ...mockSection, _id: '1' };
+        const mockSection2 = { ...mockSection, _id: '2' };
+        const mockLecComp1 = { ...mockLectureComponent, compId: '1' };
+        const mockLecComp2 = { ...mockLectureComponent, compId: '2' };
+        const mockLecComp3 = { ...mockLectureComponent, compId: '3' };
+        const mockLec1 = { ...mockLecture, parentSection: '1' };
+        const mockLec2 = { ...mockLecture, parentSection: '1' };
+        const mockLec3 = { ...mockLecture, parentSection: '2' };
+        act(() => {
+          result.current.sectionsHook.loadSectionToCache(mockSection1);
+          result.current.sectionsHook.loadSectionToCache(mockSection2);
+          result.current.sectionsHook.addCachedSectionComponent("1", mockLecComp1);
+          result.current.sectionsHook.addCachedSectionComponent("1", mockLecComp2);
+          result.current.sectionsHook.addCachedSectionComponent("2", mockLecComp3);
+          result.current.lecturesHook.addLectureToCache(mockLec1);
+          result.current.lecturesHook.addLectureToCache(mockLec2);
+          result.current.lecturesHook.addLectureToCache(mockLec3);
+        });
+        const lectures = result.current.sectionsHook.getAllSectionLectures('1');
+        expect(lectures).toEqual([mockLec1, mockLec2]);
+      })
 })
