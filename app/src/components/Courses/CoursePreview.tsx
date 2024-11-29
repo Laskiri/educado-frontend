@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
-
+import { useCourse, useSections } from '@contexts/courseStore';
+import { prepareFormData } from "@helpers/courseStoreHelper";
 import { Course } from "../../interfaces/Course";
 import { PhonePreview } from "./PhonePreview";
 
-import { BACKEND_URL } from "../../helpers/environment";
+import { useApi } from "@hooks/useAPI";
 
 import CourseServices from "../../services/course.services";
 import { YellowWarning } from "../Courses/YellowWarning";
@@ -24,7 +25,6 @@ interface Inputs {
   id: string;
   token: string;
   setTickChange: Function;
-  courseData: Course;
 }
 
 // Create section
@@ -32,13 +32,10 @@ export const CoursePreview = ({
   id: propId,
   token,
   setTickChange,
-  courseData,
 }: Inputs) => {
 
   const { id: urlId } = useParams<{ id: string }>();
   const id = propId === "0" ? urlId : propId;
-  const [onSubmitSubscribers, setOnSubmitSubscribers] = useState<Function[]>([]);
-  const [sections, setSections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [showDialog, setShowDialog] = useState(false);
   const [dialogMessage, setDialogMessage] = useState("");
@@ -47,16 +44,20 @@ export const CoursePreview = ({
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
 
   const [dialogConfirm, setDialogConfirm] = useState<Function>(() => {});
-  const [status, setStatus] = useState<string>("draft");
+
+  const {course, getFormattedCourse} = useCourse();
+  const { sections } = useSections();
+  const courseCacheLoading = Object.keys(course).length === 0;
+  const existingCourse = id !== "0";
+  const callFunc = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
+  const { call: submitCourse, isLoading: submitLoading} = useApi(callFunc);
 
   const navigate = useNavigate();
 
   // Notification
   const { addNotification } = useNotifications();
 
-  function notifyOnSubmitSubscriber() {
-    onSubmitSubscribers.forEach((cb) => cb());
-  }
+  const status = course.status ?? "draft";
 
   const handleDialogEvent = (
     dialogText: string,
@@ -65,21 +66,21 @@ export const CoursePreview = ({
   ) => {
     setDialogTitle(dialogTitle);
     setDialogMessage(dialogText);
-    
-    function confirmFunction() {
-      onConfirm();
-      CourseServices.updateCourseDetail(courseData, id, token);
-    }
-
-    setDialogConfirm(() => confirmFunction);
+    setDialogConfirm(() => onConfirm);
     setShowDialog(true);
-  };
+  };  
+  
+  const onSuccessfulSubmit = () => {
+    navigate("/courses");
+    addNotification("Seções salvas com sucesso!");  
+  }
 
   const handleDraftConfirm = async () => {
     try {
-      await updateCourseSections();
-      navigate("/courses");
-      addNotification("Seções salvas com sucesso!");
+      const updatedCourse = getFormattedCourse();
+      const formData = prepareFormData(updatedCourse);
+      await submitCourse(formData, token);
+      onSuccessfulSubmit();
     } catch (err) {
       console.error(err);
     }
@@ -87,63 +88,27 @@ export const CoursePreview = ({
 
   const handlePublishConfirm = async () => {
     try {
-      updateCourseSections();
-      if (status !== "published") {
-        await CourseServices.updateCourseStatus(id, "published", token);
-        navigate("/courses");
-        addNotification("Curso publicado com sucesso!");
-      } else {
-        navigate("/courses");
-        addNotification("Seções salvas com sucesso!");
-      }
-    } catch (err) {
+      const updatedCourse = getFormattedCourse();
+      updatedCourse.courseInfo.status = "published";
+      const formData = prepareFormData(updatedCourse);
+
+      await submitCourse(formData, token);
+      onSuccessfulSubmit();
+    }
+    catch (err) {
       console.error(err);
     }
   };
 
-  async function updateCourseSections(): Promise<void> {
-    notifyOnSubmitSubscriber();
-    await CourseServices.updateCourseSectionOrder(sections, id, token);
-  }
 
   function changeTick(tick: number) {
     setTickChange(tick);
     navigate(`/courses/manager/${id}/${tick}`);
   }
 
-  /**
-   * Extra function to handle the response from the course service before it is passed to the useSWR hook
-   *
-   * @param url The url to fetch the course details from backend
-   * @param token The user token
-   * @returns The course details
-   */
-  const getData = async (url: string /*, token: string*/) => {
-    const res: any = await CourseServices.getCourseDetail(url, token);
-    return res;
-  };
+  
 
-  // Redirect to courses page when setLeaving is s
-
-  // Fetch Course Details
-  useEffect(() => {
-    if (id !== "0") {
-      getData(`${BACKEND_URL}/api/courses/${id}`)
-        .then((data) => {
-          setStatus(data.status);
-          setSections(data.sections); // Array of section ID's
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        });
-    } else {
-      setLoading(false);
-    }
-  }, [id, token]);
-
-  if (loading && id != "0")
+  if (courseCacheLoading && existingCourse)
     return (
       <Layout meta="course overview">
         <Loading />
@@ -164,6 +129,7 @@ export const CoursePreview = ({
         onClose={() => {
           setShowDialog(false);
         }} // Do nothing
+        loading={submitLoading}
       />
 
       <div className="">
@@ -181,10 +147,10 @@ export const CoursePreview = ({
           {/** Course Sections area  */}
           <div className="flex w-full flex-row justify-around gap-x-8 max-w-5xl">
             <PhonePreview title="Informações do curso" >
-                <ExploreCardPreview course={courseData} />
+                <ExploreCardPreview course={course} />
             </PhonePreview>
             <PhonePreview title="Seções do curso" >
-                <PhoneCourseSection course={courseData} />
+                <PhoneCourseSection/>
             </PhonePreview>
           </div>
         </div>

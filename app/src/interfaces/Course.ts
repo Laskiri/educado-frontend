@@ -4,10 +4,7 @@ import { Answer } from "./Answer";
 
 export interface Main {
   status: number;
-  status: number;
   success: boolean;
-  count: number;
-  data: Course[];
   count: number;
   data: Course[];
 }
@@ -24,11 +21,12 @@ interface CommonCourse {
   dateUpdated?: Date;
   coverImg?: string;
   category:
+  | ""
   | "personal finance"
   | "health and workplace safety"
   | "sewing"
   | "electronics";
-  sections?: Section[];
+  sections?: string[];
   status: "draft" | "published" | "hidden";
   estimatedHours?: number;
   rating?: number;
@@ -72,6 +70,7 @@ export interface Section {
   totalPoints?: number;
   parentCourse: string;
   components: Component[];
+  __v: number;
 }
 
 export interface Component {

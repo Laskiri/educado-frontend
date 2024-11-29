@@ -165,6 +165,5 @@ export function SortableComponentItem({ component, sid }: Props) {
           </div>
         </div>
       </div>
-    </div>
   );
 }

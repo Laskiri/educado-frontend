@@ -14,12 +14,10 @@ import {
   mdiScissorsCutting,
   mdiLaptop,
   mdiChevronDown,
-  mdiChevronDoubleRight,
   mdiStarOutline,
-  mdiBookMultipleOutline
 } from '@mdi/js';
-import { Course } from '../../interfaces/Course';
 import singleIcon from '../../assets/singleIcon.png'; 
+import {useCourse } from '@contexts/courseStore';
 
 
 interface CardLabelProps {
@@ -30,10 +28,6 @@ interface CardLabelProps {
 
 interface CustomRatingProps {
   rating: number;
-}
-
-interface ExploreCardPreviewProps {
-  course: Course;
 }
 
 const CardLabel: React.FC<CardLabelProps> = ({ title, icon, color = '#4B5563' }) => (  // default to gray-600
@@ -96,7 +90,8 @@ interface FeatureItem {
   text: string;
 }
 
-const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
+const ExploreCardPreview: React.FC = () => {
+  const { course } = useCourse();
   const features: FeatureItem[] = [
     { 
       icon: mdiClockOutline, 

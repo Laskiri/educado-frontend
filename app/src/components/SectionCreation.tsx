@@ -75,6 +75,17 @@ export const SectionCreation = ({
     addNotification("Seções salvas com sucesso!");  
   }
 
+  const handleDraftConfirm = async () => {
+    try {
+      const updatedCourse = getFormattedCourse();
+      const formData = prepareFormData(updatedCourse);
+      await submitCourse(formData, token);
+      onSuccessfulSubmit();
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const handleConfirm = async () => {
     try {
         setTickChange(2);

@@ -223,7 +223,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
               type="text"
               placeholder={"Nome do curso"}
               className="form-field  bg-secondary border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent rounded-lg"
-              {...register("title", { required: true })}
               onChange={(e) => handleFieldChange('title', e.target.value)}
             />
             {errors.title && (
@@ -276,7 +275,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
             <textarea id="description-field" maxLength={400} rows={4}
             placeholder={"Conte mais sobre o curso"}
             className="resize-none form-field border-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent bg-secondary rounded-lg"
-            {...register("description", { required: true })}
             onChange={(e) => {
               handleFieldChange('description', e.target.value);
             }}

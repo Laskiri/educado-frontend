@@ -123,7 +123,7 @@ export function SortableItem({
   //Else show the sections.
   return (
     <div>
-      <div className={`overflow-hidden border collapse w-full min-h-16 rounded bg-white shadow-lg rounded-lg my-4 ${openRef.current?.checked ? "border-primary" : ""}`}>
+      <div className={`overflow-hidden border collapse w-full min-h-16 rounded bg-white shadow-lg rounded-lg my-4 `}>
         <input
           type="checkbox"
           className="peer w-full h-full"
@@ -139,7 +139,7 @@ export function SortableItem({
               arrowDirection={arrowDirection}
               Checkbox={openRef}
             />
-            <p className="font-semibold">{`Seção ${sectionNumber}: ${title ?? sectionData.title ?? "Nome da seção"}`}</p>
+            <p className="font-semibold">{`Seção ${sectionNumber}: ${sectionTitle ?? cachedSection.title ?? "Nome da seção"}`}</p>
           </div>
           <div className="flex z-10">
             <div
@@ -204,24 +204,15 @@ export function SortableItem({
               {/** This field is required */}
             </div>
             
-            <div
-              className="hidden"
-              onClick={() => {
-                onSubmit(sectionData);
-              }}
-            >
-              <input type="submit" ref={subRef} />
-            </div>
-          </form>
+            
+          <div className="pt-5">
             
           <div className="border-t border-gray"></div>
-          {componentData && componentData.length > 0 && (
+          {cachedComponents && cachedComponents.length > 0 && (
             <div>
               <ComponentList
                 sid={sid}
-                components={componentData}
-                setComponents={setComponentData}
-                addOnSubmitSubscriber={addOnSubmitSubscriber}
+                components={cachedComponents ?? []}
               />
               <div className="border-t border-gray"></div> {/* Divider below ComponentList */}
             </div>
@@ -313,5 +304,6 @@ export function SortableItem({
         </div>
       </div>
     </div>
+  </div>
   );
 }

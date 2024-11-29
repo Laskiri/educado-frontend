@@ -30,6 +30,8 @@ interface CourseContextProps {
   ) => void;
   deleteCachedSectionComponent: (sectionId: string, compId: string) => void;
   addCachedSectionComponent: (sectionId: string, component: Component) => Component | null;
+  getAllSectionLectures: (sid: string) => Lecture[];
+  getAllSectionExercises: (sid: string) => Exercise[];
   lectures: Lecture[];
   getCachedLecture: (lid: string) => Lecture | null;
   updateCachedLecture: (lecture: Lecture) => void;
@@ -68,6 +70,7 @@ const CourseContext = createContext<CourseContextProps>({
     totalPoints: 0,
     parentCourse: "",
     components: [],
+    __v: 0,
   }),
   loadSectionToCache: () => ({} as Section),
   getCachedSection: () => null,
@@ -75,7 +78,9 @@ const CourseContext = createContext<CourseContextProps>({
   deleteCachedSection: () => {},
   updateCachedSectionComponents: () => {},
   deleteCachedSectionComponent: () => {},
-  addCachedSectionComponent: (sectionId: string, component: Component) => component,
+  addCachedSectionComponent: () => ({} as Component),
+  getAllSectionLectures: () => [],
+  getAllSectionExercises: () => [],
   lectures: [],
   getCachedLecture: () => null,
   updateCachedLecture: () => {},
@@ -104,7 +109,9 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     estimatedHours: 0,
     sections: [],
     coverImg: "",
-    _id: "0"});
+    _id: "0",
+    creator: "",
+    });
   const [sections, setSections] = useState<Section[]>([] as Section[]);
   const [lectures, setLectures] = useState<Lecture[]>([]);
   const [exercises, setExercises] = useState<Exercise[]>([]);
@@ -279,6 +286,14 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     });
   };
 
+  const getAllSectionLectures = (sid: string) => {
+    return lectures.filter((lecture) => lecture.parentSection === sid);
+  }
+
+  const getAllSectionExercises = (sid: string) => {
+    return exercises.filter((exercise) => exercise.parentSection === sid);
+  }
+
   const getCachedExercise = (eid: string) => {
     return exercises.find((exercise) => exercise._id === eid) || null;
   }
@@ -314,6 +329,7 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
   const getCachedLecture = (lid: string) => {
     return lectures.find((lecture) => lecture._id === lid) || null;
   }
+
 
   const addLectureToCache = (newLecture: Lecture) => {
     const newId = idMaker.component + 1;
@@ -394,6 +410,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     updateCachedSectionComponents,
     deleteCachedSectionComponent,
     addCachedSectionComponent,
+    getAllSectionExercises,
+    getAllSectionLectures,
     lectures,
     getCachedLecture,
     updateCachedLecture,
@@ -442,6 +460,8 @@ export const useSections = () => {
     updateCachedSectionComponents: context.updateCachedSectionComponents,
     deleteCachedSectionComponent: context.deleteCachedSectionComponent,
     addCachedSectionComponent: context.addCachedSectionComponent,
+    getAllSectionLectures: context.getAllSectionLectures,
+    getAllSectionExercises: context.getAllSectionExercises,
   };
 };
 

@@ -5,7 +5,7 @@ import { BACKEND_URL } from "../helpers/environment";
 import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
 //interfaces
-import { Course } from "../interfaces/Course"
+import { CreatorPopulatedCourse, Course } from "../interfaces/Course"
 import { getCourseIdFromFormData } from "@helpers/courseStoreHelper";
 
 
@@ -50,31 +50,11 @@ const updateCourse = async (updatedCourse: FormData, token: string) => {
   }
 };
 
-import { CreatorPopulatedCourse, Course, NewCourse } from "@interfaces/Course";
+
 
 /**
  * IN ALL METHODS THE TOKEN HAS BEEN COMMENTED OUT, SINCE WE DON'T HAVE A TOKEN YET
  */
-
-const createCourse = async (data: NewCourse, token: string) => {
-  return await axios.put<Course>(
-    `${BACKEND_URL}/api/courses`,
-    {
-      title: data.title,
-      description: data.description,
-      category: data.category,
-      difficulty: data.difficulty,
-      creator: data.creator,
-      status: data.status,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-        token: localStorage.getItem("token") || "",
-      },
-    }
-  );
-};
 
 /**
  * Get all courses from specific creator
@@ -165,11 +145,7 @@ const CourseServices = Object.freeze({
   getAllCourses,
   getCourseDetail,
   getCourseCategories,
-  updateCourseDetail,
-  updateCourseStatus,
-  updateCourseSectionOrder,
   deleteCourse,
-  getAllCourseSections
 });
 
 export default CourseServices;
