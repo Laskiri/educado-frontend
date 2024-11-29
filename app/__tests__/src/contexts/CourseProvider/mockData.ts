@@ -1,6 +1,6 @@
 
 export const mockCourse = {
-    _id: '1',
+    _id: '0',
     title: 'Test Course',
     description: 'Test Description',
     difficulty: 2 as 0 | 1 | 2 | 3,
