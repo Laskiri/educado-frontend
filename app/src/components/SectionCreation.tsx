@@ -112,8 +112,9 @@ export const SectionCreation = ({
   const checkSectionsNotEmpty = async () => {
     try {
       let emptySections = [];
-      for(let i in sections) {
-        const section = await SectionServices.getSectionDetail(sections[i], token);
+      for(let sectionID of sections) {
+        console.log(sectionID);
+        const section = await SectionServices.getSectionDetail(sectionID, token);
         if(section.components.length === 0) {
           emptySections.push(section);
         }
@@ -128,28 +129,11 @@ export const SectionCreation = ({
     }
   };
 
-  const checkSectionsNotEmpty = async () => {
-    try {
-      let emptySections = [];
-      for(let i in sections) {
-        const section = await SectionServices.getSectionDetail(sections[i], token);
-        if(section.components.length === 0) {
-          emptySections.push(section);
-        }
-      }
-      for(let emptySection of emptySections) {
-        addNotification(`Secção: "${emptySection.title}", está vazia!`);
-      }
-
-      return emptySections.length === 0;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  
 
   const handleConfirm = async () => {
     try {
-        const sectionsAreValid = await checkSectionsNotEmpty();
+      const sectionsAreValid = await checkSectionsNotEmpty();
       if (!sectionsAreValid) {
         addNotification("Curso não pode ser publicado devido a secções vazias!");
         return;
@@ -213,6 +197,7 @@ export const SectionCreation = ({
 
   return (
     <div>
+      <button onClick={() => {console.log(sections);checkSectionsNotEmpty()}}>test</button>
       <GenericModalComponent
         title={dialogTitle}
         contentText={dialogMessage}

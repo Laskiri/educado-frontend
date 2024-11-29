@@ -36,7 +36,7 @@
         "axios-mock-adapter": "^1.22.0",
         "cypress-localstorage-commands": "^2.2.5",
         "daisyui": "^2.38.1",
-        "esbuild": "^0.19.5",
+        "esbuild": "^0.19.12",
         "eslint": "^8.50.0",
         "jwt-decode": "^3.1.2",
         "node": "^22.9.0",
