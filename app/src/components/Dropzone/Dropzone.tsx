@@ -113,7 +113,7 @@ export const Dropzone: FC<DropzoneProps> = ({
             </div>
           </div>
           <div className="text-right">
-            <label>o arquivo deve conter no maximo 500Mb</label>
+            <label>O arquivo deve conter no máximo 500Mb</label>
           </div>
         </div>
       );
