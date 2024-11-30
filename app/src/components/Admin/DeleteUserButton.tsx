@@ -1,14 +1,4 @@
 /* eslint-disable @typescript-eslint/strict-boolean-expressions */
-<<<<<<<< HEAD:app/src/components/Admin/DeleteUserButton.tsx
-import React, { useState } from 'react';
-import { getUserToken } from '../../helpers/userInfo';
-import AdminServices from '../../services/admin.services';
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-import GenericModalComponent from '../GenericModalComponent';
-import { useNotifications } from '../notification/NotificationContext';
-import {useApi} from '../../hooks/useAPI';
-========
 import React, { useState } from "react";
 import GenericModalComponent from "@components/GenericModalComponent";
 import { useNotifications } from "@components/notification/NotificationContext";
@@ -17,7 +7,6 @@ import { useApi } from "@hooks/useAPI";
 import AdminServices from "@services/admin.services";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
->>>>>>>> 70f0fc8fe0e7f209769e69832f17ab81aff526a8:app/src/components/Admin/Users/Actions/DeleteUserButton.tsx
 interface DeleteUserButtonProps {
   applicationId: string;
   onDelete: () => void;
@@ -29,11 +18,8 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({
 }) => {
   const { addNotification } = useNotifications();
   const [showModal, setShowModal] = useState(false);
-<<<<<<<< HEAD:app/src/components/Admin/DeleteUserButton.tsx
   const { call: deleteUser, isLoading, error } = useApi(AdminServices.deleteUser);
-========
-  const { call: deleteUser, isLoading } = useApi(AdminServices.deleteUser);
->>>>>>>> 70f0fc8fe0e7f209769e69832f17ab81aff526a8:app/src/components/Admin/Users/Actions/DeleteUserButton.tsx
+  
   const handleDelete = async () => {
     try {
       const token = getUserToken();
@@ -42,11 +28,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({
         return;
       }
       await deleteUser(applicationId, token);
-<<<<<<<< HEAD:app/src/components/Admin/DeleteUserButton.tsx
-      addNotification('Usuário deletado com sucesso');
-========
       addNotification("Usuário deletado com sucesso");
->>>>>>>> 70f0fc8fe0e7f209769e69832f17ab81aff526a8:app/src/components/Admin/Users/Actions/DeleteUserButton.tsx
       onDelete();
       setShowModal(false); // Close the modal after deletion
     } catch (error) {
@@ -92,19 +74,7 @@ const DeleteUserButton: React.FC<DeleteUserButtonProps> = ({
 
       {/* Confirmation Modal */}
       {showModal && (
-<<<<<<<< HEAD:app/src/components/Admin/DeleteUserButton.tsx
         <GenericModalComponent onConfirm={handleDelete} onClose={handleCancel} isVisible={showModal} loading={isLoading} confirmBtnText='Deletar' title='Deletando usuário' contentText='Você tem certeza de que deseja excluir este usuário?' />
-========
-        <GenericModalComponent
-          onConfirm={handleDelete}
-          onClose={handleCancel}
-          isVisible={showModal}
-          loading={isLoading}
-          confirmBtnText="Deletar"
-          title="Deletando usuário"
-          contentText="Você tem certeza de que deseja excluir este usuário?"
-        />
->>>>>>>> 70f0fc8fe0e7f209769e69832f17ab81aff526a8:app/src/components/Admin/Users/Actions/DeleteUserButton.tsx
       )}
     </>
   );
