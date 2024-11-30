@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { getUserToken } from "../helpers/userInfo";
 import CourseGuideButton from "../components/Courses/GuideToCreatingCourse";
 // Services
-import CourseServices from  "@services/course.services";
+import CourseServices from "@services/course.services";
 
 // Components
 import Layout from "../components/Layout";
@@ -55,7 +55,7 @@ const Courses = () => {
 
   const { data, error } = useSWR(
     token ? [token] : null,
-    CourseServices.getAllCourses
+    CourseServices.getAllCreatorCourses
   );
 
   if (error && error.response.status === 401) {
@@ -74,7 +74,7 @@ const Courses = () => {
 
   return (
     <Layout meta="Course overview">
-      <div className="grid lg:grid-cols-[3fr_1fr] h-full">
+      <div className="grid lg:grid-cols-[3fr_1fr] h-full font-personalInsights">
         {/* Left side displaying courses, filtering for these and create new button */}
         <div className="m-8 p-8 pb-0 bg-white rounded-xl overflow-hidden flex flex-col">
           {data.length ? (

@@ -11,6 +11,7 @@ import { SectionList } from "./dnd/SectionList";
 import { BACKEND_URL } from "../helpers/environment";
 
 import CourseServices from "../services/course.services";
+import SectionServices from "../services/section.services";
 import { YellowWarning } from "./Courses/YellowWarning";
 import { useNavigate } from "react-router-dom";
 /* import Popup from "./Popup/Popup"; */
@@ -58,7 +59,6 @@ export const SectionCreation = ({
 
   const navigate = useNavigate();
   function addOnSubmitSubscriber(callback: Function) {
-    //console.log("add subscriber");
     setOnSubmitSubscribers((prevSubscribers) => [...prevSubscribers, callback]);
   }
 
@@ -109,17 +109,38 @@ export const SectionCreation = ({
     }
   };
 
-  const handlePublishConfirm = async () => {
+  const checkSectionsNotEmpty = async () => {
     try {
-      await updateCourseSections();
-      if (status !== "published") {
-        await CourseServices.updateCourseStatus(id, "published", token);
-        navigate("/courses");
-        addNotification("Curso publicado com sucesso!");
-      } else {
-        navigate("/courses");
-        addNotification("Seções salvas com sucesso!");
+      let emptySections = [];
+      for(let sectionID of sections) {
+        console.log(sectionID);
+        const section = await SectionServices.getSectionDetail(sectionID, token);
+        if(section.components.length === 0) {
+          emptySections.push(section);
+        }
       }
+      for(let emptySection of emptySections) {
+        addNotification(`Secção: "${emptySection.title}", está vazia!`);
+      }
+
+      return emptySections.length === 0;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  
+
+  const handleConfirm = async () => {
+    try {
+      const sectionsAreValid = await checkSectionsNotEmpty();
+      if (!sectionsAreValid) {
+        addNotification("Curso não pode ser publicado devido a secções vazias!");
+        return;
+      }
+      await updateCourseSections();
+        setTickChange(2);
+        navigate(`/courses/manager/${id}/2`);
     } catch (err) {
       console.error(err);
     }
@@ -132,7 +153,7 @@ export const SectionCreation = ({
 
   function changeTick(tick: number) {
     setTickChange(tick);
-    navigate(`/courses/manager/${id}/0`);
+    navigate(`/courses/manager/${id}/${tick}`);
   }
 
   /**
@@ -176,12 +197,14 @@ export const SectionCreation = ({
 
   return (
     <div>
+      <button onClick={() => {console.log(sections);checkSectionsNotEmpty()}}>test</button>
       <GenericModalComponent
         title={dialogTitle}
         contentText={dialogMessage}
         cancelBtnText={cancelBtnText}
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
+        width="w-[500px]"
         onConfirm={async () => {
           await dialogConfirm();
         }}
@@ -214,7 +237,7 @@ export const SectionCreation = ({
           <YellowWarning text="Você pode adicionar até 10 itens em cada seção, entre aulas e exercícios." />
         </div>
 
-        <div className="flex w-full float-right items-center justify-left space-y-4 my-4">
+        <div className="flex w-full float-right items-center justify-left space-y-4">
           {/** Course Sections area  */}
           <div className="flex w-full flex-col space-y-2 ">
             <SectionList
@@ -256,21 +279,12 @@ export const SectionCreation = ({
               </label>
             </label>
 
-            <label className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
+            <label className="h-12 p-2 bg-primary hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
               <label
-                onClick={() => {
-                  handleDialogEvent(
-                    status === "published"
-                      ? "Tem certeza de que deseja publicar o curso? Isso o disponibilizará para os usuários do aplicativo"
-                      : "Tem certeza de que deseja publicar as alterações feitas no curso",
-                    handlePublishConfirm,
-                    "Publicar curso"
-                  );
-                }}
+                onClick={() => handleConfirm()}
                 className="whitespace-nowrap py-4 px-8 h-full w-full cursor-pointer"
               >
-                {status === "published" ? "Publicar Edições" : "Publicar Curso"}{" "}
-                {/** Publish course, this should be replaced with a move to preview button when preview page is implemented */}
+                Revisar Curso
               </label>
             </label>
           </div>

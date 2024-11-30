@@ -7,6 +7,9 @@ import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
+// Other libraries
+import { toast } from 'react-toastify';
+
 // Services
 import ProfileServices from "../services/profile.services";
 import AccountServices from "../services/account.services";
@@ -31,6 +34,9 @@ import staticForm from "../utilities/staticForm";
 // Helpers
 import { tempObjects } from "../helpers/formStates";
 import { toast } from "react-toastify";
+
+// Contexts
+import useAuthStore from '../contexts/useAuthStore'
 
 // Yup Schema
 const profileSchema = Yup.object().shape({
@@ -105,6 +111,10 @@ const Profile = () => {
   const [hasSubmitted, setHasSubmitted] = useState(false);
   const [isAccountDeletionModalVisible, setIsAccountDeletionModalVisible] = useState(false);
   const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
+  const { clearToken } = useAuthStore((state) => state);
+
+  //callback
+  const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
 
   //callback
   const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
@@ -211,16 +221,33 @@ const Profile = () => {
   const closeAccountDeletionModal = () => { setIsAccountDeletionModalVisible(false); }
 
   // Handle account deletion
-  const deleteAccount = async () => {
-    // TODO: implement correctly at some point
-    /*await AccountServices.deleteAccount();
+  const handleDeleteAccount = async () => {
+    try {
+      const statusCode = await AccountServices.deleteAccount();
+      if (statusCode !== 200)
+        throw new Error();
 
-    localStorage.removeItem("token");
-    localStorage.removeItem("id");
-    localStorage.removeItem("userInfo");
+      closeAccountDeletionModal();
 
-    navigate('/welcome');*/
-    closeAccountDeletionModal();
+      // Clear local storage
+      localStorage.removeItem("id");
+      localStorage.removeItem("userInfo");
+      clearToken();
+      localStorage.removeItem('token');
+      
+      navigate('/welcome');
+
+      // Toastify notification: 'Account deleted successfully!'
+      toast.success('Conta excluída com sucesso!', { pauseOnHover: false, draggable: false }); 
+    } 
+    catch (error) {
+      console.error("Error deleting account: " + error);
+      closeAccountDeletionModal();
+
+      // Toastify notification: 'Failed to delete account!'
+      toast.error('Erro ao excluir conta!', { pauseOnHover: false, draggable: false });
+      return;
+    }
   }
 
   return (
@@ -447,7 +474,7 @@ const Profile = () => {
             contentText={"Você tem certeza que deseja deletar a sua conta? Todos os seus dados serão removidos permanentemente. Essa ação não pode ser desfeita."}
             cancelBtnText={"Cancelar"}
             confirmBtnText={"Confirmar"}
-            onConfirm={deleteAccount}
+            onConfirm={handleDeleteAccount}
             onClose={closeAccountDeletionModal}
             isVisible={isAccountDeletionModalVisible}
         />

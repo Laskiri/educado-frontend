@@ -72,7 +72,7 @@ const Signup = () => {
 
 
   // callback 
-  const {call: signup, isLoading : sumbitLoading} = useApi(AuthServices.postUserSignup);
+  const {call: signup, isLoading : submitLoading} = useApi(AuthServices.postUserSignup);
   // Navigation hook
   const navigate = useNavigate();
 
@@ -128,7 +128,7 @@ const Signup = () => {
       .catch((err) => {
         setError(err);
         if (!err.response?.data) {
-          console.log(err);
+          console.error(err);
         } else {
           switch (err.response.data.error.code) {
             case "E0201": // Email already exists
@@ -146,7 +146,7 @@ const Signup = () => {
               setErrorExistMessage("");
               break;
             default:
-              console.log(error);
+              console.error(error);
           }
         }
       });
@@ -449,8 +449,8 @@ const Signup = () => {
                     type="submit"
                     id="submit-signup-button"
                     className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-[#FFF] transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-                    disabled={!sumbitLoading}>
-                    {sumbitLoading? (
+                    disabled={submitLoading}>
+                    {submitLoading? (
                     <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
                     ) : null}
                     Cadastrar
@@ -476,6 +476,7 @@ const Signup = () => {
                 toggleModal={() => setIsModalVisible(!isModalVisible)}
                 setErrorMessage={(message: string, error?: string) => setErrorMessage(message)}
                 uemail={email}
+                isLoading={submitLoading}
               />
             )}
           </div>
