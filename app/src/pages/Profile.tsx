@@ -7,9 +7,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from 'react-router-dom';
 
-// Other libraries
-import { toast } from 'react-toastify';
-
 // Services
 import ProfileServices from "../services/profile.services";
 import AccountServices from "../services/account.services";
@@ -112,9 +109,6 @@ const Profile = () => {
   const [isAccountDeletionModalVisible, setIsAccountDeletionModalVisible] = useState(false);
   const [areAllFormsFilledCorrect, setAreAllFormsFilledCorrect] = useState(false);
   const { clearToken } = useAuthStore((state) => state);
-
-  //callback
-  const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
 
   //callback
   const { call: saveEdits, isLoading: submitLoading, error } = useApi(ProfileServices.putFormOne);
