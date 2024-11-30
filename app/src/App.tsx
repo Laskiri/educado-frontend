@@ -18,7 +18,6 @@ import Profile from "./pages/Profile";
 import EducadoAdmin from "./pages/EducadoAdmin";
 import SingleApplicantView from "./pages/SingleApplicantView";
 import Certificates from "./pages/Certificates";
-import NewInstitution from "./pages/NewInstitution";
 import Feedback from "./pages/Feedback";
 
 

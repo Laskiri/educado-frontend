@@ -3,7 +3,6 @@ import { BACKEND_URL } from "@helpers/environment";
 import { Institution } from "@interfaces/Institution";
 import { Application } from "@interfaces/Application";
 import { User } from "@interfaces/User";
-import { NewInstitution } from "../components/Admin/InstitutionsTableAdmin";
 
 export interface ContentCreatorApplication {
   firstName: string;
