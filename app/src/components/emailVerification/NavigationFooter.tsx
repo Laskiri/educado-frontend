@@ -67,6 +67,7 @@ export default function NavigationFooter(props: propsType): JSX.Element {
       console.error("Form data is not available");
       return;
     }
+    console.log('Submitting formData from NavigationFooter:', formData);
 
     try {
       await verifyUser({

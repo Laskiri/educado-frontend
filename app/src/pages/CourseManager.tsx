@@ -6,6 +6,7 @@ import { useParams } from "react-router";
 import { useApi } from "@hooks/useAPI";
 import { getUserToken } from '../helpers/userInfo';
 import Checklist from "../components/Checklist";
+import FeedbackBox from "../components/FeedbackBox";
 import Layout from "../components/Layout";
 import CourseServices from '../services/course.services';
 import StorageServices from '../services/storage.services';
@@ -115,8 +116,12 @@ const CourseManager = () => {
 
     return (
         <Layout meta="Course Manager">
-            <div className="flex flex-row">
-                <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
+            <div className="flex flex-row  w-full">
+                <div className="flex flex-col h-full items-start justify-start m-8 w-[312px] ">
+                    <Checklist tickChange={tickChange} highestTick={highestTick} id={id ?? ""} setTickChange={handleTickChange} />
+                    <p className="text-2xl text-grayMedium my-4">Feedbacks</p>
+                    <FeedbackBox id={id ?? ''} token={token} />
+                </div>
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
                     {tickChange === 1 && <SectionCreation token={token} setTickChange={handleTickChange} />}
