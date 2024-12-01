@@ -147,15 +147,7 @@ const deleteCourse = async (id: string | undefined, token: string) => {
   });
 };
 
-/**
- * Get all sections from a course
- */
-const getAllCourseSections = async (course_id: string | undefined) => {
-  const res = await axios.get(
-    `${BACKEND_URL}/api/courses/${course_id}/sections`,
-  );
 
-}
 
 const getCourseFeedback = async (url: string, token: string) => {
   const response = await axios.get(url, {
@@ -177,7 +169,6 @@ const CourseServices = Object.freeze({
   getCourseCategories,
   deleteCourse,
   getCourseFeedback,
-  getAllCourseSections,
 });
 
 export default CourseServices;
