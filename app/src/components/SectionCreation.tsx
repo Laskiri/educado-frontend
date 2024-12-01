@@ -19,15 +19,12 @@ import Loading from "./general/Loading";
 import Layout from "./Layout";
 // Notification
 import CourseGuideButton from "./Courses/GuideToCreatingCourse";
-
-import { prepareFormData } from "@helpers/courseStoreHelper";
+import { useCourseManagingHelper} from "@hooks/useCourseManagingHelper";
 interface Inputs {
-  token: string;
   setTickChange: (tick: number) => void;
 }
 // Create section
 export const SectionCreation = ({
-  token,
   setTickChange,
 }: Inputs) => {
   const { id } = useParams<{ id: string }>();
@@ -39,8 +36,8 @@ export const SectionCreation = ({
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
-  const {course, getFormattedCourse} = useCourse();
-  const {sections, getCachedSection} = useSections();
+  const {course} = useCourse();
+  const {sections} = useSections();
   const existingCourse = id !== "0";
   const courseCacheLoading = Object.keys(course).length === 0;
 
@@ -50,65 +47,36 @@ export const SectionCreation = ({
   const navigate = useNavigate();
   const { addNotification } = useNotifications();
 
+  const { handleSaveAsDraft, handleDialogEvent, checkSectionsNotEmpty, someSectionMissingRequiredFields } = useCourseManagingHelper();
 
-  const isMissingRequiredFields = () => {
-    return course.sections.some((section) => {
-      const secInfo = getCachedSection(section);
-      return secInfo?.title === "" || secInfo?.description === "";
-    });
+
+
+  const handleSave = () => {
+    handleDialogEvent(
+      "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
+      handleDraftConfirm,
+      "Salvar como rascunho ", 
+      setDialogTitle,
+      setDialogMessage,
+      setDialogConfirm,
+      setShowDialog,
+    );
   };
-  const handleDialogEvent = (
-    dialogText: string,
-    onConfirm: () => void,
-    dialogTitle: string
-  ) => {
-    setDialogTitle(dialogTitle);
-    setDialogMessage(dialogText);
-    setDialogConfirm(() => onConfirm);
-    setShowDialog(true);
-  };  
-  
-  const onSuccessfulSubmit = () => {
-    navigate("/courses");
-    addNotification("Seções salvas com sucesso!");  
-  }
 
   const handleDraftConfirm = async () => {
-    try {
-      const updatedCourse = getFormattedCourse();
-      const formData = prepareFormData(updatedCourse);
-      await submitCourse(formData, token);
-      onSuccessfulSubmit();
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  const checkSectionsNotEmpty =  () => {
-      const emptySections = [];
-      for(const sec of sections) {
-        if(sec.components.length === 0) {
-          addNotification(`Secção: "${sec.title}", está vazia!`);
-          emptySections.push(sec);
-        }
-      } 
-      return emptySections.length === 0;
+    await handleSaveAsDraft(submitCourse);
   };
 
   
 
-  const handleConfirm = async () => {
-    try {
-      const sectionsAreValid = checkSectionsNotEmpty();
+  const handleGoPreviewCourse = async () => {
+      const sectionsAreValid = checkSectionsNotEmpty(sections);
       if (!sectionsAreValid) {
         addNotification("Curso não pode ser publicado devido a secções vazias!");
         return;
       }
-        setTickChange(2);
-        navigate(`/courses/manager/${id}/2`);
-    } catch (err) {
-      console.error(err);
-    }
+      setTickChange(2);
+      navigate(`/courses/manager/${id}/2`);
   };
 
   function changeTick(tick: number) {
@@ -189,18 +157,12 @@ export const SectionCreation = ({
               className={` ${
               status === "published" ? "invisible pointer-events-none" : ""
               } pl-32 underline mx-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 rounded ${
-              isMissingRequiredFields() ? "opacity-70" : ""
+              someSectionMissingRequiredFields() ? "opacity-70" : ""
               }`}
             >
               <button
-              disabled={isMissingRequiredFields()}
-              onClick={() => {
-                handleDialogEvent(
-                "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-                handleDraftConfirm,
-                "Salvar como rascunho"
-                );
-              }}
+              disabled={someSectionMissingRequiredFields()}
+              onClick={handleSave}
               className="whitespace-nowrap hover:cursor-pointer underline"
               >
               Salvar como Rascunho {/** Save as draft */}
@@ -208,10 +170,10 @@ export const SectionCreation = ({
             </div>
 
             <div className={`h-12 m-2 bg-primary flex items-center content-center hover:bg-primaryHover focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg ${
-              isMissingRequiredFields() ? "opacity-70" : ""}`}>
+              someSectionMissingRequiredFields() ? "opacity-70" : ""}`}>
               <button
-                disabled={isMissingRequiredFields()}
-                onClick={() => handleConfirm()}
+                disabled={someSectionMissingRequiredFields()}
+                onClick={() => handleGoPreviewCourse()}
                 className="whitespace-nowrap px-8  w-full cursor-pointer"
               >
                 Revisar Curso

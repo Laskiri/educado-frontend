@@ -6,7 +6,9 @@ import { getUserInfo, getUserToken } from "../helpers/userInfo";
 
 //interfaces
 import { CreatorPopulatedCourse, Course } from "../interfaces/Course"
-import { getCourseIdFromFormData } from "@helpers/courseStoreHelper";
+
+import { getCourseIdFromFormData } from "@utilities/formDataUtils";
+
 
 
 

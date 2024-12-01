@@ -123,8 +123,8 @@ const CourseManager = () => {
                     <FeedbackBox id={id ?? ''} token={token} />
                 </div>
                 <div className='flex-none w-2/3 mr-20'>
-                    {tickChange === 0 && <CourseComponent token={token} id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
-                    {tickChange === 1 && <SectionCreation token={token} setTickChange={handleTickChange} />}
+                    {tickChange === 0 && <CourseComponent id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
+                    {tickChange === 1 && <SectionCreation  setTickChange={handleTickChange} />}
                     {tickChange === 2 && <CoursePreview id={id ?? ""} token={token} setTickChange={handleTickChange}/>}
                 </div>
             </div>

@@ -19,10 +19,10 @@ import GenericModalComponent from "../GenericModalComponent";
 // Interface
 import { Course} from "../../interfaces/Course";
 import CourseGuideButton from "./GuideToCreatingCourse";
-import { prepareFormData } from "@helpers/courseStoreHelper";
+
+import { useCourseManagingHelper } from "@hooks/useCourseManagingHelper";
 
 interface CourseComponentProps {
-  token: string;
   id: string;
   setTickChange: (tick: number) => void;
   setId: (id: string) => void;
@@ -31,8 +31,6 @@ interface CourseComponentProps {
 
 /**
  * This component is responsible for creating and editing courses.
- *
- * @param token The user token
  * @param id The course id
  * @param setTickChange The function to set the tick change
  * @param setId The function to set the course id
@@ -40,9 +38,9 @@ interface CourseComponentProps {
  * @returns HTML Element
  */
 
-export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProps) => {
-  const {course, updateCourseField, getFormattedCourse} = useCourse();
-  const { addMediaToCache, updateMedia, getMedia } = useMedia();
+export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
+  const {course, updateCourseField} = useCourse();
+  const { getMedia } = useMedia();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState<boolean>(false);
@@ -54,6 +52,8 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   
   const courseImg = getMedia(id);
   const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
+
+  const { handleDialogEvent, handleCourseImageUpload, handleSaveAsDraft } = useCourseManagingHelper();
 
   // Callbacks
   
@@ -77,14 +77,6 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   const charCount = course?.description?.length ?? 0;
   const navigate = useNavigate();
 
-
-     /**
-     * Extra function to handle the response from the course service before it is passed to the useSWR hook
-     * 
-     * @param url The url to fetch the course details from backend
-     * @param token The user token
-     * @returns The course details
-     */
   useEffect(() => {
     //TODO: get categories from db
     const inputArray = [
@@ -107,34 +99,14 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
   const handleFieldChange = (field: keyof Course, value: string | number | File | null) => {
     updateCourseField({[field]: value});
   };
-  const handleDialogEvent = (
-    message: string,
-    onConfirm: () => void,
-    dialogTitle: string
-  ) => {
-    setDialogTitle(dialogTitle);
-    setDialogMessage(message);
-    setDialogConfirm(() => onConfirm);
-    setShowDialog(true);
-  };
- 
+
   const handleImageUpload = (file: File | null) => {
-    if (!file) return;
-    const newMedia = { id: id, file: file, parentType: "c" };
-    if (!courseImg) {
-      addMediaToCache(newMedia);
-      updateCourseField({coverImg: course._id + "_c"});
-    }
-    else {
-      updateMedia(newMedia);
-    }
+    handleCourseImageUpload(file, courseImg, id);
   }
 
   const handleSubmitCourse = async () => {
     try {
-      const updatedCourse = getFormattedCourse();
-      const formData = prepareFormData(updatedCourse);
-      await submitCourse(formData, token);
+      await handleSaveAsDraft(submitCourse);
       navigate("/courses");
       addNotification("Seções salvas com sucesso!");
     } catch (err) {
@@ -146,7 +118,11 @@ export const CourseComponent = ({ token, id, setTickChange}: CourseComponentProp
     handleDialogEvent(
       "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
       handleSubmitCourse,
-      "Salvar como rascunho "
+      "Salvar como rascunho ", 
+      setDialogTitle,
+      setDialogMessage,
+      setDialogConfirm,
+      setShowDialog,
     );
   };
 

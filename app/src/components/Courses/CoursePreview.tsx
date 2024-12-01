@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useCourse} from '@contexts/courseStore';
-import { prepareFormData } from "@helpers/courseStoreHelper";
 import { PhonePreview } from "./PhonePreview";
 
 import { useApi } from "@hooks/useAPI";
@@ -15,21 +14,19 @@ import GenericModalComponent from "../GenericModalComponent";
 import Loading from "../general/Loading";
 import Layout from "../Layout";
 
-// Notification
-import { useNotifications } from "../notification/NotificationContext";
 import PhoneCourseSection from "./PhoneCourseSection";
 import ExploreCardPreview from "./ExploreCardPreview";
 
+import { useCourseManagingHelper } from "@hooks/useCourseManagingHelper";
+
 interface Inputs {
   id: string;
-  token: string;
   setTickChange: (tick: number) => void;
 }
 
 // Create section
 export const CoursePreview = ({
   id: propId,
-  token,
   setTickChange,
 }: Inputs) => {
 
@@ -44,7 +41,7 @@ export const CoursePreview = ({
 
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
-  const {course, getFormattedCourse} = useCourse();
+  const {course } = useCourse();
   const courseCacheLoading = Object.keys(course).length === 0;
   const existingCourse = id !== "0";
   const callFunc = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
@@ -52,50 +49,43 @@ export const CoursePreview = ({
 
   const navigate = useNavigate();
 
-  // Notification
-  const { addNotification } = useNotifications();
+  const { handleDialogEvent, handleSaveAsDraft, handlePublishCourse  } = useCourseManagingHelper();
 
   const status = course.status ?? "draft";
 
-  const handleDialogEvent = (
-    dialogText: string,
-    onConfirm: () => void,
-    dialogTitle: string
-  ) => {
-    setDialogTitle(dialogTitle);
-    setDialogMessage(dialogText);
-    setDialogConfirm(() => onConfirm);
-    setShowDialog(true);
-  };  
-  
-  const onSuccessfulSubmit = () => {
-    navigate("/courses");
-    addNotification("Seções salvas com sucesso!");  
+  const handleDraftClick = () => {
+    handleDialogEvent(
+      "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
+      handleDraftConfirm,
+      "Salvar como rascunho ", 
+      setDialogTitle,
+      setDialogMessage,
+      setDialogConfirm,
+      setShowDialog,
+    );
   }
 
+  const handlePublishClick = () => {
+    handleDialogEvent(
+      status === "published"
+        ? "Tem certeza de que deseja publicar o curso? Isso o disponibilizará para os usuários do aplicativo"
+        : "Tem certeza de que deseja publicar as alterações feitas no curso",
+      handlePublishConfirm,
+      "Publicar curso", 
+      setDialogTitle,
+      setDialogMessage,
+      setDialogConfirm,
+      setShowDialog,
+    );
+  }
+  
+
   const handleDraftConfirm = async () => {
-    try {
-      const updatedCourse = getFormattedCourse();
-      const formData = prepareFormData(updatedCourse);
-      await submitCourse(formData, token);
-      onSuccessfulSubmit();
-    } catch (err) {
-      console.error(err);
-    }
+    await handleSaveAsDraft(submitCourse);
   };
 
   const handlePublishConfirm = async () => {
-    try {
-      const updatedCourse = getFormattedCourse();
-      updatedCourse.courseInfo.status = "published";
-      const formData = prepareFormData(updatedCourse);
-
-      await submitCourse(formData, token);
-      onSuccessfulSubmit();
-    }
-    catch (err) {
-      console.error(err);
-    }
+    await handlePublishCourse(submitCourse);
   };
 
 
@@ -122,7 +112,7 @@ export const CoursePreview = ({
         confirmBtnText={confirmBtnText}
         isVisible={showDialog}
         onConfirm={async () => {
-          await dialogConfirm();
+         dialogConfirm();
         }}
         onClose={() => {
           setShowDialog(false);
@@ -170,13 +160,7 @@ export const CoursePreview = ({
               } pl-32  underline py-2 bg-transparent hover:bg-primary-100 text-primary w-full transition ease-in duration-200 text-center text-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2  rounded `}
             >
               <label
-                onClick={() => {
-                  handleDialogEvent(
-                    "Você tem certeza de que quer salvar como rascunho as alterações feitas?",
-                    handleDraftConfirm,
-                    "Salvar como rascunho"
-                  );
-                }}
+                onClick={handleDraftClick}
                 className="whitespace-nowrap hover:cursor-pointer underline"
               >
                 Salvar como Rascunho {/** Save as draft */}
@@ -185,15 +169,7 @@ export const CoursePreview = ({
 
             <label className="h-12 p-2 bg-primary hover:bg-primary focus:ring-blue-500 focus:ring-offset-blue-200 text-white w-full transition ease-in duration-200 text-center text-lg font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2  rounded-lg">
               <label
-                onClick={() => {
-                  handleDialogEvent(
-                    status === "published"
-                      ? "Tem certeza de que deseja publicar o curso? Isso o disponibilizará para os usuários do aplicativo"
-                      : "Tem certeza de que deseja publicar as alterações feitas no curso",
-                    handlePublishConfirm,
-                    "Publicar curso"
-                  );
-                }}
+                onClick={handlePublishClick}
                 className="whitespace-nowrap py-4 px-8 h-full w-full cursor-pointer"
               >
                 {status === "published" ? "Publicar Edições" : "Publicar Curso"}{" "}

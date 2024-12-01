@@ -124,3 +124,7 @@ export interface FormattedCourse {
     }[]
   }[] | null;
 }
+
+export interface SubmitFunction {
+  (formData: FormData, token: string): Promise<void>;
+}
