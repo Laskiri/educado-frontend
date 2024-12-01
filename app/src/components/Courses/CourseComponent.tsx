@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useNotifications } from "../notification/NotificationContext";
 import { useCourse, useMedia } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
@@ -70,8 +69,6 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
   };
 
   const isMissingRequiredFields = Object.values(errors).some((error) => error);
-  // Notification
-  const { addNotification } = useNotifications();
 
   const courseCached = course.title !== "";
   const charCount = course?.description?.length ?? 0;
@@ -105,13 +102,7 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
   }
 
   const handleSubmitCourse = async () => {
-    try {
-      await handleSaveAsDraft(submitCourse);
-      navigate("/courses");
-      addNotification("Seções salvas com sucesso!");
-    } catch (err) {
-      console.error(err);
-    }
+    await handleSaveAsDraft(submitCourse);
   }
 
   const handleSave = () => {
