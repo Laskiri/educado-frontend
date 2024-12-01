@@ -1,6 +1,6 @@
 import { useMedia, useCourse, useSections } from "@contexts/courseStore";
 import { getUserToken } from "@helpers/userInfo";
-import { SubmitFunction, Section } from "@interfaces/Course";
+import { SubmitFunction } from "@interfaces/Course";
 import { useNotifications } from "@components/notification/NotificationContext";
 import { useNavigate } from "react-router-dom";
 import { prepareFormData } from "@utilities/formDataUtils";
@@ -9,7 +9,7 @@ export const useCourseManagingHelper = () => {
     const { addNotification } = useNotifications();
     const { addMediaToCache, updateMedia } = useMedia();
     const { course, updateCourseField, getFormattedCourse } = useCourse();
-    const { getCachedSection } = useSections();
+    const { sections, getCachedSection } = useSections();
     const token = getUserToken();
     const navigate = useNavigate();
 
@@ -69,7 +69,7 @@ export const useCourseManagingHelper = () => {
         addNotification("Seções salvas com sucesso!");
     };
 
-    const checkSectionsNotEmpty = (sections: Section[]) => {
+    const checkAllSectionsGotComponents = () => {
         const emptySections = [];
         for (const sec of sections) {
             if (sec.components.length === 0) {
@@ -92,7 +92,7 @@ export const useCourseManagingHelper = () => {
         handleCourseImageUpload,
         handleSaveAsDraft,
         handlePublishCourse,
-        checkSectionsNotEmpty,
+        checkAllSectionsGotComponents,
         someSectionMissingRequiredFields,
     };
 };

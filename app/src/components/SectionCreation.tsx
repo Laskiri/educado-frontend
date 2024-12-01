@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useParams } from "react-router";
 import { useApi } from '../hooks/useAPI';
-import { useCourse, useSections } from '../contexts/courseStore';
+import { useCourse} from '../contexts/courseStore';
 import { useNotifications } from "./notification/NotificationContext";
 
 import CourseService from "../services/course.services";
@@ -37,7 +37,6 @@ export const SectionCreation = ({
   const [dialogConfirm, setDialogConfirm] = useState<() => void>(() => {});
 
   const {course} = useCourse();
-  const {sections} = useSections();
   const existingCourse = id !== "0";
   const courseCacheLoading = Object.keys(course).length === 0;
 
@@ -47,7 +46,7 @@ export const SectionCreation = ({
   const navigate = useNavigate();
   const { addNotification } = useNotifications();
 
-  const { handleSaveAsDraft, handleDialogEvent, checkSectionsNotEmpty, someSectionMissingRequiredFields } = useCourseManagingHelper();
+  const { handleSaveAsDraft, handleDialogEvent, checkAllSectionsGotComponents, someSectionMissingRequiredFields } = useCourseManagingHelper();
 
 
 
@@ -70,7 +69,7 @@ export const SectionCreation = ({
   
 
   const handleGoPreviewCourse = async () => {
-      const sectionsAreValid = checkSectionsNotEmpty(sections);
+      const sectionsAreValid = checkAllSectionsGotComponents();
       if (!sectionsAreValid) {
         addNotification("Curso não pode ser publicado devido a secções vazias!");
         return;
