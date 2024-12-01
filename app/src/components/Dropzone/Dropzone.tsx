@@ -22,7 +22,7 @@ export const Dropzone: FC<DropzoneProps> = ({
     id, 
     previewFile,
     onFileChange,
-    maxSize = 500 * 1024 * 1024, // Default: 500 MB
+    maxSize = 10 * 1024 * 1024, // 10MB, change to 500MB when transcoding service has been redeployed
   }) => {
     const { addNotification } = useNotifications();
     const [preview, setPreview] = useState<string | null>(null);
