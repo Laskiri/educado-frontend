@@ -125,7 +125,7 @@ const CourseManager = () => {
                 <div className='flex-none w-2/3 mr-20'>
                     {tickChange === 0 && <CourseComponent id={id} setTickChange={handleTickChange} setId={setId} updateHighestTick={updateHighestTick} />}
                     {tickChange === 1 && <SectionCreation  setTickChange={handleTickChange} />}
-                    {tickChange === 2 && <CoursePreview id={id ?? ""} token={token} setTickChange={handleTickChange}/>}
+                    {tickChange === 2 && <CoursePreview id={id ?? ""} setTickChange={handleTickChange}/>}
                 </div>
             </div>
         </Layout>
