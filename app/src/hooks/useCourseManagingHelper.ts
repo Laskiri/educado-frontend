@@ -41,29 +41,26 @@ export const useCourseManagingHelper = () => {
     };
 
     const handleSaveAsDraft = async (submitFunction: SubmitFunction): Promise<void> => {
-        try {
-            const updatedCourse = getFormattedCourse();
-            const formData = prepareFormData(updatedCourse);
-            await submitFunction(formData, token);
-            onSuccessfulSubmit();
-        } catch (error) {
-            console.error(error);
-        }
+        handleCourseSubmit(submitFunction);
     };
 
     const handlePublishCourse = async (submitFunction: SubmitFunction): Promise<void> => {
+        handleCourseSubmit(submitFunction, true);
+    };
+
+    const handleCourseSubmit = async (submitFunction: SubmitFunction, publish = false): Promise<void> => {
         try {
             const updatedCourse = getFormattedCourse();
-            updatedCourse.courseInfo.status = "published";
+            if (publish) updatedCourse.courseInfo.status = "published";
             const formData = prepareFormData(updatedCourse);
-
             await submitFunction(formData, token);
             onSuccessfulSubmit();
         }
         catch (err) {
             console.error(err);
         }
-    };
+    }
+
 
     const onSuccessfulSubmit = () => {
         navigate("/courses");
