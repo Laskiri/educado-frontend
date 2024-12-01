@@ -7,11 +7,12 @@ import { prepareFormData } from "@utilities/formDataUtils";
 
 export const useCourseManagingHelper = () => {
     const { addNotification } = useNotifications();
-    const { addMediaToCache, updateMedia } = useMedia();
+    const { addMediaToCache, updateMedia, getMedia } = useMedia();
     const { course, updateCourseField, getFormattedCourse } = useCourse();
     const { sections, getCachedSection } = useSections();
     const token = getUserToken();
     const navigate = useNavigate();
+    const coverImg = getMedia(course._id);
 
     const handleDialogEvent = (
         message: string,
@@ -87,6 +88,20 @@ export const useCourseManagingHelper = () => {
         });
     };
 
+    const courseMissingRequiredFields = () => {
+        const errors = {
+            title: course.title === "",
+            description: course.description === "",
+            category: course.category === "",
+            difficulty: course.difficulty === 0,
+            coverimg: !coverImg,
+        };
+
+        const isMissingRequiredFields = Object.values(errors).some((error) => error);
+        return { errors, isMissingRequiredFields };
+    }
+
+
     return {
         handleDialogEvent,
         handleCourseImageUpload,
@@ -94,6 +109,7 @@ export const useCourseManagingHelper = () => {
         handlePublishCourse,
         checkAllSectionsGotComponents,
         someSectionMissingRequiredFields,
+        courseMissingRequiredFields,
     };
 };
 

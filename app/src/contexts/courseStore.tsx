@@ -49,6 +49,7 @@ interface CourseContextProps {
   getMedia: (mid: string) => File | null;
   updateMedia: (media: Media) => Media | null;
   deleteMedia: (mid: string) => void;
+  getPreviewCourseImg: () => string | null;
 }
 
 interface CourseProviderProps {
@@ -98,6 +99,7 @@ const CourseContext = createContext<CourseContextProps>({
   getMedia: () => null,
   updateMedia: () => ({} as Media),
   deleteMedia: () => {},
+  getPreviewCourseImg: () => null,
 });
 
 export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
@@ -394,6 +396,11 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     return newMedia;
   }
 
+  const getPreviewCourseImg = () => {
+    const coverImg = getMedia(course._id);
+    return coverImg ? URL.createObjectURL(coverImg) : null;
+  }
+
 
 
   const value = {
@@ -429,7 +436,8 @@ export const CourseProvider: React.FC<CourseProviderProps> = ({ children }) => {
     addMediaToCache,
     getMedia,
     updateMedia,
-    deleteMedia
+    deleteMedia,
+    getPreviewCourseImg,
   }
 
   return (
@@ -495,6 +503,7 @@ export const useMedia = () => {
     addMediaToCache: context.addMediaToCache,
     getMedia: context.getMedia,
     updateMedia: context.updateMedia,
-    deleteMedia: context.deleteMedia
+    deleteMedia: context.deleteMedia,
+    getPreviewCourseImg: context.getPreviewCourseImg,
   };
 }

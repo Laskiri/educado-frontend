@@ -4,7 +4,7 @@ import { useCourse, useMedia } from '../../contexts/courseStore';
 // Services
 import CourseServices from "../../services/course.services";
 import {useApi} from "../../hooks/useAPI";
-// Helpers
+  // Helperss
 import categories from "../../helpers/courseCategories";
 
 
@@ -39,7 +39,7 @@ interface CourseComponentProps {
 
 export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
   const {course, updateCourseField} = useCourse();
-  const { getMedia } = useMedia();
+  const { getMedia, getPreviewCourseImg } = useMedia();
   const [categoriesOptions, setCategoriesOptions] = useState<JSX.Element[]>([]);
   const [toolTipIndex, setToolTipIndex] = useState<number>(4);
   const [showDialog, setShowDialog] = useState<boolean>(false);
@@ -50,9 +50,9 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
   const [dialogTitle, setDialogTitle] = useState("Cancelar alterações");
   
   const courseImg = getMedia(id);
-  const previewCourseImg = courseImg ? URL.createObjectURL(courseImg) : null;
+  const previewCourseImg = getPreviewCourseImg();
 
-  const { handleDialogEvent, handleCourseImageUpload, handleSaveAsDraft } = useCourseManagingHelper();
+  const { handleDialogEvent, handleCourseImageUpload, handleSaveAsDraft, courseMissingRequiredFields } = useCourseManagingHelper();
 
   // Callbacks
   
@@ -60,15 +60,7 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
   const submitCall = existingCourse ? CourseServices.updateCourse : CourseServices.createCourse;
   const { call: submitCourse, isLoading: submitLoading} = useApi(submitCall);
 
-  const errors = {
-    title: course.title === "",
-    description: course.description === "",
-    category: course.category === "",
-    difficulty: course.difficulty === 0,
-    coverimg: !courseImg,
-  };
-
-  const isMissingRequiredFields = Object.values(errors).some((error) => error);
+  const {errors, isMissingRequiredFields} = courseMissingRequiredFields()
 
   const courseCached = course.title !== "";
   const charCount = course?.description?.length ?? 0;
