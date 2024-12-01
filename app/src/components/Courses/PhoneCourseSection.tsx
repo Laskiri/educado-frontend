@@ -55,6 +55,9 @@ const PhoneCourseSession: React.FC = () => {
             
             {filteredSections.map((section: Section, index: number) => {
                 if (index < 3) {
+            {sections?.map((section: Section, index: number) => {
+                if (index <= 3 && !uniqueSections.has(section._id)) {
+                    uniqueSections.add(section._id);
                     return (
                         <button
                         key={section._id}
