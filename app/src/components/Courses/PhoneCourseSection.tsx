@@ -1,27 +1,21 @@
 import { Icon } from '@mdi/react';
 import { mdiAccountOutline, mdiCompassOutline, mdiHomeOutline, mdiRobotOutline, mdiChevronLeft, mdiChevronRight, mdiPlay, mdiDownload } from '@mdi/js';
-import { Course} from '../../interfaces/Course';
-import CourseServices from '../../services/course.services';
-import useSWR from 'swr';
+import {  Section} from '../../interfaces/Course';
 import { useState } from 'react';
+import { useCourse, useSections } from '@contexts/courseStore';
 import PhoneExercisesAndLectures from './PhoneExercisesAndLectures';
+// The interface is currently empty and not used anywhere in the code, so it can be safely deleted.
 
-interface PhoneCourseSectionProps {
-    course: Course;
-}  
-
-const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
-    const { data } = useSWR("api/courses/${course_id}/sections", () =>
-        CourseServices.getAllCourseSections(course._id)
-    );
-
+const PhoneCourseSession: React.FC = () => {
+    const { sections } = useSections();
+    const { course } = useCourse();
     const [showExercises, setShowExercises] = useState(false);
-    const [selectedSection, setSelectedSection] = useState<any>();
-    
+    const [selectedSection, setSelectedSection] = useState<{ id: string; title: string } | undefined>(undefined);
+    const uniqueSections = new Set<string>();
     const progress = 40;
 
     if (showExercises) {
-        return <PhoneExercisesAndLectures course={course} selectedSection={selectedSection} />;
+        return selectedSection ? <PhoneExercisesAndLectures course={course} selectedSection={selectedSection} /> : null;
     }
     
     return (
@@ -55,22 +49,28 @@ const PhoneCourseSession: React.FC<PhoneCourseSectionProps> = ({ course }) => {
                 </div>
             </button>
             
-            {data?.map((section: any, index: number) => (
-                index < 3 && (
-                <button key={index} 
-                    className="flex flex-row justify-between items-center ml-4 mr-4 mb-3 border border-gray text-black h-14 rounded-lg text-xs cursor-pointer"
-                    onClick={() => {
-                    setShowExercises(true)
-                    setSelectedSection({ id: section._id, title: section.title })
-                    }}>
-                    <div className="flex flex-col items-start ml-3">
-                        <h2 className="mt-1 font-bold">{section.title}</h2>
-                        <h2 className="mt-1 text-gray-600 text-[9px]">0/{section.__v} Não iniciado</h2>
-                    </div>
-                    <Icon path={mdiChevronRight} size={1} className="mr-3 text-[#166276]" />
-                </button>
-                )
-            ))}
+            {sections?.map((section: Section, index: number) => {
+                if (index < 3 && !uniqueSections.has(section._id)) {
+                    uniqueSections.add(section._id);
+                    return (
+                        <button
+                        key={section._id}
+                        className="flex flex-row justify-between items-center ml-4 mr-4 mb-3 border border-gray text-black h-14 rounded-lg text-xs cursor-pointer"
+                        onClick={() => {
+                            setShowExercises(true);
+                            setSelectedSection({ id: section._id, title: section.title });
+                        }}
+                        >
+                        <div className="flex flex-col items-start ml-3">
+                            <h2 className="mt-1 font-bold">{section.title}</h2>
+                            <h2 className="mt-1 text-gray-600 text-[9px]">0/{section.components.length} Não iniciado</h2>
+                        </div>
+                        <Icon path={mdiChevronRight} size={1} className="mr-3 text-[#166276]" />
+                        </button>
+                    );
+                }
+                return null;
+             })}
 
             <div className="flex justify-center mb-2">
                 <h2 className="text-[red] text-[14px] font-bold underline">Retirar curso</h2>

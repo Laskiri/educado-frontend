@@ -1,22 +1,24 @@
 import { useState, useEffect } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Dropzone } from "./Dropzone/Dropzone";
-import { toast } from "react-toastify";
 import RichTextEditor from "./RichTextEditor";
 
 // Contexts
-// import useAuthStore from '../../contexts/useAuthStore';
+import { useLectures, useMedia } from "@contexts/courseStore";
+
 // Hooks
-import { getUserToken } from "../helpers/userInfo";
 import { useNotifications } from "./notification/NotificationContext";
+import { useApi } from "@hooks/useAPI";
+
+// Helpers 
+import { convertSrcToFile } from "@helpers/fileHelpers"
 
 // Services
 import StorageServices from "../services/storage.services";
-import LectureService from "../services/lecture.services";
 
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
-
+import { Lecture } from "../interfaces/Course";
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
@@ -31,8 +33,8 @@ type Inputs = {
 };
 
 interface Props {
-  data: any;
-  handleEdit: Function;
+  lecture : Lecture; // 
+  handleEdit: (title: string) => void;
 }
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
@@ -40,10 +42,10 @@ interface Props {
  *
  * @returns HTML Element
  */
-export const EditLecture = ({ data, handleEdit }: Props) => {
-  const [lectureContent, setLectureContent] = useState(null);
+export const EditLecture = ({ lecture, handleEdit }: Props) => {
+  const { getMedia, updateMedia, addMediaToCache} = useMedia();
+  const { updateCachedLecture } = useLectures();
   //TODO: When tokens are done, Remove dummy token and uncomment useToken
-  const token = getUserToken();
 
   //const sid = window.location.pathname.split("/")[2];
 
@@ -58,30 +60,54 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
   const [contentType, setContentType] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { addNotification } = useNotifications();
-  const [previewFile, setPreviewFile] = useState<string | null>(null);
-  const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+  const cachedVideo = getMedia(lecture._id);
+  const [lectureVideo, setLectureVideo] = useState<File | null>(cachedVideo);
+  const previewFileSrc = lectureVideo ? URL.createObjectURL(lectureVideo) : null;
+  const { call: fetchPreviewVideo, isLoading: loadingPreview } = useApi(StorageServices.getMedia);
 
   const toggler = (value: string) => {
     setContentType(value);
   };
 
   useEffect(() => {
+    setLectureVideo(cachedVideo);
+  }
+  , [cachedVideo]);
+  
+  useEffect(() => {
+    if (lecture.contentType !== "video") return;
+    if (lectureVideo) return 
     const fetchPreview = async () => {
-      const fileSrc = await getPreviewVideo();
-
-      if (fileSrc) {
-        setPreviewFile(fileSrc);
+      const videoId = lecture._id + "_l"; // Assuming `data` is available here
+      const fileSrc = await fetchPreviewVideo(videoId);
+      
+      const videoSrc = `data:video/mp4;base64,${fileSrc.split(',')[1]}`; //Quickfix - backend has to be adjusted to do this correctly, lasse don't @ me
+      if (fileSrc !== null) {
+        const file = await convertSrcToFile(videoSrc, videoId);
+        const newMedia = {
+          id: lecture._id,
+          file: file,
+          parentType: "l",
+        }
+        addMediaToCache(newMedia);
       }
-    };
+    }
     fetchPreview();
-  }, [data._id]);
+  }, [lecture._id]);
 
-  const getPreviewVideo = async () => {
-    const videoId = data._id + "_l"; // Assuming `data` is available here
-    const fileSrc = await StorageServices.getMedia(videoId);
-    const videoSrc = `data:video/mp4;base64,${fileSrc.split(',')[1]}`; //Quickfix - backend has to be adjusted to do this correctly, lasse don't @ me
-    return videoSrc;
-  };
+  // Initialize the editorValue with data.content if available (for editing)
+  useEffect(() => {
+    if (lecture?.content !== "") {
+      setEditorValue(lecture.content);
+      setValue('content', lecture.content);  // Initialize form value as well
+    }
+  }, [lecture, setValue]);
+
+  const handleFileChange = (file: File | null) => {
+    if (file === null) return;
+    setLectureVideo(file);
+  }
+
 
   /**
    * Function to handle the submit of the form
@@ -90,53 +116,35 @@ export const EditLecture = ({ data, handleEdit }: Props) => {
    */
   const onSubmit: SubmitHandler<Inputs> = async (newData) => {
     setIsSubmitting(true);
-    LectureService.updateLecture(
-      {
-        title: newData.title,
-        description: newData.description,
-        contentType: newData.contentType,
-        content: newData.content,
-      },
-      token,
-      data._id
-    )
-      .then((res) => {
-        if (lectureVideo !== null) {
-          StorageServices.uploadFile({
-            id: res._id,
-            file: lectureVideo,
-            parentType: "l",
-          });
-        }
-        handleEdit(newData.title);
-        addNotification("Aula atualizada com sucesso");
-        setIsSubmitting(false);
-      })
-
-      .catch((err) => {
-        toast.error("Fracassado: " + err);
-        setIsSubmitting(false);
-      });
+    const updatedLecture = {
+      title: newData.title,
+      description: newData.description,
+      contentType: newData.contentType,
+      content: newData.content,
+      parentSection: lecture.parentSection,
+      _id : lecture._id
+    };
+    updateCachedLecture(updatedLecture);
+    if (lectureVideo !== null) {
+      const newMedia = {
+        id: lecture._id,
+        file: lectureVideo,
+        parentType: "l",
+      } 
+      updateMedia(newMedia);
+    }
+    handleEdit(newData.title);
+    addNotification("Aula atualizada com sucesso");
   };
-
-  function returnFunction(lectureContent: any) {
-    setLectureContent(lectureContent);
-  }
 
   const [editorValue, setEditorValue] = useState<string>('');
 
-// Initialize the editorValue with data.content if available (for editing)
-useEffect(() => {
-  if (data?.content) {
-    setEditorValue(data.content);
-    setValue('content', data.content);  // Initialize form value as well
-  }
-}, [data, setValue]);
+
 
 const handleEditorChange = (value: string) => {
   setEditorValue(value); // Update local state
   setValue('content', value); // Manually set form value
-  data.content = value;
+  lecture.content = value;
 };
 
   return (
@@ -144,7 +152,7 @@ const handleEditorChange = (value: string) => {
       {/*Text shown in the top of create lecture*/}
       <div
         className="modal"
-        id={`lecture-edit-${data ? data._id : "new"}-modal`}
+        id={`lecture-edit-${lecture._id}`}
       >
         <div className="modal-box bg-gradient-to-b from-primaryLight w-11/12 max-w-xl rounded-3xl ">
           <h3 className="font-bold text-lg">Editar sua aula</h3>{" "}
@@ -159,7 +167,7 @@ const handleEditorChange = (value: string) => {
               <input
                 type="text"
                 placeholder={"Insira o título da aula"}
-                defaultValue={data ? data.title : ""}
+                defaultValue={lecture.title}
                 className="form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none rounded-lg"
                 {...register("title", { required: true })}
               />
@@ -173,7 +181,7 @@ const handleEditorChange = (value: string) => {
               <textarea
                 rows={4}
                 placeholder={"Insira o conteúdo escrito dessa aula"}
-                defaultValue={data ? data.description : ""}
+                defaultValue={lecture.description}
                 className="resize-none form-field focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent border-none rounded-lg"
                 {...register("description", { required: true })}
               />
@@ -193,7 +201,7 @@ const handleEditorChange = (value: string) => {
                     id="radio1"
                     value="video"
                     checked={
-                      (data?.contentType === "video" && contentType === "") ||
+                      (lecture?.contentType === "video" && contentType === "") ||
                       contentType === "video"
                         ? true
                         : false
@@ -215,7 +223,7 @@ const handleEditorChange = (value: string) => {
                     id="radio2"
                     value="text"
                     checked={
-                      (data?.contentType === "text" && contentType === "") ||
+                      (lecture?.contentType === "text" && contentType === "") ||
                       contentType === "text"
                         ? true
                         : false
@@ -235,16 +243,17 @@ const handleEditorChange = (value: string) => {
             </div>
             {/*One day this will be file*/}
             <div className="flex flex-col space-y-2 text-left">
-              {(data?.contentType === "video" && contentType === "") ||
+              {(lecture?.contentType === "video" && contentType === "") ||
               contentType === "video" ? (
                 <>
                   <label htmlFor="cover-image">
                     Upload do video <span className="text-red-500">*</span>
                   </label>{" "}
                   {/*Input file*/}
-                  <Dropzone inputType="video" id={data._id} previewFile={previewFile} onFileChange={setLectureVideo}></Dropzone>
+                  {!loadingPreview &&
+                  <Dropzone inputType="video" id={lecture._id} previewFile={previewFileSrc} onFileChange={handleFileChange}></Dropzone>}
                 </>
-              ) : (data?.contentType === "text" && contentType === "") ||
+              ) : (lecture?.contentType === "text" && contentType === "") ||
                 contentType === "text" ? (
                 <>
                   <label htmlFor="content">Formate o seu texto abaixo</label>
@@ -263,7 +272,7 @@ const handleEditorChange = (value: string) => {
             <ModalButtonCompont
               type="edit"
               isSubmitting={isSubmitting}
-              typeButtons={`lecture-edit-${data._id}`}
+              typeButtons={`lecture-edit-${lecture._id}`}
             />
           </form>
         </div>

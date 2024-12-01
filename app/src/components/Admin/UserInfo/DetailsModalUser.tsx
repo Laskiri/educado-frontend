@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import GenericModalComponentUser from "./UserGenericContainerComponent";
 import GenericModalComponent from "../../GenericModalComponent";
 /*
@@ -37,10 +37,6 @@ const UserDetailsModal: React.FC<UserDetailsModalProps> = ({
   const [isDropdownOpen, setIsDropdownOpen] = useState([true, false, false]);
   const [isRejectModalOpen, setIsRejectModalOpen] = useState(false);
   const [isApproveModalOpen, setIsApproveModalOpen] = useState(false);
-
-  useEffect(() => {
-    console.log("userApplication:", userApplication);
-  }, [userApplication]);
 
   if (!isOpen) return null;
 

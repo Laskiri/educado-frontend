@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Dropzone } from "./Dropzone/Dropzone";
-import { toast } from "react-toastify";
 
-// Contexts
-// import useAuthStore from '../../contexts/useAuthStore';
 // Hooks
-import { getUserToken } from "../helpers/userInfo";
+import { useLectures, useMedia } from "../contexts/courseStore";
 
 import { useNotifications } from "./notification/NotificationContext";
-// Services
-import StorageServices from "../services/storage.services";
-import LectureService from "../services/lecture.services";
 
 //components
 import { ModalButtonCompont } from "./ModalButtonCompont";
@@ -19,6 +13,8 @@ import RichTextEditor from "./RichTextEditor";
 // Icons
 import { Icon } from "@mdi/react";
 import { mdiInformationSlabCircleOutline } from "@mdi/js";
+
+import { Component } from "../interfaces/Course";
 
 <Icon path={mdiInformationSlabCircleOutline} size={1} />;
 
@@ -31,7 +27,7 @@ type Inputs = {
 
 interface Props {
   savedSID: string;
-  handleLectureCreation: Function;
+  handleLectureCreation: (newComponent: Component) => void;
 }
 /**
  * This component is a modal that opens when the user clicks on the button to create a new lecture.
@@ -40,10 +36,6 @@ interface Props {
  * @returns HTML Element
  */
 export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
-  //TODO: When tokens are done, Remove dummy token and uncomment useToken
-  const token = getUserToken();
-
-  //const sid = window.location.pathname.split("/")[2];
 
   // use-form setup
   const {
@@ -55,10 +47,11 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   } = useForm<Inputs>();
 
   const [contentType, setContentType] = useState<string>("");
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [editorValue, setEditorValue] = useState<string>('');
-  const [previewFile, setPreviewFile] = useState<string | null>(null);
   const [lectureVideo, setLectureVideo] = useState<File | null>(null);
+  const { addLectureToCache } = useLectures();
+  const { addMediaToCache } = useMedia();
+
 
 
   const { addNotification } = useNotifications();
@@ -70,52 +63,41 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
   /**
    * Function to handle the submit of the form
    *
-   * @param {Inputs} data The data from each field in the form put into an object
+   * @param {Inputs} newData The data from each field in the form put into an object
    */
-  const onSubmit: SubmitHandler<Inputs> = async (newData) => {
-    
-    
-    setIsSubmitting(true);
-    LectureService.addLecture(
-      {
-        
-        title: newData.title,
-        description: newData.description,
-        contentType: newData.contentType,
-        content: newData.content,
-      },
-      token,
-      savedSID
-    )
-      .then((res) => {
-        if (lectureVideo !== null) {
-          StorageServices.uploadFile({
-            id: res.data.compId,
-            file: lectureVideo,
-            parentType: "l",
-          });
-        }
-        LectureService.updateLecture(res.data, token, res.data._id);
-        handleLectureCreation(res.data);
-        setIsSubmitting(false);
-        clearLectureModalContent();
-        addNotification("Aula criada com sucesso");
-      })
-      .catch((err) => {
-        toast.error("Fracassado: " + err);
-        setIsSubmitting(false);
-      });
+  const onSubmit: SubmitHandler<Inputs> = async (newData: Inputs) => {
+    const newLecture = {
+      _id: "0",
+      title: newData.title,
+      description: newData.description,
+      contentType: newData.contentType,
+      content: newData.content,
+      parentSection: savedSID,
+    }
+    const res = addLectureToCache(newLecture);
+    const newComponent = {
+      compId: res._id,
+      compType: "lecture",
+      _id : "0",
+    }
+    handleLectureCreation(newComponent)
+    if (lectureVideo !== null) {
+      const newMedia = {
+        id: res._id,
+        file: lectureVideo,
+        parentType: "l",
+      }
+      addMediaToCache(newMedia);
+      setLectureVideo(null);
+    }
+    clearLectureModalContent();
+    addNotification("Aula criada com sucesso");
   };
 
   function clearLectureModalContent() {
     reset();
       setContentType("");
   }
-
-  
-  
-
-
 
   const handleEditorChange = (value: string) => {
     setEditorValue(value); // Update local state
@@ -236,7 +218,7 @@ export const CreateLecture = ({ savedSID, handleLectureCreation }: Props) => {
             </div>
             {/*Create and cancel buttons*/}
             <ModalButtonCompont
-              isSubmitting={isSubmitting}
+              isSubmitting={false}
               typeButtons={`lecture-create-${savedSID}`}
               type={"create"}
             />

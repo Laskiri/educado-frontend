@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Icon } from '@mdi/react';
 import { 
   mdiCalendarMonth, 
@@ -14,12 +14,10 @@ import {
   mdiScissorsCutting,
   mdiLaptop,
   mdiChevronDown,
-  mdiChevronDoubleRight,
   mdiStarOutline,
-  mdiBookMultipleOutline
 } from '@mdi/js';
-import { Course } from '../../interfaces/Course';
 import singleIcon from '../../assets/singleIcon.png'; 
+import {useCourse } from '@contexts/courseStore';
 
 
 interface CardLabelProps {
@@ -30,10 +28,6 @@ interface CardLabelProps {
 
 interface CustomRatingProps {
   rating: number;
-}
-
-interface ExploreCardPreviewProps {
-  course: Course;
 }
 
 const CardLabel: React.FC<CardLabelProps> = ({ title, icon, color = '#4B5563' }) => (  // default to gray-600
@@ -96,11 +90,12 @@ interface FeatureItem {
   text: string;
 }
 
-const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
+const ExploreCardPreview: React.FC = () => {
+  const { course } = useCourse();
   const features: FeatureItem[] = [
     { 
       icon: mdiClockOutline, 
-      text: `${course.estimatedHours ? course.estimatedHours : '-'} horas de conteúdo (vídeos, exercícios, leituras complementares)` 
+      text: `${course.estimatedHours ?? 0 + '-'} horas de conteúdo (vídeos, exercícios, leituras complementares)` 
     },
     { icon: mdiCertificateOutline, text: 'Certificado de Conclusão' },
     { icon: mdiClockFast, text: 'Início imediato' },
@@ -167,7 +162,7 @@ const ExploreCardPreview: React.FC<ExploreCardPreviewProps> = ({ course }) => {
                 <div className="h-px bg-gray-200 w-full" />
 
                 {/* Description */}
-                {course.description && (
+                {course.description !== "" && (
                   <p className="text-projectBlack text-xs overflow-y-auto whitespace-normal h-[5rem] pr-1 break-words">{course.description}</p>
                 )}
 
