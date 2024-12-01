@@ -50,7 +50,7 @@ const PhoneCourseSession: React.FC = () => {
             </button>
             
             {sections?.map((section: Section, index: number) => {
-                if (index < 3 && !uniqueSections.has(section._id)) {
+                if (index <= 3 && !uniqueSections.has(section._id)) {
                     uniqueSections.add(section._id);
                     return (
                         <button
