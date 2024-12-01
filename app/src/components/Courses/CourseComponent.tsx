@@ -12,8 +12,6 @@ import categories from "../../helpers/courseCategories";
 // Components
 import { Dropzone } from "../Dropzone/Dropzone";
 import { ToolTipIcon } from "../ToolTip/ToolTipIcon";
-import Loading from "../general/Loading";
-import Layout from "../Layout";
 import GenericModalComponent from "../GenericModalComponent";
 // Interface
 import { Course} from "../../interfaces/Course";
@@ -62,7 +60,6 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
 
   const {errors, isMissingRequiredFields} = courseMissingRequiredFields()
 
-  const courseCached = course.title !== "";
   const charCount = course?.description?.length ?? 0;
   const navigate = useNavigate();
 
@@ -113,15 +110,6 @@ export const CourseComponent = ({ id, setTickChange}: CourseComponentProps) => {
     setTickChange(1);
     navigate(`/courses/manager/${id}/1`);
   }
-
-
-  if (!courseCached && existingCourse)
-    return (
-      <Layout meta="course overview">
-        <Loading />
-      </Layout>
-    ); // Loading course details
-
 
   return (
     <div>

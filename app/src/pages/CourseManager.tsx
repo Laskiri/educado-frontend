@@ -33,7 +33,7 @@ const CourseManager = () => {
     const [highestTick, setHighestTick] = useState<number>(0);
     const {course, updateCourse } = useCourse();
     const { addMediaToCache } = useMedia();
-    const newCourse = id === "0" ? true : false;
+    const newCourse = id === "0";
     const courseCached = course.title !== "";
     /**
      * Extra function to handle the response from the course service before it is passed to the useSWR hook
