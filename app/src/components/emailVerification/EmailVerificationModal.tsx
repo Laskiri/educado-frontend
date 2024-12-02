@@ -8,6 +8,7 @@ type propTypes = {
   toggleModal: () => void;
   setErrorMessage: (message: string, error?: string) => void;
   uemail: string;
+  isLoading?: boolean;
 }
 
 export const HandleContinueContext = createContext<() => void>(() => { });
@@ -21,11 +22,6 @@ export const HandleContinueContext = createContext<() => void>(() => { });
  */
 const EmailVerificationModal = (props: propTypes) : JSX.Element => {
   const { uemail, toggleModal, setErrorMessage } = props;
-
-  
-  const onSubmit = async () => {
-    console.log('onSubmit')
-  }
 
   // States that control the flow of the modal
   const [emailSent, setEmailSent] = useState(false);

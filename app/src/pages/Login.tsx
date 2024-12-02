@@ -7,7 +7,7 @@ import { mdiChevronLeft } from '@mdi/js';
 import { mdiEyeOffOutline, mdiEyeOutline, mdiAlertCircleOutline,  } from '@mdi/js';
 import Carousel from '../components/archive/Carousel';
 import { ToastContainer } from 'react-toastify';
-
+import { useApi } from '../hooks/useAPI';
 // Interfaces
 import { LoginResponseError } from "../interfaces/LoginResponseError"
 
@@ -52,7 +52,9 @@ const Login = () => {
       }, 5000);
     };
 
-  
+  //Callback 
+  const { call: login, isLoading: submitLoading,} = useApi(AuthServices.postUserLogin);
+
   //Variable determining the error message for both fields.
     const [emailError, setEmailError] = useState(null);
     const [emailErrorMessage,  setEmailErrorMessage] = useState('');
@@ -74,7 +76,7 @@ const Login = () => {
     * @param {String} data.password Password of the Content Creator (Will be encrypted)
     */
     const onSubmit: SubmitHandler<Inputs> = async (data) => {
-      AuthServices.postUserLogin({
+      await login({
           isContentCreator: true,
           email: data.email,
           password: data.password,})
@@ -92,7 +94,7 @@ const Login = () => {
              
           // error messages for email and password  
           })
-          .catch(err => { setError(err); console.log(err)
+          .catch(err => { setError(err); console.error(err)
             switch (err.response.data.error.code){
               case "E0004": //Invalid Email 
                 setEmailError(err);
@@ -126,7 +128,7 @@ const Login = () => {
               setError('');
               break;
               
-              default: console.log(error);
+              default: console.error(error);
           }});
     };
     
@@ -159,7 +161,7 @@ const Login = () => {
       setPasswordErrorMessage('');
     }
     // failure on submit handler FIXME: find out what this does (OLD CODE)
-    //const onError: SubmitHandler<Inputs> = error => console.log(error);
+    //const onError: SubmitHandler<Inputs> = error => console.error(error);
 
     // Account application success modal visibility effect
     useEffect(() => {
@@ -285,7 +287,10 @@ const Login = () => {
           
       { /*Enter button*/ }
         <button type="submit" id="submit-login-button" className="disabled:opacity-20 disabled:bg-slate-600 flex-auto w-[100%] h-[3.3rem] rounded-lg bg-[#166276] text-white transition duration-100 ease-in hover:bg-cyan-900 hover:text-gray-50 text-lg font-bold font-['Montserrat']"
-          disabled>
+          disabled={!submitLoading}>
+          {submitLoading ? (
+            <span className="spinner-border animate-spin inline-block w-4 h-4 border-2 border-t-transparent rounded-full mr-2"></span>
+          ) : false}
             Entrar {/*Enter*/}
           </button>
 

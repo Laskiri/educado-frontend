@@ -9,6 +9,7 @@ type propsType = {
   codeError: string;
   setCode: (code: string) => void;
   setCodeEntered: React.Dispatch<React.SetStateAction<boolean>>;
+  setEmailError: (error: string) => void;
 }
 
 /**
@@ -26,39 +27,48 @@ type propsType = {
 export default function CodeVerification(props: propsType) : JSX.Element {
   return (
     <div className="flex h-full flex-col justify-between space-y-4">
-      <div className="-mb-1">
-        <TextInput 
-          id='reset-password-email-field' 
-          className='' 
-          placeholder="Insira sua Email" // Enter your email
-          label="Email"
-          value={props.email} 
-          onChange={props.setEmail} />
-        <p id="email-error" className="text-warning h-5">{props.emailError}</p>
-      </div>
+      {!props.emailSent && (
+        <div className="-mb-1">
+          <TextInput 
+            id='reset-password-email-field' 
+            className='' 
+            placeholder="Insira sua Email" // Enter your email
+            label="Email"
+            value={props.email} 
+            onChange={props.setEmail} 
+          />
+          {props.emailError && <p id="email-error" className="text-error">{props.emailError}</p>} {/* Display email error in red */}
+        </div>
+      )}
       {props.emailSent &&
-        <div className="flex-row w-full justify-items-center">
+        <div className="flex h-full flex-col justify-center items-center">
           {/** We sent a code to your email to reset your password, please insert it below */}
-          <p className="py-4">Enviamos para o seu email um código de redefinição de senha. Insira o código abaixo. luka</p> 
-          <div className="grid grid-cols-1 gap-2 place-items-center">
-            <div>
-              <PinField
-                id="pin-field"
-                length={4}
-                className="flex-4 flex-row mx-3 w-10 rounded-md text-center pin-field"
-                validate='0123456789'
-                inputMode="numeric"
-                onChange={props.setCode}
-                onComplete={() => {
-                  props.setCodeEntered(true);
-                }}
-              />
-              <p id="pin-error" className="text-warning h-5">{props.codeError}</p>
-            </div>
-
+          <p>Enviamos um código para o email <span style={{ fontWeight: 'bold', color: 'black' }}>{props.email}</span> redefinição de senha, por favor, insira o mesmo abaixo.</p> 
+          <div className="flex flex-row justify-center items-center w-[420px] h-[38px] space-x-2.5">
+            <PinField
+              id="pin-field"
+              length={4}
+              className="flex flex-row justify-center items-center"
+              validate="0123456789"
+              inputMode="numeric"
+              onChange={props.setCode}
+              onComplete={() => {
+                props.setCodeEntered(true);
+              }}
+              style={{
+                width: '99px', // Width
+                height: '38px', // Height
+                padding: '8px 16px', // Padding: Top 8px, Right 16px, Bottom 8px, Left 16px
+                marginRight: '0px', // Gap
+                borderRadius: '8px', // Border radius
+                borderColor: '#e8effa',
+                opacity: '1', // Opacity
+                textAlign: 'center', // Center text
+              }}
+            />
           </div>
+          <p id="pin-error" className="text-warning h-0">{props.codeError}</p>
         </div>}
     </div>
-
   )
 }

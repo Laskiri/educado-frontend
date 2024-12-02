@@ -16,7 +16,8 @@
               "allowString" : false,
               "allowNumber" : false
           }
-      ]
-  },
+        ],
+        "no-console": ["error", { "allow": ["error"] }]
+    },
   "ignorePatterns": ["__tests__/*", "cypress/*"]
 }

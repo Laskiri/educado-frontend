@@ -1,5 +1,5 @@
 import {Icon} from '@mdi/react';
-import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog } from '@mdi/js';
+import { mdiBellOutline, mdiAccount, mdiLogoutVariant, mdiCertificate, mdiNotebookOutline, mdiAccountCog, mdiChatQuestionOutline } from '@mdi/js';
 import { Link } from 'react-router-dom'
 import useAuthStore from '../../contexts/useAuthStore'
 import { getUserInfo } from '../../helpers/userInfo';
@@ -56,6 +56,12 @@ export const Navbar = () => {
               <Link to="/courses" className="flex items-center text-lg font-['Montserrat']">
                 <Icon path={mdiNotebookOutline} size={1} color="grayMedium" />
                 <span>Cursos</span>
+              </Link>
+            </li>
+            <li>
+              <Link to="/certificates" className="flex items-center text-lg font-['Montserrat']">
+                <Icon path={mdiCertificate} size={1} color="grayMedium" />
+                <span>Meus certificados</span>
               </Link>
             </li>
             <li>
@@ -157,6 +163,13 @@ export const Navbar = () => {
                   <Link to="/certificates" className="text-grayDark text-lg hover:bg-grayLight">
                     <Icon path={mdiCertificate} size={1} color="grayMedium" />
                     <span>Meus certificados</span>
+                  </Link>
+                </li>
+                <hr className="w-full border-grayLight my-3" />
+                <li className="w-full">
+                  <Link to="/feedback" className="text-grayDark text-lg hover:bg-grayLight">
+                    <Icon path={mdiChatQuestionOutline} size={1} color="grayMedium" />
+                    <span>Feedback</span>
                   </Link>
                 </li>
                 <hr className="w-full border-grayLight my-3" />

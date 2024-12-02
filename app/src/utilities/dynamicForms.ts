@@ -36,27 +36,36 @@ export default () => {
   userInfo.id ? id = userInfo.id : id = "id";
   const [userID] = useState(id);
 
+  // Get default values for empty forms
+  const { emptyAcademicObject: emptyEducationForm, emptyProfessionalObject: emptyWorkForm } = tempObjects();
+
   // Fetch data for academic and professional experience forms
   const fetchDynamicData = async () => {
     try {
-      const [educationResponse, workResponse] = await Promise.all([
+      const [educationFormResponse, workFormResponse] = await Promise.all([
         ProfileServices.getUserFormTwo(userID),
         ProfileServices.getUserFormThree(userID),
       ]);
      
       // Map backend variables to corresponding frontend variables  
-      const transformedEducationData = educationResponse.data.map((item: any) => ({
-        ...item,
-        educationStartDate: item.startDate,
-        educationEndDate: item.endDate,
-      }));
-  
+      const transformedEducationData = educationFormResponse.data.length > 0
+        ? educationFormResponse.data.map((item: any) => ({
+            ...item,
+            educationStartDate: item.startDate,
+            educationEndDate: item.endDate,
+          }))
+          // Set empty data if forms don't exist in database
+        : emptyEducationForm;
+    
       // Map backend variables to corresponding frontend variables
-      const transformedWorkData = workResponse.data.map((item: any) => ({
-        ...item,
-        workStartDate: item.startDate,
-        workEndDate: item.endDate,
-      }));
+      const transformedWorkData = workFormResponse.data.length > 0
+        ? workFormResponse.data.map((item: any) => ({
+            ...item,
+            workStartDate: item.startDate,
+            workEndDate: item.endDate,
+          }))
+          // Set empty data if forms don't exist in database
+        : emptyWorkForm;
 
       setEducationFormData(transformedEducationData);
       setExperienceFormData(transformedWorkData); 
@@ -66,6 +75,13 @@ export default () => {
     } 
     catch (error: any) {
       console.error("Error fetching dynamic data: ", error);
+      
+      // Handling error in e.g., database access (to avoid crashing page when forms are then expanded) 
+      setEducationFormData(emptyEducationForm);
+      setExperienceFormData(emptyWorkForm); 
+
+      setEducationErrors(emptyEducationForm.map(() => ({ educationStartDate: "", educationEndDate: "" })));
+      setExperienceErrors(emptyWorkForm.map(() => ({ workStartDate: "", workEndDate: "" })));
     }
   };
 
@@ -110,7 +126,6 @@ export default () => {
           item.educationStartDate && String(item.educationStartDate).trim() !== "" &&
           item.educationEndDate && String(item.educationEndDate).trim() !== ""
       );
-      console.log("Education form is filled: ", EducationInputsFilled)
       return EducationInputsFilled;
     } 
     else {
@@ -121,7 +136,6 @@ export default () => {
           (item.workEndDate && String(item.workEndDate).trim() !== "" || item.isCurrentJob) && // If isCurrentJob is true, workEndDate can be empty
           item.description && String(item.description).trim() !== ""
       );
-      console.log("Experience form is filled: ", ExperienceInputsFilled)
       return ExperienceInputsFilled;
     }
   };
@@ -145,7 +159,7 @@ export default () => {
   const addNewEducationForm = async (index: number) => {
     if (!educationErrorState && dynamicInputsFilled("education")) {
       setEducationErrors((prevState) => {
-        let newState = [...prevState];
+        const newState = [...prevState];
         newState.push({
           educationStartDate: "",
           educationEndDate: "",
@@ -188,7 +202,7 @@ export default () => {
       setEducationErrorState(false);
     }
     setEducationErrors((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState.splice(index, 1);
       return newState;
     });
@@ -199,7 +213,7 @@ export default () => {
     //Creates new dynamic block based on conditions
     if (!experienceErrorState && dynamicInputsFilled("experience")) {
       setExperienceErrors((prevState) => {
-        let newState = [...prevState];
+        const newState = [...prevState];
         newState.push({
           workStartDate: "",
           workEndDate: "",
@@ -225,7 +239,7 @@ export default () => {
   // isCurrentJob checkbox handler
   const handleCheckboxChange = (index: number): void => {
     setExperienceFormData((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState[index] = {
         ...newState[index],
         isCurrentJob: !newState[index].isCurrentJob,
@@ -254,7 +268,7 @@ export default () => {
       setExperienceErrorState(false);
     }
     setExperienceErrors((prevState) => {
-      let newState = [...prevState];
+      const newState = [...prevState];
       newState.splice(index, 1);
       return newState;
     });
